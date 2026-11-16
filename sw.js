@@ -15,7 +15,7 @@ let i=0;const worker=async()=>{while(i<todo.length){const u=todo[i++];for(let t=
 await Promise.all([worker(),worker(),worker(),worker()]);syncing=null;})();return syncing}
 self.addEventListener("message",e=>{if(e.data&&e.data.type==="sync")sync()});
 self.addEventListener("fetch",e=>{const req=e.request;if(req.method!=="GET")return;const url=new URL(req.url);if(url.origin!==location.origin)return;
-if(req.mode==="navigate"){e.respondWith(caches.match("index.html",{ignoreSearch:true}).then(r=>r||fetch(req)));return}
+if(req.mode==="navigate"&&!/\.html$/.test(url.pathname.replace(/index\.html$/,""))){e.respondWith(caches.match("index.html",{ignoreSearch:true}).then(r=>r||fetch(req)));return}
 if(req.headers.get("range")){e.respondWith((async()=>{const r=await caches.match(req,{ignoreVary:true});if(!r)return fetch(req);
 const buf=await r.arrayBuffer(),m=/bytes=(\d+)-(\d*)/.exec(req.headers.get("range")),s=+m[1],en=m[2]?+m[2]:buf.byteLength-1;
 return new Response(buf.slice(s,en+1),{status:206,headers:{"Content-Type":r.headers.get("Content-Type")||"audio/mpeg","Content-Range":`bytes ${s}-${en}/${buf.byteLength}`,"Content-Length":String(en-s+1),"Accept-Ranges":"bytes"}})})());return}
