@@ -5,7 +5,7 @@
 :root{
   --bg:#FFFFFF; --bg2:#F5F5F7; --ink:#1D1D1F; --muted:#6E6E73; --soft:#86868B; --line:#D2D2D7;
   --red:#E3262B; --red-ink:#C4161C; --green:#1E8A5A; --gold:#A86400; --on-accent:#FFFFFF;
-  --glass:rgba(255,255,255,.5); --glass-hi:rgba(255,255,255,.65); --glass-sh:0 8px 32px rgba(0,0,0,.10); --scrim:rgba(0,0,0,.32);
+  --glass:rgba(255,255,255,.5); --glass-hi:rgba(255,255,255,.65); --glass-sh:0 8px 32px rgba(0,0,0,.10); --gl-fill:rgba(255,255,255,.30); --gl-strong:rgba(250,250,252,.74); --gl-edge:rgba(255,255,255,.75); --gl-edge2:rgba(255,255,255,.18); --gl-shadow:0 10px 34px rgba(0,0,0,.14),0 2px 6px rgba(0,0,0,.06); --lens:rgba(255,255,255,.55); --scrim:rgba(0,0,0,.32);
   --t-hk-a:#2340B8; --t-hk-b:#E0338A; --t-mo-a:#E08A00; --t-mo-b:#E8467C; --t-sz-a:#0A6CF0; --t-sz-b:#1EC8C0;
   --t-gz-a:#E3262B; --t-gz-b:#F28C28; --t-li-a:#0B9466; --t-li-b:#1BAFD0; --t-lt-a:#A8561A; --t-lt-b:#E0A33A;
   --t-food-a:#FF9F1C; --t-food-b:#F2545B; --t-ui-a:#5E5CE6; --t-ui-b:#0A84FF;
@@ -20,14 +20,14 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#000000; --bg2:#1C1C1E; --ink:#F5F5F7; --muted:#A1A1A6; --soft:#8E8E93; --line:#3A3A3C;
-  --red:#FF453A; --red-ink:#FF6B61; --green:#32D27A; --gold:#FFB340; --glass:rgba(28,28,30,.5); --glass-hi:rgba(255,255,255,.14); --glass-sh:0 8px 32px rgba(0,0,0,.45); --scrim:rgba(0,0,0,.55);
+  --red:#FF453A; --red-ink:#FF6B61; --green:#32D27A; --gold:#FFB340; --glass:rgba(28,28,30,.5); --glass-hi:rgba(255,255,255,.14); --glass-sh:0 8px 32px rgba(0,0,0,.45); --gl-fill:rgba(40,40,44,.32); --gl-strong:rgba(30,30,32,.74); --gl-edge:rgba(255,255,255,.28); --gl-edge2:rgba(255,255,255,.06); --gl-shadow:0 10px 34px rgba(0,0,0,.5); --lens:rgba(255,255,255,.14); --scrim:rgba(0,0,0,.55);
   --t-hk-a:#4F7BFF; --t-mo-a:#FFC229; --t-sz-a:#3DA5FF; --t-gz-a:#FF5A4F; --t-li-a:#2FE0A0; --t-lt-a:#E3A45C;
   --sea:#0B1724; --sea-ink:#6FB0E8; --land:#1E1E21; --coast:#2B3A4A;
   --park:#1F2E20; --map-land:#1F1F23; --street:#3A3A40; --park-out:#141C15; --tree:#2E4A2E; --path:#3B3631; --rail:#A07E60;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#000000; --bg2:#1C1C1E; --ink:#F5F5F7; --muted:#A1A1A6; --soft:#8E8E93; --line:#3A3A3C;
-  --red:#FF453A; --red-ink:#FF6B61; --green:#32D27A; --gold:#FFB340; --glass:rgba(28,28,30,.5); --glass-hi:rgba(255,255,255,.14); --glass-sh:0 8px 32px rgba(0,0,0,.45); --scrim:rgba(0,0,0,.55);
+  --red:#FF453A; --red-ink:#FF6B61; --green:#32D27A; --gold:#FFB340; --glass:rgba(28,28,30,.5); --glass-hi:rgba(255,255,255,.14); --glass-sh:0 8px 32px rgba(0,0,0,.45); --gl-fill:rgba(40,40,44,.32); --gl-strong:rgba(30,30,32,.74); --gl-edge:rgba(255,255,255,.28); --gl-edge2:rgba(255,255,255,.06); --gl-shadow:0 10px 34px rgba(0,0,0,.5); --lens:rgba(255,255,255,.14); --scrim:rgba(0,0,0,.55);
   --t-hk-a:#4F7BFF; --t-mo-a:#FFC229; --t-sz-a:#3DA5FF; --t-gz-a:#FF5A4F; --t-li-a:#2FE0A0; --t-lt-a:#E3A45C;
   --sea:#0B1724; --sea-ink:#6FB0E8; --land:#1E1E21; --coast:#2B3A4A;
   --park:#1F2E20; --map-land:#1F1F23; --street:#3A3A40; --park-out:#141C15; --tree:#2E4A2E; --path:#3B3631; --rail:#A07E60;
@@ -53,8 +53,14 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 .printonly{display:none!important}
 
 /* local nav, Apple-style floating bar */
-.lnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:20;max-width:var(--wide);margin:8px auto 0;display:flex;align-items:center;gap:8px;padding:7px 7px 7px 20px;border-radius:26px;background:var(--glass);-webkit-backdrop-filter:saturate(200%) blur(28px);backdrop-filter:saturate(200%) blur(28px);border:1px solid var(--glass-hi);box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-hi)}
-.lnav b{flex:1;min-width:0;font-family:var(--f-disp);font-size:1.15rem;font-weight:600;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:20;max-width:var(--wide);margin:8px auto 0;display:flex;align-items:center;gap:6px;min-height:56px;padding:6px 4px 6px 16px;border-radius:28px}
+.glass{position:relative;background:var(--gl-fill);-webkit-backdrop-filter:blur(26px) saturate(190%) brightness(1.06);backdrop-filter:blur(26px) saturate(190%) brightness(1.06);box-shadow:var(--gl-shadow),inset 0 1px 0 var(--gl-edge),inset 0 -1px 0 var(--gl-edge2)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(160deg,var(--gl-edge),transparent 38%,transparent 62%,var(--gl-edge2));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(120% 70% at 30% -10%,rgba(255,255,255,.2),transparent 55%);pointer-events:none}
+.lnav.glass,.bar.glass{position:sticky}.bar.glass{position:fixed}
+.lnav .sosbtn{height:44px;padding:0 16px;border-radius:22px;font-size:.95rem}
+.morebtn{width:44px;height:44px;flex:none;border:0;border-radius:50%;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}.morebtn svg{width:22px;height:22px}
+.lnav b{flex:1;min-width:0;font-family:var(--f-disp);font-size:1.02rem;font-weight:600;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;padding:9px 18px;font-size:.98rem;font-weight:500;border:1.5px solid transparent;background:none;color:var(--ink);cursor:pointer;text-decoration:none;white-space:nowrap}
 .btn.o{border-color:var(--ink)}
 .btn.f{background:var(--red);color:var(--on-accent)}
@@ -147,7 +153,7 @@ button.card{border:0;background:none;padding:0;text-align:left;cursor:pointer;co
 .tool[hidden]{display:none}
 .tool .art.cut{width:100%;margin:0}
 .tool span{font-size:.8rem;font-weight:600;text-align:center;line-height:1.15;text-wrap:balance}
-.tool[aria-pressed="true"]{border-color:var(--red);background:var(--bg)}
+.tool[aria-pressed="true"]{border-color:transparent;background:color-mix(in srgb,var(--red) 9%,var(--bg))}
 .tpanel[data-off]{display:none}
 .tile.tone{background:linear-gradient(140deg,var(--ta),var(--tb));color:var(--on-accent)}
 .tile.tone .k,.tile.tone p,.tile.tone li,.tile.tone .big,.tile.tone h3{color:var(--on-accent)}
@@ -380,10 +386,10 @@ textarea{min-height:110px;resize:vertical}
 .lines i{display:block;height:28px;border-bottom:1px solid var(--line)}
 
 /* tab bar, sheet, show */
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--glass);-webkit-backdrop-filter:saturate(200%) blur(28px);backdrop-filter:saturate(200%) blur(28px);border-top:1px solid var(--glass-hi);box-shadow:0 -6px 28px rgba(0,0,0,.08),inset 0 1px 0 var(--glass-hi)}
-.bar button{display:grid;justify-items:center;gap:1px;color:var(--muted);font-size:.68rem;font-weight:600;padding:4px 0;border:0;background:none;cursor:pointer}
+.bar{position:fixed;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:30;max-width:560px;margin-inline:auto;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;min-height:66px;padding:5px 6px;border-radius:33px}
+.bar button{position:relative;z-index:1;display:grid;justify-items:center;gap:1px;color:var(--ink);font-size:.66rem;font-weight:600;padding:7px 0;border:0;border-radius:28px;background:none;cursor:pointer;transition:background .2s}
 .bar .g{font-family:var(--f-han);font-size:1.3rem;line-height:1.25}
-.bar button.on{color:var(--red-ink)}
+.bar button.on{color:var(--red-ink);background:var(--lens);box-shadow:inset 0 1px 0 var(--gl-edge),0 2px 10px rgba(0,0,0,.08)}
 .sheet{position:fixed;inset:0;z-index:40;background:var(--scrim)}
 .sheet nav{position:absolute;left:0;right:0;bottom:0;max-height:86vh;overflow-y:auto;background:var(--bg);border-radius:26px 26px 0 0;padding:10px 22px calc(24px + env(safe-area-inset-bottom,0px));display:grid}
 .sheet .grab{width:38px;height:5px;border-radius:3px;background:var(--line);justify-self:center;margin-bottom:12px}
@@ -477,22 +483,30 @@ body.print .rvday{break-inside:avoid;margin-bottom:8pt}
 body.print .m-resv .rv{break-inside:avoid}
 body.print .m-reste,body.print .m-resv,body.print #p-resas{display:none!important}
 /* Demander à Xiao Long */
-.xlbtn{width:34px;height:34px;flex:none;border-radius:10px;border:1.5px solid var(--red-ink);background:color-mix(in srgb,var(--bg) 55%,transparent);color:var(--red-ink);font:600 1.05rem/1 var(--f-han);display:grid;place-items:center;padding:0;margin-right:6px;cursor:pointer;background-size:100% 100%;background-position:center;background-repeat:no-repeat}
+.xlbtn{width:44px;height:44px;flex:none;border-radius:13px;border:1.6px solid var(--red-ink);background:transparent;color:var(--red-ink);font:600 1.3rem/1 var(--f-han);display:grid;place-items:center;padding:0;margin-right:0;cursor:pointer;background-size:100% 100%;background-position:center;background-repeat:no-repeat}
 .xlbtn.img{color:transparent}
-#xlsheet{position:fixed;inset:0;z-index:96;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}#xlsheet[hidden]{display:none!important}
-#xlsheet .in{width:100%;max-width:640px;max-height:92vh;overflow-y:auto;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:saturate(180%) blur(30px);backdrop-filter:saturate(180%) blur(30px);border-radius:26px 26px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.18)}
-#xlsheet .grab{width:38px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 10px}
+#xlsheet{position:fixed;inset:0;z-index:96;background:rgba(0,0,0,.18);display:flex;align-items:flex-end;justify-content:center;padding:0 8px calc(8px + env(safe-area-inset-bottom,0px))}#xlsheet[hidden]{display:none!important}
+#xlsheet .in{width:100%;max-width:560px;max-height:86vh;overflow-y:auto;background:var(--gl-strong);border-radius:34px;padding:8px 16px 18px;animation:xlUp .38s cubic-bezier(.2,.9,.25,1)}@keyframes xlUp{from{transform:translateY(105%)}to{transform:none}}
+#xlsheet .grab{width:36px;height:5px;border-radius:3px;background:var(--muted);opacity:.35;margin:2px auto 8px}
+#xlsheet .sh{position:relative;z-index:1;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:6px}#xlsheet .sh h3{margin:0;text-align:center;font-size:1.05rem;font-weight:600;letter-spacing:-.01em}#xlsheet .sh h3 small{display:block;font:500 .74rem var(--f-han);color:var(--muted);letter-spacing:.1em}
+#xlsheet .circ{width:36px;height:36px;border-radius:50%;border:0;display:grid;place-items:center;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink);justify-self:center;cursor:pointer}#xlsheet .circ svg{width:15px;height:15px}#xlsheet .circ.off{visibility:hidden}
+#xlsheet .xtiles{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 4px}
+#xlsheet .xtile{border:0;border-radius:26px;padding:10px 6px 14px;display:flex;flex-direction:column;align-items:center;gap:2px;background:color-mix(in srgb,var(--bg) 55%,transparent);box-shadow:inset 0 1px 0 var(--gl-edge),0 1px 3px rgba(0,0,0,.05);color:var(--ink);cursor:pointer;transition:transform .15s}#xlsheet .xtile:active{transform:scale(.96)}
+#xlsheet .xtile .art.cut{width:92%;margin:0}#xlsheet .xtile .art.cut>img{filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+#xlsheet .xtile b{font-size:.86rem;font-weight:600;white-space:nowrap}#xlsheet .xtile small{font-size:.7rem;color:var(--muted);line-height:1.25;text-align:center}
+#xlsheet #xlGuide,#xlsheet #xlConvBox{position:relative;z-index:1}
+#xlConvBox #toolConv{background:none;box-shadow:none;border:0;padding:4px 2px 0}#xlConvBox #toolConv>h3{display:none}
 #xlsheet .hd{display:flex;align-items:center;gap:10px}#xlsheet .xlh{margin:14px 0 4px}#xlConvBox .tpanel{margin-top:14px}#xlConvBox .tile{box-shadow:none}#xlsheet .hd h3{flex:1;margin:0;font-size:1.3rem;letter-spacing:-.02em}
-#xlsheet .k{font-size:.74rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 6px}
-#xlsheet textarea{width:100%;font:16px/1.4 var(--f-ui);padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);resize:vertical}
+#xlsheet .k{font-size:.8rem;font-weight:600;color:var(--muted);margin:14px 4px 6px}
+#xlsheet textarea{width:100%;font:16px/1.4 var(--f-ui);padding:11px 13px;border-radius:14px;border:0;background:color-mix(in srgb,var(--bg) 70%,transparent);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);resize:none}
 #xlCtx{min-height:76px}#xlQ{min-height:80px}
 #xlsheet .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-#xlsheet .chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:7px 12px;font:14px var(--f-ui);cursor:pointer}
+#xlsheet .chip{border:0;background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink);border-radius:999px;padding:8px 13px;font:14px var(--f-ui);cursor:pointer}
 #xlsheet .ph{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-#xlsheet .pb{border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:12px;padding:10px 14px;font:15px var(--f-ui);cursor:pointer}
+#xlsheet .ph{flex-wrap:nowrap}#xlsheet .pb{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink);border-radius:14px;padding:12px;font:500 15px var(--f-ui);cursor:pointer}#xlsheet .pb svg{width:19px;height:19px}#xlsheet .pb#xlRm{flex:0 0 auto}
 #xlsheet .th{width:60px;height:60px;border-radius:10px;object-fit:cover;border:1px solid var(--line)}
-#xlsheet .go{display:block;width:100%;margin-top:18px;border:0;border-radius:14px;padding:14px;background:var(--red);color:var(--on-accent);font:600 17px var(--f-ui);cursor:pointer}
-#xlsheet .go2{display:block;width:100%;margin-top:10px;border:1px solid var(--line);border-radius:14px;padding:12px;background:transparent;color:var(--ink);font:15px var(--f-ui);cursor:pointer}
+#xlsheet .go{display:block;width:100%;margin-top:16px;border:0;border-radius:18px;padding:14px;background:var(--red);color:var(--on-accent);font:600 17px var(--f-ui);cursor:pointer}
+#xlsheet .go2{display:block;width:100%;margin-top:10px;border:0;background:color-mix(in srgb,var(--ink) 7%,transparent)!important;border-radius:18px;padding:12px;background:transparent;color:var(--ink);font:15px var(--f-ui);cursor:pointer}
 #xlsheet .msg{font-size:.86rem;color:var(--muted);margin:10px 2px 0;min-height:1.3em}
 #xlsheet details{margin-top:12px;font-size:.86rem;color:var(--muted)}#xlsheet pre{white-space:pre-wrap;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--bg2);border-radius:10px;padding:10px;color:var(--ink)}
 /* Navigation 2027 : onglets, Jours, Repas, SOS */
@@ -732,11 +746,11 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
 @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 
-<header class="lnav noprint">
+<header class="lnav glass noprint">
   <b id="topTitle">Hong Kong 2027</b>
-  <button class="xlbtn" id="xlOpen" aria-label="Demander à Xiao Long">問</button>
+  <button class="xlbtn" id="xlOpen" aria-label="Xiao Long">龍</button>
   <button class="btn s sosbtn" data-go="sos" aria-label="SOS, en cas de pépin">SOS</button>
-  <button class="btn g s" data-go="sheet">Plus</button>
+  <button class="morebtn" data-go="sheet" aria-label="Plus"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
 </header>
 
 <main id="main">
@@ -1200,7 +1214,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
 
 </main>
 
-<nav class="bar noprint" aria-label="Accès rapide">
+<nav class="bar glass noprint" aria-label="Accès rapide">
   <button data-go="now"><span class="g">今</span>Maintenant</button>
   <button data-go="jours"><span class="g">日</span>Jours</button>
   <button data-go="resas"><span class="g">票</span>Billets</button>
@@ -1214,21 +1228,21 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
   <div class="tools"><button class="pill" id="showSpeak">Écouter</button><button class="pill" id="showClose">Fermer</button></div>
   <div><div class="big" id="showBig"></div><div class="alt" id="showAlt"></div><div class="sm" id="showSm"></div><div class="fr" id="showFr"></div></div>
 </div>
-<div id="xlsheet" class="noprint" hidden role="dialog" aria-modal="true" aria-labelledby="xlT"><div class="in" id="xlIn">
+<div id="xlsheet" class="noprint" hidden role="dialog" aria-modal="true" aria-labelledby="xlT"><div class="in glass" id="xlIn">
   <div class="grab"></div>
-  <div class="hd"><button class="pill" id="xlBack" hidden>‹ Outils</button><h3 id="xlT">Outils</h3><button class="pill" id="xlClose">Fermer</button></div>
-  <div id="xlHome"><div class="tools3 xlh" role="group" aria-label="Outils">
-    <button class="tool" data-xlv="guide"><div class="art cut" data-art="G1" data-tone="ui" data-g="問"></div><span>Demander à Xiao Long</span></button>
-    <button class="tool" data-xlv="conv"><div class="art cut" data-art="G2" data-tone="ui" data-g="付"></div><span>Convertisseur</span></button>
-    <button class="tool" data-xlv="photo"><div class="art cut" data-art="G3" data-tone="ui" data-g="影"></div><span>Photo et vidéo</span></button>
+  <div class="sh"><button class="circ off" id="xlBack" aria-label="Retour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><h3 id="xlT">Xiao Long<small>小龍</small></h3><button class="circ" id="xlClose" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div id="xlHome"><div class="xtiles" role="group" aria-label="Outils de Xiao Long">
+    <button class="xtile" data-xlv="guide"><div class="art cut" data-art="G1" data-tone="ui" data-g="問"></div><b>Une question</b><small>sur ce qu'on voit</small></button>
+    <button class="xtile" data-xlv="conv"><div class="art cut" data-art="G2" data-tone="ui" data-g="付"></div><b>Convertir</b><small>HK$ · ¥ · MOP</small></button>
+    <button class="xtile" data-xlv="photo"><div class="art cut" data-art="G3" data-tone="ui" data-g="影"></div><b>Photo et vidéo</b><small>conseils et film</small></button>
   </div></div>
   <div id="xlConvBox" hidden></div>
   <div id="xlGuide" hidden>
   <div class="k">Où nous sommes</div><textarea id="xlCtx" aria-label="Contexte"></textarea>
   <div class="k">Votre question</div><textarea id="xlQ" placeholder="Qu'est-ce que je vois ?" aria-label="Question"></textarea>
   <div class="chips" id="xlChips"></div>
-  <div class="k">Photo (facultatif)</div>
-  <div class="ph"><label class="pb">📷 Prendre<input type="file" accept="image/*" capture="environment" id="xlCam" hidden></label><label class="pb">🖼 Choisir<input type="file" accept="image/*" id="xlLib" hidden></label><img class="th" id="xlTh" alt="" hidden><button class="pb" id="xlRm" hidden>Retirer</button></div>
+  <div class="k">Photo</div>
+  <div class="ph"><label class="pb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg>Prendre<input type="file" accept="image/*" capture="environment" id="xlCam" hidden></label><label class="pb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/></svg>Choisir<input type="file" accept="image/*" id="xlLib" hidden></label><img class="th" id="xlTh" alt="" hidden><button class="pb" id="xlRm" hidden>Retirer</button></div>
   <button class="go" id="xlSend">Envoyer à DeepSeek</button>
   <button class="go2" id="xlCopy">Copier seulement</button>
   <p class="msg" id="xlMsg" role="status"></p>
@@ -1236,7 +1250,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
   </div>
 </div></div>
 <div class="fiche noprint" id="fiche" hidden role="dialog" aria-modal="true" aria-label="Fiche du lieu">
-  <div class="ftop"><span class="t" id="ficheTop"></span><button class="xlbtn" id="xlOpen2" aria-label="Demander à Xiao Long">問</button><button class="pill" id="ficheClose">Fermer</button></div>
+  <div class="ftop"><span class="t" id="ficheTop"></span><button class="xlbtn" id="xlOpen2" aria-label="Une question à Xiao Long">龍</button><button class="pill" id="ficheClose">Fermer</button></div>
   <div id="ficheBody"></div>
 </div>
 <div class="toast noprint" id="toast" hidden></div>
@@ -3744,8 +3758,8 @@ function xlText(){const q=$("#xlQ").value.trim()||"Explique-moi ce que je vois."
 function xlUpd(){$("#xlPrev").textContent=xlText()}
 function xlView(v){const g=id=>document.getElementById(id);const conv=g("toolConv"),box=g("xlConvBox");
   if(v!=="conv"&&conv&&box.contains(conv)){XL.convHome.after(conv)}
-  g("xlHome").hidden=v!=="home";g("xlGuide").hidden=v!=="guide";box.hidden=v!=="conv";g("xlBack").hidden=v==="home";
-  g("xlT").textContent=v==="home"?"Outils":v==="guide"?"Demander à Xiao Long":"Convertisseur";
+  g("xlHome").hidden=v!=="home";g("xlGuide").hidden=v!=="guide";box.hidden=v!=="conv";g("xlBack").classList.toggle("off",v==="home");
+  g("xlT").innerHTML=v==="home"?"Xiao Long<small>小龍</small>":v==="guide"?"Une question":"Convertir";
   if(v==="conv"&&conv){if(!XL.convHome){XL.convHome=document.createComment("conv");conv.before(XL.convHome)}box.append(conv);conv.hidden=false;conv.removeAttribute("data-off")}
   g("xlIn").scrollTop=0}
 function xlOpen(generic,view){const c=generic?{ctx:"Nous voyageons à Hong Kong, Macao et dans le sud de la Chine, du 21 février au 5 mars.",food:false}:xlContext();
