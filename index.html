@@ -5,7 +5,7 @@
 :root{
   --bg:#FFFFFF; --bg2:#F5F5F7; --ink:#1D1D1F; --muted:#6E6E73; --soft:#86868B; --line:#D2D2D7;
   --red:#E3262B; --red-ink:#C4161C; --green:#1E8A5A; --gold:#A86400; --on-accent:#FFFFFF;
-  --glass:rgba(255,255,255,.74); --scrim:rgba(0,0,0,.32);
+  --glass:rgba(255,255,255,.5); --glass-hi:rgba(255,255,255,.65); --glass-sh:0 8px 32px rgba(0,0,0,.10); --scrim:rgba(0,0,0,.32);
   --t-hk-a:#2340B8; --t-hk-b:#E0338A; --t-mo-a:#E08A00; --t-mo-b:#E8467C; --t-sz-a:#0A6CF0; --t-sz-b:#1EC8C0;
   --t-gz-a:#E3262B; --t-gz-b:#F28C28; --t-li-a:#0B9466; --t-li-b:#1BAFD0; --t-lt-a:#A8561A; --t-lt-b:#E0A33A;
   --t-food-a:#FF9F1C; --t-food-b:#F2545B; --t-ui-a:#5E5CE6; --t-ui-b:#0A84FF;
@@ -20,14 +20,14 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#000000; --bg2:#1C1C1E; --ink:#F5F5F7; --muted:#A1A1A6; --soft:#8E8E93; --line:#3A3A3C;
-  --red:#FF453A; --red-ink:#FF6B61; --green:#32D27A; --gold:#FFB340; --glass:rgba(24,24,26,.74); --scrim:rgba(0,0,0,.55);
+  --red:#FF453A; --red-ink:#FF6B61; --green:#32D27A; --gold:#FFB340; --glass:rgba(28,28,30,.5); --glass-hi:rgba(255,255,255,.14); --glass-sh:0 8px 32px rgba(0,0,0,.45); --scrim:rgba(0,0,0,.55);
   --t-hk-a:#4F7BFF; --t-mo-a:#FFC229; --t-sz-a:#3DA5FF; --t-gz-a:#FF5A4F; --t-li-a:#2FE0A0; --t-lt-a:#E3A45C;
   --sea:#0B1724; --sea-ink:#6FB0E8; --land:#1E1E21; --coast:#2B3A4A;
   --park:#1F2E20; --map-land:#1F1F23; --street:#3A3A40; --park-out:#141C15; --tree:#2E4A2E; --path:#3B3631; --rail:#A07E60;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#000000; --bg2:#1C1C1E; --ink:#F5F5F7; --muted:#A1A1A6; --soft:#8E8E93; --line:#3A3A3C;
-  --red:#FF453A; --red-ink:#FF6B61; --green:#32D27A; --gold:#FFB340; --glass:rgba(24,24,26,.74); --scrim:rgba(0,0,0,.55);
+  --red:#FF453A; --red-ink:#FF6B61; --green:#32D27A; --gold:#FFB340; --glass:rgba(28,28,30,.5); --glass-hi:rgba(255,255,255,.14); --glass-sh:0 8px 32px rgba(0,0,0,.45); --scrim:rgba(0,0,0,.55);
   --t-hk-a:#4F7BFF; --t-mo-a:#FFC229; --t-sz-a:#3DA5FF; --t-gz-a:#FF5A4F; --t-li-a:#2FE0A0; --t-lt-a:#E3A45C;
   --sea:#0B1724; --sea-ink:#6FB0E8; --land:#1E1E21; --coast:#2B3A4A;
   --park:#1F2E20; --map-land:#1F1F23; --street:#3A3A40; --park-out:#141C15; --tree:#2E4A2E; --path:#3B3631; --rail:#A07E60;
@@ -53,7 +53,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 .printonly{display:none!important}
 
 /* local nav, Apple-style floating bar */
-.lnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:20;max-width:var(--wide);margin:8px auto 0;display:flex;align-items:center;gap:8px;padding:7px 7px 7px 20px;border-radius:26px;background:var(--glass);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border:1px solid var(--line)}
+.lnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:20;max-width:var(--wide);margin:8px auto 0;display:flex;align-items:center;gap:8px;padding:7px 7px 7px 20px;border-radius:26px;background:var(--glass);-webkit-backdrop-filter:saturate(200%) blur(28px);backdrop-filter:saturate(200%) blur(28px);border:1px solid var(--glass-hi);box-shadow:var(--glass-sh),inset 0 1px 0 var(--glass-hi)}
 .lnav b{flex:1;min-width:0;font-family:var(--f-disp);font-size:1.15rem;font-weight:600;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;padding:9px 18px;font-size:.98rem;font-weight:500;border:1.5px solid transparent;background:none;color:var(--ink);cursor:pointer;text-decoration:none;white-space:nowrap}
 .btn.o{border-color:var(--ink)}
@@ -380,7 +380,7 @@ textarea{min-height:110px;resize:vertical}
 .lines i{display:block;height:28px;border-bottom:1px solid var(--line)}
 
 /* tab bar, sheet, show */
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--glass);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--line)}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--glass);-webkit-backdrop-filter:saturate(200%) blur(28px);backdrop-filter:saturate(200%) blur(28px);border-top:1px solid var(--glass-hi);box-shadow:0 -6px 28px rgba(0,0,0,.08),inset 0 1px 0 var(--glass-hi)}
 .bar button{display:grid;justify-items:center;gap:1px;color:var(--muted);font-size:.68rem;font-weight:600;padding:4px 0;border:0;background:none;cursor:pointer}
 .bar .g{font-family:var(--f-han);font-size:1.3rem;line-height:1.25}
 .bar button.on{color:var(--red-ink)}
@@ -476,6 +476,25 @@ body.print .rvday h3{font-size:9.6pt}body.print .rvgo{display:none}
 body.print .rvday{break-inside:avoid;margin-bottom:8pt}
 body.print .m-resv .rv{break-inside:avoid}
 body.print .m-reste,body.print .m-resv,body.print #p-resas{display:none!important}
+/* Demander à Xiao Long */
+.xlbtn{width:38px;height:38px;flex:none;border-radius:50%;border:1px solid var(--glass-hi);background:color-mix(in srgb,var(--bg) 55%,transparent);color:var(--red-ink);font:600 1.15rem/1 var(--f-han);display:grid;place-items:center;padding:0;margin-right:6px;cursor:pointer;background-size:100% 100%;background-position:center;background-repeat:no-repeat}
+.xlbtn.img{color:transparent}
+#xlsheet{position:fixed;inset:0;z-index:96;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}#xlsheet[hidden]{display:none!important}
+#xlsheet .in{width:100%;max-width:640px;max-height:92vh;overflow-y:auto;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:saturate(180%) blur(30px);backdrop-filter:saturate(180%) blur(30px);border-radius:26px 26px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.18)}
+#xlsheet .grab{width:38px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 10px}
+#xlsheet .hd{display:flex;align-items:center;gap:10px}#xlsheet .hd h3{flex:1;margin:0;font-size:1.3rem;letter-spacing:-.02em}
+#xlsheet .k{font-size:.74rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 6px}
+#xlsheet textarea{width:100%;font:16px/1.4 var(--f-ui);padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);resize:vertical}
+#xlCtx{min-height:76px}#xlQ{min-height:80px}
+#xlsheet .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+#xlsheet .chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:7px 12px;font:14px var(--f-ui);cursor:pointer}
+#xlsheet .ph{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#xlsheet .pb{border:1px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:12px;padding:10px 14px;font:15px var(--f-ui);cursor:pointer}
+#xlsheet .th{width:60px;height:60px;border-radius:10px;object-fit:cover;border:1px solid var(--line)}
+#xlsheet .go{display:block;width:100%;margin-top:18px;border:0;border-radius:14px;padding:14px;background:var(--red);color:var(--on-accent);font:600 17px var(--f-ui);cursor:pointer}
+#xlsheet .go2{display:block;width:100%;margin-top:10px;border:1px solid var(--line);border-radius:14px;padding:12px;background:transparent;color:var(--ink);font:15px var(--f-ui);cursor:pointer}
+#xlsheet .msg{font-size:.86rem;color:var(--muted);margin:10px 2px 0;min-height:1.3em}
+#xlsheet details{margin-top:12px;font-size:.86rem;color:var(--muted)}#xlsheet pre{white-space:pre-wrap;font:13px/1.45 ui-monospace,Menlo,monospace;background:var(--bg2);border-radius:10px;padding:10px;color:var(--ink)}
 /* Navigation 2027 : onglets, Jours, Repas, SOS */
 .sosbtn{background:var(--red);color:var(--on-accent);font-weight:700;letter-spacing:.05em}
 .themerow{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:var(--text);margin-inline:auto;width:100%;padding:10px 10px 10px 18px;background:var(--bg2);border-radius:18px;font-weight:500}
@@ -715,6 +734,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
 
 <header class="lnav noprint">
   <b id="topTitle">Hong Kong 2027</b>
+  <button class="xlbtn" id="xlOpen" aria-label="Demander à Xiao Long">龍</button>
   <button class="btn s sosbtn" data-go="sos" aria-label="SOS, en cas de pépin">SOS</button>
   <button class="btn g s" data-go="sheet">Plus</button>
 </header>
@@ -1133,6 +1153,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
     <div class="tools3 wide" role="group" aria-label="Outils">
       <button class="tool" data-tool="conv" aria-pressed="true"><div class="art cut" data-art="G2" data-tone="ui" data-g="付"></div><span>Convertisseur</span></button>
       <button class="tool" data-tool="ask" id="toolAsk" aria-pressed="false" hidden><div class="art cut" data-art="G1" data-tone="ui" data-g="問"></div><span>Demander au guide</span></button>
+      <button class="tool" id="xlTool"><div class="art cut" data-art="G1" data-tone="ui" data-g="龍"></div><span>Demander à Xiao Long</span></button>
       <button class="tool" data-go="photo"><div class="art cut" data-art="G3" data-tone="ui" data-g="影"></div><span>Photo et vidéo</span></button>
     </div>
     <div class="tile wide tpanel" id="toolConv">
@@ -1193,8 +1214,21 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
   <div class="tools"><button class="pill" id="showSpeak">Écouter</button><button class="pill" id="showClose">Fermer</button></div>
   <div><div class="big" id="showBig"></div><div class="alt" id="showAlt"></div><div class="sm" id="showSm"></div><div class="fr" id="showFr"></div></div>
 </div>
+<div id="xlsheet" class="noprint" hidden role="dialog" aria-modal="true" aria-labelledby="xlT"><div class="in" id="xlIn">
+  <div class="grab"></div>
+  <div class="hd"><h3 id="xlT">Demander à Xiao Long</h3><button class="pill" id="xlClose">Fermer</button></div>
+  <div class="k">Où nous sommes</div><textarea id="xlCtx" aria-label="Contexte"></textarea>
+  <div class="k">Votre question</div><textarea id="xlQ" placeholder="Qu'est-ce que je vois ?" aria-label="Question"></textarea>
+  <div class="chips" id="xlChips"></div>
+  <div class="k">Photo (facultatif)</div>
+  <div class="ph"><label class="pb">📷 Prendre<input type="file" accept="image/*" capture="environment" id="xlCam" hidden></label><label class="pb">🖼 Choisir<input type="file" accept="image/*" id="xlLib" hidden></label><img class="th" id="xlTh" alt="" hidden><button class="pb" id="xlRm" hidden>Retirer</button></div>
+  <button class="go" id="xlSend">Envoyer à DeepSeek</button>
+  <button class="go2" id="xlCopy">Copier seulement</button>
+  <p class="msg" id="xlMsg" role="status"></p>
+  <details><summary>Voir le texte envoyé</summary><pre id="xlPrev"></pre></details>
+</div></div>
 <div class="fiche noprint" id="fiche" hidden role="dialog" aria-modal="true" aria-label="Fiche du lieu">
-  <div class="ftop"><span class="t" id="ficheTop"></span><button class="pill" id="ficheClose">Fermer</button></div>
+  <div class="ftop"><span class="t" id="ficheTop"></span><button class="xlbtn" id="xlOpen2" aria-label="Demander à Xiao Long">龍</button><button class="pill" id="ficheClose">Fermer</button></div>
   <div id="ficheBody"></div>
 </div>
 <div class="toast noprint" id="toast" hidden></div>
@@ -3682,6 +3716,49 @@ function openFiche(id){if(!NOTE[id])return;audStop();curMeal=null;
   $("#ficheBody").innerHTML=ficheHTML(id);
   $("#ficheTop").textContent=P[id].fr;
   const f=$("#fiche");f.hidden=false;f.scrollTop=0;document.body.style.overflow="hidden";$("#ficheClose").focus()}
+/* Demander à Xiao Long (DeepSeek, via le menu de partage) */
+const XL={file:null,food:false};
+const XL_RULE="Réponds en français, simplement et en quelques paragraphes. Nous sommes une famille française avec une petite fille de 3 ans.";
+const XL_DIET=" L'un de nous ne mange pas de fruits de mer.";
+const XL_FOOD=/\b(mang|plat|menu|restau|dim ?sum|goût|déjeun|dîn|petit[- ]déj|commander|épic|boisson|dessert|nourriture|cuisine|soupe|nouille|viande|poisson)/i;
+const XL_FOODP=["repas","dimsum","specialites","menu"];
+function xlDate(D){try{return new Date(D.date+"T12:00:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})}catch(e){return D.date}}
+function xlContext(){const ficheOpen=!$("#fiche").hidden;let D=null,ctx="",food=false;
+  if(ficheOpen&&curMeal){const o=optById(curMeal.id);const dk=String(curMeal.key).split(":")[0];D=DAYS.find(d=>d.id===dk)||DAYS.find(d=>d.id===cur);food=true;
+    ctx=`Nous sommes au restaurant ${o?o.fr:""}${o&&o.zh?" ("+o.zh+")":""}${D?", à "+D.city+", le "+xlDate(D):""}.`}
+  else if(ficheOpen&&FI>=0&&FL[FI]&&P[FL[FI]]){const id=FL[FI];D=DAYS.find(d=>d.id===PAGE_OF_PLACE[id]);
+    ctx=`Nous visitons : ${P[id].fr}${P[id].zh?" ("+P[id].zh+")":""}${D?", à "+D.city+", le "+xlDate(D):""}.`}
+  else if((D=DAYS.find(d=>d.id===cur))){ctx=`Nous sommes à ${D.city}, le ${xlDate(D)}. Programme du jour : ${D.title}.`}
+  else{food=XL_FOODP.includes(cur);ctx="Nous voyageons à Hong Kong, Macao et dans le sud de la Chine, du 21 février au 5 mars."}
+  return{ctx,food}}
+function xlText(){const q=$("#xlQ").value.trim()||"Explique-moi ce que je vois.";const food=XL.food||XL_FOOD.test(q+" "+$("#xlCtx").value);
+  return[$("#xlCtx").value.trim(),q,(XL.file?"La photo jointe montre ce que nous regardons. ":"")+XL_RULE+(food?XL_DIET:"")].filter(Boolean).join("\n\n")}
+function xlUpd(){$("#xlPrev").textContent=xlText()}
+function xlOpen(generic){const c=generic?{ctx:"Nous voyageons à Hong Kong, Macao et dans le sud de la Chine, du 21 février au 5 mars.",food:false}:xlContext();
+  XL.food=c.food;$("#xlCtx").value=c.ctx;$("#xlQ").value="";$("#xlMsg").textContent="";
+  const ch=c.food?["Que veut dire ce plat ?","Qu'est-ce qui convient à une enfant de 3 ans ?","Traduis ce menu","Qu'est-ce qui est épicé ?"]:["Qu'est-ce que je vois sur cette photo ?","Explique-le à une enfant de 3 ans","L'histoire de ce lieu","Que dit ce panneau ?"];
+  const box=$("#xlChips");box.innerHTML="";ch.forEach(t=>{const b=document.createElement("button");b.className="chip";b.type="button";b.textContent=t;b.onclick=()=>{$("#xlQ").value=t;xlUpd()};box.append(b)});
+  xlUpd();$("#xlsheet").hidden=false;$("#xlIn").scrollTop=0}
+function xlClose(){$("#xlsheet").hidden=true}
+function xlCopy(t){try{return navigator.clipboard.writeText(t).then(()=>true,()=>xlFall(t))}catch(e){return Promise.resolve(xlFall(t))}}
+function xlFall(t){const a=document.createElement("textarea");a.value=t;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.append(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(e){}a.remove();return ok}
+function xlPick(e){const f=e.target.files&&e.target.files[0];if(!f)return;XL.file=f;const th=$("#xlTh");th.src=URL.createObjectURL(f);th.hidden=false;$("#xlRm").hidden=false;xlUpd();e.target.value=""}
+document.addEventListener("DOMContentLoaded",()=>{});
+(function xlInit(){const g=id=>document.getElementById(id);if(!g("xlOpen"))return;
+  g("xlOpen").onclick=()=>xlOpen(false);if(g("xlOpen2"))g("xlOpen2").onclick=()=>xlOpen(false);g("xlTool").onclick=()=>xlOpen(true);g("xlClose").onclick=xlClose;
+  g("xlsheet").addEventListener("click",e=>{if(e.target.id==="xlsheet")xlClose()});
+  let y0=null;g("xlIn").addEventListener("touchstart",e=>{if(g("xlIn").scrollTop<=0)y0=e.touches[0].clientY},{passive:true});
+  g("xlIn").addEventListener("touchend",e=>{if(y0!==null&&e.changedTouches[0].clientY-y0>90)xlClose();y0=null});
+  ["xlCtx","xlQ"].forEach(i=>g(i).addEventListener("input",xlUpd));
+  g("xlCam").onchange=xlPick;g("xlLib").onchange=xlPick;
+  g("xlRm").onclick=()=>{XL.file=null;g("xlTh").hidden=true;g("xlRm").hidden=true;xlUpd()};
+  g("xlCopy").onclick=()=>xlCopy(xlText()).then(ok=>g("xlMsg").textContent=ok?"Texte copié. Ouvrez DeepSeek et collez-le.":"La copie a échoué : sélectionnez le texte ci-dessous.");
+  g("xlSend").onclick=async()=>{const t=xlText(),m=g("xlMsg");xlCopy(t);
+    if(XL.file&&navigator.canShare&&navigator.canShare({files:[XL.file]})){try{await navigator.share({files:[XL.file],text:t});m.textContent="Envoyé. Si la question n'apparaît pas dans DeepSeek, elle est copiée : collez-la."}catch(e){m.textContent=e.name==="AbortError"?"Partage annulé. Le texte reste copié.":"Le partage a échoué. Le texte est copié."}return}
+    if(!XL.file&&navigator.share){try{await navigator.share({text:t});m.textContent="Envoyé. Le texte est aussi copié.";return}catch(e){if(e.name==="AbortError"){m.textContent="Partage annulé. Le texte reste copié.";return}}}
+    m.textContent="Texte copié. Ouverture de DeepSeek : collez-le.";window.open("https://chat.deepseek.com/","_blank")||(location.href="https://chat.deepseek.com/")};
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!g("xlsheet").hidden)xlClose()});
+})();
 function closeFiche(){audStop();$("#fiche").hidden=true;document.body.style.overflow="";if(fRet&&fRet.focus)fRet.focus();fRet=null}
 $("#ficheClose").onclick=closeFiche;
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#fiche").hidden&&$("#show").hidden){closeFiche();return}
@@ -4909,7 +4986,7 @@ function useShared(db){
 
 }
 document.addEventListener("click",e=>{const t=e.target.closest("[data-tool]");if(!t)return;const k=t.dataset.tool;document.querySelectorAll("[data-tool]").forEach(x=>x.setAttribute("aria-pressed",x===t));$("#toolConv").toggleAttribute("data-off",k!=="conv");$("#askCard").toggleAttribute("data-off",k!=="ask")});
-function useAsk(sample){$("#askCard").hidden=false;$("#toolAsk").hidden=false;let ctl=null;
+function useAsk(sample){return;$("#askCard").hidden=false;$("#toolAsk").hidden=false;let ctl=null;
   const CTX="Tu es le guide de voyage personnel d'Éric et Jonas, un couple français qui voyage à Hong Kong, Macao, Shenzhen, Canton, Xingping et Huangyao du 21 février au 6 mars 2027, avec leur fille Charlie, 3 ans. Réponds en français, de façon précise, vivante et cultivée, en 150 mots maximum, sans titres. Si tu cites un mot chinois, donne les caractères et la prononciation (mandarin, et cantonais à Hong Kong et Macao). Si une information pratique peut avoir changé (horaires, prix), dis qu'il faut la vérifier sur place.\n\nQuestion : ";
   $("#askBtn").onclick=async()=>{const q=$("#askQ").value.trim();if(!q){$("#askQ").focus();return}ctl=new AbortController();$("#askBtn").disabled=true;$("#askStop").hidden=false;$("#askA").textContent="Réflexion…";
     try{await sample(CTX+q,{signal:ctl.signal,onText:({text})=>{$("#askA").textContent=text}})}
