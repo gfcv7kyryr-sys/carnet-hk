@@ -744,6 +744,36 @@ body.print .lnote .mini p,body.print .lnote .mini li{font-size:8.4pt;line-height
 body.print .lnote .fprat{border-left:2px solid var(--red);padding-left:7pt;font-size:8.6pt}
 body.print h2,body.print h3,body.print .hero{break-after:avoid}
 @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* ===== Surprises de Xiao Long (彩蛋) ===== */
+.egghint{max-width:var(--text);margin:28px auto 6px;display:flex;align-items:center;gap:10px;font-size:.82rem;color:var(--muted);line-height:1.35;-webkit-user-select:none;user-select:none}
+.egghint b{flex:none;width:30px;height:30px;border-radius:8px;border:1.3px solid color-mix(in srgb,var(--muted) 55%,transparent);display:grid;place-items:center;font:600 .62rem/1 var(--f-han);letter-spacing:-.05em;color:var(--muted)}
+.egghint.tap{cursor:pointer}
+.page .hero .display{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#egg{position:fixed;inset:0;z-index:120;pointer-events:none;overflow:hidden}
+#egg .e-img{position:absolute;will-change:transform}
+#egg .e-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(86vw,360px);border-radius:30px;padding:22px 20px 20px;text-align:center;pointer-events:auto;background:var(--gl-strong,rgba(250,250,252,.8));-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);box-shadow:0 20px 60px rgba(0,0,0,.25),inset 0 1px 0 var(--gl-edge,rgba(255,255,255,.7));animation:eCard .5s cubic-bezier(.2,.9,.3,1.2)}
+#egg .e-card h4{margin:6px 0 2px;font-size:.8rem;color:var(--red-ink);letter-spacing:.08em;text-transform:uppercase}
+#egg .e-card .zh{font:600 2.4rem/1.1 var(--f-han);color:var(--red-ink);margin:2px 0 6px}
+#egg .e-card p{margin:6px 0 0;font-size:1rem;line-height:1.45}
+#egg .e-card small{display:block;margin-top:12px;font-size:.74rem;color:var(--muted)}
+#egg .e-card img{width:62%;display:block;margin:-6px auto 0}
+@keyframes eCard{from{opacity:0;transform:translate(-50%,-40%) scale(.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+#egg .e-veil{position:absolute;inset:0;transition:opacity 1s}
+#egg canvas{position:absolute;inset:0;width:100%;height:100%}
+#egg .e-text{position:absolute;left:0;right:0;text-align:center;font:700 clamp(1.6rem,8vw,2.6rem)/1.1 var(--f-disp);letter-spacing:-.02em}
+/* néons */
+.egg-neon{color:#fff!important;animation:eNeon 6s linear both}
+@keyframes eNeon{0%,6%,10%,100%{text-shadow:0 0 4px #fff,0 0 12px #ff3fa4,0 0 26px #ff3fa4,0 0 44px #2fd6ff,0 0 70px #2fd6ff}8%{text-shadow:none;opacity:.6}30%,32%{text-shadow:0 0 3px #fff,0 0 10px #ff3fa4;opacity:.85}31%{text-shadow:none;opacity:.5}}
+:root:not([data-theme=dark]) .egg-neon{background:#0b0b14;border-radius:18px;padding:6px 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+/* tour de Canton */
+.egg-tower{background:linear-gradient(90deg,#ff3b7f,#ffb340,#38e1b0,#3fa1ff,#b45cff,#ff3b7f);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:eTower 1.8s linear 4}
+@keyframes eTower{to{background-position:300% 0}}
+/* illusion du Peak */
+.egg-tilt{transition:transform 1.4s cubic-bezier(.3,.1,.2,1);transform-origin:50% 30%}
+/* papier ancien */
+.egg-old{transition:filter 1.2s;filter:sepia(.55) saturate(.8) contrast(.95) brightness(1.03)}
+@media print{#egg,.egghint{display:none!important}}
 </style>
 
 <header class="lnav glass noprint">
@@ -1259,7 +1289,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
 /* ================= DATA ================= */
 const ARTIFACT_URL="https://claude.ai/artifact/9V8QtJ6SkcZ8q1hE1yikhd";
 /* Illustrations: page id -> image URL (filled when the images arrive) */
-const IMG={L93:"img/0b66c554cdcf5b62fbed7cccbc13801f.webp",L90:"img/583512d1c782ade2a6a4c3d269c69bc1.webp",L91:"img/5739e88cce20b2de96a9e3e2628e2d2b.webp",R67:"img/7d17dc864ab007777d65161c8a291ac0.webp",R71:"img/01ccf44b198ee46680e769370f5208c0.webp",R58:"img/c99320df40bc467806cc4e714794f494.webp",R59:"img/073c8f421100dfe78111b9e6325d8d80.webp",R60:"img/ce792353eb02a1588d5bb72b9f0df730.webp",R61:"img/85c2c220b61c385eae81e59e667c1ce2.webp",R62:"img/430e9fd624f07486090bae635229ddcb.webp",R63:"img/57ee9bc95e90d97a15deb9c51502bdbb.webp",R64:"img/d62b3d84232c1b0e4c2e1c6171bebe3f.webp",R65:"img/dd418d77acb608d75efe9438174529c5.webp",R68:"img/c4476197d47363424fb39dfad586c5f4.webp",R69:"img/d9ffd7d6a7316161085e5cc4a091e3e8.webp",R70:"img/2c6efa08e5fff4af07f5566883b80a7a.webp",R72:"img/6e5f25adae7d65bf473cbc6ff449eb9c.webp",R73:"img/8c3407ebe8ab8816e618251ae148824e.webp",R74:"img/1e0976a1a146ec5f275c15c705d7bb0e.webp",R75:"img/d0e8db26023dbbbc3e3c9a1c6818f99a.webp",R76:"img/eb57bb8eac47b1539f5ffee4e587df69.webp",R77:"img/7510245d89bf6185e8b044045450e94b.webp",L82:"img/c8537b673dbe38d1791596bfa3444c00.webp",L83:"img/03bd43985a87ab187d4856de39b842cc.webp",L84:"img/fd40b5b1d13a4ecc5104e33de34b87f8.webp",L85:"img/0b7ea25c043fc2c014f6cb3ec63a2131.webp",L86:"img/2f6647ac61a8ae73d6e025e30adf2d5a.webp",L87:"img/719ce577aebcb444d5ed113ea6e7a3e4.webp",L88:"img/4b5e669199bec2ce6d044ec45248c29e.webp",L89:"img/4dd16a248f99270239177c844c2e4ba3.webp",F61:"img/5051cdf84feb26903d7e67565b8414bc.webp",F62:"img/b46e0888214e9d8caa237029d4d9ee97.webp",F63:"img/d703c0ed08bc9bad543726dd6705c96e.webp",G2:"img/2592cbccc716ce69bed716a65f8d06f0.webp",G3:"img/9430af76ed718cf4905fd6562f2242fa.webp",G1:"img/5d5dfdc3402859d376d3a56109524793.webp",L77:"img/c822ff35d8a361029e3378b11802ae2d.webp",L78:"img/3ceb34b129fd4d08b19c9beb9ae8ba80.webp",L79:"img/9a3fe5c56cab1d3e31414c0424aa3981.webp",L80:"img/2314559147b17d229a264d7e5e61923e.webp",L81:"img/ad761516f776a7b1e0611f86d1b7b7e8.webp",L76:"img/2ce0b2bbde1ba3a40bca0c2d7ad2d88d.webp",L74:"img/3771594db04f19a03ad704398820b5ac.webp",X24:"img/d3315142f6a774eb0730c82bda327ffa.webp",X22:"img/38d786cd57adaa4f01a2267df890c79d.webp",X23:"img/993ba7333f55801d9b95eb28712d1e26.webp",L68:"img/c1e51b0ca8e9fd273f0427ae1fd3caa5.webp",L69:"img/a45e75271d09266d5d729a38b1bb68af.webp",L70:"img/7fa2fabce074ff4cba048870f4088a06.webp",L71:"img/2f2a6431f8e7ff1f2d385c5a01a994b9.webp",L72:"img/49cf572718827eb01d09b3fcefd16209.webp",L73:"img/f8d91f327682f67e9f2b524471e3fae7.webp",L75:"img/f5e6838980403d03da313680645cf5af.webp",J06:"img/36eab0855021c6850bcd1fc9950242f0.webp",J10:"img/8d7b76d315c7cbff0f29a7aadb61c9f0.webp",X21:"img/4edbb989f046aaffdba14431ea29234d.webp",ZA1:"img/6357ba5ddcf05cbd4921cd51acbae698.webp",ZA2:"img/40db780564fe978348a51cec0b08fa30.webp",ZA3:"img/14d4a6453b93e41032c98d290e97ebe1.webp",ZA4:"img/073b5b53a0b0de1954353860b4501f6d.webp",ZF1:"img/e045792fcc08ba09ca2278360db0ed2a.webp",ZF2:"img/94985902cffe05662707cbe5baceb3cb.webp",ZI1:"img/682715d03a00d8a1f2bc13805b8a1a38.webp",
+const IMG={E1:"img/f431c1cc9927df1bad5da32cc41cb39e.webp",E2:"img/c062a5add6cee98dcda242e3336f5cc1.webp",E3:"img/b84ee064e146a514d6d19446d46460f8.webp",E4:"img/9747044cb0bc66af4e5271d78f5983ab.webp",E5:"img/88caf4549296d72eeb212ac28135cdc9.webp",E6:"img/006a0e4266d93d0525b7b106660febcb.webp",E7:"img/6a96c03993d04714b4f1719f7a36fc86.webp",E8:"img/150015114cb1c32f966ec3d4249a44d2.webp",L93:"img/0b66c554cdcf5b62fbed7cccbc13801f.webp",L90:"img/583512d1c782ade2a6a4c3d269c69bc1.webp",L91:"img/5739e88cce20b2de96a9e3e2628e2d2b.webp",R67:"img/7d17dc864ab007777d65161c8a291ac0.webp",R71:"img/01ccf44b198ee46680e769370f5208c0.webp",R58:"img/c99320df40bc467806cc4e714794f494.webp",R59:"img/073c8f421100dfe78111b9e6325d8d80.webp",R60:"img/ce792353eb02a1588d5bb72b9f0df730.webp",R61:"img/85c2c220b61c385eae81e59e667c1ce2.webp",R62:"img/430e9fd624f07486090bae635229ddcb.webp",R63:"img/57ee9bc95e90d97a15deb9c51502bdbb.webp",R64:"img/d62b3d84232c1b0e4c2e1c6171bebe3f.webp",R65:"img/dd418d77acb608d75efe9438174529c5.webp",R68:"img/c4476197d47363424fb39dfad586c5f4.webp",R69:"img/d9ffd7d6a7316161085e5cc4a091e3e8.webp",R70:"img/2c6efa08e5fff4af07f5566883b80a7a.webp",R72:"img/6e5f25adae7d65bf473cbc6ff449eb9c.webp",R73:"img/8c3407ebe8ab8816e618251ae148824e.webp",R74:"img/1e0976a1a146ec5f275c15c705d7bb0e.webp",R75:"img/d0e8db26023dbbbc3e3c9a1c6818f99a.webp",R76:"img/eb57bb8eac47b1539f5ffee4e587df69.webp",R77:"img/7510245d89bf6185e8b044045450e94b.webp",L82:"img/c8537b673dbe38d1791596bfa3444c00.webp",L83:"img/03bd43985a87ab187d4856de39b842cc.webp",L84:"img/fd40b5b1d13a4ecc5104e33de34b87f8.webp",L85:"img/0b7ea25c043fc2c014f6cb3ec63a2131.webp",L86:"img/2f6647ac61a8ae73d6e025e30adf2d5a.webp",L87:"img/719ce577aebcb444d5ed113ea6e7a3e4.webp",L88:"img/4b5e669199bec2ce6d044ec45248c29e.webp",L89:"img/4dd16a248f99270239177c844c2e4ba3.webp",F61:"img/5051cdf84feb26903d7e67565b8414bc.webp",F62:"img/b46e0888214e9d8caa237029d4d9ee97.webp",F63:"img/d703c0ed08bc9bad543726dd6705c96e.webp",G2:"img/2592cbccc716ce69bed716a65f8d06f0.webp",G3:"img/9430af76ed718cf4905fd6562f2242fa.webp",G1:"img/5d5dfdc3402859d376d3a56109524793.webp",L77:"img/c822ff35d8a361029e3378b11802ae2d.webp",L78:"img/3ceb34b129fd4d08b19c9beb9ae8ba80.webp",L79:"img/9a3fe5c56cab1d3e31414c0424aa3981.webp",L80:"img/2314559147b17d229a264d7e5e61923e.webp",L81:"img/ad761516f776a7b1e0611f86d1b7b7e8.webp",L76:"img/2ce0b2bbde1ba3a40bca0c2d7ad2d88d.webp",L74:"img/3771594db04f19a03ad704398820b5ac.webp",X24:"img/d3315142f6a774eb0730c82bda327ffa.webp",X22:"img/38d786cd57adaa4f01a2267df890c79d.webp",X23:"img/993ba7333f55801d9b95eb28712d1e26.webp",L68:"img/c1e51b0ca8e9fd273f0427ae1fd3caa5.webp",L69:"img/a45e75271d09266d5d729a38b1bb68af.webp",L70:"img/7fa2fabce074ff4cba048870f4088a06.webp",L71:"img/2f2a6431f8e7ff1f2d385c5a01a994b9.webp",L72:"img/49cf572718827eb01d09b3fcefd16209.webp",L73:"img/f8d91f327682f67e9f2b524471e3fae7.webp",L75:"img/f5e6838980403d03da313680645cf5af.webp",J06:"img/36eab0855021c6850bcd1fc9950242f0.webp",J10:"img/8d7b76d315c7cbff0f29a7aadb61c9f0.webp",X21:"img/4edbb989f046aaffdba14431ea29234d.webp",ZA1:"img/6357ba5ddcf05cbd4921cd51acbae698.webp",ZA2:"img/40db780564fe978348a51cec0b08fa30.webp",ZA3:"img/14d4a6453b93e41032c98d290e97ebe1.webp",ZA4:"img/073b5b53a0b0de1954353860b4501f6d.webp",ZF1:"img/e045792fcc08ba09ca2278360db0ed2a.webp",ZF2:"img/94985902cffe05662707cbe5baceb3cb.webp",ZI1:"img/682715d03a00d8a1f2bc13805b8a1a38.webp",
  R01:"img/279a2f364180599372d8b54c1c4a2c10.webp",
  R24:"img/97d7dfaa926a741edd56a7b740417362.webp",
  R25:"img/ccb0c3239ae04abdb9eb9244e65aa048.webp",
@@ -5035,6 +5065,124 @@ else{addPagers();paintArt();if(!routeHash())go(autoPage(),{push:false});renderNo
   (async()=>{const C=window.claude;if(!C||!C.use){useLocal();return}
     const [db,sample]=await Promise.all([C.use("db").catch(()=>null),C.use("sample").catch(()=>null)]);
     if(db){useShared(db)}else useLocal();if(sample)useAsk(sample)})()}
+
+/* ===== Surprises de Xiao Long (彩蛋) : un module isolé ===== */
+(function(){
+const EI={bye:"E1",lant:"E2",fish:"E3",fly:"E4",cim:"E5",panda:"E6",tgv:"E7",frise:"E8"};
+const src=k=>IMG[EI[k]]||"";
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let layer=null;
+function L(){if(!layer){layer=document.createElement("div");layer.id="egg";document.body.append(layer)}return layer}
+function add(html){const d=document.createElement("div");d.innerHTML=html;const el=d.firstElementChild;L().append(el);return el}
+function img(k,css){const i=new Image();i.src=src(k);i.className="e-img";i.alt="";Object.assign(i.style,css||{});L().append(i);return i}
+function anim(el,frames,opt){return el.animate(frames,Object.assign({duration:RM?1200:4000,easing:"ease-in-out",fill:"forwards"},opt||{}))}
+function done(a,el){a.finished.then(()=>el.remove()).catch(()=>el.remove())}
+function card(inner,ms){const c=add(`<div class="e-card" role="dialog">${inner}<small>Toucher pour fermer</small></div>`);const close=()=>{c.remove();clearTimeout(t)};c.addEventListener("click",close);const t=setTimeout(close,ms||14000);return c}
+function titleOf(id){const s=document.getElementById("p-"+id);return s&&s.querySelector(".hero .display")}
+const W=()=>innerWidth,H=()=>innerHeight;
+
+/* ---- les effets ---- */
+const FX={
+ neon(){const t=titleOf("j1");if(!t)return;t.classList.remove("egg-neon");void t.offsetWidth;t.classList.add("egg-neon");setTimeout(()=>t.classList.remove("egg-neon"),6200)},
+ lanterns(){for(let i=0;i<8;i++){const s=46+Math.random()*44;const x=Math.random()*(W()-s);const el=img("lant",{width:s+"px",left:x+"px",top:H()+"px",filter:"drop-shadow(0 0 14px rgba(255,140,40,.6))"});
+   const a=anim(el,[{transform:"translate(0,0) rotate(-4deg)",opacity:0},{opacity:1,offset:.1},{transform:`translate(${(Math.random()-.5)*60}px,${-H()*.55}px) rotate(5deg)`,opacity:1,offset:.6},{transform:`translate(${(Math.random()-.5)*80}px,${-H()-s*2}px) rotate(-3deg)`,opacity:0}],{duration:RM?2000:9000+Math.random()*3000,delay:i*450,easing:"linear"});done(a,el)}},
+ tilt(){const s=document.getElementById("p-j2");if(!s)return;s.classList.add("egg-tilt");s.style.transform="perspective(900px) rotateZ(-7deg) skewX(6deg)";
+   const b=add(`<div class="e-card" style="top:auto;bottom:110px;transform:translateX(-50%);animation:none"><h4>L'illusion du Peak</h4><p>Dans le Peak Tram, les immeubles semblent pencher… c'est vous qui êtes en pente !</p></div>`);
+   setTimeout(()=>{s.style.transform=""},2600);setTimeout(()=>{s.classList.remove("egg-tilt");b.remove()},5200)},
+ kaucim(){const F=[["8","大吉","Grande chance","Le nombre le plus porte-bonheur de Hong Kong. La journée sera douce et les dim sum arriveront chauds."],["23","上吉","Belle chance","Un petit dragon veille sur vous. Il réclame en échange un pain coco au goûter."],["36","中吉","Chance tranquille","Les escaliers sont longs, mais la vue récompense ceux qui portent la poussette."],["51","吉","Chance","Un vœu fait aujourd'hui sous l'encens se réalisera avant la fin du voyage. Choisissez-le bien."],["88","大吉","Double chance","Double huit, double bonheur : ce soir, la sieste a été longue et les papas sont reposés."]];
+   const f=F[Math.floor(Math.random()*F.length)];const cup=img("cim",{width:"min(46vw,200px)",left:"50%",top:"38%",transform:"translate(-50%,-50%)"});
+   const a=anim(cup,[0,1,2,3,4,5,6,7,8].map(i=>({transform:`translate(-50%,-50%) rotate(${i%2?-12:12}deg)`})).concat([{transform:"translate(-50%,-50%) rotate(0deg)"}]),{duration:RM?600:1800,easing:"linear",fill:"forwards"});
+   a.finished.then(()=>{cup.remove();card(`<h4>Bâtonnet n° ${f[0]}</h4><div class="zh">${f[1]}</div><b>${f[2]}</b><p>${f[3]}</p>`)})},
+ azulejo(){const az="url('data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="#f7f9fc"/><g fill="none" stroke="#1d4fa3" stroke-width="2.2"><rect x="1" y="1" width="78" height="78"/><circle cx="40" cy="40" r="14"/><path d="M40 4c6 10 6 18 0 22c-6-4-6-12 0-22zM40 76c6-10 6-18 0-22c-6 4-6 12 0 22zM4 40c10-6 18-6 22 0c-4 6-12 6-22 0zM76 40c-10-6-18-6-22 0c4 6 12 6 22 0z" fill="#2c66c9" stroke="none"/><path d="M1 1l14 14M79 1L65 15M1 79l14-14M79 79L65 65"/></g><circle cx="40" cy="40" r="5" fill="#f2b632"/><g fill="#1d4fa3"><circle cx="1" cy="1" r="8"/><circle cx="79" cy="1" r="8"/><circle cx="1" cy="79" r="8"/><circle cx="79" cy="79" r="8"/></g></svg>')+"')";
+   const cal="url('data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="60" viewBox="0 0 120 60"><rect width="120" height="60" fill="#f4f1ea"/><path d="M0 20c15 0 15-14 30-14s15 14 30 14 15-14 30-14 15 14 30 14v12c-15 0-15-14-30-14s-15 14-30 14-15-14-30-14S15 32 0 32z" fill="#1b1b1b"/><path d="M0 50c15 0 15-14 30-14s15 14 30 14 15-14 30-14 15 14 30 14v8c-15 0-15-14-30-14s-15 14-30 14-15-14-30-14S15 58 0 58z" fill="#1b1b1b"/></svg>')+"')";
+   const v=add(`<div class="e-veil" style="background:${az} center/72px;opacity:0"></div>`);requestAnimationFrame(()=>v.style.opacity=".9");
+   setTimeout(()=>{const w=add(`<div class="e-veil" style="background:${cal} center/96px;opacity:0"></div>`);requestAnimationFrame(()=>w.style.opacity=".9");setTimeout(()=>{v.remove();w.style.opacity="0";setTimeout(()=>w.remove(),1100)},3800)},RM?1500:3600)},
+ tower(){const t=titleOf("j6");if(!t)return;t.classList.remove("egg-tower");void t.offsetWidth;t.classList.add("egg-tower");setTimeout(()=>t.classList.remove("egg-tower"),7400)},
+ panda(){const s=Math.min(W()*.42,190);const el=img("panda",{width:s+"px",left:-s+"px",top:(H()*.55)+"px"});
+   const a=anim(el,[{transform:"translateX(0) rotate(0)"},{transform:`translateX(${(W()+s)*.5}px) translateY(-40px) rotate(400deg)`,offset:.5},{transform:`translateX(${W()+s*2}px) rotate(860deg)`}],{duration:RM?1500:4200,easing:"cubic-bezier(.4,.1,.6,.9)"});done(a,el)},
+ drones(){const c=document.createElement("canvas");L().append(c);const dpr=Math.min(devicePixelRatio||1,2);c.width=W()*dpr;c.height=H()*dpr;const x=c.getContext("2d");x.scale(dpr,dpr);
+   const o=document.createElement("canvas"),ow=W(),oh=Math.round(H()*.5);o.width=ow;o.height=oh;const ox=o.getContext("2d");ox.fillStyle="#000";ox.textAlign="center";ox.textBaseline="middle";
+   const fs=Math.min(ow/5.2,oh/2.6);ox.font=`700 ${fs}px "PingFang SC","Noto Sans SC",sans-serif`;ox.fillText("你好",ow/2,oh*.32);ox.font=`700 ${fs*.62}px -apple-system,sans-serif`;ox.fillText("Charlie",ow/2,oh*.72);
+   const d=ox.getImageData(0,0,ow,oh).data,pts=[];const st=Math.max(5,Math.round(fs/14));for(let yy=0;yy<oh;yy+=st)for(let xx=0;xx<ow;xx+=st)if(d[(yy*ow+xx)*4+3]>128)pts.push([xx,yy+H()*.18]);
+   const P=pts.map(([tx,ty])=>({tx,ty,x:Math.random()*W(),y:H()+Math.random()*80,h:Math.random()*360}));const T0=performance.now(),DUR=RM?3000:9500;
+   (function fr(t){const k=(t-T0)/DUR;x.clearRect(0,0,W(),H());x.fillStyle=`rgba(5,8,20,${Math.min(.82,k*4,(1-k)*4)})`;x.fillRect(0,0,W(),H());
+     const gather=Math.min(1,Math.max(0,(k-.05)/.35)),scatter=Math.max(0,(k-.8)/.2);const e=1-Math.pow(1-gather,3);
+     for(const p of P){const px=p.x+(p.tx-p.x)*e+(Math.random()-.5)*(1-e)*2,py=p.y+(p.ty-p.y)*e-scatter*240;x.fillStyle=`hsl(${(p.h+t/20)%360},90%,${gather>=1?72:62}%)`;x.shadowColor=x.fillStyle;x.shadowBlur=8;x.beginPath();x.arc(px,py,1.9,0,7);x.fill()}
+     if(k<1)requestAnimationFrame(fr);else c.remove()})(T0)},
+ frise(){const w=Math.max(W()*1.6,600);const top=(parseFloat(getComputedStyle(document.documentElement).paddingTop)||0)+74;const el=img("frise",{width:w+"px",left:W()+"px",top:top+"px",filter:"drop-shadow(0 8px 14px rgba(0,0,0,.25))"});
+   const a=anim(el,[{transform:"translateX(0) translateY(0)"},{transform:`translateX(${-(W()+w)*.25}px) translateY(-6px)`,offset:.25},{transform:`translateX(${-(W()+w)*.5}px) translateY(0)`,offset:.5},{transform:`translateX(${-(W()+w)*.75}px) translateY(-6px)`,offset:.75},{transform:`translateX(${-(W()+w)}px) translateY(0)`}],{duration:RM?2500:9000,easing:"linear"});done(a,el)},
+ fisher(){const m=add(`<div class="e-veil" style="opacity:0;background:linear-gradient(to top,rgba(240,244,246,.96) 0%,rgba(240,244,246,.75) 30%,rgba(240,244,246,0) 70%)"><svg viewBox="0 0 400 140" preserveAspectRatio="none" style="position:absolute;left:0;right:0;bottom:12%;width:100%;height:30%;opacity:.35"><path d="M0 140V96c18-6 22-56 38-58s14 46 30 44 16-70 36-72 20 64 38 62 12-40 30-40 16 44 34 42 20-80 42-82 18 72 36 70 14-36 30-36 18 34 34 32 18-50 36-50 14 40 16 42v52z" fill="#5f6b70"/><path d="M0 140v-26c30-10 60 4 100-6s80 6 120-4 70 8 100-2 60 6 80 4v34z" fill="#8c979b"/></svg></div>`);
+   requestAnimationFrame(()=>m.style.opacity="1");const s=Math.min(W()*.7,330);const el=img("fish",{width:s+"px",left:-s+"px",bottom:"9%"});
+   const a=anim(el,[{transform:"translateX(0) translateY(0)"},{transform:`translateX(${(W()+s)/2}px) translateY(3px)`},{transform:`translateX(${W()+s*1.1}px) translateY(0)`}],{duration:RM?3000:11000,easing:"linear"});a.finished.then(()=>{el.remove();m.style.opacity="0";setTimeout(()=>m.remove(),1100)})},
+ oldpaper(){const s=document.getElementById("p-j10");if(s)s.classList.add("egg-old");
+   for(let i=0;i<14;i++){const el=add(`<svg class="e-img" width="26" height="26" viewBox="0 0 24 24" style="left:${Math.random()*W()}px;top:-30px"><path d="M12 2C6 6 4 12 6 18c3 2 7 2 10-1 3-5 1-11-4-15z" fill="${["#7c8b3a","#a39437","#c8a542","#6d7d32"][i%4]}"/><path d="M8 19C10 14 12 9 12 3" stroke="#4d5420" stroke-width="1" fill="none"/></svg>`);
+     const a=anim(el,[{transform:"translate(0,0) rotate(0)"},{transform:`translate(${(Math.random()-.5)*120}px,${H()*.5}px) rotate(${180+Math.random()*180}deg)`},{transform:`translate(${(Math.random()-.5)*160}px,${H()+40}px) rotate(${400+Math.random()*200}deg)`}],{duration:RM?2000:6000+Math.random()*3000,delay:Math.random()*2500,easing:"ease-in"});done(a,el)}
+   setTimeout(()=>card(`<h4>Proverbe du vieux banian</h4><div class="zh">落葉歸根</div><p>« La feuille qui tombe retourne à ses racines » : on revient toujours là d'où l'on vient.</p>`),RM?600:2400);
+   setTimeout(()=>{if(s)s.classList.remove("egg-old")},12000)},
+ tgv(){const w=Math.max(W()*1.8,700);const el=img("tgv",{width:w+"px",left:W()+"px",top:(H()*.42)+"px",filter:"drop-shadow(0 10px 14px rgba(0,0,0,.25))"});
+   const a=anim(el,[{transform:"translateX(0)"},{transform:`translateX(${-(W()+w*1.05)}px)`}],{duration:RM?1200:2300,easing:"cubic-bezier(.5,0,.6,1)"});done(a,el)},
+ fireworks(){const c=document.createElement("canvas");L().append(c);const dpr=Math.min(devicePixelRatio||1,2);c.width=W()*dpr;c.height=H()*dpr;const x=c.getContext("2d");x.scale(dpr,dpr);
+   const P=[],T0=performance.now(),DUR=RM?3000:9000;let last=0;const tx=add(`<div class="e-text" style="top:30%;color:#ffe28a;text-shadow:0 0 18px rgba(255,200,80,.9);opacity:0;transition:opacity 1.2s">Bonne nuit,<br>Charlie ✦</div>`);setTimeout(()=>tx.style.opacity="1",1200);
+   function burst(){const cx=W()*(.15+Math.random()*.7),cy=H()*(.12+Math.random()*.4),h=Math.random()*360;for(let i=0;i<70;i++){const a=Math.random()*6.28,v=1.5+Math.random()*3.2;P.push({x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:1,h})}}
+   (function fr(t){const k=(t-T0)/DUR;x.fillStyle=`rgba(4,6,18,${k<.9?.28:.5})`;x.globalCompositeOperation="source-over";x.fillRect(0,0,W(),H());if(t-last>(RM?900:520)&&k<.85){burst();last=t}
+     x.globalCompositeOperation="lighter";for(let i=P.length-1;i>=0;i--){const p=P[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.045;p.vx*=.985;p.l-=.012;if(p.l<=0){P.splice(i,1);continue}x.fillStyle=`hsla(${p.h},100%,65%,${p.l})`;x.beginPath();x.arc(p.x,p.y,2,0,7);x.fill()}
+     if(k<1)requestAnimationFrame(fr);else{c.remove();tx.style.opacity="0";setTimeout(()=>tx.remove(),1300)}})(T0)},
+ zaijian(){card(`<img src="${src("bye")}" alt=""><div class="zh">再見</div><p><b>13 jours, 6 étapes, 5 trajets en TGV.</b><br>Hong Kong, Macao, Shenzhen, Canton, la rivière Li et Huangyao.</p><p>Merci d'avoir voyagé avec moi. À bientôt !<br>— Xiao Long 小龍</p>`,30000)},
+ fly(){const s=Math.min(W()*.5,230);const el=img("fly",{width:s+"px",left:-s+"px",top:(H()*.3)+"px"});
+   const k=[];for(let i=0;i<=10;i++){const p=i/10;k.push({transform:`translate(${p*(W()+s*2)}px,${Math.sin(p*Math.PI*2)*H()*.12}px) rotate(${Math.cos(p*Math.PI*2)*-10}deg)`})}
+   const a=anim(el,k,{duration:RM?1800:5200,easing:"linear"});done(a,el);
+   if(!RM)for(let i=0;i<22;i++){const sp=add(`<div class="e-img" style="left:0;top:0;width:8px;height:8px;border-radius:50%;background:#ffd36b;box-shadow:0 0 10px #ffb300"></div>`);const p=i/22;
+     const b=anim(sp,[{transform:`translate(${p*(W()+s*2)-s*.4}px,${H()*.3+s*.35+Math.sin(p*Math.PI*2)*H()*.12}px) scale(1)`,opacity:0},{opacity:1,offset:.05},{transform:`translate(${p*(W()+s*2)-s*.4}px,${H()*.3+s*.35+Math.sin(p*Math.PI*2)*H()*.12+40}px) scale(.2)`,opacity:0}],{duration:1400,delay:p*5200,easing:"ease-out"});done(b,sp)}}
+};
+window.EGG=FX;
+
+/* ---- les indices 彩蛋 ---- */
+const HINT={j1:"Hong Kong ne dort jamais : revenez sur cette page après 19 h.",j2:"Au Peak, tout penche… touchez deux fois le grand titre.",j3:"Comme au temple de Wong Tai Sin, secouez le téléphone. (La première fois, touchez ici.)",j4:"À Macao, on glisse sur les pavés : passez le doigt sur le titre.",j6:"Le nom de la ville cache des lumières : touchez 广州.",j7:"Cinq petits coups sur la photo, et quelqu'un roule vers vous.",j5:"Shenzhen se regarde en grand : tournez le téléphone.",j8:"Sur les toits de l'académie, c'est la parade : trois touchers sur le titre.",j9:"Descendez jusqu'au fil de l'eau, tout en bas de la page.",j10:"Le vieux banian se réveille quand on touche deux fois le titre.",j11:"Trois touchers sur le titre, et le train file.",j12:"La magie commence après 19 h.",j13:"Pour se dire au revoir, gardez le doigt sur le titre."};
+for(const id in HINT){const s=document.getElementById("p-"+id);if(!s)continue;const pg=s.querySelector(".pager");const h=document.createElement("p");h.className="egghint noprint"+(id==="j3"?" tap":"");h.innerHTML=`<b>彩蛋</b><span>${HINT[id]}</span>`;pg?pg.before(h):s.append(h);if(id==="j3")h.addEventListener("click",askMotion)}
+
+/* ---- gestes ---- */
+function taps(el,n,fn){if(!el)return;let c=0,t=0;el.addEventListener("click",()=>{const now=Date.now();c=(now-t<450)?c+1:1;t=now;if(c===n){c=0;fn()}})}
+function multi(el,map){if(!el)return;let c=0,tm=null;el.addEventListener("click",()=>{c++;clearTimeout(tm);tm=setTimeout(()=>{if(map[c])map[c]();c=0},420)})}
+function longpress(el,fn){if(!el)return;let t=null,sx=0,sy=0;const st=e=>{const p=e.touches?e.touches[0]:e;sx=p.clientX;sy=p.clientY;t=setTimeout(()=>{t=null;fn()},700)};const mv=e=>{const p=e.touches?e.touches[0]:e;if(t&&Math.hypot(p.clientX-sx,p.clientY-sy)>12){clearTimeout(t);t=null}};const en=()=>{clearTimeout(t);t=null};
+  el.addEventListener("touchstart",st,{passive:true});el.addEventListener("touchmove",mv,{passive:true});el.addEventListener("touchend",en);el.addEventListener("mousedown",st);el.addEventListener("mousemove",mv);el.addEventListener("mouseup",en);el.addEventListener("contextmenu",e=>e.preventDefault())}
+function swipe(el,fn){if(!el)return;let sx=null,sy=0;el.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});el.addEventListener("touchend",e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;sx=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)fn()})}
+const isOn=id=>typeof cur!=="undefined"&&cur===id;
+const evening=()=>new Date().getHours()>=19;
+
+multi(titleOf("j2"),{2:FX.tilt});
+longpress(titleOf("j3"),FX.kaucim);
+swipe(titleOf("j4"),FX.azulejo);
+(()=>{const s=document.getElementById("p-j6");const h=s&&s.querySelector(".hero .sub .han");if(h){h.style.cursor="pointer";h.addEventListener("click",FX.tower)}})();
+(()=>{const s=document.getElementById("p-j7");taps(s&&s.querySelector(".art"),5,FX.panda)})();
+multi(titleOf("j8"),{3:FX.frise});
+multi(titleOf("j10"),{2:FX.oldpaper});
+multi(titleOf("j11"),{3:FX.tgv});
+longpress(titleOf("j13"),FX.zaijian);
+taps(document.getElementById("topTitle"),7,FX.fly);
+
+/* Shenzhen : téléphone à l'horizontale */
+let wasLand=innerWidth>innerHeight;addEventListener("resize",()=>{const land=innerWidth>innerHeight;if(land&&!wasLand&&isOn("j5"))setTimeout(FX.drones,300);wasLand=land});
+/* Yangshuo : tout en bas de la page */
+let fishDone=false;addEventListener("scroll",()=>{if(!isOn("j9")){fishDone=false;return}if(!fishDone&&innerHeight+scrollY>=document.documentElement.scrollHeight-40){fishDone=true;FX.fisher()}},{passive:true});
+/* Wong Tai Sin : secouer */
+let motionOn=false,lastShake=0;
+function onMotion(e){const a=e.accelerationIncludingGravity||e.acceleration;if(!a||!isOn("j3"))return;const g=Math.abs(a.x||0)+Math.abs(a.y||0)+Math.abs(a.z||0);if(g>32&&Date.now()-lastShake>4000){lastShake=Date.now();FX.kaucim()}}
+function startMotion(){if(motionOn)return;motionOn=true;addEventListener("devicemotion",onMotion)}
+function askMotion(){if(typeof DeviceMotionEvent!=="undefined"&&typeof DeviceMotionEvent.requestPermission==="function"){DeviceMotionEvent.requestPermission().then(r=>{if(r==="granted"){startMotion();try{localStorage.setItem("egg-motion","1")}catch(e){}}else FX.kaucim()}).catch(()=>FX.kaucim())}else{startMotion();FX.kaucim()}}
+try{if(localStorage.getItem("egg-motion")==="1"||typeof DeviceMotionEvent==="undefined"||typeof DeviceMotionEvent.requestPermission!=="function")startMotion()}catch(e){}
+/* soirées J1 / J12, et calendrier */
+const seen={};
+function onPage(id){if(id==="j1"&&evening()&&!seen.j1){seen.j1=1;setTimeout(FX.neon,500)}if(id==="j12"&&evening()&&!seen.j12){seen.j12=1;setTimeout(FX.fireworks,600)}}
+if(typeof go==="function"){const g0=go;window.go=go=function(id,o){const r=g0.apply(this,arguments);try{onPage(id)}catch(e){}return r}}
+const today=new Date(),md=(today.getMonth()+1)*100+today.getDate();
+function once(k){try{if(localStorage.getItem(k))return false;localStorage.setItem(k,"1")}catch(e){}return true}
+if(today.getFullYear()===2027){if((md===220||md===221)&&once("egg-lant-"+md))setTimeout(FX.lanterns,1500);if(md===305&&evening()&&once("egg-zaijian"))setTimeout(FX.zaijian,1800)}
+
+/* ---- mode test : appui long sur « Apparence claire ou sombre » ---- */
+longpress(document.querySelector(".themerow"),()=>{const items=[["J1 · néons","neon"],["20-21 fév · lanternes","lanterns"],["J2 · illusion du Peak","tilt"],["J3 · Wong Tai Sin","kaucim"],["J4 · azulejos","azulejo"],["J5 · tour de Canton","tower"],["J6 · panda","panda"],["J7 · drones","drones"],["J8 · frise du toit","frise"],["J9 · pêcheur","fisher"],["J10 · vieux banian","oldpaper"],["J11 · TGV","tgv"],["J12 · feux d'artifice","fireworks"],["J13 · 再見","zaijian"],["Xiao Long s'envole","fly"]];
+  const c=card(`<h4>Mode test des surprises</h4><div style="display:grid;gap:6px;margin-top:10px;max-height:52vh;overflow:auto">${items.map(([l,k])=>`<button data-egg="${k}" style="border:0;border-radius:12px;padding:10px;background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink);font:500 15px var(--f-ui);cursor:pointer">${l}</button>`).join("")}</div>`,60000);
+  c.querySelectorAll("[data-egg]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const k=b.dataset.egg;c.remove();const need={neon:"j1",tilt:"j2",tower:"j6",oldpaper:"j10"}[k];if(need&&!isOn(need)){go(need);setTimeout(()=>FX[k](),500)}else FX[k]()}))});
+})();
 </script>
 
 <script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js"))}</script><div id="offbar" hidden style="position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:9999;background:#1D1D1F;color:#fff;font:600 12px -apple-system,sans-serif;padding:8px 14px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.25)"></div>
