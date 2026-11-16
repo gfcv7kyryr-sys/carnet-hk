@@ -5111,13 +5111,13 @@ const FX={
    const a=anim(cup,[0,1,2,3,4,5,6,7,8].map(i=>({transform:`translate(-50%,-50%) rotate(${i%2?-12:12}deg)`})).concat([{transform:"translate(-50%,-50%) rotate(0deg)"}]),{duration:RM?600:1800,easing:"linear",fill:"forwards"});
    a.finished.then(()=>{cup.remove();card(`<h4>Bâtonnet n° ${f[0]}</h4><div class="zh">${f[1]}</div><b>${f[2]}</b><p>${f[3]}</p>`)})},
  azulejo(){let bg=document.getElementById("eggbg");if(!bg){bg=document.createElement("div");bg.id="eggbg";document.body.prepend(bg)}
-   const A=src("azu"),C=src("cal");
-   const az=A?`url(${A}) center/130px`:"repeating-linear-gradient(45deg,#e8eef9 0 18px,#f7f9fc 18px 36px)";
-   const ca=C?`url(${C}) center/cover no-repeat`:"repeating-linear-gradient(0deg,#ece8de 0 14px,#2a2a2a 14px 22px)";
-   const wash="linear-gradient(color-mix(in srgb,var(--bg) 55%,transparent),color-mix(in srgb,var(--bg) 55%,transparent))";
-   bg.style.background=wash+","+az;requestAnimationFrame(()=>requestAnimationFrame(()=>bg.style.opacity="1"));
-   setTimeout(()=>{bg.style.opacity="0";setTimeout(()=>{bg.style.background=wash+","+ca;bg.style.opacity="1"},1100)},RM?1600:4200);
-   setTimeout(()=>{bg.style.opacity="0"},RM?3500:9500)},
+   const A=src("azu"),T=124,G="rgba(214,220,228,.95)",G2="rgba(120,130,145,.18)";
+   const wash="linear-gradient(color-mix(in srgb,var(--bg) 50%,transparent),color-mix(in srgb,var(--bg) 50%,transparent))";
+   const grout=`linear-gradient(90deg,${G} 0 3px,${G2} 3px 4px,transparent 4px) 0 0/${T}px ${T}px,linear-gradient(${G} 0 3px,${G2} 3px 4px,transparent 4px) 0 0/${T}px ${T}px`;
+   const tile=`radial-gradient(circle at 30% 25%,rgba(255,255,255,.35),transparent 60%) 0 0/${T}px ${T}px`;
+   bg.style.background=wash+","+grout+","+tile+","+(A?`url(${A}) 0 0/${T}px ${T}px`:"#e8eef9");
+   requestAnimationFrame(()=>requestAnimationFrame(()=>bg.style.opacity="1"));
+   setTimeout(()=>{bg.style.opacity="0"},RM?3500:7000)},
  tower(){const t=titleOf("j6");if(!t)return;t.classList.remove("egg-tower");void t.offsetWidth;t.classList.add("egg-tower");setTimeout(()=>t.classList.remove("egg-tower"),7400)},
  stage(k,w,h4,txt,enter,exit){const st=add(`<div class="e-stage"><div class="e-hero" style="--ew:${w}px"><img src="${src(k)}" alt=""><div class="shine"></div></div><div class="e-cap"><h4>${h4}</h4><p>${txt}</p></div></div>`);
    const hero=st.querySelector(".e-hero"),sh=st.querySelector(".shine");sh.style.webkitMaskImage=sh.style.maskImage=`url(${src(k)})`;
@@ -5160,20 +5160,9 @@ const FX={
      x.globalCompositeOperation="lighter";for(let i=P.length-1;i>=0;i--){const p=P[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.045;p.vx*=.985;p.l-=.012;if(p.l<=0){P.splice(i,1);continue}x.fillStyle=`hsla(${p.h},100%,65%,${p.l})`;x.beginPath();x.arc(p.x,p.y,2,0,7);x.fill()}
      if(k<1)requestAnimationFrame(fr);else{c.remove();tx.style.opacity="0";setTimeout(()=>tx.remove(),1300)}})(T0)},
  zaijian(){card(`<img src="${src("bye")}" alt=""><div class="zh">再見</div><p><b>13 jours, 6 étapes, 5 trajets en TGV.</b><br>Hong Kong, Macao, Shenzhen, Canton, la rivière Li et Huangyao.</p><p>Merci d'avoir voyagé avec moi. À bientôt !<br>— Xiao Long 小龍</p>`,30000)},
- fly(){const w=W(),h=H(),s=Math.min(w*.46,220);
-   const c=document.createElement("canvas");L().append(c);const dpr=Math.min(devicePixelRatio||1,2);c.width=w*dpr;c.height=h*dpr;const x=c.getContext("2d");x.scale(dpr,dpr);
-   const el=img("fly",{width:s+"px",left:"0",top:"0",filter:"drop-shadow(0 16px 22px rgba(0,0,0,.28))"});
-   const P0=[-s,h*.78],P1=[w*.15,h*.05],P2=[w*.95,h*.95],P3=[w+s,h*.18];
-   const bz=(t,i)=>{const u=1-t;return u*u*u*P0[i]+3*u*u*t*P1[i]+3*u*t*t*P2[i]+t*t*t*P3[i]};
-   const ease=t=>-(Math.cos(Math.PI*t)-1)/2;const DUR=RM?1600:4400,T0=performance.now(),trail=[];
-   (function fr(now){const k=Math.min(1,(now-T0)/DUR),t=ease(k);const px=bz(t,0),py=bz(t,1),qx=bz(Math.min(1,t+.01),0),qy=bz(Math.min(1,t+.01),1);
-     const ang=Math.atan2(qy-py,qx-px)*180/Math.PI,sc=.7+.45*Math.sin(Math.PI*t);
-     el.style.transform=`translate(${px-s/2}px,${py-s/2}px) rotate(${Math.max(-28,Math.min(28,ang*.45))}deg) scale(${sc})`;
-     if(!RM)for(let n=0;n<3;n++)trail.push({x:px-Math.cos(ang*Math.PI/180)*s*.32+(Math.random()-.5)*14,y:py-Math.sin(ang*Math.PI/180)*s*.32+(Math.random()-.5)*14+s*.08,r:1+Math.random()*2.6,l:1,vy:.3+Math.random()*.6});
-     x.clearRect(0,0,w,h);x.globalCompositeOperation="lighter";
-     for(let i=trail.length-1;i>=0;i--){const p=trail[i];p.l-=.018;p.y+=p.vy;if(p.l<=0){trail.splice(i,1);continue}const g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);g.addColorStop(0,`rgba(255,236,170,${p.l})`);g.addColorStop(.35,`rgba(255,190,60,${p.l*.6})`);g.addColorStop(1,"rgba(255,150,0,0)");x.fillStyle=g;x.beginPath();x.arc(p.x,p.y,p.r*4,0,7);x.fill()}
-     if(k<1||trail.length)requestAnimationFrame(fr);else{c.remove();el.remove()}
-     if(k>=1)el.style.opacity="0"})(T0)}
+ fly(){FX.stage("fly",300,"Xiao Long · 小龍","Vous m'avez trouvé ! Je suis le petit dragon qui veille sur votre voyage.",
+   [{transform:"scale(.2) rotate(-25deg)",opacity:0},{transform:"scale(1.08) rotate(4deg)",opacity:1,offset:.65},{transform:"scale(.97) rotate(-1deg)",opacity:1,offset:.85},{transform:"scale(1) rotate(0)",opacity:1}],
+   [{transform:"none",opacity:1},{transform:"translate(40vw,-50vh) scale(.5) rotate(-20deg)",opacity:0}])}
 };
 window.EGG=FX;
 
