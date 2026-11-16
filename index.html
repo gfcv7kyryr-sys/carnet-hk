@@ -482,7 +482,7 @@ body.print .m-reste,body.print .m-resv,body.print #p-resas{display:none!importan
 #xlsheet{position:fixed;inset:0;z-index:96;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}#xlsheet[hidden]{display:none!important}
 #xlsheet .in{width:100%;max-width:640px;max-height:92vh;overflow-y:auto;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:saturate(180%) blur(30px);backdrop-filter:saturate(180%) blur(30px);border-radius:26px 26px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.18)}
 #xlsheet .grab{width:38px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 10px}
-#xlsheet .hd{display:flex;align-items:center;gap:10px}#xlsheet .hd h3{flex:1;margin:0;font-size:1.3rem;letter-spacing:-.02em}
+#xlsheet .hd{display:flex;align-items:center;gap:10px}#xlsheet .xlh{margin:14px 0 4px}#xlConvBox .tpanel{margin-top:14px}#xlConvBox .tile{box-shadow:none}#xlsheet .hd h3{flex:1;margin:0;font-size:1.3rem;letter-spacing:-.02em}
 #xlsheet .k{font-size:.74rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 6px}
 #xlsheet textarea{width:100%;font:16px/1.4 var(--f-ui);padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);resize:vertical}
 #xlCtx{min-height:76px}#xlQ{min-height:80px}
@@ -1151,9 +1151,9 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
   <div class="themerow"><span>Apparence claire ou sombre</span><button class="icon-btn" id="themeBtn" aria-label="Changer de thème"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/></svg></button></div>
   <div class="bento">
     <div class="tools3 wide" role="group" aria-label="Outils">
-      <button class="tool" data-tool="conv" aria-pressed="true"><div class="art cut" data-art="G2" data-tone="ui" data-g="付"></div><span>Convertisseur</span></button>
       <button class="tool" data-tool="ask" id="toolAsk" aria-pressed="false" hidden><div class="art cut" data-art="G1" data-tone="ui" data-g="問"></div><span>Demander au guide</span></button>
       <button class="tool" id="xlTool"><div class="art cut" data-art="G1" data-tone="ui" data-g="問"></div><span>Demander à Xiao Long</span></button>
+      <button class="tool" data-tool="conv" aria-pressed="true"><div class="art cut" data-art="G2" data-tone="ui" data-g="付"></div><span>Convertisseur</span></button>
       <button class="tool" data-go="photo"><div class="art cut" data-art="G3" data-tone="ui" data-g="影"></div><span>Photo et vidéo</span></button>
     </div>
     <div class="tile wide tpanel" id="toolConv">
@@ -1216,7 +1216,14 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
 </div>
 <div id="xlsheet" class="noprint" hidden role="dialog" aria-modal="true" aria-labelledby="xlT"><div class="in" id="xlIn">
   <div class="grab"></div>
-  <div class="hd"><h3 id="xlT">Demander à Xiao Long</h3><button class="pill" id="xlClose">Fermer</button></div>
+  <div class="hd"><button class="pill" id="xlBack" hidden>‹ Outils</button><h3 id="xlT">Outils</h3><button class="pill" id="xlClose">Fermer</button></div>
+  <div id="xlHome"><div class="tools3 xlh" role="group" aria-label="Outils">
+    <button class="tool" data-xlv="guide"><div class="art cut" data-art="G1" data-tone="ui" data-g="問"></div><span>Demander à Xiao Long</span></button>
+    <button class="tool" data-xlv="conv"><div class="art cut" data-art="G2" data-tone="ui" data-g="付"></div><span>Convertisseur</span></button>
+    <button class="tool" data-xlv="photo"><div class="art cut" data-art="G3" data-tone="ui" data-g="影"></div><span>Photo et vidéo</span></button>
+  </div></div>
+  <div id="xlConvBox" hidden></div>
+  <div id="xlGuide" hidden>
   <div class="k">Où nous sommes</div><textarea id="xlCtx" aria-label="Contexte"></textarea>
   <div class="k">Votre question</div><textarea id="xlQ" placeholder="Qu'est-ce que je vois ?" aria-label="Question"></textarea>
   <div class="chips" id="xlChips"></div>
@@ -1226,6 +1233,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
   <button class="go2" id="xlCopy">Copier seulement</button>
   <p class="msg" id="xlMsg" role="status"></p>
   <details><summary>Voir le texte envoyé</summary><pre id="xlPrev"></pre></details>
+  </div>
 </div></div>
 <div class="fiche noprint" id="fiche" hidden role="dialog" aria-modal="true" aria-label="Fiche du lieu">
   <div class="ftop"><span class="t" id="ficheTop"></span><button class="xlbtn" id="xlOpen2" aria-label="Demander à Xiao Long">問</button><button class="pill" id="ficheClose">Fermer</button></div>
@@ -3734,18 +3742,26 @@ function xlContext(){const ficheOpen=!$("#fiche").hidden;let D=null,ctx="",food=
 function xlText(){const q=$("#xlQ").value.trim()||"Explique-moi ce que je vois.";const food=XL.food||XL_FOOD.test(q+" "+$("#xlCtx").value);
   return[$("#xlCtx").value.trim(),q,(XL.file?"La photo jointe montre ce que nous regardons. ":"")+XL_RULE+(food?XL_DIET:"")].filter(Boolean).join("\n\n")}
 function xlUpd(){$("#xlPrev").textContent=xlText()}
-function xlOpen(generic){const c=generic?{ctx:"Nous voyageons à Hong Kong, Macao et dans le sud de la Chine, du 21 février au 5 mars.",food:false}:xlContext();
+function xlView(v){const g=id=>document.getElementById(id);const conv=g("toolConv"),box=g("xlConvBox");
+  if(v!=="conv"&&conv&&box.contains(conv)){XL.convHome.after(conv)}
+  g("xlHome").hidden=v!=="home";g("xlGuide").hidden=v!=="guide";box.hidden=v!=="conv";g("xlBack").hidden=v==="home";
+  g("xlT").textContent=v==="home"?"Outils":v==="guide"?"Demander à Xiao Long":"Convertisseur";
+  if(v==="conv"&&conv){if(!XL.convHome){XL.convHome=document.createComment("conv");conv.before(XL.convHome)}box.append(conv);conv.hidden=false;conv.removeAttribute("data-off")}
+  g("xlIn").scrollTop=0}
+function xlOpen(generic,view){const c=generic?{ctx:"Nous voyageons à Hong Kong, Macao et dans le sud de la Chine, du 21 février au 5 mars.",food:false}:xlContext();
   XL.food=c.food;$("#xlCtx").value=c.ctx;$("#xlQ").value="";$("#xlMsg").textContent="";
   const ch=c.food?["Que veut dire ce plat ?","Qu'est-ce qui convient à une enfant de 3 ans ?","Traduis ce menu","Qu'est-ce qui est épicé ?"]:["Qu'est-ce que je vois sur cette photo ?","Explique-le à une enfant de 3 ans","L'histoire de ce lieu","Que dit ce panneau ?"];
   const box=$("#xlChips");box.innerHTML="";ch.forEach(t=>{const b=document.createElement("button");b.className="chip";b.type="button";b.textContent=t;b.onclick=()=>{$("#xlQ").value=t;xlUpd()};box.append(b)});
-  xlUpd();$("#xlsheet").hidden=false;$("#xlIn").scrollTop=0}
-function xlClose(){$("#xlsheet").hidden=true}
+  xlUpd();$("#xlsheet").hidden=false;xlView(view||"guide")}
+function xlClose(){xlView("home");$("#xlsheet").hidden=true}
 function xlCopy(t){try{return navigator.clipboard.writeText(t).then(()=>true,()=>xlFall(t))}catch(e){return Promise.resolve(xlFall(t))}}
 function xlFall(t){const a=document.createElement("textarea");a.value=t;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.append(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(e){}a.remove();return ok}
 function xlPick(e){const f=e.target.files&&e.target.files[0];if(!f)return;XL.file=f;const th=$("#xlTh");th.src=URL.createObjectURL(f);th.hidden=false;$("#xlRm").hidden=false;xlUpd();e.target.value=""}
 document.addEventListener("DOMContentLoaded",()=>{});
 (function xlInit(){const g=id=>document.getElementById(id);if(!g("xlOpen"))return;
-  g("xlOpen").onclick=()=>xlOpen(false);if(g("xlOpen2"))g("xlOpen2").onclick=()=>xlOpen(false);g("xlTool").onclick=()=>xlOpen(true);g("xlClose").onclick=xlClose;
+  g("xlOpen").onclick=()=>xlOpen(false,"home");if(g("xlOpen2"))g("xlOpen2").onclick=()=>xlOpen(false,"guide");g("xlTool").onclick=()=>xlOpen(true,"guide");
+  g("xlBack").onclick=()=>xlView("home");
+  document.querySelectorAll("[data-xlv]").forEach(b=>b.onclick=()=>{const v=b.dataset.xlv;if(v==="photo"){xlClose();go("photo");window.scrollTo(0,0)}else xlView(v)});g("xlClose").onclick=xlClose;
   g("xlsheet").addEventListener("click",e=>{if(e.target.id==="xlsheet")xlClose()});
   let y0=null;g("xlIn").addEventListener("touchstart",e=>{if(g("xlIn").scrollTop<=0)y0=e.touches[0].clientY},{passive:true});
   g("xlIn").addEventListener("touchend",e=>{if(y0!==null&&e.changedTouches[0].clientY-y0>90)xlClose();y0=null});
