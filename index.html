@@ -477,7 +477,7 @@ body.print .rvday{break-inside:avoid;margin-bottom:8pt}
 body.print .m-resv .rv{break-inside:avoid}
 body.print .m-reste,body.print .m-resv,body.print #p-resas{display:none!important}
 /* Demander à Xiao Long */
-.xlbtn{width:38px;height:38px;flex:none;border-radius:50%;border:1px solid var(--glass-hi);background:color-mix(in srgb,var(--bg) 55%,transparent);color:var(--red-ink);font:600 1.15rem/1 var(--f-han);display:grid;place-items:center;padding:0;margin-right:6px;cursor:pointer;background-size:100% 100%;background-position:center;background-repeat:no-repeat}
+.xlbtn{width:34px;height:34px;flex:none;border-radius:10px;border:1.5px solid var(--red-ink);background:color-mix(in srgb,var(--bg) 55%,transparent);color:var(--red-ink);font:600 1.05rem/1 var(--f-han);display:grid;place-items:center;padding:0;margin-right:6px;cursor:pointer;background-size:100% 100%;background-position:center;background-repeat:no-repeat}
 .xlbtn.img{color:transparent}
 #xlsheet{position:fixed;inset:0;z-index:96;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}#xlsheet[hidden]{display:none!important}
 #xlsheet .in{width:100%;max-width:640px;max-height:92vh;overflow-y:auto;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:saturate(180%) blur(30px);backdrop-filter:saturate(180%) blur(30px);border-radius:26px 26px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.18)}
@@ -734,7 +734,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
 
 <header class="lnav noprint">
   <b id="topTitle">Hong Kong 2027</b>
-  <button class="xlbtn" id="xlOpen" aria-label="Demander à Xiao Long">龍</button>
+  <button class="xlbtn" id="xlOpen" aria-label="Demander à Xiao Long">問</button>
   <button class="btn s sosbtn" data-go="sos" aria-label="SOS, en cas de pépin">SOS</button>
   <button class="btn g s" data-go="sheet">Plus</button>
 </header>
@@ -1153,7 +1153,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
     <div class="tools3 wide" role="group" aria-label="Outils">
       <button class="tool" data-tool="conv" aria-pressed="true"><div class="art cut" data-art="G2" data-tone="ui" data-g="付"></div><span>Convertisseur</span></button>
       <button class="tool" data-tool="ask" id="toolAsk" aria-pressed="false" hidden><div class="art cut" data-art="G1" data-tone="ui" data-g="問"></div><span>Demander au guide</span></button>
-      <button class="tool" id="xlTool"><div class="art cut" data-art="G1" data-tone="ui" data-g="龍"></div><span>Demander à Xiao Long</span></button>
+      <button class="tool" id="xlTool"><div class="art cut" data-art="G1" data-tone="ui" data-g="問"></div><span>Demander à Xiao Long</span></button>
       <button class="tool" data-go="photo"><div class="art cut" data-art="G3" data-tone="ui" data-g="影"></div><span>Photo et vidéo</span></button>
     </div>
     <div class="tile wide tpanel" id="toolConv">
@@ -1228,7 +1228,7 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
   <details><summary>Voir le texte envoyé</summary><pre id="xlPrev"></pre></details>
 </div></div>
 <div class="fiche noprint" id="fiche" hidden role="dialog" aria-modal="true" aria-label="Fiche du lieu">
-  <div class="ftop"><span class="t" id="ficheTop"></span><button class="xlbtn" id="xlOpen2" aria-label="Demander à Xiao Long">龍</button><button class="pill" id="ficheClose">Fermer</button></div>
+  <div class="ftop"><span class="t" id="ficheTop"></span><button class="xlbtn" id="xlOpen2" aria-label="Demander à Xiao Long">問</button><button class="pill" id="ficheClose">Fermer</button></div>
   <div id="ficheBody"></div>
 </div>
 <div class="toast noprint" id="toast" hidden></div>
