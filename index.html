@@ -448,7 +448,15 @@ textarea{min-height:110px;resize:vertical}
 .fzh{font-family:var(--f-han);font-size:1.2rem;color:var(--soft)}
 .flede{margin:0;font-family:var(--f-disp);font-size:clamp(1.2rem,4.5vw,1.46rem);font-weight:600;line-height:1.3;letter-spacing:-.02em;color:var(--muted)}
 .fsec{display:grid;gap:6px}
-.rvday{display:grid;gap:6px;margin-bottom:22px}
+.rvday{display:grid;gap:6px;margin-bottom:22px;scroll-margin-top:90px;border-radius:var(--r-m)}
+.rvday.flash{animation:rvflash 1.6s ease-out}@keyframes rvflash{0%,40%{background:color-mix(in srgb,var(--red) 12%,transparent);box-shadow:0 0 0 10px color-mix(in srgb,var(--red) 12%,transparent)}100%{background:transparent;box-shadow:0 0 0 10px transparent}}
+.cvlan{margin:0}.cvlan{margin-top:calc(-1 * (clamp(36px,8vw,76px) + 70px))!important}.cvlan img{display:block;width:min(82%,460px);height:auto;margin:0 auto}
+#p-couverture .cvlan + .hero{margin-top:calc(-1 * clamp(28px,6vw,56px))}
+.hspot{position:relative;width:100%;max-width:760px;margin-inline:auto}
+.hspot img{display:block;width:100%;height:auto}
+.hspot a,.hspot button{position:absolute;display:block;padding:0;border:0;background:transparent;cursor:pointer;border-radius:12%;-webkit-tap-highlight-color:transparent}
+.hspot a:active,.hspot button:active{background:color-mix(in srgb,#000 8%,transparent)}
+.hspot .nl{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);font:600 .62rem var(--f-ui);color:#555;white-space:nowrap;pointer-events:none}
 .rvday h3{margin:0;font-family:var(--f-disp);font-size:1.1rem;letter-spacing:-.01em;display:flex;align-items:center;gap:10px;justify-content:space-between}
 .rvday h3::first-letter{text-transform:uppercase}
 .rvdoc{justify-self:start;margin-top:6px;display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--line);background:none;color:var(--muted);font:600 .82rem var(--f-ui);padding:5px 10px;border-radius:999px;cursor:pointer}
@@ -801,14 +809,15 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
 
 <!-- COUVERTURE -->
 <section class="page" id="p-couverture" data-t="Couverture">
+  <figure class="mod cvlan"><img src="img/cover-lanternes.webp" alt="Six lanternes de porcelaine, une par étape du voyage" width="900" height="1272"></figure>
   <header class="hero">
     <p class="eyebrow">Éric, Jonas &amp; Charlie · 20&nbsp;février – 6&nbsp;mars&nbsp;2027</p>
     <h1 class="display">Hong Kong.<br>Et la Chine du&nbsp;Sud.</h1>
     <p class="sub han">香港 · 澳門 · 深圳 · 廣州 · 漓江</p>
   </header>
   <figure class="mod">
-    <div class="art wide" data-art="C00" data-tone="hk" data-g="華"></div>
-    <figcaption class="caption">Six bao, six étapes, chacune tamponnée de son caractère : 港 Hong Kong, 澳 Macao, 深 Shenzhen, 穗 Canton, 陽 Yangshuo et 黃 Huangyao.</figcaption>
+    <div class="hspot"><img src="img/mahjong-13.webp" alt="Treize tuiles de mah-jong, une par jour du voyage" width="1200" height="900"><button data-go="j1" style="left:7.80%;top:1.93%;width:20.51%;height:32.87%" aria-label="Jour 1"></button><button data-go="j2" style="left:28.87%;top:4.24%;width:19.61%;height:31.49%" aria-label="Jour 2"></button><button data-go="j3" style="left:49.65%;top:2.03%;width:20.17%;height:32.87%" aria-label="Jour 3"></button><button data-go="j4" style="left:71.13%;top:2.67%;width:20.23%;height:32.60%" aria-label="Jour 4"></button><button data-go="j6" style="left:0.90%;top:34.81%;width:19.06%;height:31.58%" aria-label="Jour 5"></button><button data-go="j7" style="left:20.17%;top:35.45%;width:18.99%;height:30.76%" aria-label="Jour 6"></button><button data-go="j5" style="left:39.50%;top:35.36%;width:19.41%;height:31.03%" aria-label="Jour 7"></button><button data-go="j8" style="left:59.25%;top:35.17%;width:19.34%;height:31.03%" aria-label="Jour 8"></button><button data-go="j9" style="left:79.07%;top:35.27%;width:19.96%;height:31.49%" aria-label="Jour 9"></button><button data-go="j10" style="left:5.32%;top:66.30%;width:21.69%;height:30.85%" aria-label="Jour 10"></button><button data-go="j11" style="left:28.31%;top:66.57%;width:20.86%;height:30.48%" aria-label="Jour 11"></button><button data-go="j12" style="left:50.35%;top:66.30%;width:20.10%;height:29.93%" aria-label="Jour 12"></button><button data-go="j13" style="left:71.82%;top:66.39%;width:20.72%;height:31.03%" aria-label="Jour 13"></button></div>
+    <figcaption class="caption"><b>Treize jours, treize tuiles.</b> Touche une tuile pour ouvrir le jour : de la jonque de Hong Kong au Grand Bouddha de Lantau.</figcaption>
   </figure>
   <p class="prose"><b>Treize jours entre gratte-ciel, dim sum et montagnes en pain de sucre.</b> Hong Kong, Macao, Shenzhen et Canton, puis la rivière Li en train à grande vitesse. Un voyage pensé pour une enfant de trois ans : une grande sortie le matin, la sieste l'après-midi.</p>
   <div class="numbers">
@@ -1162,6 +1171,8 @@ body.print h2,body.print h3,body.print .hero{break-after:avoid}
     <p class="eyebrow">Fiche rapide</p>
     <h2 class="display">Mes<br>réservations.</h2>
   </header>
+  <figure class="mod"><div class="hspot"><img src="img/neons-6.webp" alt="Six enseignes néon, une par ville" width="1200" height="800"><button data-rvto="2027-02-21" style="left:14.67%;top:2.37%;width:34.75%;height:40.07%" aria-label="Réservations : Hong Kong"></button><button data-rvto="2027-02-24" style="left:63.33%;top:6.49%;width:33.58%;height:40.20%" aria-label="Réservations : Macao"></button><button data-rvto="2027-02-25" style="left:2.67%;top:21.72%;width:11.33%;height:63.17%" aria-label="Réservations : Canton"></button><button data-rvto="2027-02-27" style="left:50.67%;top:27.97%;width:11.33%;height:56.05%" aria-label="Réservations : Shenzhen"></button><button data-rvto="2027-03-01" style="left:15.08%;top:57.18%;width:34.33%;height:37.95%" aria-label="Réservations : Guangxi"></button><button data-rvto="2027-03-02" style="left:63.33%;top:55.56%;width:34.58%;height:38.58%" aria-label="Réservations : Huangyao"></button></div>
+    <figcaption class="caption"><b>Un néon par ville.</b> Touche une enseigne pour aller à ses réservations.</figcaption></figure>
   <p class="prose"><b>Tout ce qui est réservé ou à réserver, jour par jour.</b> L'adresse est à montrer telle quelle au chauffeur ou à l'accueil. Sous chaque réservation, « Ajouter un billet » range une photo, une capture ou un PDF dans ce téléphone : rien n'est envoyé en ligne, et le billet s'ouvre même sans réseau. Gardez quand même les originaux dans vos mails.</p>
   <div id="resvList"></div>
 </section>
@@ -3131,7 +3142,7 @@ const rvRow=r=>{const i=RESV.indexOf(r),u=rvLink(r);return`<li class="rv rv-${r[
 document.addEventListener("click",e=>{const b=e.target.closest("[data-rvshow]");if(!b)return;const r=RESV[+b.dataset.rvshow];show(r[4].split(" · ")[0],{fr:r[3]})});
 function resvHTML(){const by={};RESV.forEach(r=>(by[r[0]]=by[r[0]]||[]).push(r));
   return Object.keys(by).sort().map(d=>{const day=DAY_OF_DATE[d];const n=day?DAYS.findIndex(x=>x.id===day)+1:0;
-    return`<div class="rvday"><h3>${rvDate(d)}${day?` <button class="pill ghost rvgo" data-go="${day}">Jour ${n}</button>`:""}</h3><ul class="rvl">${by[d].map(rvRow).join("")}</ul></div>`}).join("")}
+    return`<div class="rvday" id="rv-${d}"><h3>${rvDate(d)}${day?` <button class="pill ghost rvgo" data-go="${day}">Jour ${n}</button>`:""}</h3><ul class="rvl">${by[d].map(rvRow).join("")}</ul></div>`}).join("")}
 const resvDay=id=>{const d=Object.keys(DAY_OF_DATE).find(k=>DAY_OF_DATE[k]===id);const L=RESV.filter(r=>r[0]===d);return L.length?`<div class="mod m-resv"><h2 class="h2">Les réservations du jour.</h2><ul class="rvl">${L.map(rvRow).join("")}</ul></div>`:""};
 
 /* ================= MES BILLETS : documents gardés dans ce téléphone ================= */
@@ -4961,6 +4972,7 @@ function go(id,{anchor=null,push=true}={}){const p=document.getElementById("p-"+
 document.addEventListener("click",e=>{
   const fv=e.target.closest("[data-fnav]");if(fv){const t=FL[FI+(+fv.dataset.fnav)];if(t)openFiche(t);return}
   const fl=e.target.closest("[data-lieu]");if(fl){openFiche(fl.dataset.lieu);return}
+  const rt=e.target.closest("[data-rvto]");if(rt){const el=document.getElementById("rv-"+rt.dataset.rvto);if(el){el.scrollIntoView({behavior:"smooth",block:"start"});el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash")}return}
   const g=e.target.closest("[data-go]");if(g){const v=g.dataset.go;if(v==="sheet"){buildSheet();$("#sheet").hidden=false;return}$("#sheet").hidden=true;if(!$("#fiche").hidden)closeFiche();if(v==="now"){go(autoPage())}else go(v);return}
   const s=e.target.closest("[data-show]");if(s){const p=P[s.dataset.show];show(p.zh,{sm:p.lang==="zh-HK"?"唔該帶我去呢度":"请带我去这里",fr:p.fr+" · Emmenez-moi ici, s'il vous plaît",say:[p.zh.split(" ")[0],p.lang]});return}
   const l=e.target.closest("[data-link]");if(l){const url=ARTIFACT_URL+"#lieu-"+l.dataset.link;try{navigator.clipboard.writeText(url).then(()=>toast("Lien copié pour Raccourcis"),()=>show(url,{fr:"Copiez ce lien"}))}catch(err){show(url,{fr:"Copiez ce lien"})}return}
