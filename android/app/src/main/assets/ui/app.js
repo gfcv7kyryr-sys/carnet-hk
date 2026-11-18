@@ -191,7 +191,18 @@ function homeData() {
 }
 /* Accueil : calendrier du jour à gauche, photo du jour en carré avec l'heure en transparence
    derrière le sujet (effet de profondeur), grille d'applications réduite à droite. */
+/* Fond de l'écran verrouillé : la photo du jour, une fois par jour si le réglage est activé. */
+function updateLockWallpaper(force) {
+  if (!store.get("lockWp", false) || !N.setLockWallpaper) return;
+  const day = phase().day || P.days[0];
+  const key = `${nowHK().date}:${day.id}`;
+  if (!force && store.get("lockWpDate", null) === key) return;
+  const r = N.setLockWallpaper(day.image || day.depth?.bg);
+  if (r === "ok") { store.set("lockWpDate", key); if (force) toast("Photo du jour placée sur l'écran verrouillé"); }
+  else if (force) toast(r);
+}
 function viewToday() {
+  setTimeout(() => updateLockWallpaper(false), 1500);
   const h = homeData();
   const d = h.d;
   const dep = d.depth;
@@ -617,6 +628,11 @@ function moreSettings() {
   return `<div class="bento">
     <div class="tile"><h3>Écran d'accueil</h3><p>${home ? "TravelOS est l'écran d'accueil : la tablette démarre sur le choix du profil." : "Pour démarrer la tablette sur TravelOS, choisissez-le comme application d'accueil."}</p>
       <div class="acts"><button class="pill ${home ? "" : "red"}" data-settings="home">${home ? "Changer d'écran d'accueil" : "Choisir TravelOS"}</button><button class="pill" data-settings="android">Réglages Android</button></div></div>
+    <div class="tile"><h3>Écran de veille</h3>
+      <p><b>Économiseur d'écran</b> : quand la tablette charge, TravelOS affiche la photo du jour, l'heure et la prochaine étape. Choisissez « TravelOS » dans le réglage Android.</p>
+      <div class="acts"><button class="pill red" data-settings="dream">Choisir l'économiseur</button></div>
+      <p><b>Écran verrouillé</b> : la photo du jour en fond, changée chaque jour (l'horloge reste celle d'Android).</p>
+      <div class="seg" id="lockSeg"><button class="${store.get("lockWp", false) ? "" : "on"}" data-lockwp="0">Non</button><button class="${store.get("lockWp", false) ? "on" : ""}" data-lockwp="1">Oui</button></div></div>
     <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
       <div class="seg">${[["auto", "Automatique"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => `<button class="${store.get("theme", "auto") === k ? "on" : ""}" data-theme="${k}">${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Verre</h3><p>Le verre transparent peut être remplacé par un fond mat si l'affichage ralentit.</p>
@@ -719,6 +735,7 @@ document.addEventListener("click", (e) => {
   if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
   if (d.article) return openArticle(d.article);
   if (d.soon) return toast(d.soon);
+  if (d.lockwp) { store.set("lockWp", d.lockwp === "1"); store.set("lockWpDate", null); if (d.lockwp === "1") updateLockWallpaper(true); return go("more", null, "settings", false); }
   if (d.photoday) { store.set("photoDay", d.photoday); return go("guide", null, "photo", false); }
   if (d.askchip) { $("#askQ").value = d.askchip; return; }
   if (d.ask) return askGuide(d.ask === "photo");
@@ -850,6 +867,7 @@ function mockBridge() {
     systemDark: () => matchMedia("(prefers-color-scheme: dark)").matches,
     translatorState: () => JSON.stringify({ ready: false, downloading: false, error: null, tts: true }),
     translatorDownload: () => {}, translate: (id) => setTimeout(() => window.TravelOS.onTranslate(id, { text: "你好", error: null }), 300),
+    setLockWallpaper: () => "ok",
     speak: () => "ok", openGoogleTranslate: () => {}, hasApp: () => false, askGuide: () => {},
   };
 }

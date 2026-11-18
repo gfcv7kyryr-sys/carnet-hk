@@ -12,10 +12,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -24,9 +21,7 @@ import androidx.core.content.FileProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.webkit.WebViewAssetLoader
 import org.json.JSONObject
-import java.io.ByteArrayInputStream
 import java.io.File
 
 /**
@@ -63,12 +58,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val container = (application as TravelOsApp).container
 
-        val loader = WebViewAssetLoader.Builder()
-            .setDomain(HOST)
-            .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
-            .addPathHandler("/pack/", WebViewAssetLoader.InternalStoragePathHandler(this, container.packSync.dir))
-            .addPathHandler("/appicon/", AppIconHandler(packageManager))
-            .build()
+        val loader = LocalContent.loader(this, container.packSync.dir)
 
         webView = WebView(this).apply {
             setBackgroundColor(android.graphics.Color.WHITE)
@@ -84,7 +74,13 @@ class MainActivity : ComponentActivity() {
                 textZoom = 100
             }
             addJavascriptInterface(NativeBridge(this@MainActivity, container), "TravelOSNative")
-            webViewClient = LockedClient(loader)
+            webViewClient = LocalContent.Client(loader) { url ->
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, url).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } catch (e: ActivityNotFoundException) {
+                    toastJs("Aucune application ne peut ouvrir ce lien.")
+                }
+            }
             webChromeClient = object : WebChromeClient() {
                 override fun onShowFileChooser(
                     view: WebView,
@@ -104,7 +100,7 @@ class MainActivity : ComponentActivity() {
             }
         }
         setContentView(webView)
-        webView.loadUrl("https://$HOST/assets/ui/index.html")
+        webView.loadUrl(LocalContent.UI + "index.html")
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             // Écran d'accueil : le retour n'est jamais une sortie, l'interface décide.
@@ -206,30 +202,4 @@ class MainActivity : ComponentActivity() {
         controller.hide(WindowInsetsCompat.Type.systemBars())
     }
 
-    /** N'autorise que l'interface embarquée ; les liens externes partent vers les autres applis. */
-    private inner class LockedClient(private val loader: WebViewAssetLoader) : WebViewClient() {
-        override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
-            val url = request.url
-            if (url.host == HOST) {
-                return loader.shouldInterceptRequest(url)
-                    ?: WebResourceResponse("text/plain", "utf-8", 404, "Absent", emptyMap(), ByteArrayInputStream(ByteArray(0)))
-            }
-            return WebResourceResponse("text/plain", "utf-8", 403, "Hors ligne", emptyMap(), ByteArrayInputStream(ByteArray(0)))
-        }
-
-        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-            val url = request.url
-            if (url.host == HOST) return false
-            try {
-                startActivity(Intent(Intent.ACTION_VIEW, url).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            } catch (e: ActivityNotFoundException) {
-                toastJs("Aucune application ne peut ouvrir ce lien.")
-            }
-            return true
-        }
-    }
-
-    private companion object {
-        const val HOST = "appassets.androidplatform.net"
-    }
 }

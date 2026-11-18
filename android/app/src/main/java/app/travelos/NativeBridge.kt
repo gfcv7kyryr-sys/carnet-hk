@@ -195,6 +195,7 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
             "home" -> Settings.ACTION_HOME_SETTINGS
             "wifi" -> Settings.ACTION_WIFI_SETTINGS
             "location" -> Settings.ACTION_LOCATION_SOURCE_SETTINGS
+            "dream" -> "android.settings.DREAM_SETTINGS"
             else -> Settings.ACTION_SETTINGS
         }
         start(Intent(action))
@@ -209,6 +210,24 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
             @Suppress("DEPRECATION") activity.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
         }
         return info?.activityInfo?.packageName == activity.packageName
+    }
+
+    /**
+     * Fond de l'écran verrouillé = une image du paquet (photo du jour). Renvoie « ok » ou un message.
+     * L'horloge de l'écran verrouillé reste celle d'Android ; seule l'image change.
+     */
+    @JavascriptInterface
+    fun setLockWallpaper(packPath: String): String {
+        val file = java.io.File(c.packSync.dir, packPath)
+        if (packPath.contains("..") || !file.isFile) return "Image absente : synchronisez le contenu."
+        return try {
+            val bmp = android.graphics.BitmapFactory.decodeFile(file.absolutePath) ?: return "Image illisible."
+            android.app.WallpaperManager.getInstance(activity)
+                .setBitmap(bmp, null, true, android.app.WallpaperManager.FLAG_LOCK)
+            "ok"
+        } catch (e: Exception) {
+            e.message ?: "Impossible de changer le fond d'écran."
+        }
     }
 
     @JavascriptInterface

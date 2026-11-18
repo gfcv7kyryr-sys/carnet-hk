@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TravelOS · économiseur d'écran</title>
+<link rel="stylesheet" href="app.css">
+<style>
+  /* Économiseur d'écran : photo du jour, heure derrière le sujet, prochaine étape.
+     Tout se déplace légèrement chaque minute pour ne pas marquer l'écran. */
+  html,body{height:100%;background:#000;overflow:hidden}
+  .d-bg{position:fixed;inset:-60px;background-size:cover;background-position:center;filter:blur(40px) saturate(150%) brightness(.38);transform:scale(1.1);transition:opacity 2s}
+  .d-wrap{position:fixed;inset:0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:5vw;padding:6vh 6vw;transition:transform 4s ease-in-out}
+  .d-wrap .pw{grid-area:auto;width:min(78vh,52vw);border-radius:44px;box-shadow:0 40px 90px -30px rgba(0,0,0,.8)}
+  .d-wrap .pw-bg{animation:kb 60s ease-in-out infinite alternate}
+  @keyframes kb{from{transform:scale(1)}to{transform:scale(1.06)}}
+  .d-text{color:#F5F5F7;display:grid;gap:14px;max-width:560px}
+  .d-text .k{color:#FF6B61}
+  .d-text h1{font-size:clamp(2rem,3.6vw,3.2rem);font-weight:750;letter-spacing:-.035em;line-height:1.08}
+  .d-text p{color:#A1A1A6;font-size:1.25rem;line-height:1.45}
+  .d-next{border-top:1px solid rgba(255,255,255,.14);padding-top:16px;margin-top:8px}
+  .d-next b{color:#F5F5F7;font-size:1.5rem;font-variant-numeric:tabular-nums;margin-right:10px}
+  @media (orientation:portrait){
+    .d-wrap{grid-template-columns:1fr;justify-items:center;text-align:center;align-content:center}
+    .d-wrap .pw{width:min(84vw,60vh)}
+    .d-text{justify-items:center}
+  }
+</style>
+</head>
+<body>
+  <div class="d-bg" id="bg"></div>
+  <div class="d-wrap" id="wrap">
+    <div class="pw" id="pw">
+      <img class="pw-bg" id="pwBg" alt="">
+      <span class="pw-date" id="date"></span>
+      <span class="pw-clock" id="clock">--:--</span>
+      <img class="pw-fg" id="pwFg" alt="">
+    </div>
+    <div class="d-text">
+      <span class="k" id="kicker"></span>
+      <h1 id="title"></h1>
+      <p id="lede"></p>
+      <p class="d-next" id="next"></p>
+    </div>
+  </div>
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const pad = (n) => String(n).padStart(2, "0");
+const store = (k, d) => { try { const v = localStorage.getItem("tos." + k); return v == null ? d : JSON.parse(v); } catch { return d; } };
+const utc = (iso) => Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10));
+const frDate = (iso) => { const s = new Date(utc(iso)).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" }); return s[0].toUpperCase() + s.slice(1); };
+function nowHK() {
+  const sim = store("simDate", null);
+  if (sim) { const [d, t = "09:00"] = sim.split("T"); const [h, m] = t.split(":").map(Number); return { date: d, hm: `${pad(h)}:${pad(m)}`, min: h * 60 + m }; }
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Hong_Kong", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map((x) => [x.type, x.value]));
+  return { date: `${p.year}-${p.month}-${p.day}`, hm: `${p.hour}:${p.minute}`, min: +p.hour * 60 + +p.minute };
+}
+let P = null, shown = null;
+async function load() {
+  for (const u of ["/pack/travelos/pack/pack.json", "/assets/seed/pack.json"]) {
+    try { const r = await fetch(u, { cache: "no-store" }); if (r.ok) return r.json(); } catch {}
+  }
+  return null;
+}
+function render() {
+  const n = nowHK();
+  $("clock").textContent = n.hm;
+  if (!P) return;
+  const before = n.date < P.trip.startDate;
+  const d = P.days.find((x) => x.date === n.date) || P.days[0];
+  if (shown !== d.id) {
+    shown = d.id;
+    const bg = d.depth?.bg || d.visits[0]?.image || d.image;
+    $("pwBg").src = `/pack/${bg}`;
+    $("bg").style.backgroundImage = `url(/pack/${bg})`;
+    if (d.depth) { $("pwFg").src = `/pack/${d.depth.fg}`; $("pwFg").hidden = false; } else $("pwFg").hidden = true;
+    $("pw").classList.toggle("front", !!d.depth?.clockFront);
+  }
+  $("date").textContent = frDate(n.date);
+  if (before) {
+    const left = Math.round((utc(P.trip.startDate) - utc(n.date)) / 86400000);
+    $("kicker").textContent = "Départ dans";
+    $("title").textContent = `${left} ${left > 1 ? "jours" : "jour"}`;
+    $("lede").textContent = `${d.city} · ${d.title}`;
+    $("next").textContent = "";
+  } else {
+    $("kicker").textContent = `Jour ${d.number} · ${d.city}`;
+    $("title").textContent = d.title;
+    $("lede").textContent = d.lede;
+    const toMin = (t) => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ""); return m ? +m[1] * 60 + +m[2] : -1; };
+    const nx = d.steps.find((s) => s.dayOffset === 0 && toMin(s.time) >= n.min - 15);
+    $("next").innerHTML = nx ? `<b>${nx.time}</b>${nx.text.replace(/[<>&]/g, "")}` : "";
+  }
+}
+// Petit déplacement chaque minute, contre le marquage de l'écran.
+function drift() {
+  const x = Math.round((Math.random() - .5) * 40), y = Math.round((Math.random() - .5) * 30);
+  $("wrap").style.transform = `translate(${x}px,${y}px)`;
+}
+["pwBg", "pwFg"].forEach((id) => { $(id).onerror = () => { $(id).hidden = true; }; });
+(async () => {
+  P = await load();
+  render(); setInterval(render, 15000); setInterval(drift, 60000);
+})();
+</script>
+</body>
+</html>

@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Synchroniser le paquet de contenu depuis le dépôt, en Wi-Fi. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Mettre la photo du jour en fond de l'écran verrouillé (réglage facultatif). -->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <queries>
         <!-- Savoir si les services Google sont présents, sans en dépendre. -->
@@ -70,6 +72,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <!-- Économiseur d'écran TravelOS (Réglages › Affichage › Économiseur d'écran). -->
+        <service
+            android:name=".TravelDream"
+            android:exported="true"
+            android:label="TravelOS"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.files"
