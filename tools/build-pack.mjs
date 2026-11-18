@@ -1,0 +1,220 @@
+#!/usr/bin/env node
+// Construit le paquet de contenu de TravelOS à partir du carnet de route (index.html).
+// Le carnet reste la source unique : textes, images et audios ne sont jamais recopiés à la main.
+//
+// Sorties :
+//   travelos/pack/pack.json      contenu du voyage (journées, visites, lieux, repas, réservations…)
+//   travelos/pack/manifest.json  liste des fichiers (pack + médias) avec taille et SHA-256
+//   android/app/src/main/assets/seed/pack.json  copie embarquée, utilisée avant la première synchro
+//
+// Usage : node tools/build-pack.mjs
+
+import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const html = readFileSync(join(root, "index.html"), "utf8");
+
+// Lit le littéral JS qui suit « const NOM= » (tableau ou objet), en ignorant les chaînes.
+function literal(name) {
+  const marker = `const ${name}=`;
+  const start = html.indexOf(marker);
+  if (start < 0) throw new Error(`${name} introuvable dans index.html`);
+  let i = start + marker.length;
+  const open = html[i];
+  const close = open === "{" ? "}" : "]";
+  if (open !== "{" && open !== "[") throw new Error(`${name} n'est pas un littéral`);
+  let depth = 0, quote = null;
+  for (; i < html.length; i++) {
+    const c = html[i];
+    if (quote) {
+      if (c === "\\") { i++; continue; }
+      if (c === quote) quote = null;
+      continue;
+    }
+    if (c === '"' || c === "'" || c === "`") { quote = c; continue; }
+    if (c === open) depth++;
+    else if (c === close && --depth === 0) break;
+  }
+  return new Function(`return ${html.slice(start + marker.length, i + 1)}`)();
+}
+const optional = (name, fallback) => { try { return literal(name); } catch { return fallback; } };
+
+const ENT = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
+const plain = (s) => String(s ?? "")
+  .replace(/<[^>]+>/g, "")
+  .replace(/&(#\d+|[a-z]+);/gi, (m, e) => e[0] === "#" ? String.fromCodePoint(Number(e.slice(1))) : ENT[e.toLowerCase()] ?? m)
+  .replace(/\s+/g, " ")
+  .trim();
+const list = (a) => (Array.isArray(a) ? a.map(plain).filter(Boolean) : []);
+const pad = (n) => String(n).padStart(2, "0");
+const media = (p) => (p ? String(p).split("?")[0] : null);
+
+const DAYS = literal("DAYS");
+const PLACES = literal("PLACES");
+const IMG = literal("IMG");
+const HOTELS = literal("HOTELS");
+const PHR = literal("PHR");
+const RESV = optional("RESV", []);
+const RESA = optional("RESA", []);
+const RV_ST = optional("RV_ST", {});
+const WEATHER = optional("WEATHER", []);
+const SIGNS = optional("SIGNS", []);
+const NUMS = optional("NUMS", []);
+const DS = optional("DS", []);
+const AUDIO_DAY = optional("AUDIO_DAY", {});
+const AUDIO_PLACE = optional("AUDIO_PLACE", {});
+const AUDIO_CITY = optional("AUDIO_CITY", {});
+const FX = optional("FX", {});
+const MEAL_DATA = optional("MEAL_DATA", {});
+
+// Taux du convertisseur du carnet : « const rates=Object.assign({HKD:9.08,…} ».
+function readRates() {
+  const m = html.match(/const rates=Object\.assign\((\{[^}]*\})/);
+  const r = m ? new Function(`return ${m[1]}`)() : { HKD: 9.08, CNY: 7.5, MOP: 9.35 };
+  const asOf = (html.match(/Taux d[’']([a-zéû]+ \d{4})/) || [])[1] || "";
+  return { base: "EUR", ...r, asOf };
+}
+
+// Numéros d'urgence et consulats (fiche « En cas de pépin » du carnet).
+const EMERGENCY = {
+  numbers: [
+    { region: "Hong Kong et Macao", label: "Police, pompiers, ambulance", number: "999" },
+    { region: "Chine", label: "Police", number: "110" },
+    { region: "Chine", label: "Ambulance", number: "120" },
+    { region: "Chine", label: "Pompiers", number: "119" },
+  ],
+  consulates: [
+    { name: "Consulat de France à Hong Kong et Macao", phone: "+852 3752 9900", address: "25/F et 26/F, Tower II, Admiralty Centre, 18 Harcourt Road, Admiralty", addressZh: "" },
+    { name: "Consulat de France à Canton", phone: "+86 20 2829 2000", address: "19e étage, Central Tower (Kaihua International Center), 5 Xiancun Road, Tianhe", addressZh: "天河区冼村路5号凯华国际中心19楼" },
+  ],
+  lost: { zh: "我迷路了。请帮我联系这家酒店。", fr: "Je suis perdu. Aidez-moi à joindre cet hôtel, s'il vous plaît." },
+};
+
+const img = (code) => media(IMG[code]) || null;
+const audio = (entry) => (entry ? { src: media(entry[0]), seconds: entry[1] || 0, title: entry[2] ? plain(entry[2]) : null } : null);
+// Un lieu peut avoir une piste [src, s] ou plusieurs [[src, s], [src, s]].
+const tracks = (entry) => (!entry ? [] : Array.isArray(entry[0]) ? entry.map(audio) : [audio(entry)]);
+
+// Images : jour = J + rang dans DAYS, lieu = L + rang dans PLACES (règle du carnet).
+const dayImage = new Map(DAYS.map((d, i) => [d.id, img(`J${pad(i + 1)}`)]));
+const placeImage = new Map(PLACES.map((p, i) => [p[0], img(`L${pad(i + 1)}`)]));
+
+const places = PLACES.map(([id, name, nameZh, lat, lng, lang]) => ({
+  id, name: plain(name), nameZh: plain(nameZh), lat, lng, lang: lang || "",
+  image: placeImage.get(id) || (FX[id] ? img(FX[id][0]) : null),
+  audio: tracks(AUDIO_PLACE[id]),
+}));
+const placeById = new Map(places.map((p) => [p.id, p]));
+
+const meals = (dayId) => (MEAL_DATA[dayId] || []).map((slot) => ({
+  slot: slot.slot, label: plain(slot.lab), time: slot.t || "", zone: plain(slot.zone),
+  options: (slot.opts || []).map((o) => ({
+    id: o.id, name: plain(o.fr), category: plain(o.cat), glyph: o.g || "", image: img(o.img),
+    address: plain(o.ad), summary: plain(o.l), rating: o.note || "", reviews: o.nb || "",
+    dishes: (o.plats || []).map(([n, d, code]) => ({ name: plain(n), note: plain(d), image: img(code) })),
+    charlie: plain(o.ch),
+  })),
+}));
+
+const days = [...DAYS]
+  .sort((a, b) => a.date.localeCompare(b.date))
+  .map((d, n) => ({
+    id: d.id,
+    number: n + 1,
+    date: d.date,
+    city: plain(d.city),
+    cityZh: plain(d.zh),
+    glyph: d.g || "",
+    tone: d.scene || "hk",
+    pace: d.r || "",
+    title: plain(d.title),
+    lede: plain(d.lede),
+    image: dayImage.get(d.id),
+    audio: audio(AUDIO_DAY[d.id]),
+    feature: d.feature ? { quote: plain(d.feature.q), text: plain(d.feature.t) } : null,
+    steps: (d.prog || []).map((it, k) => ({
+      key: `${d.id}:${k}`,
+      time: it[0],
+      text: plain(it[1]),
+      placeId: Array.isArray(it[2]) && it[2].length ? it[2][0] : null,
+      dayOffset: typeof it[3] === "number" ? it[3] : 0,
+    })),
+    visits: (d.visits || []).map((v) => ({
+      id: v.id, name: plain(v.n), nameZh: plain(v.zh), summary: plain(v.s), history: plain(v.h),
+      remark: plain(v.r), photo: plain(v.ph),
+      image: placeById.get(v.id)?.image || null, audio: placeById.get(v.id)?.audio || [],
+    })),
+    charlie: list(d.charlie),
+    photos: list(d.photos),
+    mealNotes: list(d.meals),
+    meals: meals(d.id),
+    planB: list(d.planB),
+    tips: list(d.tips),
+  }));
+
+const pack = {
+  formatVersion: 1,
+  trip: {
+    id: "hk-china-2027",
+    name: "Hong Kong & Chine du Sud",
+    startDate: "2027-02-20",
+    endDate: days[days.length - 1].date,
+    timeZone: "Asia/Hong_Kong",
+    currency: "HKD",
+  },
+  days,
+  places,
+  hotels: HOTELS.map(([date, name, nameZh, addressZh, phone, lang]) => ({ date, name: plain(name), nameZh, addressZh, phone: phone || "", lang: lang || "" })),
+  reservations: RESV.map(([date, time, type, title, detail, status, where]) => ({
+    date, time: plain(time), type, title: plain(title), detail: plain(detail), status, statusLabel: RV_ST[status] || status, where: plain(where),
+  })),
+  checklist: RESA.map(([id, title, when, who, done]) => ({ id, title: plain(title), when: plain(when), who: plain(who), done: !!done })),
+  phrases: PHR.map(([fr, zhHans, pinyin, zhHant, jyutping]) => ({ fr: plain(fr), zhHans, pinyin, zhHant: zhHant || "", jyutping: jyutping || "" })),
+  signs: SIGNS.map(([zh, fr]) => ({ zh, fr: plain(fr) })),
+  numbers: NUMS.map(([zh, fr]) => ({ zh, fr: plain(fr) })),
+  dimsum: DS.map(([zh, roman, fr]) => ({ zh, roman, fr: plain(fr) })),
+  weather: WEATHER.map(([place, min, max]) => ({ place, min, max })),
+  cityAudio: Object.entries(AUDIO_CITY).map(([id, e]) => ({ id, ...audio(e) })),
+  rates: readRates(),
+  emergency: EMERGENCY,
+};
+
+// Contrôles
+const missingPlaces = days.flatMap((d) => d.steps.filter((s) => s.placeId && !placeById.has(s.placeId)).map((s) => s.key));
+if (missingPlaces.length) console.warn(`Étapes liées à un lieu inconnu : ${missingPlaces.join(", ")}`);
+
+const json = JSON.stringify(pack);
+const packDir = join(root, "travelos/pack");
+mkdirSync(packDir, { recursive: true });
+writeFileSync(join(packDir, "pack.json"), json);
+const seedDir = join(root, "android/app/src/main/assets/seed");
+mkdirSync(seedDir, { recursive: true });
+writeFileSync(join(seedDir, "pack.json"), json);
+
+// Manifeste : tous les médias cités + le pack lui-même.
+const referenced = new Set(["travelos/pack/pack.json"]);
+JSON.stringify(pack, (k, v) => {
+  if (typeof v === "string" && /^(img|audio)\//.test(v)) referenced.add(v);
+  return v;
+});
+const files = [];
+const absent = [];
+for (const path of [...referenced].sort()) {
+  const full = join(root, path);
+  if (!existsSync(full)) { absent.push(path); continue; }
+  const data = readFileSync(full);
+  files.push({ path, size: statSync(full).size, sha256: createHash("sha256").update(data).digest("hex") });
+}
+if (absent.length) console.warn(`Médias cités mais absents du dépôt : ${absent.join(", ")}`);
+const version = createHash("sha256").update(json).digest("hex").slice(0, 12);
+const manifest = { formatVersion: 1, packVersion: version, files };
+writeFileSync(join(packDir, "manifest.json"), JSON.stringify(manifest, null, 1) + "\n");
+
+const total = files.reduce((n, f) => n + f.size, 0);
+const steps = days.reduce((n, d) => n + d.steps.length, 0);
+const visits = days.reduce((n, d) => n + d.visits.length, 0);
+console.log(`Paquet ${version} : ${days.length} journées, ${steps} étapes, ${visits} visites, ${places.length} lieux, ` +
+  `${pack.reservations.length} réservations, ${files.length} fichiers (${(total / 1e6).toFixed(1)} Mo)`);

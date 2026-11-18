@@ -13,29 +13,24 @@ Cahier des charges : document « TravelOS — Cahier des charges v2 ».
 
 Chaque modification du dépôt (code, carnet, images, audios) fabrique automatiquement une nouvelle APK.
 
-## Ce que contient la phase 1 (prototype)
+## Fonctionnement (version 0.2)
 
-- Écran « Qui voyage ? » : profils Pilote et Carnet.
-- Accueil Pilote : heure de Hong Kong et de Paris, compte à rebours, journée en cours et prochaine étape,
-  progression, état de la batterie, du réseau et du GPS, raccourcis.
-- Programme : les 13 journées et leurs étapes, à cocher (terminée, ignorée), enregistrées dans la base locale.
-- Carnet de route complet, embarqué et lisible sans réseau (WebView locale verrouillée).
-- Profil Carnet : page d'attente au style scrapbook ; sortie par appui long sur le dragon en haut à gauche.
-- Diagnostic : caractéristiques de la tablette, test GPS sans les services Google, contenu de la base.
+- **Moteur natif** (Kotlin) : écran d'accueil Android, base Room de l'état sur place (étapes faites),
+  synchronisation du contenu, test GPS sans Google, liste des applications, liens vers les réglages.
+- **Interface** : page HTML embarquée (`app/src/main/assets/ui`), style du carnet de route, verre liquide.
+- **Contenu** : `travelos/pack/pack.json` + images et audios du dépôt, générés depuis le carnet par
+  `node tools/build-pack.mjs`. L'APK n'embarque que le texte (pack.json, environ 200 Ko) ; les médias
+  (environ 90 Mo) se téléchargent en Wi-Fi depuis *Plus › Contenu › Synchroniser*, vérifiés par SHA-256.
+- **Écran d'accueil** : *Plus › Réglages › Choisir TravelOS*. La tablette démarre alors sur « Qui voyage ? ».
+  Pour revenir à l'accueil Lenovo : même bouton, puis choisir l'accueil d'origine.
 
 ## Organisation du code
 
 | Module | Rôle |
 | --- | --- |
-| `app` | Activité, navigation, écrans (Compose), WebView du carnet |
-| `core` | Modèles communs, état de la tablette, calculs de dates |
-| `data` | Base Room (voyages, journées, étapes, lieux, hôtels, phrases, détections), réglages DataStore, chargement du voyage embarqué |
-
-Les modules `location`, `maps`, `media`, `tools`, `notifications`, `widgets` et `importexport`
-seront ajoutés avec les phases qui les utilisent.
-
-Les données du voyage viennent du carnet de route : `node tools/extract-pack.mjs` lit `index.html`
-et écrit `app/src/main/assets/seed/*.json`. On ne saisit rien deux fois.
+| `app` | Activité (WebView verrouillée), pont JavaScript, test GPS, icônes d'applications |
+| `core` | État de la tablette (batterie, réseau, GPS, mémoire) |
+| `data` | Base Room de l'état sur place, synchronisation du paquet de contenu |
 
 ## Fabriquer soi-même (facultatif)
 

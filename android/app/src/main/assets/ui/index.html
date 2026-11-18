@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>TravelOS</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <!-- Choix du profil, affiché à chaque démarrage -->
+  <section id="chooser" class="chooser" hidden>
+    <div class="chooser-bg"><img id="chooserBg" alt=""></div>
+    <div class="chooser-in">
+      <p class="eyebrow">TravelOS</p>
+      <h1 class="display">Qui voyage ?</h1>
+      <div class="profiles">
+        <button class="profile" data-profile="pilote">
+          <span class="ring glass"><span class="disc tone-hk" id="avPilote"><b class="han">港</b></span></span>
+          <strong>Pilote</strong><small>Guide, programme, billets</small>
+        </button>
+        <button class="profile" data-profile="carnet">
+          <span class="ring glass"><span class="disc tone-gz" id="avCarnet"><b class="han">龍</b></span></span>
+          <strong>Carnet</strong><small>Le carnet de Charlie</small>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profil Pilote -->
+  <div id="pilote" hidden>
+    <header class="top glass">
+      <button class="avatar" id="switchProfile" aria-label="Changer de profil"><span class="han">港</span></button>
+      <b id="pageTitle">Aujourd'hui</b>
+      <span class="clock"><span id="clockHk">--:--</span><small id="clockSub"></small></span>
+    </header>
+    <main id="view"></main>
+    <nav class="bar glass" id="tabbar">
+      <span class="lens" id="lens"></span>
+      <button data-tab="today"><span class="g han">今</span>Aujourd'hui</button>
+      <button data-tab="programme"><span class="g han">日</span>Programme</button>
+      <button data-tab="places"><span class="g han">地</span>Lieux</button>
+      <button data-tab="pocket"><span class="g han">袋</span>Poche</button>
+      <button data-tab="more"><span class="g han">更</span>Plus</button>
+    </nav>
+  </div>
+
+  <!-- Profil Carnet (Charlie) -->
+  <section id="kids" class="kids" hidden>
+    <button class="kids-exit" id="kidsExit" aria-label="Quitter le carnet (appui long)"><span class="han">龍</span></button>
+    <main class="kids-page">
+      <h1><span>Le carnet de Charlie</span></h1>
+      <figure class="polaroid"><div class="scene" id="kidsScene"><span class="han">龍</span></div><figcaption>Xiao Long prépare la valise</figcaption></figure>
+      <div class="card"><div class="count" id="kidsCount">…</div><div id="kidsSleeps">dodos avant Hong Kong</div></div>
+      <div class="label">Bientôt : une histoire par jour</div>
+    </main>
+  </section>
+
+  <!-- Fiche plein écran (lieu, journée) -->
+  <div id="sheet" class="sheet" hidden>
+    <div class="sheet-top"><button class="round glass" data-close aria-label="Fermer">‹</button><span id="sheetTitle"></span></div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+
+  <!-- Texte à montrer (chauffeur, serveur) -->
+  <div id="show" class="show" hidden>
+    <button class="round glass show-x" data-close-show aria-label="Fermer">×</button>
+    <div class="show-in"><div class="show-big han" id="showBig"></div><div class="show-alt han" id="showAlt"></div><p id="showFr"></p></div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <audio id="player" preload="none"></audio>
+  <div id="miniPlayer" class="mini-player glass" hidden>
+    <button id="mpToggle" class="round">❚❚</button>
+    <div class="mp-info"><b id="mpTitle"></b><span class="mp-bar"><i id="mpProgress"></i></span></div>
+    <span id="mpTime">0:00</span>
+    <button id="mpClose" class="round small">×</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

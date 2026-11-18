@@ -25,6 +25,5 @@ dependencies {
     api(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
-    api(libs.datastore.preferences)
     api(libs.coroutines.android)
 }

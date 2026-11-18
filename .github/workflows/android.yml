@@ -6,6 +6,7 @@ on:
     paths:
       - "android/**"
       - "tools/**"
+      - "travelos/**"
       - "index.html"
       - "img/**"
       - "audio/**"
@@ -30,8 +31,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Extraire les données du carnet de route
-        run: node tools/extract-pack.mjs
+      - name: Construire le paquet de contenu
+        run: node tools/build-pack.mjs
 
       - uses: actions/setup-java@v4
         with:
