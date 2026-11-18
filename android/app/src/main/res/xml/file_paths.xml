@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Photo prise pour « Demander au guide », partagée avec DeepSeek. -->
+    <cache-path name="guide" path="guide/" />
+</paths>

@@ -16,7 +16,7 @@ android {
         minSdk = 30
         targetSdk = 35
         versionCode = runNumber
-        versionName = "0.2.$runNumber"
+        versionName = "0.3.$runNumber"
     }
 
     signingConfigs {
@@ -62,4 +62,5 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.webkit)
+    implementation(libs.mlkit.translate)
 }

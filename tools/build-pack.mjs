@@ -69,6 +69,10 @@ const AUDIO_PLACE = optional("AUDIO_PLACE", {});
 const AUDIO_CITY = optional("AUDIO_CITY", {});
 const FX = optional("FX", {});
 const MEAL_DATA = optional("MEAL_DATA", {});
+const NOTE = optional("NOTE", {});
+const SHOTS = optional("SHOTS", {});
+const SPEC = optional("SPEC", []);
+const COMPRENDRE = optional("COMPRENDRE", []);
 
 // Taux du convertisseur du carnet : « const rates=Object.assign({HKD:9.08,…} ».
 function readRates() {
@@ -106,6 +110,14 @@ const places = PLACES.map(([id, name, nameZh, lat, lng, lang]) => ({
   id, name: plain(name), nameZh: plain(nameZh), lat, lng, lang: lang || "",
   image: placeImage.get(id) || (FX[id] ? img(FX[id][0]) : null),
   audio: tracks(AUDIO_PLACE[id]),
+  note: NOTE[id] ? {
+    kicker: plain(NOTE[id].k), lede: plain(NOTE[id].l),
+    sections: (NOTE[id].s || []).map(([t, x]) => ({ title: plain(t), text: plain(x) })),
+    know: list(NOTE[id].d), practical: plain(NOTE[id].p),
+  } : null,
+  shots: (SHOTS[id] || []).map(([type, title, kind, how, phone, camera]) => ({
+    type: type === "v" ? "video" : "photo", title: plain(title), kind: kind || "", how: plain(how), phone: plain(phone), camera: plain(camera),
+  })),
 }));
 const placeById = new Map(places.map((p) => [p.id, p]));
 
@@ -116,8 +128,52 @@ const meals = (dayId) => (MEAL_DATA[dayId] || []).map((slot) => ({
     address: plain(o.ad), summary: plain(o.l), rating: o.note || "", reviews: o.nb || "",
     dishes: (o.plats || []).map(([n, d, code]) => ({ name: plain(n), note: plain(d), image: img(code) })),
     charlie: plain(o.ch),
+    tags: list(o.tags),
+    reviews2: (o.avis || []).map(([t, x]) => ({ title: plain(t), text: plain(x) })),
+    zh: plain(o.zh || ""),
   })),
 }));
+
+// Pages éditoriales du carnet (Comprendre, fiches pratiques) : HTML nettoyé, images locales.
+function article(id) {
+  const start = html.indexOf(`id="p-${id}"`);
+  if (start < 0) return null;
+  const open = html.lastIndexOf("<section", start);
+  let end = html.indexOf("</section>", start);
+  // la section peut contenir des sous-sections : on avance jusqu'à la fermeture équilibrée
+  let depth = 0, i = open;
+  const re = /<section\b|<\/section>/g;
+  re.lastIndex = open;
+  let m;
+  while ((m = re.exec(html))) {
+    depth += m[0] === "</section>" ? -1 : 1;
+    if (depth === 0) { end = m.index; break; }
+  }
+  let body = html.slice(html.indexOf(">", open) + 1, end);
+  const title = plain((html.slice(open, start + 200).match(/data-t="([^"]*)"/) || [])[1] || id);
+  const glyph = (html.slice(open, start + 200).match(/data-zh="([^"]*)"/) || [])[1] || "";
+  const images = [];
+  body = body
+    .replace(/<script[\s\S]*?<\/script>/g, "")
+    .replace(/<button[\s\S]*?<\/button>/g, "")
+    .replace(/<input[^>]*>/g, "")
+    .replace(/<div class="dishes"[^>]*><\/div>/g, "")
+    .replace(/<div class="art ([^"]*)" data-art="([^"]*)" data-tone="([^"]*)" data-g="([^"]*)"><\/div>/g, (all, cls, code, tone, g) => {
+      const src = img(code);
+      if (src) images.push(src);
+      const t = TONE_CLASS[tone] || "hk";
+      return src ? `<figure class="art ${cls} tone-${t} has-img"><img src="/pack/${src}" alt="" loading="lazy"></figure>`
+        : `<figure class="art ${cls} tone-${t}"><span class="g">${g}</span></figure>`;
+    })
+    .replace(/\s(id|onclick|aria-[a-z]+|data-go)="[^"]*"/g, "")
+    .replace(/data-tone="([^"]*)"/g, (a, t) => `data-tone="${TONE_CLASS[t] || t}"`)
+    .replace(/\n\s*/g, "\n");
+  return { id, title, glyph, html: body.trim(), images };
+}
+const TONE_CLASS = { hk: "hk", mo: "mo", sz: "sz", gz: "gz", ys: "li", li: "li", lt: "lt", food: "food", ui: "ui" };
+const articles = [...COMPRENDRE.map((id) => ({ id, group: "comprendre" })), { id: "dimsum", group: "pratique" }, { id: "massage", group: "pratique" }, { id: "langue", group: "pratique" }]
+  .map(({ id, group }) => { const a = article(id); return a && { ...a, group }; })
+  .filter(Boolean);
 
 const days = [...DAYS]
   .sort((a, b) => a.date.localeCompare(b.date))
@@ -179,6 +235,8 @@ const pack = {
   weather: WEATHER.map(([place, min, max]) => ({ place, min, max })),
   cityAudio: Object.entries(AUDIO_CITY).map(([id, e]) => ({ id, ...audio(e) })),
   rates: readRates(),
+  articles,
+  specialties: SPEC.map(([region, dishes]) => ({ region: plain(region), dishes: dishes.map(([zh, name, text, verdict]) => ({ zh, name: plain(name), text: plain(text), verdict: verdict || "" })) })),
   emergency: EMERGENCY,
 };
 
@@ -195,7 +253,7 @@ mkdirSync(seedDir, { recursive: true });
 writeFileSync(join(seedDir, "pack.json"), json);
 
 // Manifeste : tous les médias cités + le pack lui-même.
-const referenced = new Set(["travelos/pack/pack.json"]);
+const referenced = new Set(["travelos/pack/pack.json", ...articles.flatMap((a) => a.images)]);
 JSON.stringify(pack, (k, v) => {
   if (typeof v === "string" && /^(img|audio)\//.test(v)) referenced.add(v);
   return v;

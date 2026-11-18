@@ -18,7 +18,7 @@ let states = {};              // état des étapes : { "j3:4": "DONE" }
 let stack = [];               // historique de navigation du profil Pilote
 const TONE = { hk: "hk", mo: "mo", sz: "sz", gz: "gz", ys: "li", li: "li", lt: "lt" };
 const RV_ICON = { vol: "機", hotel: "床", train: "車", ferry: "船", resto: "食", activite: "票", voiture: "車" };
-const TABS = { today: "Aujourd'hui", programme: "Programme", places: "Lieux", pocket: "Dans la poche", more: "Plus" };
+const TABS = { today: "Aujourd'hui", programme: "Programme", places: "Lieux", food: "Repas", guide: "Guide", pocket: "Dans la poche", more: "Plus et réglages" };
 
 /* ================= temps ================= */
 
@@ -103,13 +103,15 @@ function toast(msg) {
 function go(tab, view = null, arg = null, push = true) {
   if (push) stack.push({ tab, view, arg });
   closeSheet(); closeShow();
+  let found = false;
   $$("#tabbar button").forEach((b, i) => {
     const on = b.dataset.tab === tab;
     b.classList.toggle("on", on);
-    if (on) $("#lens").style.transform = `translateX(${i * 100}%)`;
+    if (on) { $("#lens").style.transform = `translateX(${i * 100}%)`; found = true; }
   });
+  $("#lens").style.opacity = found ? "1" : "0";
   const v = $("#view");
-  const r = { today: viewToday, programme: view === "day" ? () => viewDay(arg) : viewProgramme, places: viewPlaces, pocket: () => viewPocket(arg), more: () => viewMore(arg) }[tab];
+  const r = { today: viewToday, programme: view === "day" ? () => viewDay(arg) : viewProgramme, places: viewPlaces, food: () => viewFood(arg), guide: () => viewGuide(arg), pocket: () => viewPocket(arg), more: () => viewMore(arg) }[tab];
   v.innerHTML = `<div class="view">${r()}</div>`;
   $("#pageTitle").textContent = view === "day" ? `Jour ${dayById(arg)?.number} · ${dayById(arg)?.city}` : TABS[tab];
   window.scrollTo(0, 0);
@@ -152,18 +154,21 @@ function viewToday() {
     <span class="chip ${dev.network === "NONE" ? "off" : ""}"><i></i>${dev.airplane ? "Mode avion" : esc(dev.networkLabel || "")}</span>
     <span class="chip ${dev.gps ? "" : "warn"}"><i></i>${dev.gps ? "GPS actif" : "GPS coupé"}</span></div>`;
 
+  const preview = (list) => list.length ? `<ul class="t-list">${list.map((s) => `<li><b>${esc(s.time)}</b><span>${esc(s.text)}</span></li>`).join("")}</ul>` : "";
   let over, next;
   if (ph.kind === "before") {
     over = `<p class="eyebrow">Départ dans</p><div class="big">${ph.left}<small>${ph.left > 1 ? "jours" : "jour"}</small></div><p>${frDate(P.trip.startDate)} · Nice → Hong Kong</p>`;
     next = `<span class="k">Première journée</span><div class="time">${shortDate(d.date)}</div>
       <div class="txt"><b>${esc(d.title)}.</b> ${esc(d.lede)}</div>
-      <div class="acts"><button class="pill red" data-day="${d.id}">Ouvrir la journée</button></div>`;
+      <div class="acts"><button class="pill red" data-day="${d.id}">Ouvrir la journée</button></div>
+      ${preview(d.steps.filter((x) => x.dayOffset === 0).slice(0, 4))}`;
   } else if (ph.kind === "during") {
     over = `<p class="eyebrow">Jour ${d.number} · ${esc(d.city)}</p><div class="big" style="font-size:clamp(1.8rem,3.6vw,2.6rem)">${esc(d.title)}</div>`;
     const s = ph.next;
     next = s ? `<span class="k">Prochaine étape</span><div class="time">${esc(s.time)}</div>
       <div class="txt">${esc(s.text)}</div>
-      <div class="acts"><button class="pill red" data-done="${s.key}">C'est fait</button>${s.placeId ? `<button class="pill" data-place="${s.placeId}">Fiche du lieu</button>` : ""}<button class="pill" data-day="${d.id}">La journée</button></div>`
+      <div class="acts"><button class="pill red" data-done="${s.key}">C'est fait</button>${s.placeId ? `<button class="pill" data-place="${s.placeId}">Fiche du lieu</button>` : ""}<button class="pill" data-day="${d.id}">La journée</button></div>
+      ${preview(d.steps.filter((x) => x.dayOffset === 0 && x !== s && status(x.key) === "PLANNED" && (stepMinutes(x.time) ?? 0) > (stepMinutes(s.time) ?? 0)).slice(0, 3))}`
       : `<span class="k">Journée terminée</span><div class="txt">Toutes les étapes du jour sont faites. Bonne soirée !</div><div class="acts"><button class="pill" data-day="${d.id}">Revoir la journée</button></div>`;
   } else {
     over = `<p class="eyebrow">Bon retour</p><div class="big">Le voyage est terminé</div>`;
@@ -173,14 +178,14 @@ function viewToday() {
     ["日", "Journée", "gz", `data-day="${d.id}"`],
     ["票", "Billets", "mo", `data-pocket="resas"`],
     ["話", "Phrases", "li", `data-pocket="phrases"`],
-    ["換", "Devises", "sz", `data-pocket="conv"`],
-    ["救", "SOS", "gz", `data-pocket="sos"`],
+    ["食", "Repas", "food", `data-food="${d.id}"`],
+    ["問", "Demander", "ui", `data-guide="ask"`],
     ["聽", "Récit du jour", "hk", d.audio ? `data-audio="${esc(d.audio.src)}" data-title="Jour ${d.number} · ${esc(d.city)}"` : `data-day="${d.id}"`],
   ].map(([g, l, t, a]) => `<button class="q tone-${t}" ${a}><span class="ic">${g}</span>${l}</button>`).join("");
 
   return `<section class="today">
-    <div class="t-hero">${art(d.image, tone, d.glyph, "")}<div class="over glass">${chips}${over}</div></div>
-    <div class="t-next">${next}</div>
+    <div class="t-hero">${art(d.image, tone, d.glyph, "")}<div class="over glass">${over}</div></div>
+    <div class="t-next">${next}${chips}</div>
     <div class="t-quick">${quick}</div>
   </section>`;
 }
@@ -244,24 +249,47 @@ function viewDay(id) {
 
 /* ================= Fiche d'un lieu ================= */
 
+function shotHtml(x) {
+  return `<div class="shot"><span class="k">${x.type === "video" ? "Vidéo" : "Photo"}${x.kind ? ` · ${esc(x.kind)}` : ""}</span><b>${esc(x.title)}</b>
+    ${x.how ? `<p>${esc(x.how)}</p>` : ""}${x.phone ? `<p><strong>iPhone</strong> · ${esc(x.phone)}</p>` : ""}${x.camera ? `<p><strong>Reflex</strong> · ${esc(x.camera)}</p>` : ""}</div>`;
+}
 function openPlace(id) {
   const p = placeById(id);
   if (!p) return;
   const v = visitOf(id);
+  const n = p.note;
   const tone = placeTone[id] || "hk";
   const days = (placeDays[id] || []).map(dayById).filter(Boolean);
   const tracks = (p.audio || []).filter(Boolean);
-  const sec = (t, x) => x ? `<div class="fsec"><h3>${t}</h3><p>${esc(x)}</p></div>` : "";
+  const sec = (t, x) => x ? `<div class="fsec"><h3>${esc(t)}</h3><p>${esc(x)}</p></div>` : "";
   $("#sheetTitle").textContent = placeCity[id] || "";
-  $("#sheetBody").innerHTML = `${art(p.image, tone, p.nameZh.slice(0, 1), "fhero")}
-    <div class="fhead"><p class="k">${esc(placeCity[id] || "")}</p><h2>${esc(v?.name || p.name)}</h2><p class="fzh">${esc(p.nameZh)}</p></div>
+  $("#sheetBody").innerHTML = `<div class="fgrid">${art(p.image, tone, p.nameZh.slice(0, 1), "fhero")}<div>
+    <div class="fhead"><p class="k">${esc(n?.kicker || placeCity[id] || "")}</p><h2>${esc(v?.name || p.name)}</h2><p class="fzh">${esc(p.nameZh)}</p></div>
     ${tracks.length ? `<div class="acts">${tracks.map((a, i) => audioBtn(a, tracks.length > 1 ? `Audioguide ${i + 1}` : "Audioguide")).join("")}</div>` : ""}
-    ${v?.summary ? `<p class="flede">${esc(v.summary)}</p>` : ""}
-    ${sec("L'histoire", v?.history)}${sec("À remarquer", v?.remark)}${sec("La photo", v?.photo)}
+    ${n?.lede || v?.summary ? `<p class="flede">${esc(n?.lede || v.summary)}</p>` : ""}
+    ${(n?.sections || []).map((x) => sec(x.title, x.text)).join("")}
+    ${!n?.sections?.length ? sec("L'histoire", v?.history) : ""}
+    ${sec("À repérer", v?.remark)}
+    ${n?.know?.length ? `<div class="tile"><h3>À savoir</h3><ul>${n.know.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+    ${sec("Sur place", n?.practical)}
     <div class="acts"><button class="pill red" data-showtext="${esc(p.nameZh)}" data-showfr="${esc(p.name)}">Montrer au chauffeur</button>
-      <button class="pill" data-map="${p.id}">Ouvrir dans une carte</button></div>
+      <button class="pill" data-map="${p.id}">Ouvrir dans une carte</button>
+      <button class="pill" data-askplace="${p.id}">Demander au guide</button></div>
     ${days.length ? `<div class="fsec"><h3>Au programme</h3><div class="acts">${days.map((d) => `<button class="pill" data-day="${d.id}">Jour ${d.number} · ${esc(d.city)}</button>`).join("")}</div></div>` : ""}
-    <p class="muted" style="font-size:.85rem">${p.lat.toFixed(5)}, ${p.lng.toFixed(5)} (WGS-84)</p>`;
+  </div></div>
+  ${p.shots?.length ? `<section class="sec"><h2 class="h3">Conseils photo et vidéo</h2><div class="bento">${p.shots.map(shotHtml).join("")}</div></section>` : ""}
+  <p class="muted" style="font-size:.85rem">${p.lat.toFixed(5)}, ${p.lng.toFixed(5)} (WGS-84)</p>`;
+  $("#sheet").hidden = false;
+  $("#sheet").scrollTop = 0;
+}
+function openArticle(id) {
+  const a = P.articles.find((x) => x.id === id);
+  if (!a) return;
+  $("#sheetTitle").textContent = a.title;
+  let extra = "";
+  if (id === "dimsum") extra = `<section class="sec"><h2 class="h2">La carte.</h2><div class="signs">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}"><span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div></section>`;
+  $("#sheetBody").innerHTML = `<article class="cmp">${a.html}</article>${extra}`;
+  $$("#sheetBody img").forEach((im) => { im.onerror = () => im.remove(); });
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
 }
@@ -291,6 +319,155 @@ after.places = () => {
   });
   draw();
 };
+
+/* ================= Repas ================= */
+
+const FOOD = [["days", "Par jour"], ["spec", "Spécialités"], ["dimsum", "Dim sum"]];
+function viewFood(arg) {
+  const seg = FOOD.some(([k]) => k === arg) ? arg : (dayById(arg) ? "days" : store.get("foodSeg", "days"));
+  store.set("foodSeg", seg);
+  const body = seg === "spec" ? foodSpec() : seg === "dimsum" ? foodDimsum() : foodDays(dayById(arg)?.id);
+  return `<header class="hero-t small"><h1 class="display">À table</h1><p class="sub">Les adresses choisies pour chaque repas, sans fruits de mer pour l'un de vous, et le verdict pour Charlie.</p></header>
+    <div class="sec"><div style="text-align:center"><div class="seg">${FOOD.map(([k, l]) => `<button class="${k === seg ? "on" : ""}" data-food="${k}">${l}</button>`).join("")}</div></div>${body}</div>`;
+}
+function foodDays(dayId) {
+  const withMeals = P.days.filter((d) => d.meals.length || d.mealNotes.length);
+  const today = phase().day;
+  const cur = dayById(dayId) || (today && withMeals.includes(today) ? today : withMeals[0]);
+  store.set("foodDay", cur.id);
+  const chips = `<div class="chips" style="justify-content:center">${withMeals.map((d) => `<button class="pill ${d.id === cur.id ? "red" : ""}" data-food="${d.id}">J${d.number} · ${esc(d.city)}</button>`).join("")}</div>`;
+  const tone = toneOf(cur);
+  const slots = cur.meals.length ? cur.meals.map((m) => `<section class="tile"><span class="k">${esc(m.label)}${m.time ? ` · ${esc(m.time)}` : ""}</span><h3>${esc(m.zone)}</h3>
+    ${m.options.map((o) => `<div class="opt">${art(o.image, tone, o.glyph)}
+      <div><b>${esc(o.name)}</b> ${o.zh ? `<span class="han muted">${esc(o.zh)}</span>` : ""}
+      <div class="meta">${esc([o.category, o.rating ? `${o.rating}/5${o.reviews ? ` (${o.reviews} avis)` : ""}` : "", o.address].filter(Boolean).join(" · "))}</div>
+      <p>${esc(o.summary)}</p>
+      ${o.reviews2.map((r) => `<p><strong style="color:var(--ink)">${esc(r.title)}</strong> ${esc(r.text)}</p>`).join("")}
+      ${o.charlie ? `<p><strong style="color:var(--ink)">Pour Charlie</strong> ${esc(o.charlie)}</p>` : ""}
+      ${o.dishes.length ? `<div class="dishes">${o.dishes.map((x) => `<span class="dish">${x.image ? `<img src="/pack/${esc(x.image)}" alt="" onerror="this.remove()">` : ""}<b>${esc(x.name)}</b>&nbsp;<span class="muted">${esc(x.note)}</span></span>`).join("")}</div>` : ""}
+      </div></div>`).join("")}</section>`).join("")
+    : `<div class="tile"><ul>${cur.mealNotes.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  return `${chips}<div style="display:grid;gap:18px">${slots}</div>`;
+}
+function foodSpec() {
+  const label = { "SÛR": "Sûr", SURV: "À surveiller", VOUS: "Pour vous" };
+  return `<p class="muted" style="text-align:center">Sûr : cuit, chaud, sans arêtes. À surveiller : arêtes, épices. Pour vous : pas pour Charlie.</p>` +
+    P.specialties.map((r) => `<section class="sec"><h2 class="h3">${esc(r.region)}</h2><div>${r.dishes.map((x) => `<button class="spec" style="width:100%;text-align:left" data-showtext="${esc(x.zh)}" data-showfr="${esc(x.name)}">
+      <span class="zh">${esc(x.zh)}</span><span><b>${esc(x.name)}</b><small>${esc(x.text)}</small></span>${x.verdict ? `<span class="verdict v-${esc(x.verdict)}">${label[x.verdict] || esc(x.verdict)}</span>` : ""}</button>`).join("")}</div></section>`).join("");
+}
+function foodDimsum() {
+  return `<div class="acts" style="justify-content:center"><button class="pill red" data-article="dimsum">Le dim sum, mode d'emploi</button></div>
+    <div class="signs">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}"><span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div>`;
+}
+
+/* ================= Guide ================= */
+
+const GUIDE = [["learn", "Comprendre"], ["ask", "Demander"], ["translate", "Traduire"], ["photo", "Photo"]];
+function viewGuide(arg) {
+  const seg = GUIDE.some(([k]) => k === arg) ? arg : store.get("guideSeg", "learn");
+  store.set("guideSeg", seg);
+  const body = { learn: guideLearn, ask: guideAsk, translate: guideTranslate, photo: guidePhoto }[seg]();
+  return `<header class="hero-t small"><h1 class="display">Le guide</h1></header>
+    <div class="sec"><div style="text-align:center"><div class="seg">${GUIDE.map(([k, l]) => `<button class="${k === seg ? "on" : ""}" data-guide="${k}">${l}</button>`).join("")}</div></div>${body}</div>`;
+}
+function guideLearn() {
+  const card = (a) => {
+    const im = a.images[0];
+    const tone = (a.html.match(/tone-([a-z]+)/) || [])[1] || "hk";
+    return `<button class="acard" data-article="${a.id}">${art(im, tone, a.glyph, "")}<b>${esc(a.title)}</b></button>`;
+  };
+  const g = (k) => P.articles.filter((a) => a.group === k);
+  return `<section class="sec"><h2 class="h3">Comprendre les villes</h2><div class="grid">${g("comprendre").map(card).join("")}</div></section>
+    <section class="sec"><h2 class="h3">Fiches pratiques</h2><div class="grid">${g("pratique").map(card).join("")}</div></section>
+    ${P.cityAudio.length ? `<section class="sec"><h2 class="h3">Les villes racontées</h2><div class="acts">${P.cityAudio.map((a) => audioBtn(a, a.title || a.id)).join("")}</div></section>` : ""}`;
+}
+function guideContext() {
+  const ph = phase();
+  const d = ph.day;
+  if (ph.kind === "during" && d) return `Nous sommes à ${d.city}, le ${frDate(d.date).toLowerCase()}. Programme du jour : ${d.title}.`;
+  return "Nous voyageons à Hong Kong, Macao et dans le sud de la Chine, du 21 février au 5 mars.";
+}
+const GUIDE_RULE = "Réponds en français, simplement et en quelques paragraphes. Nous sommes une famille française avec une petite fille de 3 ans.";
+const GUIDE_FOOD = /\b(mang|plat|menu|restau|dim ?sum|goût|déjeun|dîn|commander|épic|boisson|dessert|cuisine|soupe|nouille|viande|poisson)/i;
+function guideAsk(ctx) {
+  const chips = ["Qu'est-ce que je vois sur cette photo ?", "Explique-le à une enfant de 3 ans", "L'histoire de ce lieu", "Que dit ce panneau ?", "Que veut dire ce plat ?", "Traduis ce menu"];
+  return `<div class="tile ask"><h3>Demander à Xiao Long</h3>
+    <p>La question part dans DeepSeek avec le contexte du voyage, et une photo si vous le souhaitez. Il faut du réseau : partage de connexion de l'iPhone ou Wi-Fi.</p>
+    <label class="muted" style="font-size:.9rem">Contexte</label><textarea id="askCtx" style="min-height:70px">${esc(ctx || store.get("askCtx", "") || guideContext())}</textarea>
+    <div class="chips">${chips.map((c) => `<button class="pill" data-askchip="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+    <textarea id="askQ" placeholder="Votre question"></textarea>
+    <div class="acts"><button class="pill red" data-ask="photo">Prendre une photo et demander</button><button class="pill" data-ask="text">Demander sans photo</button></div></div>`;
+}
+function guideTranslate() {
+  return `<div class="tile tr"><h3>Traducteur hors ligne</h3>
+    <p id="trState">…</p>
+    <div class="seg" id="trDir"><button class="${store.get("trDir", "fr") === "fr" ? "on" : ""}" data-trdir="fr">Français → chinois</button><button class="${store.get("trDir", "fr") === "zh" ? "on" : ""}" data-trdir="zh">Chinois → français</button></div>
+    <textarea id="trIn" placeholder="Tapez ou dictez votre phrase">${esc(store.get("trLast", ""))}</textarea>
+    <div class="acts"><button class="pill red" id="trGo">Traduire</button><button class="pill" id="trDl" hidden>Télécharger les langues (Wi-Fi)</button></div>
+    <div class="tr-out" id="trOut"><span class="muted">La traduction apparaît ici.</span></div>
+    <div class="acts" id="trActs" hidden><button class="pill red" id="trShow">Montrer en grand</button><button class="pill" id="trSpeakZh">Écouter (mandarin)</button><button class="pill" id="trSpeakYue">Écouter (cantonais)</button></div></div>
+  <div class="tile"><h3>Conversation et caméra</h3><p>Pour traduire en parlant ou en photographiant un menu, Google Traduction fonctionne aussi hors ligne une fois la langue « chinois » téléchargée dans l'appli. À installer avant le départ : le Play Store ne fonctionne pas en Chine continentale.</p>
+    <div class="acts"><button class="pill" id="gTr">Ouvrir Google Traduction</button></div></div>
+  <div class="acts" style="justify-content:center"><button class="pill" data-pocket="phrases">Phrases toutes prêtes</button><button class="pill" data-pocket="signs">Panneaux</button></div>`;
+}
+function guidePhoto() {
+  const d = phase().day || P.days[0];
+  const cur = dayById(store.get("photoDay", d.id)) || d;
+  const ids = [...new Set([...cur.steps.map((s) => s.placeId), ...cur.visits.map((v) => v.id)].filter(Boolean))];
+  const items = ids.map(placeById).filter((p) => p && p.shots?.length);
+  return `<div class="chips" style="justify-content:center">${P.days.map((x) => `<button class="pill ${x.id === cur.id ? "red" : ""}" data-photoday="${x.id}">J${x.number} · ${esc(x.city)}</button>`).join("")}</div>
+    ${cur.photos.length ? `<div class="tile"><h3>Les photos du jour</h3><ul>${cur.photos.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+    ${items.map((p) => `<section class="sec"><div class="sec-h"><h2 class="h3">${esc(p.name)}</h2><button class="pill" data-place="${p.id}">Fiche</button></div><div class="bento">${p.shots.map(shotHtml).join("")}</div></section>`).join("") || `<p class="muted" style="text-align:center">Pas de conseil photo pour cette journée.</p>`}`;
+}
+after.guide = () => {
+  if ($("#askQ")) {
+    $("#askCtx").addEventListener("input", (e) => store.set("askCtx", e.target.value));
+  }
+  if ($("#trIn")) {
+    const st = () => {
+      const s = json(N.translatorState(), {});
+      $("#trState").textContent = s.ready ? "Langues installées : la traduction fonctionne sans réseau." : s.downloading ? "Téléchargement des langues en cours (environ 60 Mo)…" : s.error ? `Erreur : ${s.error}` : "Les langues ne sont pas encore installées : téléchargez-les une fois en Wi-Fi.";
+      $("#trDl").hidden = s.ready || s.downloading;
+      if (s.downloading && $("#trIn")) setTimeout(st, 1500);
+      return s;
+    };
+    st();
+    $("#trDl").addEventListener("click", () => { N.translatorDownload(); setTimeout(st, 500); });
+    $("#trDir").addEventListener("click", (e) => { const b = e.target.closest("[data-trdir]"); if (!b) return; store.set("trDir", b.dataset.trdir); $$("#trDir button").forEach((x) => x.classList.toggle("on", x === b)); });
+    $("#trGo").addEventListener("click", () => {
+      const text = $("#trIn").value.trim(); if (!text) return;
+      store.set("trLast", text);
+      if (!json(N.translatorState(), {}).ready) return toast("Téléchargez d'abord les langues, en Wi-Fi.");
+      $("#trOut").innerHTML = `<span class="muted">Traduction…</span>`;
+      N.translate("tr", text, store.get("trDir", "fr") === "fr");
+    });
+    $("#gTr").addEventListener("click", () => N.openGoogleTranslate($("#trIn").value.trim()));
+    $("#trShow").addEventListener("click", () => openShow(lastTr.zh || lastTr.text, "", lastTr.src));
+    $("#trSpeakZh").addEventListener("click", () => speak(lastTr.zh || lastTr.text, "zh-CN"));
+    $("#trSpeakYue").addEventListener("click", () => speak(lastTr.zh || lastTr.text, "yue-HK"));
+  }
+};
+let lastTr = {};
+function onTranslate(id, r) {
+  if (!$("#trOut")) return;
+  if (r.error) { $("#trOut").innerHTML = `<span style="color:var(--red-ink)">${esc(r.error)}</span>`; return; }
+  const toZh = store.get("trDir", "fr") === "fr";
+  lastTr = { text: r.text, zh: toZh ? r.text : $("#trIn").value.trim(), src: $("#trIn").value.trim() };
+  $("#trOut").innerHTML = toZh ? `<div class="zh">${esc(r.text)}</div>` : `<div style="font-size:1.4rem">${esc(r.text)}</div>`;
+  $("#trActs").hidden = false;
+}
+function speak(text, lang) {
+  const r = N.speak(text, lang);
+  if (r === "missing") toast("Voix non installée : Réglages Android › Synthèse vocale › installer la voix chinoise.");
+  else if (r === "off") toast("Synthèse vocale indisponible.");
+}
+function askGuide(withPhoto) {
+  const ctx = $("#askCtx").value.trim();
+  const q = $("#askQ").value.trim() || "Explique-moi ce que je vois.";
+  const food = GUIDE_FOOD.test(q + " " + ctx);
+  const text = [ctx, q, (withPhoto ? "La photo jointe montre ce que nous regardons. " : "") + GUIDE_RULE + (food ? " L'un de nous ne mange pas de fruits de mer." : "")].filter(Boolean).join("\n\n");
+  N.askGuide(text, withPhoto);
+}
 
 /* ================= Poche ================= */
 
@@ -415,6 +592,8 @@ function moreSettings() {
   return `<div class="bento">
     <div class="tile"><h3>Écran d'accueil</h3><p>${home ? "TravelOS est l'écran d'accueil : la tablette démarre sur le choix du profil." : "Pour démarrer la tablette sur TravelOS, choisissez-le comme application d'accueil."}</p>
       <div class="acts"><button class="pill ${home ? "" : "red"}" data-settings="home">${home ? "Changer d'écran d'accueil" : "Choisir TravelOS"}</button><button class="pill" data-settings="android">Réglages Android</button></div></div>
+    <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
+      <div class="seg">${[["auto", "Automatique"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => `<button class="${store.get("theme", "auto") === k ? "on" : ""}" data-theme="${k}">${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Verre</h3><p>Le verre transparent peut être remplacé par un fond mat si l'affichage ralentit.</p>
       <div class="seg" id="glassSeg"><button class="${store.get("matte", false) ? "" : "on"}" data-matte="0">Transparent</button><button class="${store.get("matte", false) ? "on" : ""}" data-matte="1">Mat</button></div></div>
     <div class="tile"><h3>Simuler une date</h3><p>Pour essayer l'accueil comme pendant le voyage. Heure de Hong Kong.</p>
@@ -511,6 +690,14 @@ document.addEventListener("click", (e) => {
   if (d.closeShow !== undefined) return closeShow();
   if (d.pocket) return go("pocket", null, d.pocket, stack[stack.length - 1]?.tab !== "pocket");
   if (d.more) return go("more", null, d.more, false);
+  if (d.food) return go("food", null, d.food, stack[stack.length - 1]?.tab !== "food");
+  if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
+  if (d.article) return openArticle(d.article);
+  if (d.photoday) { store.set("photoDay", d.photoday); return go("guide", null, "photo", false); }
+  if (d.askchip) { $("#askQ").value = d.askchip; return; }
+  if (d.ask) return askGuide(d.ask === "photo");
+  if (d.askplace) { const p = placeById(d.askplace); closeSheet(); go("guide", null, "ask"); $("#askCtx").value = `Nous visitons : ${p.name} (${p.nameZh}), à ${placeCity[p.id] || ""}.`; return; }
+  if (d.theme) { store.set("theme", d.theme); applyTheme(); return go("more", null, "settings", false); }
   if (d.audio) return playAudio(d.audio, d.title);
   if (d.showtext) return openShow(d.showtext, d.showalt, d.showfr);
   if (d.map) { const p = placeById(d.map); if (p) N.openMap(p.lat, p.lng, p.name); return; }
@@ -561,7 +748,12 @@ function openKids() {
 
 /* ================= démarrage ================= */
 
-function applyPrefs() { document.body.classList.toggle("matte", !!store.get("matte", false)); }
+function applyTheme() {
+  const mode = store.get("theme", "auto");
+  const dark = mode === "dark" || (mode === "auto" && N.systemDark());
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+}
+function applyPrefs() { document.body.classList.toggle("matte", !!store.get("matte", false)); applyTheme(); }
 function tick() {
   const n = nowHK();
   $("#clockHk").textContent = n.hm;
@@ -582,7 +774,7 @@ function decorateChooser() {
   }
 }
 
-window.TravelOS = { back, onHome, toast, onPermission: () => {} };
+window.TravelOS = { back, onHome, toast, onPermission: () => {}, onTranslate, onSystemTheme: () => applyTheme() };
 
 (async () => {
   applyPrefs();
@@ -616,5 +808,9 @@ function mockBridge() {
     openUrl: () => {}, openMap: () => {},
     apps: () => JSON.stringify(["Amap", "Appareil photo", "Chrome", "DeepSeek", "Galerie", "Paramètres", "Swiss", "Trip.com"].map((l) => ({ pkg: "x." + l, label: l }))),
     launchApp: () => {}, openSettings: () => {}, isDefaultHome: () => false, keepScreenOn: () => {},
+    systemDark: () => matchMedia("(prefers-color-scheme: dark)").matches,
+    translatorState: () => JSON.stringify({ ready: false, downloading: false, error: null, tts: true }),
+    translatorDownload: () => {}, translate: (id) => setTimeout(() => window.TravelOS.onTranslate(id, { text: "你好", error: null }), 300),
+    speak: () => "ok", openGoogleTranslate: () => {}, hasApp: () => false, askGuide: () => {},
   };
 }

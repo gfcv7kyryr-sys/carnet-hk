@@ -45,6 +45,10 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
             .toString()
     }
 
+    /** Mode sombre du système (réglage de la tablette). */
+    @JavascriptInterface
+    fun systemDark(): Boolean = activity.isSystemDark()
+
     // ---- État des étapes (Room) ----
 
     @JavascriptInterface
@@ -89,6 +93,59 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
 
     @JavascriptInterface
     fun gpsState(): String = c.gps.json()
+
+    // ---- Traducteur hors ligne ----
+
+    @JavascriptInterface
+    fun translatorState(): String = c.translator.state()
+
+    @JavascriptInterface
+    fun translatorDownload() = main.post { c.translator.download() }
+
+    /** Résultat renvoyé à TravelOS.onTranslate(id, { text, error }). */
+    @JavascriptInterface
+    fun translate(id: String, text: String, toChinese: Boolean) = main.post {
+        c.translator.translate(text, toChinese) { result, error ->
+            val payload = JSONObject().put("text", result ?: JSONObject.NULL).put("error", error ?: JSONObject.NULL)
+            activity.callJs("TravelOS.onTranslate(${JSONObject.quote(id)}, $payload)")
+        }
+    }
+
+    @JavascriptInterface
+    fun speak(text: String, languageTag: String): String = c.translator.speak(text, languageTag)
+
+    /** Ouvre Google Traduction (conversation, caméra) avec le texte, s'il est installé. */
+    @JavascriptInterface
+    fun openGoogleTranslate(text: String) {
+        val pkg = "com.google.android.apps.translate"
+        if (!isInstalled(pkg)) {
+            activity.toastJs("Google Traduction n'est pas installé : à installer depuis le Play Store avant le départ.")
+            return
+        }
+        val intent = if (text.isBlank()) activity.packageManager.getLaunchIntentForPackage(pkg)
+        else Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text).setPackage(pkg)
+        intent?.let { start(it) }
+    }
+
+    @JavascriptInterface
+    fun hasApp(pkg: String): Boolean = isInstalled(pkg)
+
+    // ---- Demander au guide (DeepSeek) ----
+
+    /** Copie la question, prend une photo si demandé, puis la partage avec DeepSeek. */
+    @JavascriptInterface
+    fun askGuide(text: String, withPhoto: Boolean) = main.post { activity.askGuide(text, withPhoto) }
+
+    private fun isInstalled(pkg: String): Boolean = try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            activity.packageManager.getPackageInfo(pkg, PackageManager.PackageInfoFlags.of(0))
+        } else {
+            @Suppress("DEPRECATION") activity.packageManager.getPackageInfo(pkg, 0)
+        }
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
 
     // ---- Sorties vers Android ----
 

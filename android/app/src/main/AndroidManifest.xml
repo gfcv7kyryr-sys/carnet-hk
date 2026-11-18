@@ -12,6 +12,19 @@
     <queries>
         <!-- Savoir si les services Google sont présents, sans en dépendre. -->
         <package android:name="com.google.android.gms" />
+        <!-- Demander au guide (DeepSeek) et traduction (Google Traduction), si installés. -->
+        <package android:name="com.deepseek.chat" />
+        <package android:name="com.google.android.apps.translate" />
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
         <!-- Ouvrir les liens externes du carnet (Amap, sites de réservation). -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -57,5 +70,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 </manifest>

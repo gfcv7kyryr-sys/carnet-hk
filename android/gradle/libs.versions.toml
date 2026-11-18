@@ -7,6 +7,7 @@ coreKtx = "1.15.0"
 room = "2.6.1"
 webkit = "1.12.1"
 coroutines = "1.9.0"
+mlkitTranslate = "17.0.3"
 
 [libraries]
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
@@ -16,6 +17,8 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "webkit" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
+mlkit-translate = { group = "com.google.mlkit", name = "translate", version.ref = "mlkitTranslate" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -3,7 +3,10 @@ package app.travelos
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.WindowManager
@@ -17,12 +20,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.webkit.WebViewAssetLoader
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
+import java.io.File
 
 /**
  * Activité unique de TravelOS. Elle sert aussi d'écran d'accueil Android (catégorie HOME) :
@@ -38,6 +43,14 @@ class MainActivity : ComponentActivity() {
     private val pickFiles = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         fileCallback?.onReceiveValue(uris.toTypedArray())
         fileCallback = null
+    }
+
+    private var pendingGuideText: String? = null
+    private var pendingGuidePhoto: Uri? = null
+    private val takePhoto = registerForActivityResult(ActivityResultContracts.TakePicture()) { ok ->
+        val text = pendingGuideText ?: return@registerForActivityResult
+        shareToGuide(text, if (ok) pendingGuidePhoto else null)
+        pendingGuideText = null
     }
 
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -114,6 +127,59 @@ class MainActivity : ComponentActivity() {
         (application as TravelOsApp).container.gps.stop()
         webView.destroy()
         super.onDestroy()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        js("window.TravelOS && TravelOS.onSystemTheme && TravelOS.onSystemTheme(${isSystemDark()})")
+    }
+
+    fun isSystemDark(): Boolean =
+        (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+    fun callJs(code: String) = js(code)
+
+    /** Question au guide : texte copié, photo facultative, partage vers DeepSeek (ou au choix). */
+    fun askGuide(text: String, withPhoto: Boolean) {
+        copyToClipboard(text)
+        if (!withPhoto) { shareToGuide(text, null); return }
+        val dir = File(cacheDir, "guide").apply { mkdirs() }
+        val file = File(dir, "photo-${System.currentTimeMillis()}.jpg")
+        dir.listFiles()?.filter { it.name != file.name }?.forEach { it.delete() }
+        val uri = FileProvider.getUriForFile(this, "$packageName.files", file)
+        pendingGuideText = text
+        pendingGuidePhoto = uri
+        try {
+            takePhoto.launch(uri)
+        } catch (e: ActivityNotFoundException) {
+            pendingGuideText = null
+            shareToGuide(text, null)
+        }
+    }
+
+    private fun shareToGuide(text: String, photo: Uri?) {
+        val send = Intent(Intent.ACTION_SEND).apply {
+            type = if (photo != null) "image/jpeg" else "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+            if (photo != null) {
+                putExtra(Intent.EXTRA_STREAM, photo)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+        }
+        val deepseek = "com.deepseek.chat"
+        val target = if (packageManager.getLaunchIntentForPackage(deepseek) != null) send.setPackage(deepseek)
+        else Intent.createChooser(send, "Demander au guide")
+        try {
+            startActivity(target)
+            toastJs("Question copiée : si elle n'apparaît pas, collez-la dans DeepSeek.")
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent.createChooser(send.setPackage(null), "Demander au guide"))
+        }
+    }
+
+    private fun copyToClipboard(text: String) {
+        val cm = getSystemService(ClipboardManager::class.java) ?: return
+        cm.setPrimaryClip(ClipData.newPlainText("Question au guide", text))
     }
 
     fun requestLocationPermission() {

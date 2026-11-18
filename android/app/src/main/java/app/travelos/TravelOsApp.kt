@@ -10,12 +10,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
 /** Dépendances partagées (injection manuelle, sans bibliothèque). */
-class AppContainer(context: Context) {
+class AppContainer(private val context: Context) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     val database: StateDatabase = StateDatabase.build(context)
     val deviceStatus = DeviceStatus(context)
     val packSync = PackSync(context)
     val gps = GpsProbe(context)
+    /** Traducteur hors ligne, créé à la première utilisation. */
+    val translator by lazy { OfflineTranslator(context) }
     val prefs = context.getSharedPreferences("travelos", Context.MODE_PRIVATE)
 
     /** Adresse d'où l'on télécharge le paquet (dépôt du carnet). */
