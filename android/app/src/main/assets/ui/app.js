@@ -144,22 +144,21 @@ function phase() {
 
 /* Icônes façon iPhone : image travelos/icons/<id>.webp si elle existe (à générer), sinon dégradé + caractère. */
 const APPS = {
-  day: ["日", "Journée", "gz"], programme: ["曆", "Programme", "hk"], places: ["地", "Lieux", "li"], food: ["食", "Repas", "food"],
-  guide: ["解", "Guide", "ui"], tickets: ["票", "Billets", "mo"], phrases: ["話", "Phrases", "li"], ask: ["問", "Demander", "ui"],
-  translate: ["譯", "Traduire", "sz"], sos: ["救", "SOS", "gz"], audio: ["聽", "Récit", "hk"], games: ["戲", "Jeux", "lt"],
+  tickets: ["票", "Billets", "mo"], phrases: ["話", "Phrases", "li"], translate: ["譯", "Traduire", "sz"],
+  ask: ["問", "Demander", "ui"], sos: ["救", "SOS", "gz"], audio: ["聽", "Récit", "hk"],
+  conv: ["換", "Devises", "food"], photo: ["影", "Photo", "lt"], games: ["戲", "Jeux", "li"],
 };
 function appIcon(id, d, size = "") {
   const [g, label, tone] = APPS[id];
   const act = {
-    day: `data-day="${d.id}"`, programme: `data-tab="programme"`, places: `data-tab="places"`, food: `data-food="${d.id}"`,
-    guide: `data-guide="learn"`, tickets: `data-pocket="resas"`, phrases: `data-pocket="phrases"`, ask: `data-guide="ask"`,
-    translate: `data-guide="translate"`, sos: `data-pocket="sos"`,
+    tickets: `data-pocket="resas"`, phrases: `data-pocket="phrases"`, ask: `data-guide="ask"`,
+    translate: `data-guide="translate"`, sos: `data-pocket="sos"`, conv: `data-pocket="conv"`, photo: `data-guide="photo"`,
     audio: d.audio ? `data-audio="${esc(d.audio.src)}" data-title="Jour ${d.number} · ${esc(d.city)}"` : `data-day="${d.id}"`,
     games: `data-soon="Les jeux arrivent dans une prochaine version."`,
   }[id];
   return `<button class="app-ic ${size}" ${act}><span class="sq tone-${tone}"><b class="han">${g}</b><img src="/pack/travelos/icons/${id}.webp" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"></span><span class="lb">${label}</span></button>`;
 }
-const HOME_APPS = ["day", "programme", "places", "food", "guide", "tickets", "phrases", "ask", "translate", "sos", "audio", "games"];
+const HOME_APPS = ["tickets", "phrases", "translate", "ask", "sos", "conv", "audio", "photo", "games"];
 
 function homeData() {
   const ph = phase();
@@ -190,49 +189,30 @@ function homeData() {
   const calendar = `<span class="k">Au programme · ${shortDate(d.date)}</span>${cal(daySteps, ph.next?.key)}`;
   return { ph, d, tone: toneOf(d), now, dateLabel, eyebrow, headline, sub, nextHtml, calendar };
 }
-const bigClock = (n) => `<div class="bigclock" data-bigclock>${n.hm}</div>`;
-const photo = (h, cls = "") => `<div class="photo ${cls}">${art(h.d.image, h.tone, h.d.glyph)}</div>`;
-
-const HOME_STYLES = { a: "Écran verrouillé", b: "Widgets", c: "Magazine", d: "Journal" };
+/* Accueil : calendrier du jour à gauche, photo du jour en carré avec l'heure en transparence
+   derrière le sujet (effet de profondeur), grille d'applications réduite à droite. */
 function viewToday() {
   const h = homeData();
-  const style = store.get("homeStyle", "a");
-  const switcher = `<div class="style-switch glass">${Object.keys(HOME_STYLES).map((k) => `<button class="${k === style ? "on" : ""}" data-homestyle="${k}" title="${HOME_STYLES[k]}">${k.toUpperCase()}</button>`).join("")}</div>`;
-  const icons = (list, size) => list.map((id) => appIcon(id, h.d, size)).join("");
-  let html;
-  if (style === "a") {
-    // A · Écran verrouillé : photo plein écran, grande horloge en verre, widgets et dock.
-    html = `<section class="home-a">
-      <div class="bg">${art(h.d.image, h.tone, h.d.glyph)}<i class="shade"></i></div>
-      <div class="a-clock"><p class="a-date">${esc(h.dateLabel)}</p>${bigClock(h.now)}<p class="a-tag glass">${h.ph.kind === "before" ? `${esc(h.eyebrow)} <b>${esc(h.headline)}</b>` : h.ph.kind === "during" ? `<b>Jour ${h.d.number}</b> · ${esc(h.d.title)}` : esc(h.headline)}</p></div>
-      <div class="a-widgets"><div class="w glass">${h.nextHtml}</div><div class="w glass cal">${h.calendar}</div></div>
-      <div class="a-dock glass">${icons(HOME_APPS.slice(0, 8), "")}</div>
-    </section>`;
-  } else if (style === "b") {
-    // B · Widgets façon iPad : photo-widget avec horloge, prochaine étape, calendrier, grille d'icônes.
-    html = `<section class="home-b">
-      <div class="b-photo">${photo(h)}<div class="b-over glass"><p>${esc(h.dateLabel)}</p>${bigClock(h.now)}</div><div class="b-cap glass"><span>${esc(h.eyebrow)}</span><b>${esc(h.headline)}</b></div></div>
-      <div class="w card-w w-next">${h.nextHtml}</div>
-      <div class="w card-w cal">${h.calendar}</div>
-      <div class="b-icons">${icons(HOME_APPS, "")}</div>
-    </section>`;
-  } else if (style === "c") {
-    // C · Magazine : grand titre centré façon page produit Apple, photo large, calendrier en verre posé dessus.
-    html = `<section class="home-c">
-      <header><p class="eyebrow">${esc(h.dateLabel)} · ${esc(h.now.hm)}</p><h1 class="display">${esc(h.ph.kind === "before" ? `Dans ${h.headline}.` : h.headline)}</h1>
-      <p class="sub">${esc(h.ph.kind === "before" ? h.d.title : h.eyebrow)}</p></header>
-      <div class="c-photo">${photo(h)}<div class="w glass cal">${h.calendar}</div></div>
-      <div class="c-icons">${icons(HOME_APPS, "")}</div>
-    </section>`;
-  } else {
-    // D · Journal : la photo en grand à gauche, la journée à droite (prochaine étape, calendrier), les icônes en bas.
-    html = `<section class="home-d">
-      <div class="d-photo"><div class="photo tall">${art(h.d.visits[0]?.image || h.d.image, h.tone, h.d.glyph)}</div><div class="photo wide">${art(h.d.image, h.tone, h.d.glyph)}</div><div class="d-over glass">${bigClock(h.now)}<p>${esc(h.dateLabel)}</p></div><div class="d-cap glass"><span>${esc(h.eyebrow)}</span><b>${esc(h.headline)}</b></div></div>
-      <div class="d-side"><div class="w card-w">${h.nextHtml}</div><div class="w card-w cal">${h.calendar}</div></div>
-      <div class="d-icons">${icons(HOME_APPS, "small")}</div>
-    </section>`;
-  }
-  return html + switcher;
+  const d = h.d;
+  const dep = d.depth;
+  const bg = dep?.bg || d.visits[0]?.image || d.image;
+  const capTitle = h.ph.kind === "before" ? `${h.eyebrow} ${h.headline}` : h.ph.kind === "during" ? d.title : h.headline;
+  const capSub = h.ph.kind === "before" ? `Jour 1 · ${shortDate(d.date)} · ${d.city}` : h.ph.kind === "during" ? `Jour ${d.number} · ${d.city}` : "";
+  return `<section class="home-w">
+    <div class="w card-w hw-cal">
+      ${h.ph.kind === "during" && h.ph.next ? `<div class="hw-next">${h.nextHtml}</div>` : ""}
+      ${h.calendar}
+      <div class="acts"><button class="pill" data-day="${d.id}">Toute la journée ›</button></div>
+    </div>
+    <button class="pw tone-${h.tone} ${dep?.clockFront ? "front" : ""}" data-day="${d.id}" aria-label="Ouvrir la journée">
+      <span class="pw-ph">${bg ? `<img class="pw-bg" src="/pack/${esc(bg)}" alt="" onerror="this.remove()">` : ""}</span>
+      <span class="pw-date">${esc(h.dateLabel)}</span>
+      <span class="pw-clock" data-bigclock>${h.now.hm}</span>
+      ${dep ? `<img class="pw-fg" src="/pack/${esc(dep.fg)}" alt="" onerror="this.remove()">` : ""}
+      <span class="pw-cap glass"><small>${esc(capSub)}</small><b>${esc(capTitle)}</b></span>
+    </button>
+    <div class="hw-apps">${HOME_APPS.map((id) => appIcon(id, d)).join("")}</div>
+  </section>`;
 }
 
 /* ================= Programme ================= */
@@ -637,8 +617,6 @@ function moreSettings() {
   return `<div class="bento">
     <div class="tile"><h3>Écran d'accueil</h3><p>${home ? "TravelOS est l'écran d'accueil : la tablette démarre sur le choix du profil." : "Pour démarrer la tablette sur TravelOS, choisissez-le comme application d'accueil."}</p>
       <div class="acts"><button class="pill ${home ? "" : "red"}" data-settings="home">${home ? "Changer d'écran d'accueil" : "Choisir TravelOS"}</button><button class="pill" data-settings="android">Réglages Android</button></div></div>
-    <div class="tile"><h3>Accueil</h3><p>Quatre présentations de la page d'accueil.</p>
-      <div class="seg">${Object.entries(HOME_STYLES).map(([k, l]) => `<button class="${store.get("homeStyle", "a") === k ? "on" : ""}" data-homestyle-set="${k}">${k.toUpperCase()} · ${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
       <div class="seg">${[["auto", "Automatique"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => `<button class="${store.get("theme", "auto") === k ? "on" : ""}" data-theme="${k}">${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Verre</h3><p>Le verre transparent peut être remplacé par un fond mat si l'affichage ralentit.</p>
@@ -740,9 +718,7 @@ document.addEventListener("click", (e) => {
   if (d.food) return go("food", null, d.food, stack[stack.length - 1]?.tab !== "food");
   if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
   if (d.article) return openArticle(d.article);
-  if (d.homestyle) { store.set("homeStyle", d.homestyle); return go("today", null, null, false); }
   if (d.soon) return toast(d.soon);
-  if (d.homestyleSet) { store.set("homeStyle", d.homestyleSet); return go("more", null, "settings", false); }
   if (d.photoday) { store.set("photoDay", d.photoday); return go("guide", null, "photo", false); }
   if (d.askchip) { $("#askQ").value = d.askchip; return; }
   if (d.ask) return askGuide(d.ask === "photo");

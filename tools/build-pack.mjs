@@ -97,6 +97,7 @@ const EMERGENCY = {
   lost: { zh: "我迷路了。请帮我联系这家酒店。", fr: "Je suis perdu. Aidez-moi à joindre cet hôtel, s'il vous plaît." },
 };
 
+const DEPTH_META = (() => { try { return JSON.parse(readFileSync(join(root, "travelos/depth/meta.json"), "utf8")); } catch { return {}; } })();
 const img = (code) => media(IMG[code]) || null;
 const audio = (entry) => (entry ? { src: media(entry[0]), seconds: entry[1] || 0, title: entry[2] ? plain(entry[2]) : null } : null);
 // Un lieu peut avoir une piste [src, s] ou plusieurs [[src, s], [src, s]].
@@ -189,6 +190,9 @@ const days = [...DAYS]
     title: plain(d.title),
     lede: plain(d.lede),
     image: dayImage.get(d.id),
+    // Photo du jour en carré + sujet détouré (tools/make-depth.py), pour l'effet de profondeur de l'accueil.
+    depth: existsSync(join(root, `travelos/depth/${d.id}-fg.webp`))
+      ? { bg: `travelos/depth/${d.id}-bg.webp`, fg: `travelos/depth/${d.id}-fg.webp`, clockFront: (DEPTH_META[d.id]?.cover ?? 0) > 0.33 } : null,
     audio: audio(AUDIO_DAY[d.id]),
     feature: d.feature ? { quote: plain(d.feature.q), text: plain(d.feature.t) } : null,
     steps: (d.prog || []).map((it, k) => ({
@@ -254,6 +258,7 @@ writeFileSync(join(seedDir, "pack.json"), json);
 
 // Manifeste : tous les médias cités + le pack lui-même.
 const referenced = new Set(["travelos/pack/pack.json", ...articles.flatMap((a) => a.images)]);
+for (const d of days) if (d.depth) { referenced.add(d.depth.bg); referenced.add(d.depth.fg); }
 // Icônes de l'accueil (travelos/icons/<id>.webp), ajoutées dès qu'elles sont déposées dans le dépôt.
 const iconDir = join(root, "travelos/icons");
 if (existsSync(iconDir)) for (const f of readdirSync(iconDir)) if (/\.(webp|png)$/.test(f)) referenced.add(`travelos/icons/${f}`);
