@@ -10,7 +10,7 @@
 // Usage : node tools/build-pack.mjs
 
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -254,6 +254,9 @@ writeFileSync(join(seedDir, "pack.json"), json);
 
 // Manifeste : tous les médias cités + le pack lui-même.
 const referenced = new Set(["travelos/pack/pack.json", ...articles.flatMap((a) => a.images)]);
+// Icônes de l'accueil (travelos/icons/<id>.webp), ajoutées dès qu'elles sont déposées dans le dépôt.
+const iconDir = join(root, "travelos/icons");
+if (existsSync(iconDir)) for (const f of readdirSync(iconDir)) if (/\.(webp|png)$/.test(f)) referenced.add(`travelos/icons/${f}`);
 JSON.stringify(pack, (k, v) => {
   if (typeof v === "string" && /^(img|audio)\//.test(v)) referenced.add(v);
   return v;
