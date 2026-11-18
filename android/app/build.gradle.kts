@@ -17,6 +17,9 @@ android {
         targetSdk = 35
         versionCode = runNumber
         versionName = "0.3.$runNumber"
+        // La tablette (MediaTek Dimensity 6300) est en 64 bits ARM : on n'embarque que cette
+        // architecture pour les bibliothèques natives du traducteur, ce qui divise la taille de l'APK.
+        ndk { abiFilters += "arm64-v8a" }
     }
 
     signingConfigs {
