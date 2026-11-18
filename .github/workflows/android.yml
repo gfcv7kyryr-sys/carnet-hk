@@ -1,0 +1,97 @@
+name: TravelOS (APK)
+
+on:
+  push:
+    branches: [main, "travelos-*"]
+    paths:
+      - "android/**"
+      - "tools/**"
+      - "index.html"
+      - "img/**"
+      - "audio/**"
+      - ".github/workflows/android.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: travelos-apk
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Extraire les données du carnet de route
+        run: node tools/extract-pack.mjs
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Fabriquer l'APK
+        working-directory: android
+        shell: bash
+        run: |
+          chmod +x gradlew
+          set -o pipefail
+          ./gradlew assembleRelease --stacktrace --no-daemon 2>&1 | tee build.log
+
+      - name: Signaler les erreurs de compilation
+        if: failure()
+        shell: bash
+        run: |
+          if [ -f android/build.log ]; then
+            grep -E "^e: |error:|What went wrong|FAILURE|Could not" android/build.log | head -40 | while IFS= read -r line; do
+              echo "::error::${line}"
+            done
+          fi
+
+      - name: Publier le journal d'échec (branche ci-logs)
+        if: failure()
+        shell: bash
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          [ -f android/build.log ] || echo "Pas de journal Gradle (échec avant la compilation)." > android/build.log
+          mkdir -p /tmp/ci-logs && cp android/build.log /tmp/ci-logs/build.log
+          cd /tmp/ci-logs
+          echo "${GITHUB_SHA}" > commit.txt
+          git init -q -b ci-logs
+          git config user.name "TravelOS CI"
+          git config user.email "ci@users.noreply.github.com"
+          git add -A && git commit -qm "Journal de l'exécution ${GITHUB_RUN_NUMBER}"
+          git push -qf "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ci-logs
+
+      - name: Renommer l'APK
+        run: cp android/app/build/outputs/apk/release/app-release.apk TravelOS.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TravelOS-${{ github.run_number }}
+          path: TravelOS.apk
+          retention-days: 14
+
+      - name: Publier sur la page de téléchargement
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: travelos-dev
+          name: TravelOS, version de test
+          prerelease: true
+          make_latest: false
+          files: TravelOS.apk
+          body: |
+            Version de test de TravelOS, fabriquée automatiquement à chaque modification.
+            Sur la tablette, téléchargez TravelOS.apk puis ouvrez-le pour l'installer ou le mettre à jour.
+            Exécution n° ${{ github.run_number }}, commit ${{ github.sha }}.

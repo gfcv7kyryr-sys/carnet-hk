@@ -1,0 +1,34 @@
+[
+ {
+  "date": "2027-02-25",
+  "name": "Nathan Hotel",
+  "nameZh": "彌敦酒店",
+  "addressZh": "九龍佐敦彌敦道378號",
+  "phone": "+852 2388 5141",
+  "lang": "zh-HK"
+ },
+ {
+  "date": "2027-03-01",
+  "name": "voco Guangzhou Shifu",
+  "nameZh": "广州十甫voco酒店",
+  "addressZh": "广州市荔湾区第十甫路188号",
+  "phone": "+86 20 8138 0088",
+  "lang": "zh-CN"
+ },
+ {
+  "date": "2027-03-03",
+  "name": "Lijiang Island Riverside Resort",
+  "nameZh": "阳朔闲云居度假酒店",
+  "addressZh": "阳朔县兴坪镇莲岛湾19号",
+  "phone": "+86 177 7608 0906",
+  "lang": "zh-CN"
+ },
+ {
+  "date": "2027-03-05",
+  "name": "Disney's Hollywood Hotel",
+  "nameZh": "香港迪士尼好萊塢酒店",
+  "addressZh": "香港大嶼山香港迪士尼樂園度假區",
+  "phone": "",
+  "lang": "zh-HK"
+ }
+]

@@ -1,0 +1,163 @@
+[
+ {
+  "fr": "Bonjour",
+  "zhHans": "你好",
+  "pinyin": "nǐ hǎo",
+  "zhHant": "你好",
+  "jyutping": "néih hóu"
+ },
+ {
+  "fr": "Merci (pour un service)",
+  "zhHans": "谢谢",
+  "pinyin": "xièxie",
+  "zhHant": "唔該",
+  "jyutping": "m̀h gōi"
+ },
+ {
+  "fr": "Merci (pour un cadeau)",
+  "zhHans": "谢谢",
+  "pinyin": "xièxie",
+  "zhHant": "多謝",
+  "jyutping": "dō jeh"
+ },
+ {
+  "fr": "Pardon, excusez-moi",
+  "zhHans": "不好意思",
+  "pinyin": "bù hǎo yìsi",
+  "zhHant": "唔該",
+  "jyutping": "m̀h gōi"
+ },
+ {
+  "fr": "Oui / Non",
+  "zhHans": "是 / 不是",
+  "pinyin": "shì / bú shì",
+  "zhHant": "係 / 唔係",
+  "jyutping": "haih / m̀h haih"
+ },
+ {
+  "fr": "Combien ?",
+  "zhHans": "多少钱？",
+  "pinyin": "duōshao qián",
+  "zhHant": "幾多錢？",
+  "jyutping": "géi dō chín"
+ },
+ {
+  "fr": "L'addition, s'il vous plaît",
+  "zhHans": "买单",
+  "pinyin": "mǎidān",
+  "zhHant": "埋單",
+  "jyutping": "màaih dāan"
+ },
+ {
+  "fr": "Où sont les toilettes ?",
+  "zhHans": "洗手间在哪里？",
+  "pinyin": "xǐshǒujiān zài nǎlǐ",
+  "zhHant": "洗手間喺邊度？",
+  "jyutping": "sái sáu gāan hái bīn douh"
+ },
+ {
+  "fr": "Je ne comprends pas",
+  "zhHans": "我听不懂",
+  "pinyin": "wǒ tīng bù dǒng",
+  "zhHant": "我唔明",
+  "jyutping": "ngóh m̀h mìhng"
+ },
+ {
+  "fr": "Parlez-vous anglais ?",
+  "zhHans": "你会说英语吗？",
+  "pinyin": "nǐ huì shuō yīngyǔ ma",
+  "zhHant": "你識唔識講英文？",
+  "jyutping": "néih sīk m̀h sīk góng yīngmán"
+ },
+ {
+  "fr": "Arrêtez-vous ici",
+  "zhHans": "这里停",
+  "pinyin": "zhèlǐ tíng",
+  "zhHant": "呢度落車",
+  "jyutping": "nī douh lohk chē"
+ },
+ {
+  "fr": "Emmenez-moi ici",
+  "zhHans": "请带我去这里",
+  "pinyin": "qǐng dài wǒ qù zhèlǐ",
+  "zhHant": "唔該帶我去呢度",
+  "jyutping": "m̀h gōi daai ngóh heui nī douh"
+ },
+ {
+  "fr": "Peut-on prendre une photo ?",
+  "zhHans": "可以拍照吗？",
+  "pinyin": "kěyǐ pāizhào ma",
+  "zhHant": "可唔可以影相？",
+  "jyutping": "hó m̀h hó yíh yíng séung"
+ },
+ {
+  "fr": "Avez-vous une chaise enfant ?",
+  "zhHans": "有儿童椅吗？",
+  "pinyin": "yǒu értóng yǐ ma",
+  "zhHant": "有冇BB櫈？",
+  "jyutping": "yáuh móuh bìhbī dang"
+ },
+ {
+  "fr": "C'est délicieux !",
+  "zhHans": "好吃",
+  "pinyin": "hǎochī",
+  "zhHant": "好味",
+  "jyutping": "hóu meih"
+ },
+ {
+  "fr": "Sans piment, s'il vous plaît",
+  "zhHans": "不要辣",
+  "pinyin": "bú yào là",
+  "zhHant": "唔要辣",
+  "jyutping": "m̀h yiu laaht"
+ },
+ {
+  "fr": "Sans crevette",
+  "zhHans": "不要虾",
+  "pinyin": "bú yào xiā",
+  "zhHant": "唔要蝦",
+  "jyutping": "m̀h yiu hā"
+ },
+ {
+  "fr": "Sans cacahuète",
+  "zhHans": "不要花生",
+  "pinyin": "bú yào huāshēng",
+  "zhHant": "唔要花生",
+  "jyutping": "m̀h yiu fāsāng"
+ },
+ {
+  "fr": "De l'eau chaude",
+  "zhHans": "热水",
+  "pinyin": "rè shuǐ",
+  "zhHant": "熱水",
+  "jyutping": "yiht séui"
+ },
+ {
+  "fr": "Plus doucement (massage)",
+  "zhHans": "轻一点",
+  "pinyin": "qīng yìdiǎn",
+  "zhHant": "輕啲",
+  "jyutping": "hēng dī"
+ },
+ {
+  "fr": "Au secours !",
+  "zhHans": "救命！",
+  "pinyin": "jiùmìng",
+  "zhHant": "救命！",
+  "jyutping": "gau mehng"
+ },
+ {
+  "fr": "J'ai besoin d'un médecin",
+  "zhHans": "我需要医生",
+  "pinyin": "wǒ xūyào yīshēng",
+  "zhHant": "我要睇醫生",
+  "jyutping": "ngóh yiu tái yī sāng"
+ },
+ {
+  "fr": "Je suis allergique à…",
+  "zhHans": "我对…过敏",
+  "pinyin": "wǒ duì … guòmǐn",
+  "zhHant": "我對…過敏",
+  "jyutping": "ngóh deui … gwo máhn"
+ }
+]

@@ -1,0 +1,10 @@
+{
+ "id": "hk-china-2027",
+ "name": "Hong Kong & Chine du Sud",
+ "country": "Hong Kong, Macao, Chine",
+ "currency": "HKD",
+ "startDate": "2027-02-20",
+ "endDate": "2027-03-05",
+ "timeZone": "Asia/Hong_Kong",
+ "formatVersion": 1
+}

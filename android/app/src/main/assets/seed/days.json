@@ -1,0 +1,943 @@
+[
+ {
+  "id": "j1",
+  "date": "2027-02-21",
+  "city": "Hong Kong",
+  "cityZh": "香港",
+  "title": "Arrivée à l'aube, la jonque rouge et les lumières",
+  "lede": "Une journée douce pour se caler à l'heure de Hong Kong, sans quitter Tsim Sha Tsui, et qui finit en lumière.",
+  "order": 0,
+  "steps": [
+   {
+    "time": "9:40",
+    "text": "Départ de Nice avec Swiss. Escale de 50 minutes à Zurich : suivez les panneaux « correspondance » dès l'atterrissage. Le second vol est opéré par Cathay Pacific.",
+    "placeId": null,
+    "dayOffset": -1
+   },
+   {
+    "time": "6:15",
+    "text": "Arrivée à Hong Kong. Airport Express jusqu'à la gare de Kowloon (24 minutes), puis taxi jusqu'au Nathan Hotel, à Jordan (environ 10 minutes), ou la navette gratuite K1 jusqu'à l'Eaton Hotel, juste à côté. On dépose les valises : la chambre n'est pas prête si tôt.",
+    "placeId": "kowloon-station",
+    "dayOffset": 0
+   },
+   {
+    "time": "9:30",
+    "text": "Le parc de Kowloon : l'étang aux flamants roses, le jardin chinois et les aires de jeux.",
+    "placeId": "kowloon-park",
+    "dayOffset": 0
+   },
+   {
+    "time": "12:00",
+    "text": "Déjeuner près du parc, quatre adresses dans la tuile repas, puis sieste à l'hôtel pour tout le monde.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "16:15",
+    "text": "Le thé sur l'Aqua Luna, la jonque aux voiles rouges, depuis le Pier 1 : dim sum et douceurs face aux tours de l'île, retour à 17 h 15.",
+    "placeId": "pier1",
+    "dayOffset": 0
+   },
+   {
+    "time": "18:30",
+    "text": "L'Avenue des Stars à l'heure bleue : le ciel encore bleu sombre et les tours qui s'allument.",
+    "placeId": "avenue-stars",
+    "dayOffset": 0
+   },
+   {
+    "time": "18:45",
+    "text": "Dîner face au port : quatre adresses dans la tuile repas, toutes à moins de dix minutes de la promenade.",
+    "placeId": "k11",
+    "dayOffset": 0
+   },
+   {
+    "time": "19:45",
+    "text": "La baie illuminée depuis la promenade : les tours de l'île allumées de l'autre côté de l'eau, la plus belle vue de nuit de Hong Kong. La Symphonie des lumières s'est arrêtée en novembre 2026 : regardez sur place si un nouveau spectacle de lumières a lieu ce soir-là.",
+    "placeId": "avenue-stars",
+    "dayOffset": 0
+   },
+   {
+    "time": "20:30",
+    "text": "Au lit : le meilleur remède au décalage de 7 heures.",
+    "placeId": null,
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j2",
+  "date": "2027-02-22",
+  "city": "Hong Kong",
+  "cityZh": "香港",
+  "title": "Le Star Ferry, le Peak, puis l'île en tram",
+  "lede": "La baie vue de l'eau et d'en haut le matin, l'île traversée en tram à impériale l'après-midi.",
+  "order": 1,
+  "steps": [
+   {
+    "time": "9:00",
+    "text": "Le Star Ferry depuis le quai de Tsim Sha Tsui : dix minutes de traversée sur le vieux ferry vert et blanc, pour moins d'un euro.",
+    "placeId": "star-ferry-tst",
+    "dayOffset": 0
+   },
+   {
+    "time": "9:15",
+    "text": "Du quai de Central, 15 minutes à pied ou un taxi jusqu'au départ du Peak Tram.",
+    "placeId": "star-ferry-central",
+    "dayOffset": 0
+   },
+   {
+    "time": "9:45",
+    "text": "Le Peak Tram, le funiculaire de 1888, jusqu'au Peak. Le belvédère de Lugard Road, gratuit, à 15 minutes de marche à plat, offre le plus beau panorama.",
+    "placeId": "peak-tram",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:15",
+    "text": "Redescente, puis le Mid-Levels Escalator depuis Queen's Road Central jusqu'à Hollywood Road. À dix minutes vers l'ouest, le temple Man Mo, sous ses spirales d'encens, au cœur du vieux Sheung Wan.",
+    "placeId": "escalator",
+    "dayOffset": 0
+   },
+   {
+    "time": "12:30",
+    "text": "Déjeuner chez Yum Cha Central, à dix minutes à pied en descendant du temple : les dim sum en petits cochons de Charlie (tuile repas). En option : Madame Fù et deux autres adresses à Tai Kwun, au bord de l'Escalator, ou les nouilles de Shui Kee.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:30",
+    "text": "Retour en métro depuis Sheung Wan, à deux minutes du restaurant, et sieste à l'hôtel jusqu'à 15 h 30.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "16:00",
+    "text": "Métro jusqu'à Quarry Bay, puis le Monster Building : cinq immeubles imbriqués, plus de 10 000 habitants. Un quart d'heure, discrètement.",
+    "placeId": "monster",
+    "dayOffset": 0
+   },
+   {
+    "time": "17:00",
+    "text": "Le tram « ding ding » vers l'ouest, à l'étage et tout à l'avant, jusqu'à Causeway Bay : Times Square et les écrans géants du carrefour.",
+    "placeId": "tram",
+    "dayOffset": 0
+   },
+   {
+    "time": "17:30",
+    "text": "Goûter à Causeway Bay, tout près de l'arrivée du tram : tartelettes, desserts ou gaufres, à choisir dans la tuile repas.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "18:30",
+    "text": "Dîner à Causeway Bay, près de Times Square : quatre adresses dans la tuile repas, dont Ho Hung Kee, distingué par le Guide Michelin.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "19:30",
+    "text": "En option : Victoria Park, à deux pas, pour finir la journée au calme.",
+    "placeId": "victoria-park",
+    "dayOffset": 0
+   },
+   {
+    "time": "20:00",
+    "text": "En option, seul ou à la place du parc : le Hopewell Centre, à Wan Chai (taxi, une dizaine de minutes). L'ascenseur de verre extérieur monte à la nuit tombée, avec la baie qui s'ouvre sous la cabine. Retour en métro depuis Wan Chai.",
+    "placeId": "hopewell",
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j3",
+  "date": "2027-02-23",
+  "city": "Hong Kong",
+  "cityZh": "香港",
+  "title": "Wong Tai Sin, Choi Hung, Nan Lian et les Dix Mille Bouddhas",
+  "lede": "Les temples du nord de Kowloon, une cité arc-en-ciel et un jardin Tang, puis les poissons rouges et le marché de nuit.",
+  "order": 2,
+  "steps": [
+   {
+    "time": "9:00",
+    "text": "Le temple Wong Tai Sin : l'encens, les bâtonnets de divination et les devins de l'arcade.",
+    "placeId": "wong-tai-sin",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:00",
+    "text": "En option : deux stations plus loin en métro, Choi Hung Estate : des immeubles aux façades pastel autour d'un terrain de basket sur le toit d'un parking. La photo du matin, avant les visiteurs. Un lieu d'habitation : on reste discret.",
+    "placeId": "choi-hung",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:00",
+    "text": "Retour à Diamond Hill, le jardin Nan Lian et le couvent de Chi Lin : un jardin Tang recréé, plat et ombragé, autour de son pavillon doré.",
+    "placeId": "nan-lian",
+    "dayOffset": 0
+   },
+   {
+    "time": "12:15",
+    "text": "Déjeuner au jardin Nan Lian : le restaurant végétarien derrière la cascade, ou deux adresses japonaises à Plaza Hollywood sur le chemin du retour. Voir la tuile repas.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:15",
+    "text": "Retour à l'hôtel, sieste jusqu'à 14 h 45.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "15:15",
+    "text": "Métro jusqu'à Sha Tin, puis les Dix Mille Bouddhas : environ 430 marches bordées de statues dorées, toutes différentes. Fermeture à 17 h. Pas de poussette : Charlie marche, ou monte sur les épaules ou dans les bras.",
+    "placeId": "ten-thousand",
+    "dayOffset": 0
+   },
+   {
+    "time": "17:15",
+    "text": "East Rail jusqu'à Mong Kok East, puis le marché aux poissons rouges : des murs de petits sacs accrochés aux vitrines. Goûter juste à côté : pineapple bun, pâtisseries ou cheesecake, à choisir dans la tuile repas.",
+    "placeId": "goldfish",
+    "dayOffset": 0
+   },
+   {
+    "time": "18:30",
+    "text": "Dîner à Temple Street : riz en pot de terre chez Hing Kee (ouvre à 17 h 30, espèces uniquement) ou trois autres adresses dans la tuile repas, puis l'oiseau qui tire l'avenir et l'opéra cantonais des amateurs.",
+    "placeId": "temple-street",
+    "dayOffset": 0
+   },
+   {
+    "time": "21:00",
+    "text": "En option, en solo, Charlie couchée et Éric au repos : à Mong Kok, le Neon Lights Viewpoint, sur la passerelle piétonne du 129 Tung Choi Street, avec la vue plongeante sur les rues éclairées. La nuit tombe tôt en février, vers 18 h 30.",
+    "placeId": "neon-lights",
+    "dayOffset": 0
+   },
+   {
+    "time": "21:45",
+    "text": "En option, à cinq minutes à pied : Changsha Street, avec les dernières enseignes au néon d'autrefois, à l'angle de Portland Street.",
+    "placeId": "changsha",
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j4",
+  "date": "2027-02-24",
+  "city": "Macao",
+  "cityZh": "澳門",
+  "title": "Macao en une journée",
+  "lede": "Le Portugal en Chine : places pavées, églises jaunes, temple ancien et tartelettes tièdes. Une heure de ferry suffit pour passer de la baie de Hong Kong à une ville où l'on parle encore portugais sur les plaques de rue.",
+  "order": 3,
+  "steps": [
+   {
+    "time": "8:00",
+    "text": "Métro jusqu'à Sheung Wan, environ 25 minutes : le terminal des ferries (Hong Kong–Macau Ferry Terminal) est juste au-dessus de la station. Ferry TurboJET de 9 h vers l'Outer Harbour, une heure de traversée : être au terminal 45 minutes avant. Passeport obligatoire, avec deux contrôles d'immigration.",
+    "placeId": "macau-ferry",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:15",
+    "text": "Taxi jusqu'à la place du Sénat, une dizaine de minutes depuis l'Outer Harbour, et ses pavés en vagues noir et blanc, puis à pied jusqu'à l'église Saint-Dominique et aux Ruines de Saint-Paul.",
+    "placeId": "senado",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:30",
+    "text": "En option : taxi jusqu'au temple A-Ma, le plus ancien de Macao, étagé sur la colline de Barra.",
+    "placeId": "a-ma",
+    "dayOffset": 0
+   },
+   {
+    "time": "12:30",
+    "text": "Déjeuner macanais : voir la tuile repas.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:30",
+    "text": "Taxi jusqu'au village de Taipa : sieste de Charlie en poussette dans les ruelles, entre les maisons vert d'eau de l'avenida da Praia, l'église Notre-Dame-du-Carmel, la rua do Cunha et la rua Correia da Silva.",
+    "placeId": "taipa",
+    "dayOffset": 0
+   },
+   {
+    "time": "15:15",
+    "text": "Le Cotai Strip, comme le Strip de Las Vegas : on traverse l'avenue, avec le Parisian et sa tour Eiffel à droite, le Londoner et son Big Ben à gauche, le Venetian tout près. On passe devant, sans entrer dans les salles de jeu.",
+    "placeId": "cotai",
+    "dayOffset": 0
+   },
+   {
+    "time": "16:00",
+    "text": "Taxi jusqu'au terminal des ferries de Taipa, une dizaine de minutes depuis Cotai, pour le Cotai Water Jet de 17 h vers Tsim Sha Tsui : être au terminal 45 minutes avant. Billet à réserver à l'avance. S'il n'y a pas de départ vers 17 h, retour sur Sheung Wan, puis le métro.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "17:00",
+    "text": "Ferry du retour vers le terminal de Tsim Sha Tsui, sur Canton Road : arrivée vers 18 h, immigration comprise.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "18:45",
+    "text": "Dîner chez One Dim Sum, à Tsim Sha Tsui (tuile repas) : un quart d'heure à pied depuis le terminal, ou cinq minutes de taxi. Retour à l'hôtel par Nathan Road, une station de métro ou quinze minutes à pied.",
+    "placeId": null,
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j6",
+  "date": "2027-02-25",
+  "city": "Canton",
+  "cityZh": "广州",
+  "title": "Le TGV pour Canton, et la ville nouvelle au coucher du soleil",
+  "lede": "On quitte Hong Kong pour de bon : une heure de TGV, une sieste, puis le Canton d'aujourd'hui : la place Huacheng, l'opéra de Zaha Hadid, et la montée au sommet de la tour de Canton, derrière de grandes baies vitrées, du plein jour au coucher du soleil.",
+  "order": 4,
+  "steps": [
+   {
+    "time": "8:45",
+    "text": "Départ du Nathan Hotel avec les valises : taxi jusqu'à la gare de West Kowloon, environ 10 minutes. Immigration dans la gare.",
+    "placeId": "west-kowloon",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:00",
+    "text": "TGV jusqu'à Guangzhou South, 48 à 85 minutes.",
+    "placeId": "gz-south",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:45",
+    "text": "Taxi jusqu'au voco Guangzhou Shifu, dans le vieux Canton (Liwan), 30 à 40 minutes. On dépose les valises et l'on déjeune dans le quartier (tuile repas). La chambre est garantie à 14 h : demandez une arrivée anticipée pour la sieste.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:30",
+    "text": "Sieste pour tout le monde.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "15:30",
+    "text": "Taxi jusqu'à Zhujiang New Town, la ville nouvelle, au bord de la rivière : 20 à 30 minutes depuis l'hôtel.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "15:55",
+    "text": "La place Huacheng, le grand axe de la ville nouvelle, et l'opéra de Zaha Hadid, vu de l'extérieur.",
+    "placeId": "huacheng",
+    "dayOffset": 0
+   },
+   {
+    "time": "16:40",
+    "text": "L'APM, le petit métro automatique, de la station de l'opéra jusqu'à la tour de Canton, de l'autre côté de la rivière (trajet à confirmer).",
+    "placeId": "canton-tower",
+    "dayOffset": 0
+   },
+   {
+    "time": "17:00",
+    "text": "La tour de Canton, par les halls vitrés à 428 et 433 mètres : un tour d'horizon à 360° derrière de grandes baies, sans rien d'ouvert. On arrive de jour, on reste jusqu'au coucher du soleil, vers 18 h 15, puis aux premières lumières. Le Bubble Tram, la cabine ouverte, est laissé de côté.",
+    "placeId": "canton-tower",
+    "dayOffset": 0
+   },
+   {
+    "time": "18:45",
+    "text": "Dîner près de la tour, sous la place Huacheng (tuile repas).",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "19:45",
+    "text": "En option, la croisière du soir sur la rivière des Perles, une cinquantaine de minutes depuis le quai de la tour. Hôtel vers 21 h 15, ou vers 20 h sans la croisière.",
+    "placeId": "croisiere",
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j7",
+  "date": "2027-02-26",
+  "city": "Canton",
+  "cityZh": "广州",
+  "title": "Chimelong Safari Park et ses pandas",
+  "lede": "La journée de Charlie : les pandas géants au repas du matin, puis un grand safari.",
+  "order": 5,
+  "steps": [
+   {
+    "time": "8:30",
+    "text": "Voiture avec siège enfant jusqu'au parc, environ une heure de route : Charlie peut finir sa nuit.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "9:30",
+    "text": "Ouverture : les pandas d'abord, au repas du matin, quand ils sont le plus actifs.",
+    "placeId": "chimelong",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:00",
+    "text": "Le safari, les animaux de la savane et les tigres blancs, l'emblème du parc.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "12:30",
+    "text": "Déjeuner dans le parc.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:00",
+    "text": "Sieste en poussette dans un coin ombragé.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "15:00",
+    "text": "Les dernières allées, puis retour en voiture, environ une heure.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "18:00",
+    "text": "Dîner dans le quartier de l'hôtel ou sur Shamian, à 10 minutes à pied, à choisir dans la tuile repas : rapide, assis ou grande maison. Puis massage des pieds : bain aux herbes et réflexologie, une heure, pendant que l'autre couche Charlie, ou à deux si l'hôtel garde l'enfant.",
+    "placeId": null,
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j5",
+  "date": "2027-02-27",
+  "city": "Shenzhen",
+  "cityZh": "深圳",
+  "title": "Shenzhen en une journée, des robots aux tours allumées",
+  "lede": "Un aller-retour en TGV depuis Canton dans la Chine du futur : un drone qui livre dans un parc, des robots humanoïdes, un robot-taxi jusqu'au front de mer, une librairie à l'escalier rouge, un musée en nuage, un dîner servi en lévitation, puis le spectacle de lumières sur les tours de Futian, le samedi soir. Retour à Canton pour dormir.",
+  "order": 6,
+  "steps": [
+   {
+    "time": "7:45",
+    "text": "Taxi jusqu'à Guangzhou South, 30 à 40 minutes (ou 50 minutes en métro, lignes 1 puis 2). À la gare 45 minutes avant le train : sécurité et passeports.",
+    "placeId": "gz-south",
+    "dayOffset": 0
+   },
+   {
+    "time": "9:00",
+    "text": "TGV G6579 jusqu'à Futian, arrivée à 10 h (à confirmer à l'ouverture des ventes).",
+    "placeId": "futian",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:00",
+    "text": "Métro de Futian jusqu'à Talent Park : ligne 11 jusqu'à Houhai, puis ligne 13, sortie B1. Arrivée vers 10 h 45.",
+    "placeId": "talent-park",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:45",
+    "text": "Talent Park, au bord de la baie : les robots du kiosque 智魔方 préparent café et glaces, et un drone livre un en-cas dans un casier du parc.",
+    "placeId": "talent-park",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:30",
+    "text": "INNO100, à cinq minutes à pied : des robots humanoïdes et à quatre pattes en démonstration, entrée gratuite.",
+    "placeId": "inno100",
+    "dayOffset": 0
+   },
+   {
+    "time": "12:05",
+    "text": "Robot-taxi Pony.ai jusqu'à Happy Harbour, à Bao'an, 20 à 25 minutes. Sinon, un DiDi.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "12:30",
+    "text": "Déjeuner à Happy Harbour, le centre commercial du front de mer : restaurants et food court.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:30",
+    "text": "La librairie Zhongshuge et son escalier rouge en spirale, pendant la sieste de Charlie. Puis le front de mer, au pied de la grande roue.",
+    "placeId": "zhongshuge",
+    "dayOffset": 0
+   },
+   {
+    "time": "14:30",
+    "text": "Métro jusqu'à Gangxia North, environ 45 minutes (ligne 5, puis ligne 11 jusqu'au terminus). À l'arrivée, l'Œil de Shenzhen, la verrière ronde.",
+    "placeId": "gangxia-north",
+    "dayOffset": 0
+   },
+   {
+    "time": "15:30",
+    "text": "Le quartier du MOCAUP, le musée en nuage : l'architecture tout autour, et on entre un moment si l'envie y est.",
+    "placeId": "mocaup",
+    "dayOffset": 0
+   },
+   {
+    "time": "15:45",
+    "text": "En option, selon l'humeur de Charlie : le Palais des enfants, juste à côté. Dernière entrée à 16 h, salles à thème réservées sur WeChat.",
+    "placeId": "children-palace",
+    "dayOffset": 0
+   },
+   {
+    "time": "16:30",
+    "text": "Balade dans Futian jusqu'à One Avenue, par le Centre civique et ses façades de verre.",
+    "placeId": "one-avenue",
+    "dayOffset": 0
+   },
+   {
+    "time": "17:45",
+    "text": "Dîner à Orbit One, le plat arrive en lévitation. Deux stations de métro (ligne 1, Gangxia → Science Museum) ou 10 minutes de taxi.",
+    "placeId": "orbit-one",
+    "dayOffset": 0
+   },
+   {
+    "time": "18:45",
+    "text": "Taxi jusqu'au Centre civique, 10 à 15 minutes : spectacle sur les tours à 19 h, 15 minutes, réservé sur WeChat.",
+    "placeId": "civic-center",
+    "dayOffset": 0
+   },
+   {
+    "time": "19:20",
+    "text": "À pied jusqu'à la gare de Futian, 15 minutes : TGV G6588 à 19 h 59, d'autres jusque vers 22 h 40.",
+    "placeId": "futian",
+    "dayOffset": 0
+   },
+   {
+    "time": "21:08",
+    "text": "Arrivée à Guangzhou South, puis taxi : à l'hôtel vers 22 h.",
+    "placeId": "gz-south",
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j8",
+  "date": "2027-02-28",
+  "city": "Canton",
+  "cityZh": "广州",
+  "title": "Le vieux Canton, d'ouest en est",
+  "lede": "Une grande journée dans la vieille ville : les cinq béliers au réveil, le temple des ancêtres de la famille Chen, les arcades, le plus beau dim sum du séjour, une sieste sous les banians de Shamian, puis un temple bouddhiste et la grand-rue de toujours.",
+  "order": 7,
+  "steps": [
+   {
+    "time": "8:00",
+    "text": "En option, si tout le monde est en forme après Shenzhen : taxi jusqu'au parc Yuexiu, environ 15 minutes depuis l'hôtel.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "8:15",
+    "text": "En option, le parc Yuexiu : la statue des Cinq Béliers, symbole de la ville, et la tour Zhenhai, de 1380.",
+    "placeId": "yuexiu",
+    "dayOffset": 0
+   },
+   {
+    "time": "9:30",
+    "text": "Taxi jusqu'à la Chen Clan Academy, une dizaine de minutes depuis l'hôtel : les toits en céramique, le bois et la pierre sculptés.",
+    "placeId": "chen",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:30",
+    "text": "Yongqingfang et Enning Road, à un kilomètre et demi : les arcades, les ateliers de cuivre, la maison ancestrale de Bruce Lee.",
+    "placeId": "yongqingfang",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:30",
+    "text": "Déjeuner au Panxi, le restaurant-jardin de 1947 au bord du lac de Liwan : le plus beau cadre du séjour pour le dim sum (tuile repas).",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:00",
+    "text": "Taxi jusqu'à l'île de Shamian : sieste de Charlie en poussette sous les banians, promenade lente devant les façades coloniales. Pendant la sieste, un café au Starbucks de Shamian (tuile repas).",
+    "placeId": "shamian",
+    "dayOffset": 0
+   },
+   {
+    "time": "14:30",
+    "text": "Goûter chez Nanxin, 47 Dishifu Lu, la rue de l'hôtel : le lait à double peau, le dessert de Canton depuis 1934 (tuile repas).",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "14:55",
+    "text": "Taxi jusqu'au temple Dafo et ses trois bouddhas de bronze de six mètres.",
+    "placeId": "dafo",
+    "dayOffset": 0
+   },
+   {
+    "time": "15:40",
+    "text": "Beijing Road, la rue piétonne : sous des dalles de verre, onze chaussées superposées, de la dynastie Tang à la République.",
+    "placeId": "beijing-road",
+    "dayOffset": 0
+   },
+   {
+    "time": "17:00",
+    "text": "Dîner au-dessus de Beijing Road, en arrivant tôt pour éviter la file (tuile repas).",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "18:30",
+    "text": "Taxi pour l'hôtel, environ 15 minutes, et sacs prêts : demain, train tôt pour le Guangxi.",
+    "placeId": null,
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j9",
+  "date": "2027-03-01",
+  "city": "Xingping",
+  "cityZh": "兴坪",
+  "title": "Le TGV pour le Guangxi, le billet de 20 yuans et les pêcheurs",
+  "lede": "Environ 2 h 20 de train, et l'on descend au milieu des pains de sucre. Repos à l'hôtel, puis la fin d'après-midi au bord de la Li : le paysage du billet de 20 yuans, et les pêcheurs aux cormorans jusqu'au coucher du soleil.",
+  "order": 8,
+  "steps": [
+   {
+    "time": "7:45",
+    "text": "Départ de l'hôtel avec les valises, taxi jusqu'à Guangzhou South, 30 à 40 minutes. L'heure du train reste à confirmer : idéalement vers 9 h, pour un lever de Charlie vers 6 h 15.",
+    "placeId": "gz-south",
+    "dayOffset": 0
+   },
+   {
+    "time": "9:00",
+    "text": "TGV direct jusqu'à la gare de Yangshuo, environ 2 h 20. Petit-déjeuner à bord.",
+    "placeId": "yangshuo-station",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:20",
+    "text": "La navette de l'hôtel, ou un chauffeur, attend à la sortie de la gare : environ 20 minutes jusqu'au Lijiang Island Riverside Resort, à 1,5 km du vieux Xingping. On dépose les valises (chambre à 14 h) et l'on déjeune.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:00",
+    "text": "Repos et sieste de Charlie.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "15:45",
+    "text": "La vieille rue pavée du bourg, jusqu'au quai, en passant devant la petite scène d'opéra du temple Guandi.",
+    "placeId": "xingping",
+    "dayOffset": 0
+   },
+   {
+    "time": "16:30",
+    "text": "Le point de vue du billet de 20 yuans, à une dizaine de minutes à pied du centre, le long de la rivière. Dans Amap : 二十元人民币背景观景台.",
+    "placeId": "vingt-yuans",
+    "dayOffset": 0
+   },
+   {
+    "time": "17:15",
+    "text": "Retour au ponton principal : les pêcheurs aux cormorans s'y installent jusqu'au coucher du soleil, vers 18 h 30. En face, le village de Dahebei, à trois minutes de bateau-taxi.",
+    "placeId": "cormorans",
+    "dayOffset": 0
+   },
+   {
+    "time": "18:45",
+    "text": "Dîner dans la vieille ville, et coucher tôt.",
+    "placeId": null,
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j10",
+  "date": "2027-03-02",
+  "city": "Huangyao",
+  "cityZh": "黄姚",
+  "title": "Huangyao, le bourg de pierre bleue",
+  "lede": "Une journée avec chauffeur jusqu'à un bourg des époques Ming et Qing : le théâtre et ses dragons de pierre, un banian de plus de 850 ans, un pont couvert de vignes, la rue des marchands, et retour à Xingping vers 18 h.",
+  "order": 9,
+  "steps": [
+   {
+    "time": "8:00",
+    "text": "Départ de l'hôtel avec le chauffeur. Amap annonce 2 h 01 et 129 km, avec deux zones de travaux : environ 4 h de route sur la journée.",
+    "placeId": "huangyao",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:00",
+    "text": "Arrivée : le parking est à environ 10 minutes à pied du cœur du bourg. On entre par le nord : la scène d'opéra de 1524, avec ses deux dragons qui jouent avec une perle sur le toit, et en face le temple Baozhu, où le taoïsme et le bouddhisme partagent le même autel.",
+    "placeId": "hy-theatre",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:30",
+    "text": "Le banian griffe de dragon, plus de 850 ans, et ses racines dans les pavés : meilleur le matin.",
+    "placeId": "hy-banian",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:00",
+    "text": "Le pont Dailong, une arche Ming couverte de vignes : le grand spot photo, en lumière du matin.",
+    "placeId": "hy-dailong",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:45",
+    "text": "La rue Anle, le quartier commerçant depuis 1796.",
+    "placeId": "hy-anle",
+    "dayOffset": 0
+   },
+   {
+    "time": "12:30",
+    "text": "Déjeuner : les haricots noirs fermentés, la spécialité du bourg.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:45",
+    "text": "Sieste de Charlie en poussette pendant la visite : le jardin Nongqu et ses ateliers de pâte de soja fermentée, de tofu et d'huile, le temple ancestral de la famille Wu, et le pont de pierres pour Charlie.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "16:00",
+    "text": "Départ, environ 2 h de route : Charlie peut dormir dans la voiture.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "18:00",
+    "text": "Retour à Xingping, dîner dans la vieille ville, et sacs prêts pour le lendemain.",
+    "placeId": null,
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j11",
+  "date": "2027-03-03",
+  "city": "Xingping",
+  "cityZh": "兴坪",
+  "title": "Dernier matin sur la Li, puis le TGV pour Hong Kong",
+  "lede": "Selon l'heure du train : la colline Xianggong et la première grande boucle de la Li, ou une dernière balade au ponton. Puis vingt minutes de route jusqu'à la gare de Yangshuo, et le TGV jusqu'à la baie, avec un changement à Shenzhen Nord.",
+  "order": 10,
+  "steps": [
+   {
+    "time": "8:30",
+    "text": "Si le train part après 13 h : départ pour la colline Xianggong, sans viser le lever du soleil. Sinon : petit-déjeuner tranquille et une dernière balade au ponton.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "9:00",
+    "text": "La colline Xianggong : le bac, 5 minutes, puis environ 25 minutes de transfert, et 15 à 20 minutes de marches aménagées. Au sommet, la première grande boucle de la Li.",
+    "placeId": "xianggong",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:00",
+    "text": "Retour à l'hôtel et valises. Sans Xianggong : une dernière balade au ponton.",
+    "placeId": "cormorans",
+    "dayOffset": 0
+   },
+   {
+    "time": "12:00",
+    "text": "Chauffeur ou navette de l'hôtel jusqu'à la gare de Yangshuo, environ 20 minutes : être à la gare 45 minutes avant le train. Heure à caler sur le billet.",
+    "placeId": "yangshuo-station",
+    "dayOffset": 0
+   },
+   {
+    "time": "13:00",
+    "text": "TGV jusqu'à Shenzhen Nord, environ 3 h, l'heure du train reste à fixer. Déjeuner à bord, puis sieste de Charlie. À Shenzhen Nord, changement pour West Kowloon, une quinzaine de minutes de trajet.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "16:30",
+    "text": "Arrivée à West Kowloon, immigration dans la gare. Puis le métro jusqu'à Sunny Bay et le train Disneyland Resort, aux fenêtres en tête de Mickey, ou un taxi directement : environ une heure. Installation au Disney's Hollywood Hotel, dans la chambre Mickey & Friends, pour deux nuits, puis dîner (tuile repas).",
+    "placeId": "west-kowloon",
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j12",
+  "date": "2027-03-04",
+  "city": "Disneyland",
+  "cityZh": "迪士尼樂園",
+  "title": "Hong Kong Disneyland, jusqu'au spectacle de nuit",
+  "lede": "Une journée entière dans le plus petit des parcs Disney, parfait à 3 ans, jusqu'au spectacle du soir.",
+  "order": 11,
+  "steps": [
+   {
+    "time": "8:15",
+    "text": "Navette gratuite de l'hôtel jusqu'à l'interchange de Disneyland (environ 5 minutes), puis la promenade à pied jusqu'aux grilles : 5 à 10 minutes. Photo devant l'entrée encore vide.",
+    "placeId": "disney",
+    "dayOffset": 0
+   },
+   {
+    "time": "8:50",
+    "text": "Aux grilles avec le pass Early Park Entry : une heure d'avance sur tout le monde. Le Magic Passport s'achète dans la première boutique de Main Street, puis Charlie le fait tamponner à chaque quartier de la journée.",
+    "placeId": "dl-main",
+    "dayOffset": 0
+   },
+   {
+    "time": "9:00",
+    "text": "Entrée anticipée, tout droit vers Arendelle : Frozen Ever After, puis les luges de Wandering Oaken (95 cm). Si les files restent courtes, un second tour de l'une ou de l'autre.",
+    "placeId": "dl-frozen",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:30",
+    "text": "Séance photo Magic Snaps, premier créneau de la journée : Charlie est en forme, la tenue est propre et le château est dégagé. La foule part vers Arendelle, vous en revenez. En cas de retard, le créneau de 11 h reste possible (lieu à confirmer sur place).",
+    "placeId": "dl-castle",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:00",
+    "text": "Fantasyland, dans l'ordre des files qui s'allongent le plus vite : Winnie l'ourson, Dumbo, le carrousel de Cendrillon, les tasses du Chapelier fou, puis It's a Small World.",
+    "placeId": "dl-fantasy",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:45",
+    "text": "Fairy Tale Forest, les contes en maquettes au fil d'un petit sentier. Rencontre avec la fée Clochette si elle est annoncée dans l'application ce jour-là.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "12:15",
+    "text": "Mickey's PhilharMagic : un film en 3D d'une douzaine de minutes, assis au frais. Le bon moment pour souffler avant le repas.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "12:45",
+    "text": "Déjeuner cantonais au Plaza Inn, au bout de Main Street : paniers de brioches « princesses », char siu, porc aigre-doux. Adventureland est juste derrière pour la sieste. Voir la tuile repas.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:30",
+    "text": "Sieste en poussette dans les allées ombragées d'Adventureland, jusqu'à 15 h.",
+    "placeId": "dl-adventure",
+    "dayOffset": 0
+   },
+   {
+    "time": "15:00",
+    "text": "Toy Story Land : Slinky Dog, le parachute des petits soldats (81 cm), et la rencontre avec Woody, souvent avec Buzz et Jessie. Horaires dans l'application.",
+    "placeId": "dl-toy",
+    "dayOffset": 0
+   },
+   {
+    "time": "15:45",
+    "text": "Mystic Point, juste à côté : le Garden of Wonders et ses statues trompe-l'œil, puis Mystic Manor. En passant, les geysers de Grizzly Gulch.",
+    "placeId": "dl-mystic",
+    "dayOffset": 0
+   },
+   {
+    "time": "16:30",
+    "text": "Main Street : rencontre avec Mickey au Main Street Cinema, puis la parade Friendtastic! depuis le trottoir, côté place du château. Horaire exact dans l'application.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "17:30",
+    "text": "Jungle River Cruise, choisir la file en anglais ou en mandarin. La fin dans le temple du feu et de l'eau fait un peu de bruit : prévenir Charlie.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "18:15",
+    "text": "Dîner tôt dans le parc, pour éviter la cohue de l'avant-spectacle : plusieurs adresses sont possibles, voir la tuile repas.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "19:15",
+    "text": "Tomorrowland à la nuit tombante : l'Orbitron au-dessus des néons, puis Ant-Man et la Guêpe, où l'on tire sur les robots avec un blaster.",
+    "placeId": "dl-tomorrow",
+    "dayOffset": 0
+   },
+   {
+    "time": "19:50",
+    "text": "Placement pour Momentous : au bout de Main Street, légèrement à droite, face au château.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "20:30",
+    "text": "Momentous, le spectacle de nuit sur le château, une trentaine de minutes : projections, jets d'eau, lasers et feux d'artifice. Horaire exact dans l'application.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "21:00",
+    "text": "Sortie avant la foule si Charlie dort, sinon on laisse passer la vague et on reprend le train dix minutes plus tard.",
+    "placeId": null,
+    "dayOffset": 0
+   }
+  ]
+ },
+ {
+  "id": "j13",
+  "date": "2027-03-05",
+  "city": "Lantau",
+  "cityZh": "大嶼山",
+  "title": "Une journée douce à Lantau, puis le vol de nuit",
+  "lede": "La dernière journée tout près de l'aéroport : le téléphérique et le Grand Bouddha, puis une fin de journée sans obligation.",
+  "order": 12,
+  "steps": [
+   {
+    "time": "9:30",
+    "text": "Check-out de l'hôtel, taxi jusqu'à l'aéroport, valises à la consigne, puis 10 minutes jusqu'à Tung Chung.",
+    "placeId": "airport",
+    "dayOffset": 0
+   },
+   {
+    "time": "10:30",
+    "text": "Le téléphérique Ngong Ping 360, de Tung Chung jusqu'au plateau.",
+    "placeId": "ngong-ping",
+    "dayOffset": 0
+   },
+   {
+    "time": "11:00",
+    "text": "Le Grand Bouddha, puis le monastère de Po Lin et ses halls colorés.",
+    "placeId": "big-buddha",
+    "dayOffset": 0
+   },
+   {
+    "time": "12:30",
+    "text": "Déjeuner : au monastère (végétarien), à Ngong Ping ou à Tai O : voir la tuile repas.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "13:30",
+    "text": "Sieste en poussette, à l'ombre du plateau ou dans le bus.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "14:30",
+    "text": "En option, Tai O et ses maisons sur pilotis, à vingt minutes de bus : une promenade en bateau entre les maisons et, avec de la chance, des dauphins roses.",
+    "placeId": "tai-o",
+    "dayOffset": 0
+   },
+   {
+    "time": "17:00",
+    "text": "Retour à Tung Chung et derniers achats au centre commercial, à côté de la station. Le goûter est à Tai O, chez NAK Kafé, ou ici si l'on saute Tai O.",
+    "placeId": null,
+    "dayOffset": 0
+   },
+   {
+    "time": "19:30",
+    "text": "Récupération des valises, enregistrement. Vol à 23 h 30, escale d'1 h 25 à Zurich, arrivée à Nice le samedi 6 mars à 8 h 45.",
+    "placeId": "airport",
+    "dayOffset": 0
+   }
+  ]
+ }
+]
