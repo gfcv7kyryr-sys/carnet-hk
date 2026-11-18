@@ -142,52 +142,97 @@ function phase() {
   return { kind: "during", now, day, next };
 }
 
-function viewToday() {
+/* Icônes façon iPhone : image travelos/icons/<id>.webp si elle existe (à générer), sinon dégradé + caractère. */
+const APPS = {
+  day: ["日", "Journée", "gz"], programme: ["曆", "Programme", "hk"], places: ["地", "Lieux", "li"], food: ["食", "Repas", "food"],
+  guide: ["解", "Guide", "ui"], tickets: ["票", "Billets", "mo"], phrases: ["話", "Phrases", "li"], ask: ["問", "Demander", "ui"],
+  translate: ["譯", "Traduire", "sz"], sos: ["救", "SOS", "gz"], audio: ["聽", "Récit", "hk"], games: ["戲", "Jeux", "lt"],
+};
+function appIcon(id, d, size = "") {
+  const [g, label, tone] = APPS[id];
+  const act = {
+    day: `data-day="${d.id}"`, programme: `data-tab="programme"`, places: `data-tab="places"`, food: `data-food="${d.id}"`,
+    guide: `data-guide="learn"`, tickets: `data-pocket="resas"`, phrases: `data-pocket="phrases"`, ask: `data-guide="ask"`,
+    translate: `data-guide="translate"`, sos: `data-pocket="sos"`,
+    audio: d.audio ? `data-audio="${esc(d.audio.src)}" data-title="Jour ${d.number} · ${esc(d.city)}"` : `data-day="${d.id}"`,
+    games: `data-soon="Les jeux arrivent dans une prochaine version."`,
+  }[id];
+  return `<button class="app-ic ${size}" ${act}><span class="sq tone-${tone}"><b class="han">${g}</b><img src="/pack/travelos/icons/${id}.webp" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"></span><span class="lb">${label}</span></button>`;
+}
+const HOME_APPS = ["day", "programme", "places", "food", "guide", "tickets", "phrases", "ask", "translate", "sos", "audio", "games"];
+
+function homeData() {
   const ph = phase();
   const d = ph.day || P.days[P.days.length - 1];
-  const tone = toneOf(d);
-  const dev = json(N.device(), {});
-  const synced = N.hasSyncedPack();
-  const chips = `<div class="chips">
-    <span class="chip ${synced ? "" : "warn"}"><i></i>${synced ? "Contenu hors ligne prêt" : "Médias à synchroniser"}</span>
-    <span class="chip ${dev.battery >= 0 && dev.battery <= 20 ? "warn" : ""}"><i></i>Batterie ${dev.battery ?? "?"} %${dev.charging ? " · en charge" : ""}</span>
-    <span class="chip ${dev.network === "NONE" ? "off" : ""}"><i></i>${dev.airplane ? "Mode avion" : esc(dev.networkLabel || "")}</span>
-    <span class="chip ${dev.gps ? "" : "warn"}"><i></i>${dev.gps ? "GPS actif" : "GPS coupé"}</span></div>`;
-
-  const preview = (list) => list.length ? `<ul class="t-list">${list.map((s) => `<li><b>${esc(s.time)}</b><span>${esc(s.text)}</span></li>`).join("")}</ul>` : "";
-  let over, next;
+  const now = ph.now;
+  const dateLabel = frDate(now.date);
+  let eyebrow, headline, sub, nextHtml;
+  const cal = (list, hi) => list.length ? `<ul class="t-list">${list.map((s) => `<li class="${s.key === hi ? "hi" : ""} ${status(s.key) === "DONE" ? "done" : ""}"><b>${esc(s.time)}</b><span>${esc(s.text)}</span></li>`).join("")}</ul>` : "";
+  const daySteps = d.steps.filter((x) => x.dayOffset === 0);
   if (ph.kind === "before") {
-    over = `<p class="eyebrow">Départ dans</p><div class="big">${ph.left}<small>${ph.left > 1 ? "jours" : "jour"}</small></div><p>${frDate(P.trip.startDate)} · Nice → Hong Kong</p>`;
-    next = `<span class="k">Première journée</span><div class="time">${shortDate(d.date)}</div>
-      <div class="txt"><b>${esc(d.title)}.</b> ${esc(d.lede)}</div>
-      <div class="acts"><button class="pill red" data-day="${d.id}">Ouvrir la journée</button></div>
-      ${preview(d.steps.filter((x) => x.dayOffset === 0).slice(0, 4))}`;
+    eyebrow = "Départ dans";
+    headline = `${ph.left} ${ph.left > 1 ? "jours" : "jour"}`;
+    sub = `${frDate(P.trip.startDate)} · Nice → Hong Kong`;
+    nextHtml = `<span class="k">Première journée · ${shortDate(d.date)}</span><b class="w-t">${esc(d.title)}</b><p class="w-p">${esc(d.lede)}</p>
+      <div class="acts"><button class="pill red" data-day="${d.id}">Ouvrir la journée</button></div>`;
   } else if (ph.kind === "during") {
-    over = `<p class="eyebrow">Jour ${d.number} · ${esc(d.city)}</p><div class="big" style="font-size:clamp(1.8rem,3.6vw,2.6rem)">${esc(d.title)}</div>`;
+    eyebrow = `Jour ${d.number} · ${d.city}`;
+    headline = d.title;
+    sub = d.lede;
     const s = ph.next;
-    next = s ? `<span class="k">Prochaine étape</span><div class="time">${esc(s.time)}</div>
-      <div class="txt">${esc(s.text)}</div>
-      <div class="acts"><button class="pill red" data-done="${s.key}">C'est fait</button>${s.placeId ? `<button class="pill" data-place="${s.placeId}">Fiche du lieu</button>` : ""}<button class="pill" data-day="${d.id}">La journée</button></div>
-      ${preview(d.steps.filter((x) => x.dayOffset === 0 && x !== s && status(x.key) === "PLANNED" && (stepMinutes(x.time) ?? 0) > (stepMinutes(s.time) ?? 0)).slice(0, 3))}`
-      : `<span class="k">Journée terminée</span><div class="txt">Toutes les étapes du jour sont faites. Bonne soirée !</div><div class="acts"><button class="pill" data-day="${d.id}">Revoir la journée</button></div>`;
+    nextHtml = s ? `<span class="k">Prochaine étape · ${esc(s.time)}</span><p class="w-p strong">${esc(s.text)}</p>
+      <div class="acts"><button class="pill red" data-done="${s.key}">C'est fait</button>${s.placeId ? `<button class="pill" data-place="${s.placeId}">Fiche du lieu</button>` : ""}</div>`
+      : `<span class="k">Journée terminée</span><p class="w-p">Toutes les étapes du jour sont faites. Bonne soirée !</p>`;
   } else {
-    over = `<p class="eyebrow">Bon retour</p><div class="big">Le voyage est terminé</div>`;
-    next = `<span class="k">Souvenirs</span><div class="txt">Les journées, les lieux et les audios restent disponibles.</div>`;
+    eyebrow = "Bon retour"; headline = "Le voyage est terminé"; sub = "Les journées, les lieux et les audios restent disponibles.";
+    nextHtml = `<span class="k">Souvenirs</span><p class="w-p">${esc(sub)}</p>`;
   }
-  const quick = [
-    ["日", "Journée", "gz", `data-day="${d.id}"`],
-    ["票", "Billets", "mo", `data-pocket="resas"`],
-    ["話", "Phrases", "li", `data-pocket="phrases"`],
-    ["食", "Repas", "food", `data-food="${d.id}"`],
-    ["問", "Demander", "ui", `data-guide="ask"`],
-    ["聽", "Récit du jour", "hk", d.audio ? `data-audio="${esc(d.audio.src)}" data-title="Jour ${d.number} · ${esc(d.city)}"` : `data-day="${d.id}"`],
-  ].map(([g, l, t, a]) => `<button class="q tone-${t}" ${a}><span class="ic">${g}</span>${l}</button>`).join("");
+  const calendar = `<span class="k">Au programme · ${shortDate(d.date)}</span>${cal(daySteps, ph.next?.key)}`;
+  return { ph, d, tone: toneOf(d), now, dateLabel, eyebrow, headline, sub, nextHtml, calendar };
+}
+const bigClock = (n) => `<div class="bigclock" data-bigclock>${n.hm}</div>`;
+const photo = (h, cls = "") => `<div class="photo ${cls}">${art(h.d.image, h.tone, h.d.glyph)}</div>`;
 
-  return `<section class="today">
-    <div class="t-hero">${art(d.image, tone, d.glyph, "")}<div class="over glass">${over}</div></div>
-    <div class="t-next">${next}${chips}</div>
-    <div class="t-quick">${quick}</div>
-  </section>`;
+const HOME_STYLES = { a: "Écran verrouillé", b: "Widgets", c: "Magazine", d: "Journal" };
+function viewToday() {
+  const h = homeData();
+  const style = store.get("homeStyle", "a");
+  const switcher = `<div class="style-switch glass">${Object.keys(HOME_STYLES).map((k) => `<button class="${k === style ? "on" : ""}" data-homestyle="${k}" title="${HOME_STYLES[k]}">${k.toUpperCase()}</button>`).join("")}</div>`;
+  const icons = (list, size) => list.map((id) => appIcon(id, h.d, size)).join("");
+  let html;
+  if (style === "a") {
+    // A · Écran verrouillé : photo plein écran, grande horloge en verre, widgets et dock.
+    html = `<section class="home-a">
+      <div class="bg">${art(h.d.image, h.tone, h.d.glyph)}<i class="shade"></i></div>
+      <div class="a-clock"><p class="a-date">${esc(h.dateLabel)}</p>${bigClock(h.now)}<p class="a-tag glass">${h.ph.kind === "before" ? `${esc(h.eyebrow)} <b>${esc(h.headline)}</b>` : h.ph.kind === "during" ? `<b>Jour ${h.d.number}</b> · ${esc(h.d.title)}` : esc(h.headline)}</p></div>
+      <div class="a-widgets"><div class="w glass">${h.nextHtml}</div><div class="w glass cal">${h.calendar}</div></div>
+      <div class="a-dock glass">${icons(HOME_APPS.slice(0, 8), "")}</div>
+    </section>`;
+  } else if (style === "b") {
+    // B · Widgets façon iPad : photo-widget avec horloge, prochaine étape, calendrier, grille d'icônes.
+    html = `<section class="home-b">
+      <div class="b-photo">${photo(h)}<div class="b-over glass"><p>${esc(h.dateLabel)}</p>${bigClock(h.now)}</div><div class="b-cap glass"><span>${esc(h.eyebrow)}</span><b>${esc(h.headline)}</b></div></div>
+      <div class="w card-w w-next">${h.nextHtml}</div>
+      <div class="w card-w cal">${h.calendar}</div>
+      <div class="b-icons">${icons(HOME_APPS, "")}</div>
+    </section>`;
+  } else if (style === "c") {
+    // C · Magazine : grand titre centré façon page produit Apple, photo large, calendrier en verre posé dessus.
+    html = `<section class="home-c">
+      <header><p class="eyebrow">${esc(h.dateLabel)} · ${esc(h.now.hm)}</p><h1 class="display">${esc(h.ph.kind === "before" ? `Dans ${h.headline}.` : h.headline)}</h1>
+      <p class="sub">${esc(h.ph.kind === "before" ? h.d.title : h.eyebrow)}</p></header>
+      <div class="c-photo">${photo(h)}<div class="w glass cal">${h.calendar}</div></div>
+      <div class="c-icons">${icons(HOME_APPS, "")}</div>
+    </section>`;
+  } else {
+    // D · Journal : la photo en grand à gauche, la journée à droite (prochaine étape, calendrier), les icônes en bas.
+    html = `<section class="home-d">
+      <div class="d-photo"><div class="photo tall">${art(h.d.visits[0]?.image || h.d.image, h.tone, h.d.glyph)}</div><div class="photo wide">${art(h.d.image, h.tone, h.d.glyph)}</div><div class="d-over glass">${bigClock(h.now)}<p>${esc(h.dateLabel)}</p></div><div class="d-cap glass"><span>${esc(h.eyebrow)}</span><b>${esc(h.headline)}</b></div></div>
+      <div class="d-side"><div class="w card-w">${h.nextHtml}</div><div class="w card-w cal">${h.calendar}</div></div>
+      <div class="d-icons">${icons(HOME_APPS, "small")}</div>
+    </section>`;
+  }
+  return html + switcher;
 }
 
 /* ================= Programme ================= */
@@ -592,6 +637,8 @@ function moreSettings() {
   return `<div class="bento">
     <div class="tile"><h3>Écran d'accueil</h3><p>${home ? "TravelOS est l'écran d'accueil : la tablette démarre sur le choix du profil." : "Pour démarrer la tablette sur TravelOS, choisissez-le comme application d'accueil."}</p>
       <div class="acts"><button class="pill ${home ? "" : "red"}" data-settings="home">${home ? "Changer d'écran d'accueil" : "Choisir TravelOS"}</button><button class="pill" data-settings="android">Réglages Android</button></div></div>
+    <div class="tile"><h3>Accueil</h3><p>Quatre présentations de la page d'accueil.</p>
+      <div class="seg">${Object.entries(HOME_STYLES).map(([k, l]) => `<button class="${store.get("homeStyle", "a") === k ? "on" : ""}" data-homestyle-set="${k}">${k.toUpperCase()} · ${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
       <div class="seg">${[["auto", "Automatique"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => `<button class="${store.get("theme", "auto") === k ? "on" : ""}" data-theme="${k}">${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Verre</h3><p>Le verre transparent peut être remplacé par un fond mat si l'affichage ralentit.</p>
@@ -693,6 +740,9 @@ document.addEventListener("click", (e) => {
   if (d.food) return go("food", null, d.food, stack[stack.length - 1]?.tab !== "food");
   if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
   if (d.article) return openArticle(d.article);
+  if (d.homestyle) { store.set("homeStyle", d.homestyle); return go("today", null, null, false); }
+  if (d.soon) return toast(d.soon);
+  if (d.homestyleSet) { store.set("homeStyle", d.homestyleSet); return go("more", null, "settings", false); }
   if (d.photoday) { store.set("photoDay", d.photoday); return go("guide", null, "photo", false); }
   if (d.askchip) { $("#askQ").value = d.askchip; return; }
   if (d.ask) return askGuide(d.ask === "photo");
@@ -757,8 +807,21 @@ function applyPrefs() { document.body.classList.toggle("matte", !!store.get("mat
 function tick() {
   const n = nowHK();
   $("#clockHk").textContent = n.hm;
-  const dev = json(N.device(), {});
-  $("#clockSub").textContent = `${n.sim ? "simulé · " : "Hong Kong · "}Paris ${parisHM()} · ${dev.battery ?? "?"} %`;
+  $$("[data-bigclock]").forEach((e) => { e.textContent = n.hm; });
+  $("#clockSub").textContent = `${n.sim ? "Simulé" : "Hong Kong"} · Paris ${parisHM()}`;
+  $("#topStatus").innerHTML = statusIcons(json(N.device(), {}));
+}
+/* État de la tablette, dans la barre du haut comme sur iPhone. */
+function statusIcons(dev) {
+  const pct = Math.max(0, Math.min(100, dev.battery ?? 0));
+  const low = pct <= 20;
+  const battery = `<span class="si" title="Batterie"><svg viewBox="0 0 30 14" width="27" height="13"><rect x=".7" y=".7" width="25" height="12.6" rx="3.5" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="1.4"/><rect x="2.6" y="2.6" width="${(21.2 * pct) / 100}" height="8.8" rx="2" fill="${low ? "var(--red)" : dev.charging ? "var(--green)" : "currentColor"}"/><path d="M27.6 4.8v4.4c1-.3 1.6-1.2 1.6-2.2s-.6-1.9-1.6-2.2z" fill="currentColor" fill-opacity=".45"/></svg>${pct} %</span>`;
+  const net = dev.airplane ? `<span class="si" title="Mode avion">✈︎</span>`
+    : dev.network === "NONE" ? `<span class="si off" title="Sans réseau"><svg viewBox="0 0 20 15" width="19" height="14"><path d="M10 3C6.6 3 3.6 4.3 1.3 6.5L10 15l8.7-8.5C16.4 4.3 13.4 3 10 3z" fill="currentColor" fill-opacity=".25"/></svg></span>`
+    : `<span class="si" title="${esc(dev.networkLabel || "")}"><svg viewBox="0 0 20 15" width="19" height="14"><path d="M10 3C6.6 3 3.6 4.3 1.3 6.5L10 15l8.7-8.5C16.4 4.3 13.4 3 10 3z" fill="currentColor"/></svg></span>`;
+  const gps = `<span class="si ${dev.gps ? "" : "off"}" title="GPS"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M15 1 1 7.2l6 1.8 1.8 6z" fill="currentColor"/></svg></span>`;
+  const content = N.hasSyncedPack() ? "" : `<span class="si warn" title="Médias à synchroniser">↓</span>`;
+  return content + gps + net + battery;
 }
 async function reloadPack() {
   P = await loadPack(); indexPack();
