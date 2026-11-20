@@ -99,6 +99,7 @@ const EMERGENCY = {
   lost: { zh: "我迷路了。请帮我联系这家酒店。", fr: "Je suis perdu. Aidez-moi à joindre cet hôtel, s'il vous plaît." },
 };
 
+const SCENES_META = (() => { try { return JSON.parse(readFileSync(join(root, "travelos/scenes/meta.json"), "utf8")); } catch { return {}; } })();
 const DEPTH_META = (() => { try { return JSON.parse(readFileSync(join(root, "travelos/depth/meta.json"), "utf8")); } catch { return {}; } })();
 const img = (code) => media(IMG[code]) || null;
 const audio = (entry) => (entry ? { src: media(entry[0]), seconds: entry[1] || 0, title: entry[2] ? plain(entry[2]) : null } : null);
@@ -195,6 +196,12 @@ const days = [...DAYS]
     // Photo du jour en carré + sujet détouré (tools/make-depth.py), pour l'effet de profondeur de l'accueil.
     depth: existsSync(join(root, `travelos/depth/${d.id}-fg.webp`))
       ? { bg: `travelos/depth/${d.id}-bg.webp`, fg: `travelos/depth/${d.id}-fg.webp`, clockFront: (DEPTH_META[d.id]?.cover ?? 0) > 0.33 } : null,
+    // Trois scènes (matin, après-midi, soir) pour le widget photo : fond, heure en verre, sujet détouré
+    // (tools/make-scenes.py). L'accueil choisit la scène selon l'heure du voyage.
+    scenes: [1, 2, 3].map((slot) => {
+      const k = `j${n + 1}-${slot}`, m = SCENES_META[k];
+      return m ? { slot, bg: `travelos/scenes/${k}-bg.webp`, fg: `travelos/scenes/${k}-fg.webp`, glass: `travelos/scenes/${k}-glass.webp`, tone: m.tone, dy: m.dy || 0 } : null;
+    }).filter(Boolean),
     audio: audio(AUDIO_DAY[d.id]),
     feature: d.feature ? { quote: plain(d.feature.q), text: plain(d.feature.t) } : null,
     steps: (d.prog || []).map((it, k) => ({
@@ -263,6 +270,7 @@ writeFileSync(join(seedDir, "pack.json"), json);
 const referenced = new Set(["travelos/pack/pack.json", ...articles.flatMap((a) => a.images)]);
 if (pack.lockscreen) referenced.add(pack.lockscreen);
 for (const d of days) if (d.depth) { referenced.add(d.depth.bg); referenced.add(d.depth.fg); }
+for (const d of days) for (const sc of d.scenes) { referenced.add(sc.bg); referenced.add(sc.fg); referenced.add(sc.glass); }
 // Icônes de l'accueil (travelos/icons/<id>.webp), ajoutées dès qu'elles sont déposées dans le dépôt.
 const iconDir = join(root, "travelos/icons");
 if (existsSync(iconDir)) for (const f of readdirSync(iconDir)) if (/\.(webp|png)$/.test(f)) referenced.add(`travelos/icons/${f}`);

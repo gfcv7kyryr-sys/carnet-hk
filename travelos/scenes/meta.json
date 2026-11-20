@@ -1,0 +1,197 @@
+{
+ "j10-1": {
+  "tone": "light",
+  "lum": 0.71,
+  "cover": 0.17
+ },
+ "j10-2": {
+  "tone": "light",
+  "lum": 0.69,
+  "cover": 0.09
+ },
+ "j10-3": {
+  "tone": "light",
+  "lum": 0.68,
+  "cover": 0.23
+ },
+ "j1-1": {
+  "tone": "light",
+  "lum": 0.8,
+  "cover": 0.06
+ },
+ "j11-1": {
+  "tone": "light",
+  "lum": 0.78,
+  "cover": 0.0
+ },
+ "j11-2": {
+  "tone": "light",
+  "lum": 0.69,
+  "cover": 0.0
+ },
+ "j11-3": {
+  "tone": "dark",
+  "lum": 0.28,
+  "cover": 0.0
+ },
+ "j1-2": {
+  "tone": "light",
+  "lum": 0.67,
+  "cover": 0.0
+ },
+ "j12-1": {
+  "tone": "light",
+  "lum": 0.61,
+  "cover": 0.04
+ },
+ "j12-2": {
+  "tone": "light",
+  "lum": 0.68,
+  "cover": 0.09
+ },
+ "j12-3": {
+  "tone": "dark",
+  "lum": 0.21,
+  "cover": 0.05
+ },
+ "j1-3": {
+  "tone": "dark",
+  "lum": 0.46,
+  "cover": 0.02
+ },
+ "j13-1": {
+  "tone": "light",
+  "lum": 0.66,
+  "cover": 0.02
+ },
+ "j13-2": {
+  "tone": "light",
+  "lum": 0.62,
+  "cover": 0.08
+ },
+ "j13-3": {
+  "tone": "light",
+  "lum": 0.75,
+  "cover": 0.01
+ },
+ "j2-1": {
+  "tone": "light",
+  "lum": 0.75,
+  "cover": 0.01
+ },
+ "j2-2": {
+  "tone": "light",
+  "lum": 0.7,
+  "cover": 0.01
+ },
+ "j2-3": {
+  "tone": "light",
+  "lum": 0.66,
+  "cover": 0.12
+ },
+ "j3-1": {
+  "tone": "light",
+  "lum": 0.71,
+  "cover": 0.01
+ },
+ "j3-2": {
+  "tone": "light",
+  "lum": 0.76,
+  "cover": 0.01
+ },
+ "j3-3": {
+  "tone": "dark",
+  "lum": 0.19,
+  "cover": 0.05
+ },
+ "j4-1": {
+  "tone": "light",
+  "lum": 0.59,
+  "cover": 0.05
+ },
+ "j4-2": {
+  "tone": "light",
+  "lum": 0.76,
+  "cover": 0.04
+ },
+ "j4-3": {
+  "tone": "dark",
+  "lum": 0.21,
+  "cover": 0.0
+ },
+ "j5-1": {
+  "tone": "light",
+  "lum": 0.72,
+  "cover": 0.0
+ },
+ "j5-2": {
+  "tone": "light",
+  "lum": 0.58,
+  "cover": 0.12
+ },
+ "j5-3": {
+  "tone": "dark",
+  "lum": 0.18,
+  "cover": 0.0
+ },
+ "j6-1": {
+  "tone": "light",
+  "lum": 0.7,
+  "cover": 0.21
+ },
+ "j6-2": {
+  "tone": "light",
+  "lum": 0.69,
+  "cover": 0.17
+ },
+ "j6-3": {
+  "tone": "light",
+  "lum": 0.68,
+  "cover": 0.18
+ },
+ "j7-1": {
+  "tone": "light",
+  "lum": 0.72,
+  "cover": 0.02
+ },
+ "j7-2": {
+  "tone": "light",
+  "lum": 0.62,
+  "cover": 0.0
+ },
+ "j7-3": {
+  "tone": "light",
+  "lum": 0.61,
+  "cover": 0.01
+ },
+ "j8-1": {
+  "tone": "light",
+  "lum": 0.65,
+  "cover": 0.13
+ },
+ "j8-2": {
+  "tone": "light",
+  "lum": 0.67,
+  "cover": 0.0
+ },
+ "j8-3": {
+  "tone": "dark",
+  "lum": 0.32,
+  "cover": 0.13
+ },
+ "j9-1": {
+  "tone": "light",
+  "lum": 0.68,
+  "cover": 0.0
+ },
+ "j9-2": {
+  "tone": "light",
+  "lum": 0.68,
+  "cover": 0.0
+ },
+ "j9-3": {
+  "tone": "light",
+  "lum": 0.62,
+  "cover": 0.04
+ }
+}

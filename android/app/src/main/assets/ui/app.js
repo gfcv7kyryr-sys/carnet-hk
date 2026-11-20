@@ -200,45 +200,100 @@ function updateLockWallpaper(force) {
   if (r === "ok") { store.set("lockWpDate", key); if (force) toast("Les lanternes sont sur l'écran verrouillé"); }
   else if (force) toast(r);
 }
+/* Moment de la journée à l'heure du voyage : 1 matin (5 h – 12 h), 2 après-midi (12 h – 18 h), 3 soir. */
+const sceneSlot = (min) => (min >= 300 && min < 720 ? 1 : min >= 720 && min < 1080 ? 2 : 3);
+function sceneOf(d, now) {
+  const want = sceneSlot(now.minutes);
+  return d.scenes?.find((x) => x.slot === want) || d.scenes?.[0] || null;
+}
+/* Heure à la manière de l'écran verrouillé : sans zéro devant l'heure, deux-points espacés. */
+const bigClock = (hm) => { const [h, m] = hm.split(":"); return `${Number(h)}<i>:</i>${m}`; };
+
+/* Étapes à venir : la prochaine, puis les deux suivantes (avant le voyage, le début du jour 1). */
+function upcoming(h) {
+  const d = h.d;
+  const list = d.steps.filter((x) => x.dayOffset === 0 && ["PLANNED", "IN_PROGRESS"].includes(status(x.key)));
+  if (h.ph.kind !== "during") return list.slice(0, 3);
+  const i = h.ph.next ? list.indexOf(h.ph.next) : -1;
+  return i < 0 ? [] : list.slice(i, i + 3);
+}
+const stepPlace = (s) => (s.placeId ? placeById(s.placeId) : null);
+const stepLabel = (s) => stepPlace(s)?.name || s.text.split(/ : |\. |, puis /)[0].replace(/[.,]$/, "");
 function calWidget(h) {
   const d = h.d, n = h.now;
   const dt = new Date(utc(n.date));
   const dow = dt.toLocaleDateString("fr-FR", { weekday: "long", timeZone: "UTC" });
   const mon = dt.toLocaleDateString("fr-FR", { month: "long", timeZone: "UTC" });
-  let kicker, title, line = "";
-  if (h.ph.kind === "before") {
-    kicker = `Départ dans ${h.ph.left} ${h.ph.left > 1 ? "jours" : "jour"}`;
-    title = d.title;
-    line = `<span>Jour 1</span>${esc(shortDate(d.date))} · ${esc(d.city)}`;
-  } else if (h.ph.kind === "during") {
-    kicker = `Jour ${d.number} · ${d.city}`;
-    title = d.title;
-    const s = h.ph.next;
-    line = s ? `<span>${esc(s.time)}</span>${esc(s.text)}` : `<span>✓</span>Journée terminée`;
+  const kicker = h.ph.kind === "before" ? `Départ dans ${h.ph.left} ${h.ph.left > 1 ? "jours" : "jour"} · Jour 1, ${shortDate(d.date)}`
+    : h.ph.kind === "during" ? `Jour ${d.number} · ${d.city}` : "Voyage terminé";
+  const head = `<button class="cw-head" data-day="${d.id}">
+      <span class="cw-date"><span class="cw-dow">${esc(dow)}</span><span class="cw-num">${dt.getUTCDate()}</span><span class="cw-mon">${esc(mon)}</span></span>
+      <span class="cw-body"><small>${esc(kicker)}</small><b>${esc(h.ph.kind === "after" ? "Bon retour" : d.title)}</b></span>
+    </button>`;
+  if (h.ph.kind === "after") return `<div class="cal-w">${head}</div>`;
+  const [s, ...rest] = upcoming(h);
+  let next;
+  if (s) {
+    const pl = stepPlace(s);
+    const au = pl?.audio?.[0];
+    next = `<div class="cw-next" data-next="${s.key}">
+      <small>${h.ph.kind === "before" ? "Première étape" : "Prochaine étape"}</small>
+      <div class="cwn"><b class="cwn-t">${esc(s.time)}</b><span><b class="cwn-p">${esc(stepLabel(s))}</b>${s.text.replace(/[.\s]+$/, "") !== stepLabel(s) ? `<span class="cwn-x">${esc(s.text)}</span>` : ""}</span></div>
+      ${pl || au ? `<div class="acts">${pl ? `<button class="pill red" data-map="${pl.id}">Y aller</button>` : ""}${au ? `<button class="pill" data-audio="${esc(au.src)}" data-title="${esc(au.title || pl.name)}">▶ Écouter</button>` : ""}${pl ? `<button class="pill ghost" data-place="${pl.id}">Fiche</button>` : ""}</div>` : ""}
+    </div>`;
   } else {
-    kicker = "Voyage terminé"; title = "Bon retour";
+    next = `<div class="cw-next"><small>Prochaine étape</small><div class="cwn"><b class="cwn-t">✓</b><span><b class="cwn-p">Journée terminée</b><span class="cwn-x">Toutes les étapes du jour sont faites.</span></span></div></div>`;
   }
-  return `<button class="cal-w" data-day="${d.id}">
-    <span class="cw-date"><span class="cw-dow">${esc(dow)}</span><span class="cw-num">${dt.getUTCDate()}</span><span class="cw-mon">${esc(mon)}</span></span>
-    <span class="cw-body"><small>${esc(kicker)}</small><b>${esc(title)}</b>${line ? `<span class="cw-line">${line}</span>` : ""}</span>
+  const more = `<div class="cw-more"><small>Au programme</small>
+      ${rest.map((x) => `<button class="cwm" data-day="${d.id}"><b>${esc(x.time)}</b><span>${esc(stepLabel(x))}</span></button>`).join("")}
+      <button class="cwm all" data-day="${d.id}">Toute la journée <span>›</span></button>
+    </div>`;
+  return `<div class="cal-w">${head}${next}${more}</div>`;
+}
+/* Widget photo : fond, heure en verre, puis sujet détouré qui passe devant les chiffres. */
+function photoWidget(h) {
+  const d = h.d, sc = sceneOf(d, h.now);
+  if (!sc) {
+    const dep = d.depth, bg = dep?.bg || d.visits[0]?.image || d.image;
+    return `<button class="pw tone-${h.tone} ${dep?.clockFront ? "front" : ""}" data-day="${d.id}" data-scene="none" aria-label="Ouvrir la journée">
+      <span class="pw-ph">${bg ? `<img class="pw-bg" src="/pack/${esc(bg)}" alt="" onerror="this.remove()">` : ""}</span>
+      <span class="pw-clock glass-light" style="--glass:none"><span class="gc gc-sh" data-bigclock>${bigClock(h.now.hm)}</span><span class="gc gc-rim" data-bigclock>${bigClock(h.now.hm)}</span><span class="gc gc-fill plain" data-bigclock>${bigClock(h.now.hm)}</span><span class="gc gc-hi" data-bigclock>${bigClock(h.now.hm)}</span></span>
+      ${dep ? `<img class="pw-fg" src="/pack/${esc(dep.fg)}" alt="" onerror="this.remove()">` : ""}
+    </button>`;
+  }
+  const c = bigClock(h.now.hm);
+  return `<button class="pw" data-day="${d.id}" data-scene="${d.id}-${sc.slot}" aria-label="Ouvrir la journée" style="--dy:${sc.dy || 0}">
+    <img class="pw-bg" src="/pack/${esc(sc.bg)}" alt="">
+    <span class="pw-clock glass-${sc.tone}" style="--glass:url('/pack/${esc(sc.glass)}')" aria-hidden="true">
+      <span class="gc gc-sh" data-bigclock>${c}</span><span class="gc gc-rim" data-bigclock>${c}</span><span class="gc gc-fill" data-bigclock>${c}</span><span class="gc gc-hi" data-bigclock>${c}</span>
+    </span>
+    <img class="pw-fg" src="/pack/${esc(sc.fg)}" alt="">
   </button>`;
 }
-/* Accueil : photo du jour (heure en transparence derrière le sujet), widget calendrier, grille d'applications. */
+/* Clé de ce qu'affichent les widgets : quand elle change (moment, journée, étape), on les redessine. */
+function homeKey(h) {
+  const sc = sceneOf(h.d, h.now);
+  return `${h.d.id}|${sc ? sc.slot : "-"}|${upcoming(h).map((x) => x.key).join(",")}|${h.ph.kind}`;
+}
+let homeShown = "";
+function refreshHome() {
+  const w = $(".home-w");
+  if (!w) return;
+  const h = homeData(), k = homeKey(h);
+  if (k === homeShown) return;
+  homeShown = k;
+  w.querySelector(".pw").outerHTML = photoWidget(h);
+  w.querySelector(".cal-w").outerHTML = calWidget(h);
+}
+/* Accueil : photo du jour (heure en verre derrière le sujet), widget calendrier, grille d'applications. */
 function viewToday() {
   setTimeout(() => updateLockWallpaper(false), 1500);
   const h = homeData();
-  const d = h.d;
-  const dep = d.depth;
-  const bg = dep?.bg || d.visits[0]?.image || d.image;
+  homeShown = homeKey(h);
   return `<section class="home-w">
-    <button class="pw tone-${h.tone} ${dep?.clockFront ? "front" : ""}" data-day="${d.id}" aria-label="Ouvrir la journée">
-      <span class="pw-ph">${bg ? `<img class="pw-bg" src="/pack/${esc(bg)}" alt="" onerror="this.remove()">` : ""}</span>
-      <span class="pw-date">${esc(h.dateLabel)}</span>
-      <span class="pw-clock" data-bigclock>${h.now.hm}</span>
-      ${dep ? `<img class="pw-fg" src="/pack/${esc(dep.fg)}" alt="" onerror="this.remove()">` : ""}
-    </button>
+    ${photoWidget(h)}
     ${calWidget(h)}
-    <div class="hw-apps">${HOME_APPS.map((id) => appIcon(id, d)).join("")}</div>
+    <div class="hw-apps">${HOME_APPS.map((id) => appIcon(id, h.d)).join("")}</div>
   </section>`;
 }
 
@@ -841,7 +896,9 @@ function applyPrefs() {
 function tick() {
   const n = nowHK();
   $("#clockHk").textContent = n.hm;
-  $$("[data-bigclock]").forEach((e) => { e.textContent = n.hm; });
+  const big = bigClock(n.hm);
+  $$("[data-bigclock]").forEach((e) => { if (e.innerHTML !== big) e.innerHTML = big; });
+  refreshHome();
   $("#topStatus").innerHTML = statusIcons(json(N.device(), {}));
 }
 /* État de la tablette, dans la barre du haut comme sur iPhone. */
@@ -870,7 +927,9 @@ function decorateChooser() {
   }
 }
 
-window.TravelOS = { back, onHome, toast, onPermission: () => {}, onTranslate, onSystemTheme: () => applyTheme() };
+// Retour de veille ou de l'arrière-plan : heure, scène et prochaine étape à jour tout de suite.
+document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
+window.TravelOS = { back, onHome, toast, onResume: () => tick(), onPermission: () => {}, onTranslate, onSystemTheme: () => applyTheme() };
 
 (async () => {
   applyPrefs();

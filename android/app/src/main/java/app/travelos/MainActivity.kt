@@ -119,6 +119,12 @@ class MainActivity : ComponentActivity() {
         if (hasFocus) hideSystemBars()
     }
 
+    /** Sortie de veille : l'accueil remet à jour l'heure, la scène du moment et la prochaine étape. */
+    override fun onResume() {
+        super.onResume()
+        if (::webView.isInitialized) js("window.TravelOS && TravelOS.onResume && TravelOS.onResume()")
+    }
+
     override fun onDestroy() {
         (application as TravelOsApp).container.gps.stop()
         webView.destroy()

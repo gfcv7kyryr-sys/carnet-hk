@@ -394,40 +394,67 @@ main#view{max-width:var(--wide);margin:0 auto;padding:var(--top) var(--gut) var(
 
 /* ---------- Accueil : calendrier · photo du jour · applications ---------- */
 .home-w{--avail:calc(100dvh - var(--top) - var(--bottom));height:var(--avail);display:grid;gap:20px;align-content:start;
-  grid-template:"photo cal" auto "photo apps" minmax(0,1fr) / min(var(--avail),58%) minmax(0,1fr);--ic:66px}
+  grid-template:"photo cal" minmax(0,1fr) "photo apps" auto / min(var(--avail),56%) minmax(0,1fr);--ic:56px}
 .hw-cal .t-list{flex:1 1 auto;min-height:0;overflow-y:auto;margin:0}
 .hw-next{display:grid;gap:8px;padding-bottom:12px;margin-bottom:4px;border-bottom:1px solid var(--line)}
-.hw-apps{grid-area:apps;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 8px;align-content:start;padding-top:4px}
+.hw-apps{grid-area:apps;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px 4px;align-content:start}
 .pw{grid-area:photo;position:relative;display:block;width:100%;aspect-ratio:1;align-self:start;border-radius:36px;overflow:hidden;container-type:inline-size;
   background:linear-gradient(150deg,var(--ta),var(--tb));box-shadow:0 18px 50px -20px rgba(0,0,0,.45);text-align:left}
 .pw-ph,.pw-bg,.pw-fg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .pw-fg{z-index:2;pointer-events:none}
 .pw.front .pw-clock{z-index:3}
-.pw-date{position:absolute;z-index:3;left:0;right:0;top:6.5cqw;text-align:center;color:#fff;font-weight:650;font-size:5.4cqw;letter-spacing:-.01em;text-shadow:0 1px 10px rgba(0,0,0,.35)}
-.pw-clock{position:absolute;z-index:1;left:0;right:0;top:11cqw;text-align:center;font-weight:700;font-size:30cqw;line-height:1;letter-spacing:-.045em;font-variant-numeric:tabular-nums;
-  background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.5));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 14px rgba(0,0,0,.22))}
+/* Heure en verre liquide, cadrée selon le gabarit (chiffres de 14 % à 28,7 % de la hauteur, centrés).
+   Trois calques au même endroit : ombre portée, chiffres remplis du fond flouté (texture -glass,
+   légèrement agrandie pour l'effet de réfraction), puis liseré et reflet. Le sujet détouré passe devant. */
+.pw-clock{position:absolute;inset:0;z-index:1;pointer-events:none;--ct:calc(11.47cqw + var(--dy,0) * 100cqw)}
+.gc{position:absolute;inset:0;padding-top:var(--ct);text-align:center;white-space:nowrap;font-weight:700;font-size:20.15cqw;line-height:1;
+  letter-spacing:-.005em;font-variant-numeric:proportional-nums;font-feature-settings:"case" 1;color:transparent}
+.gc i{font-style:normal;margin:0 .1em}
+.gc-sh{color:rgba(0,0,0,.34);filter:blur(1cqw);transform:translateY(.6cqw)}
+.glass-dark .gc-sh{color:rgba(0,0,0,.38)}
+.gc-fill{background:var(--glass) center/107% 107% no-repeat;-webkit-background-clip:text;background-clip:text}
+.gc-fill.plain{background:rgba(255,255,255,.72);-webkit-background-clip:text;background-clip:text}
+/* Liseré : ombres décalées de la forme entière (un contour suivrait les tracés internes du 4). */
+.gc-rim{--r:.28cqw;color:rgba(255,255,255,.8);text-shadow:var(--r) 0 0 rgba(255,255,255,.8),calc(-1*var(--r)) 0 0 rgba(255,255,255,.8),0 var(--r) 0 rgba(255,255,255,.55),0 calc(-1*var(--r)) 0 rgba(255,255,255,.95),
+  calc(.7*var(--r)) calc(.7*var(--r)) 0 rgba(255,255,255,.6),calc(-.7*var(--r)) calc(.7*var(--r)) 0 rgba(255,255,255,.6),calc(.7*var(--r)) calc(-.7*var(--r)) 0 rgba(255,255,255,.9),calc(-.7*var(--r)) calc(-.7*var(--r)) 0 rgba(255,255,255,.9)}
+.gc-hi{
+  background:linear-gradient(172deg,rgba(255,255,255,.62) 0,rgba(255,255,255,.12) 34%,rgba(255,255,255,0) 52%,rgba(255,255,255,.16) 100%) 0 var(--ct)/100% 16cqw no-repeat;
+  -webkit-background-clip:text;background-clip:text}
 .pw-cap{position:absolute;z-index:3;left:4cqw;right:4cqw;bottom:4cqw;border-radius:5.5cqw;padding:3cqw 4.4cqw;display:grid;gap:1px;--gl-fill:rgba(255,255,255,.6);color:var(--ink)}
 :root[data-theme=dark] .pw-cap{--gl-fill:rgba(28,28,30,.6)}
 .pw-cap small{font-size:max(.8rem,3.2cqw);font-weight:650;color:var(--muted)}
 .pw-cap b{font-size:max(1rem,4.6cqw);font-weight:720;letter-spacing:-.02em;line-height:1.2}
 @media (orientation:portrait){
-  .home-w{grid-template:"photo" auto "cal" auto "apps" minmax(0,1fr) / 1fr}
-  .pw{width:min(100%,calc(var(--avail) - 470px));justify-self:center}
-  .cal-w{width:min(100%,calc(var(--avail) - 470px));justify-self:center}
-  .hw-apps{grid-template-columns:repeat(5,minmax(0,1fr));width:min(100%,calc(var(--avail) - 470px));justify-self:center}
+  .home-w{grid-template:"photo" auto "cal" minmax(0,1fr) "apps" auto / 1fr;--pw:min(100%,calc(var(--avail) - 625px))}
+  .pw{width:var(--pw);justify-self:center}
+  .cal-w{width:min(100%,max(var(--pw),560px));justify-self:center}
+  .hw-apps{width:min(100%,max(var(--pw),560px));justify-self:center}
 }
-/* Widget calendrier, façon iOS : le jour en grand, le programme du jour, la prochaine étape. */
-.cal-w{grid-area:cal;display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;background:var(--bg2);border-radius:32px;padding:22px 26px;text-align:left;width:100%}
-.cw-date{display:grid;justify-items:center;line-height:1;min-width:84px}
-.cw-dow{color:var(--red);font-size:.95rem;font-weight:700;text-transform:capitalize}
-.cw-num{font-size:4.2rem;font-weight:300;letter-spacing:-.04em;line-height:1;margin:2px 0}
-.cw-mon{color:var(--muted);font-size:.9rem;font-weight:600}
-.cw-body{display:grid;gap:4px;min-width:0}
-.cw-body small{color:var(--muted);font-size:.9rem;font-weight:650}
-.cw-body b{font-size:1.3rem;font-weight:720;letter-spacing:-.02em;line-height:1.22}
-.cw-line{display:block;margin-top:6px;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cw-line span{color:var(--red-ink);font-weight:700;margin-right:8px;font-variant-numeric:tabular-nums}
-}
+/* Widget calendrier : la date, la prochaine étape mise en avant, puis les deux suivantes. */
+.cal-w{grid-area:cal;display:flex;flex-direction:column;gap:10px;background:var(--bg2);border-radius:30px;padding:16px 20px;text-align:left;width:100%;min-height:0;overflow:hidden}
+.cw-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;text-align:left}
+.cw-date{display:grid;justify-items:center;line-height:1;min-width:70px}
+.cw-dow{color:var(--red);font-size:.9rem;font-weight:700;text-transform:capitalize}
+.cw-num{font-size:2.7rem;font-weight:300;letter-spacing:-.04em;line-height:1;margin:2px 0}
+.cw-mon{color:var(--muted);font-size:.85rem;font-weight:600}
+.cw-body{display:grid;gap:3px;min-width:0}
+.cw-body small,.cw-next>small,.cw-more>small{color:var(--muted);font-size:.85rem;font-weight:650}
+.cw-body b{font-size:1.15rem;font-weight:720;letter-spacing:-.02em;line-height:1.22;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cw-next{display:grid;gap:6px;padding:12px 14px;border-radius:22px;background:var(--bg);box-shadow:0 1px 0 var(--line)}
+.cw-next>small{color:var(--red-ink);text-transform:uppercase;letter-spacing:.04em;font-size:.75rem}
+.cwn{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.cwn-t{font-size:1.6rem;font-weight:720;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--red-ink)}
+.cwn>span{display:grid;gap:2px;min-width:0}
+.cwn-p{font-size:1.05rem;font-weight:700;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cwn-x{color:var(--muted);font-size:.88rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cw-next .acts{gap:8px;margin:2px 0 0}
+.cw-next .pill{padding:8px 14px;font-size:.88rem}
+.cw-more{display:grid;gap:2px}
+.cwm{display:grid;grid-template-columns:3.4em minmax(0,1fr);gap:10px;align-items:baseline;padding:6px 2px;border-top:1px solid var(--line);text-align:left;font-size:.93rem}
+.cwm b{font-variant-numeric:tabular-nums;font-weight:700}
+.cwm span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.cwm.all{grid-template-columns:1fr auto;color:var(--red-ink);font-weight:650}
+.cwm.all span{color:var(--red-ink)}
 .hw-next .w-p.strong{-webkit-line-clamp:2}
 .hw-next .acts .pill{padding:7px 14px}
 .hw-cal .t-list li{padding:7px 0}

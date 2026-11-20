@@ -32,8 +32,7 @@
   <div class="d-wrap" id="wrap">
     <div class="pw" id="pw">
       <img class="pw-bg" id="pwBg" alt="">
-      <span class="pw-date" id="date"></span>
-      <span class="pw-clock" id="clock">--:--</span>
+      <span class="pw-clock glass-light" id="clock"><span class="gc gc-sh"></span><span class="gc gc-rim"></span><span class="gc gc-fill"></span><span class="gc gc-hi"></span></span>
       <img class="pw-fg" id="pwFg" alt="">
     </div>
     <div class="d-text">
@@ -65,19 +64,28 @@ async function load() {
 }
 function render() {
   const n = nowHK();
-  $("clock").textContent = n.hm;
+  const [hh, mm] = n.hm.split(":"), big = `${Number(hh)}<i>:</i>${mm}`;
+  document.querySelectorAll("#clock .gc").forEach((e) => { if (e.innerHTML !== big) e.innerHTML = big; });
   if (!P) return;
   const before = n.date < P.trip.startDate;
   const d = P.days.find((x) => x.date === n.date) || P.days[0];
-  if (shown !== d.id) {
-    shown = d.id;
-    const bg = d.depth?.bg || d.visits[0]?.image || d.image;
-    $("pwBg").src = `/pack/${bg}`;
+  // Même scène que l'accueil : matin (5 h – 12 h), après-midi (12 h – 18 h) ou soir.
+  const slot = n.min >= 300 && n.min < 720 ? 1 : n.min >= 720 && n.min < 1080 ? 2 : 3;
+  const sc = d.scenes?.find((x) => x.slot === slot) || d.scenes?.[0];
+  const key = `${d.id}-${sc ? sc.slot : "-"}`;
+  if (shown !== key) {
+    shown = key;
+    const bg = sc?.bg || d.depth?.bg || d.visits[0]?.image || d.image;
+    const fg = sc?.fg || d.depth?.fg;
+    $("pwBg").hidden = false; $("pwBg").src = `/pack/${bg}`;
     $("bg").style.backgroundImage = `url(/pack/${bg})`;
-    if (d.depth) { $("pwFg").src = `/pack/${d.depth.fg}`; $("pwFg").hidden = false; } else $("pwFg").hidden = true;
-    $("pw").classList.toggle("front", !!d.depth?.clockFront);
+    if (fg) { $("pwFg").src = `/pack/${fg}`; $("pwFg").hidden = false; } else $("pwFg").hidden = true;
+    const c = $("clock");
+    c.className = `pw-clock glass-${sc?.tone || "light"}`;
+    c.style.setProperty("--glass", sc ? `url('/pack/${sc.glass}')` : "none");
+    c.style.setProperty("--dy", sc?.dy || 0);
+    c.querySelector(".gc-fill").classList.toggle("plain", !sc);
   }
-  $("date").textContent = frDate(n.date);
   if (before) {
     const left = Math.round((utc(P.trip.startDate) - utc(n.date)) / 86400000);
     $("kicker").textContent = "Départ dans";
