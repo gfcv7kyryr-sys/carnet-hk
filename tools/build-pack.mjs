@@ -50,7 +50,9 @@ const plain = (s) => String(s ?? "")
   .trim();
 const list = (a) => (Array.isArray(a) ? a.map(plain).filter(Boolean) : []);
 const pad = (n) => String(n).padStart(2, "0");
-const media = (p) => (p ? String(p).split("?")[0] : null);
+// Version HD (travelos/hd/<hash>.webp, tools/make-hd.py) quand elle existe ; sinon l'image du carnet.
+const hdPath = (p) => { const m = /^img\/([0-9a-f]+\.webp)$/.exec(p); return m && existsSync(join(root, "travelos/hd", m[1])) ? `travelos/hd/${m[1]}` : p; };
+const media = (p) => (p ? hdPath(String(p).split("?")[0]) : null);
 
 const DAYS = literal("DAYS");
 const PLACES = literal("PLACES");
@@ -239,6 +241,7 @@ const pack = {
   weather: WEATHER.map(([place, min, max]) => ({ place, min, max })),
   cityAudio: Object.entries(AUDIO_CITY).map(([id, e]) => ({ id, ...audio(e) })),
   rates: readRates(),
+  lockscreen: existsSync(join(root, "travelos/lockscreen/lanternes.webp")) ? "travelos/lockscreen/lanternes.webp" : null,
   articles,
   specialties: SPEC.map(([region, dishes]) => ({ region: plain(region), dishes: dishes.map(([zh, name, text, verdict]) => ({ zh, name: plain(name), text: plain(text), verdict: verdict || "" })) })),
   emergency: EMERGENCY,
@@ -258,12 +261,13 @@ writeFileSync(join(seedDir, "pack.json"), json);
 
 // Manifeste : tous les médias cités + le pack lui-même.
 const referenced = new Set(["travelos/pack/pack.json", ...articles.flatMap((a) => a.images)]);
+if (pack.lockscreen) referenced.add(pack.lockscreen);
 for (const d of days) if (d.depth) { referenced.add(d.depth.bg); referenced.add(d.depth.fg); }
 // Icônes de l'accueil (travelos/icons/<id>.webp), ajoutées dès qu'elles sont déposées dans le dépôt.
 const iconDir = join(root, "travelos/icons");
 if (existsSync(iconDir)) for (const f of readdirSync(iconDir)) if (/\.(webp|png)$/.test(f)) referenced.add(`travelos/icons/${f}`);
 JSON.stringify(pack, (k, v) => {
-  if (typeof v === "string" && /^(img|audio)\//.test(v)) referenced.add(v);
+  if (typeof v === "string" && /^(img|audio|travelos\/hd)\//.test(v)) referenced.add(v);
   return v;
 });
 const files = [];

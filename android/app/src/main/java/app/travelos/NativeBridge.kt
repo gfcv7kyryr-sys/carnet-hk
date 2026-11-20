@@ -230,6 +230,10 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
         }
     }
 
+    /** Taille du texte de toute l'interface, en pourcentage (85 à 130). */
+    @JavascriptInterface
+    fun setTextZoom(percent: Int) = main.post { activity.setTextZoom(percent.coerceIn(70, 160)) }
+
     @JavascriptInterface
     fun keepScreenOn(on: Boolean) = main.post { activity.setKeepScreenOn(on) }
 

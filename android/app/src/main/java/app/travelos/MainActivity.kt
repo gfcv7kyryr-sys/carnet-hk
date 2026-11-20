@@ -182,6 +182,10 @@ class MainActivity : ComponentActivity() {
         locationPermission.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
     }
 
+    fun setTextZoom(percent: Int) {
+        if (::webView.isInitialized && webView.settings.textZoom != percent) webView.settings.textZoom = percent
+    }
+
     fun setKeepScreenOn(on: Boolean) {
         if (on) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         else window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

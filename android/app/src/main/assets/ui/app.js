@@ -191,37 +191,53 @@ function homeData() {
 }
 /* Accueil : calendrier du jour à gauche, photo du jour en carré avec l'heure en transparence
    derrière le sujet (effet de profondeur), grille d'applications réduite à droite. */
-/* Fond de l'écran verrouillé : la photo du jour, une fois par jour si le réglage est activé. */
+/* Fond de l'écran verrouillé : les lanternes du carnet (appliqué une fois, et à chaque nouveau paquet). */
 function updateLockWallpaper(force) {
-  if (!store.get("lockWp", false) || !N.setLockWallpaper) return;
-  const day = phase().day || P.days[0];
-  const key = `${nowHK().date}:${day.id}`;
+  if (!store.get("lockWp", false) || !N.setLockWallpaper || !P.lockscreen) return;
+  const key = `${P.lockscreen}:${json(N.syncState(), {}).packVersion || "seed"}`;
   if (!force && store.get("lockWpDate", null) === key) return;
-  const r = N.setLockWallpaper(day.image || day.depth?.bg);
-  if (r === "ok") { store.set("lockWpDate", key); if (force) toast("Photo du jour placée sur l'écran verrouillé"); }
+  const r = N.setLockWallpaper(P.lockscreen);
+  if (r === "ok") { store.set("lockWpDate", key); if (force) toast("Les lanternes sont sur l'écran verrouillé"); }
   else if (force) toast(r);
 }
+function calWidget(h) {
+  const d = h.d, n = h.now;
+  const dt = new Date(utc(n.date));
+  const dow = dt.toLocaleDateString("fr-FR", { weekday: "long", timeZone: "UTC" });
+  const mon = dt.toLocaleDateString("fr-FR", { month: "long", timeZone: "UTC" });
+  let kicker, title, line = "";
+  if (h.ph.kind === "before") {
+    kicker = `Départ dans ${h.ph.left} ${h.ph.left > 1 ? "jours" : "jour"}`;
+    title = d.title;
+    line = `<span>Jour 1</span>${esc(shortDate(d.date))} · ${esc(d.city)}`;
+  } else if (h.ph.kind === "during") {
+    kicker = `Jour ${d.number} · ${d.city}`;
+    title = d.title;
+    const s = h.ph.next;
+    line = s ? `<span>${esc(s.time)}</span>${esc(s.text)}` : `<span>✓</span>Journée terminée`;
+  } else {
+    kicker = "Voyage terminé"; title = "Bon retour";
+  }
+  return `<button class="cal-w" data-day="${d.id}">
+    <span class="cw-date"><span class="cw-dow">${esc(dow)}</span><span class="cw-num">${dt.getUTCDate()}</span><span class="cw-mon">${esc(mon)}</span></span>
+    <span class="cw-body"><small>${esc(kicker)}</small><b>${esc(title)}</b>${line ? `<span class="cw-line">${line}</span>` : ""}</span>
+  </button>`;
+}
+/* Accueil : photo du jour (heure en transparence derrière le sujet), widget calendrier, grille d'applications. */
 function viewToday() {
   setTimeout(() => updateLockWallpaper(false), 1500);
   const h = homeData();
   const d = h.d;
   const dep = d.depth;
   const bg = dep?.bg || d.visits[0]?.image || d.image;
-  const capTitle = h.ph.kind === "before" ? `${h.eyebrow} ${h.headline}` : h.ph.kind === "during" ? d.title : h.headline;
-  const capSub = h.ph.kind === "before" ? `Jour 1 · ${shortDate(d.date)} · ${d.city}` : h.ph.kind === "during" ? `Jour ${d.number} · ${d.city}` : "";
   return `<section class="home-w">
-    <div class="w card-w hw-cal">
-      ${h.ph.kind === "during" && h.ph.next ? `<div class="hw-next">${h.nextHtml}</div>` : ""}
-      ${h.calendar}
-      <div class="acts"><button class="pill" data-day="${d.id}">Toute la journée ›</button></div>
-    </div>
     <button class="pw tone-${h.tone} ${dep?.clockFront ? "front" : ""}" data-day="${d.id}" aria-label="Ouvrir la journée">
       <span class="pw-ph">${bg ? `<img class="pw-bg" src="/pack/${esc(bg)}" alt="" onerror="this.remove()">` : ""}</span>
       <span class="pw-date">${esc(h.dateLabel)}</span>
       <span class="pw-clock" data-bigclock>${h.now.hm}</span>
       ${dep ? `<img class="pw-fg" src="/pack/${esc(dep.fg)}" alt="" onerror="this.remove()">` : ""}
-      <span class="pw-cap glass"><small>${esc(capSub)}</small><b>${esc(capTitle)}</b></span>
     </button>
+    ${calWidget(h)}
     <div class="hw-apps">${HOME_APPS.map((id) => appIcon(id, d)).join("")}</div>
   </section>`;
 }
@@ -242,45 +258,62 @@ function viewProgramme() {
     <div class="grid">${cards}</div>`;
 }
 
+/* Page d'une journée : en-tête compact, puis quatre sections au lieu d'une longue page. */
+const DAY_SECS = [["steps", "Heure par heure"], ["visits", "Visites"], ["meals", "Repas"], ["infos", "Infos"]];
+function mealSlots(day) {
+  const tone = toneOf(day);
+  if (!day.meals.length) return day.mealNotes.length ? `<div class="tile"><ul>${day.mealNotes.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : `<p class="muted">Pas de repas prévu.</p>`;
+  return day.meals.map((m) => `<section class="tile"><span class="k">${esc(m.label)}${m.time ? ` · ${esc(m.time)}` : ""}</span><h3>${esc(m.zone)}</h3>
+    ${m.options.map((o) => `<div class="opt">${art(o.image, tone, o.glyph)}
+      <div><b>${esc(o.name)}</b> ${o.zh ? `<span class="han muted">${esc(o.zh)}</span>` : ""}
+      <div class="meta">${esc([o.category, o.rating ? `${o.rating}/5${o.reviews ? ` (${o.reviews} avis)` : ""}` : "", o.address].filter(Boolean).join(" · "))}</div>
+      <p>${esc(o.summary)}</p>
+      ${o.reviews2.map((r) => `<p><strong style="color:var(--ink)">${esc(r.title)}</strong> ${esc(r.text)}</p>`).join("")}
+      ${o.charlie ? `<p><strong style="color:var(--ink)">Pour Charlie</strong> ${esc(o.charlie)}</p>` : ""}
+      ${o.dishes.length ? `<div class="dishes">${o.dishes.map((x) => `<span class="dish">${x.image ? `<img src="/pack/${esc(x.image)}" alt="" onerror="this.remove()">` : ""}<b>${esc(x.name)}</b>&nbsp;<span class="muted">${esc(x.note)}</span></span>`).join("")}</div>` : ""}
+      </div></div>`).join("")}</section>`).join("");
+}
 function viewDay(id) {
   const d = dayById(id);
   if (!d) return `<p>Journée introuvable.</p>`;
   const tone = toneOf(d);
+  const sec = DAY_SECS.some(([k]) => k === store.get("daySec", "steps")) ? store.get("daySec", "steps") : "steps";
   const ph = phase();
   const nowKey = ph.kind === "during" && ph.day.id === d.id ? ph.next?.key : null;
-  const steps = d.steps.map((s) => {
-    const st = status(s.key);
-    const pl = s.placeId && placeById(s.placeId);
-    return `<li class="step ${st === "DONE" ? "done" : st === "SKIPPED" ? "skipped" : ""} ${s.key === nowKey ? "now" : ""}">
-      <button class="chk" data-toggle="${s.key}" aria-label="Marquer comme faite"></button>
-      <div class="h">${esc(s.time)}${s.dayOffset ? `<small>${s.dayOffset < 0 ? "la veille" : "le lendemain"}</small>` : ""}</div>
-      <div class="x">${esc(s.text)}</div>
-      <div class="acts">${pl ? `<button class="pill" data-place="${pl.id}">Fiche du lieu</button><button class="pill ghost" data-map="${pl.id}">Y aller ›</button>` : ""}
-        <button class="pill ghost" data-skip="${s.key}">${st === "SKIPPED" ? "Rétablir" : "Ignorer"}</button></div></li>`;
-  }).join("");
-  const list = (title, items, cls = "") => items.length ? `<div class="tile ${cls}"><h3>${title}</h3><ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
-  const visits = d.visits.length ? `<section class="sec"><div class="sec-h"><h2 class="h2">Les visites</h2></div><div class="rail">${d.visits.map((v) =>
-    `<button class="card" data-place="${v.id}">${art(v.image, tone, v.nameZh?.slice(0, 1))}<div class="cap"><b>${esc(v.name)}</b><span>${esc(v.summary)}</span></div></button>`).join("")}</div></section>` : "";
-  const meals = d.meals.length ? `<section class="sec"><h2 class="h2">À table</h2><div class="bento">${d.meals.map((m) => `<div class="tile">
-      <span class="k">${esc(m.label)}${m.time ? ` · ${esc(m.time)}` : ""}</span><p>${esc(m.zone)}</p>
-      ${m.options.slice(0, 3).map((o) => `<div style="display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center;margin-top:6px">
-        ${art(o.image, tone, o.glyph, "").replace('class="art', 'style="width:72px;height:72px;border-radius:16px" class="art')}
-        <div><b>${esc(o.name)}</b> <small class="muted">${esc(o.category)}</small><p style="font-size:.92rem">${esc(o.summary)}</p></div></div>`).join("")}
-    </div>`).join("")}</div></section>`
-    : (d.mealNotes.length ? `<section class="sec"><h2 class="h2">À table</h2>${list("Repas", d.mealNotes)}</section>` : "");
-
-  return `<div><button class="pill" data-back>‹ Programme</button></div>
-    <header class="daytop tone-${tone}">
-      <p class="eyebrow">Jour ${d.number} · ${frDate(d.date)} · ${esc(d.city)} <span class="han muted">${esc(d.cityZh)}</span></p>
-      <h1 class="h2">${esc(d.title)}</h1>
-      <p class="prose">${esc(d.lede)}</p>
-      ${art(d.image, tone, d.glyph)}
-      <div class="acts">${audioBtn(d.audio, "Écouter la journée")}</div>
+  const pr = dayProgress(d);
+  const count = { steps: pr.total, visits: d.visits.length, meals: d.meals.length || d.mealNotes.length, infos: d.charlie.length + d.tips.length + d.photos.length + d.planB.length };
+  let body = "";
+  if (sec === "steps") {
+    body = `<ul class="steps">${d.steps.map((s) => {
+      const st = status(s.key);
+      const pl = s.placeId && placeById(s.placeId);
+      return `<li class="step ${st === "DONE" ? "done" : st === "SKIPPED" ? "skipped" : ""} ${s.key === nowKey ? "now" : ""}">
+        <button class="chk" data-toggle="${s.key}" aria-label="Marquer comme faite"></button>
+        <div class="h">${esc(s.time)}${s.dayOffset ? `<small>${s.dayOffset < 0 ? "la veille" : "le lendemain"}</small>` : ""}</div>
+        <div class="x">${esc(s.text)}</div>
+        <div class="acts">${pl ? `<button class="pill" data-place="${pl.id}">Fiche du lieu</button><button class="pill ghost" data-map="${pl.id}">Y aller ›</button>` : ""}
+          <button class="pill ghost" data-skip="${s.key}">${st === "SKIPPED" ? "Rétablir" : "Ignorer"}</button></div></li>`;
+    }).join("")}</ul>`;
+  } else if (sec === "visits") {
+    body = d.visits.length ? `<div class="pgrid wide">${d.visits.map((v) =>
+      `<button class="pcard" data-place="${v.id}">${art(v.image, tone, v.nameZh?.slice(0, 1))}<b>${esc(v.name)}</b><small class="sum">${esc(v.summary)}</small></button>`).join("")}</div>` : `<p class="muted">Pas de visite détaillée ce jour-là.</p>`;
+  } else if (sec === "meals") {
+    body = `<div style="display:grid;gap:18px">${mealSlots(d)}</div>`;
+  } else {
+    const list = (title, items, cls = "") => items.length ? `<div class="tile ${cls}"><h3>${title}</h3><ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
+    body = `<div class="bento">${list("Pour Charlie", d.charlie, `tone tone-${tone}`)}${list("Bon à savoir", d.tips)}${list("Les photos", d.photos)}${list("Plan B", d.planB)}</div>`;
+  }
+  return `<header class="dayhead2 tone-${tone}">
+      ${art(d.image, tone, d.glyph, "dh-img")}
+      <div class="dh-txt">
+        <p class="eyebrow">Jour ${d.number} · ${frDate(d.date)} · ${esc(d.city)}</p>
+        <h1 class="h2">${esc(d.title)}</h1>
+        <p class="dh-lede">${esc(d.lede)}</p>
+        <div class="acts"><button class="pill" data-back>‹ Programme</button>${audioBtn(d.audio, "Écouter la journée")}<span class="muted" style="font-size:.9rem;align-self:center">${pr.done}/${pr.total} étapes faites</span></div>
+      </div>
     </header>
-    <div class="two">
-      <section class="sec"><h2 class="h3">Heure par heure</h2><ul class="steps">${steps}</ul></section>
-      <aside class="sec" style="gap:16px">${list("Pour Charlie", d.charlie, `tone tone-${tone}`)}${list("Bon à savoir", d.tips)}${list("Les photos", d.photos)}${list("Plan B", d.planB)}</aside>
-    </div>${visits}${meals}`;
+    <nav class="daytabs glass">${DAY_SECS.map(([k, l]) => `<button class="${k === sec ? "on" : ""}" data-daysec="${k}">${l}${count[k] ? ` <small>${count[k]}</small>` : ""}</button>`).join("")}</nav>
+    <section class="daybody">${body}</section>`;
 }
 
 /* ================= Fiche d'un lieu ================= */
@@ -602,7 +635,7 @@ function viewMore(seg) {
 }
 function moreContent() {
   return `<div class="tile"><h3>Contenu du voyage</h3>
-    <p>Textes, images et audios viennent du carnet de route. Ils se téléchargent une fois en Wi-Fi (environ 90 Mo la première fois, puis seulement ce qui a changé) et restent ensuite disponibles sans réseau.</p>
+    <p>Textes, images et audios viennent du carnet de route. Ils se téléchargent une fois en Wi-Fi (environ 115 Mo la première fois, puis seulement ce qui a changé) et restent ensuite disponibles sans réseau.</p>
     <ul class="kv" id="syncKv"></ul><div class="progress" id="syncBar" hidden><i></i></div>
     <div class="acts"><button class="pill red" id="syncBtn">Synchroniser maintenant</button><button class="pill" data-settings="wifi">Réglages Wi-Fi</button></div></div>`;
 }
@@ -631,8 +664,10 @@ function moreSettings() {
     <div class="tile"><h3>Écran de veille</h3>
       <p><b>Économiseur d'écran</b> : quand la tablette charge, TravelOS affiche la photo du jour, l'heure et la prochaine étape. Choisissez « TravelOS » dans le réglage Android.</p>
       <div class="acts"><button class="pill red" data-settings="dream">Choisir l'économiseur</button></div>
-      <p><b>Écran verrouillé</b> : la photo du jour en fond, changée chaque jour (l'horloge reste celle d'Android).</p>
+      <p><b>Écran verrouillé</b> : les lanternes du carnet en fond (l'horloge reste celle d'Android).</p>
       <div class="seg" id="lockSeg"><button class="${store.get("lockWp", false) ? "" : "on"}" data-lockwp="0">Non</button><button class="${store.get("lockWp", false) ? "on" : ""}" data-lockwp="1">Oui</button></div></div>
+    <div class="tile"><h3>Taille du texte</h3><p>Pour lire de près sans lunettes, ou pour voir plus de choses à l'écran.</p>
+      <div class="seg">${[[85, "Petit"], [100, "Normal"], [115, "Grand"], [130, "Très grand"]].map(([v, l]) => `<button class="${(store.get("textZoom", 100)) === v ? "on" : ""}" data-zoom="${v}" style="font-size:${(v / 100) * 0.92}rem">${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
       <div class="seg">${[["auto", "Automatique"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => `<button class="${store.get("theme", "auto") === k ? "on" : ""}" data-theme="${k}">${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Verre</h3><p>Le verre transparent peut être remplacé par un fond mat si l'affichage ralentit.</p>
@@ -735,6 +770,8 @@ document.addEventListener("click", (e) => {
   if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
   if (d.article) return openArticle(d.article);
   if (d.soon) return toast(d.soon);
+  if (d.daysec) { store.set("daySec", d.daysec); const st = stack[stack.length - 1]; go(st.tab, st.view, st.arg, false); return; }
+  if (d.zoom) { const v = +d.zoom; store.set("textZoom", v); N.setTextZoom && N.setTextZoom(v); return go("more", null, "settings", false); }
   if (d.lockwp) { store.set("lockWp", d.lockwp === "1"); store.set("lockWpDate", null); if (d.lockwp === "1") updateLockWallpaper(true); return go("more", null, "settings", false); }
   if (d.photoday) { store.set("photoDay", d.photoday); return go("guide", null, "photo", false); }
   if (d.askchip) { $("#askQ").value = d.askchip; return; }
@@ -796,12 +833,15 @@ function applyTheme() {
   const dark = mode === "dark" || (mode === "auto" && N.systemDark());
   document.documentElement.dataset.theme = dark ? "dark" : "light";
 }
-function applyPrefs() { document.body.classList.toggle("matte", !!store.get("matte", false)); applyTheme(); }
+function applyPrefs() {
+  document.body.classList.toggle("matte", !!store.get("matte", false));
+  applyTheme();
+  N.setTextZoom && N.setTextZoom(store.get("textZoom", 100));
+}
 function tick() {
   const n = nowHK();
   $("#clockHk").textContent = n.hm;
   $$("[data-bigclock]").forEach((e) => { e.textContent = n.hm; });
-  $("#clockSub").textContent = `${n.sim ? "Simulé" : "Hong Kong"} · Paris ${parisHM()}`;
   $("#topStatus").innerHTML = statusIcons(json(N.device(), {}));
 }
 /* État de la tablette, dans la barre du haut comme sur iPhone. */
@@ -867,7 +907,7 @@ function mockBridge() {
     systemDark: () => matchMedia("(prefers-color-scheme: dark)").matches,
     translatorState: () => JSON.stringify({ ready: false, downloading: false, error: null, tts: true }),
     translatorDownload: () => {}, translate: (id) => setTimeout(() => window.TravelOS.onTranslate(id, { text: "你好", error: null }), 300),
-    setLockWallpaper: () => "ok",
+    setLockWallpaper: () => "ok", setTextZoom: (v) => { document.documentElement.style.fontSize = `${v}%`; },
     speak: () => "ok", openGoogleTranslate: () => {}, hasApp: () => false, askGuide: () => {},
   };
 }

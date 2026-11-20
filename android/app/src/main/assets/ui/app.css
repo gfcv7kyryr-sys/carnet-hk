@@ -51,9 +51,8 @@ body.matte .glass{-webkit-backdrop-filter:none;backdrop-filter:none;background:v
 .top{position:fixed;z-index:30;top:calc(env(safe-area-inset-top,0px) + 12px);left:50%;transform:translateX(-50%);width:min(calc(100% - 2*var(--gut)),var(--wide));display:flex;align-items:center;gap:14px;height:60px;padding:0 18px 0 8px;border-radius:30px}
 .top b{flex:1;font-size:1.12rem;font-weight:650;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,var(--t-hk-a),var(--t-hk-b));color:#fff;font-size:1.3rem}
-.clock{display:grid;justify-items:end;line-height:1.1}
-.clock span{font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.clock small{font-size:.72rem;color:var(--muted);font-weight:600}
+/* Barre d'état : icônes, pourcentage et heure à la même taille, alignés sur la même ligne. */
+.clock{font-size:1rem;font-weight:650;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .bar{position:fixed;z-index:30;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);width:min(calc(100% - 2*var(--gut)),720px);display:grid;grid-template-columns:repeat(6,1fr);height:76px;padding:6px;border-radius:38px}
 .bar button{position:relative;z-index:1;display:grid;justify-items:center;align-content:center;gap:1px;font-size:.72rem;font-weight:650;color:var(--ink);border-radius:32px;transition:color .25s}
 .bar .g{font-size:1.45rem;line-height:1.2}
@@ -361,14 +360,15 @@ main#view{max-width:var(--wide);margin:0 auto;padding:var(--top) var(--gut) var(
 .t-next .t-list{flex-shrink:1;min-height:0;overflow:hidden}
 
 /* ---------- barre du haut : état de la tablette ---------- */
-.tstat{display:flex;align-items:center;gap:12px;font-size:.84rem;font-weight:650;color:var(--ink);margin-right:4px}
-.si{display:inline-flex;align-items:center;gap:5px}
+.tstat{display:flex;align-items:center;gap:14px;font-size:1rem;font-weight:650;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.tstat svg{display:block;height:1em;width:auto}
+.si{display:inline-flex;align-items:center;gap:6px;height:1em}
 .si.off{opacity:.35}.si.warn{color:var(--red-ink);font-weight:800}
 @media (orientation:portrait){.top b{display:none}.top .tstat{margin-left:auto}}
 
 /* ---------- icônes façon iPhone ---------- */
 .app-ic{display:grid;justify-items:center;align-content:start;gap:7px;min-width:0}
-.app-ic .sq{position:relative;width:var(--ic,68px);aspect-ratio:1;border-radius:22.5%;overflow:hidden;display:grid;place-items:center;background:linear-gradient(150deg,var(--ta),var(--tb));box-shadow:0 4px 14px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.app-ic .sq{position:relative;width:var(--ic,68px);aspect-ratio:1;border-radius:22.5%;overflow:hidden;display:grid;place-items:center;background:var(--ta);box-shadow:0 4px 14px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
 .app-ic:active .sq{transform:scale(.9)}
 .app-ic .sq b{font-size:calc(var(--ic,68px) * .46);color:#fff;font-weight:400;line-height:1}
 .app-ic .sq img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -393,12 +393,11 @@ main#view{max-width:var(--wide);margin:0 auto;padding:var(--top) var(--gut) var(
 .view:has(.home-a),.view:has(.style-switch){animation:none}
 
 /* ---------- Accueil : calendrier · photo du jour · applications ---------- */
-.home-w{--avail:calc(100dvh - var(--top) - var(--bottom));height:var(--avail);display:grid;gap:18px;
-  grid-template:"photo cal" minmax(0,1fr) "photo apps" auto / min(var(--avail),58%) minmax(0,1fr);--ic:64px}
-.hw-cal{grid-area:cal;min-height:0}
+.home-w{--avail:calc(100dvh - var(--top) - var(--bottom));height:var(--avail);display:grid;gap:20px;align-content:start;
+  grid-template:"photo cal" auto "photo apps" minmax(0,1fr) / min(var(--avail),58%) minmax(0,1fr);--ic:66px}
 .hw-cal .t-list{flex:1 1 auto;min-height:0;overflow-y:auto;margin:0}
 .hw-next{display:grid;gap:8px;padding-bottom:12px;margin-bottom:4px;border-bottom:1px solid var(--line)}
-.hw-apps{grid-area:apps;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px 6px;padding:6px 0 2px;--ic:60px}
+.hw-apps{grid-area:apps;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 8px;align-content:start;padding-top:4px}
 .pw{grid-area:photo;position:relative;display:block;width:100%;aspect-ratio:1;align-self:start;border-radius:36px;overflow:hidden;container-type:inline-size;
   background:linear-gradient(150deg,var(--ta),var(--tb));box-shadow:0 18px 50px -20px rgba(0,0,0,.45);text-align:left}
 .pw-ph,.pw-bg,.pw-fg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -412,11 +411,39 @@ main#view{max-width:var(--wide);margin:0 auto;padding:var(--top) var(--gut) var(
 .pw-cap small{font-size:max(.8rem,3.2cqw);font-weight:650;color:var(--muted)}
 .pw-cap b{font-size:max(1rem,4.6cqw);font-weight:720;letter-spacing:-.02em;line-height:1.2}
 @media (orientation:portrait){
-  .home-w{height:calc(100dvh - var(--top) - var(--bottom));align-content:stretch;grid-template:"photo photo" auto "cal apps" minmax(0,1fr) / minmax(0,1fr) minmax(0,300px)}
-  .pw{width:min(100%,calc(100dvh - var(--top) - var(--bottom) - 380px));justify-self:center}
-  .hw-cal{height:auto;min-height:0}
-  .hw-apps{grid-template-columns:repeat(3,minmax(0,1fr));--ic:64px}
+  .home-w{grid-template:"photo" auto "cal" auto "apps" minmax(0,1fr) / 1fr}
+  .pw{width:min(100%,calc(var(--avail) - 470px));justify-self:center}
+  .cal-w{width:min(100%,calc(var(--avail) - 470px));justify-self:center}
+  .hw-apps{grid-template-columns:repeat(5,minmax(0,1fr));width:min(100%,calc(var(--avail) - 470px));justify-self:center}
+}
+/* Widget calendrier, façon iOS : le jour en grand, le programme du jour, la prochaine étape. */
+.cal-w{grid-area:cal;display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;background:var(--bg2);border-radius:32px;padding:22px 26px;text-align:left;width:100%}
+.cw-date{display:grid;justify-items:center;line-height:1;min-width:84px}
+.cw-dow{color:var(--red);font-size:.95rem;font-weight:700;text-transform:capitalize}
+.cw-num{font-size:4.2rem;font-weight:300;letter-spacing:-.04em;line-height:1;margin:2px 0}
+.cw-mon{color:var(--muted);font-size:.9rem;font-weight:600}
+.cw-body{display:grid;gap:4px;min-width:0}
+.cw-body small{color:var(--muted);font-size:.9rem;font-weight:650}
+.cw-body b{font-size:1.3rem;font-weight:720;letter-spacing:-.02em;line-height:1.22}
+.cw-line{display:block;margin-top:6px;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cw-line span{color:var(--red-ink);font-weight:700;margin-right:8px;font-variant-numeric:tabular-nums}
 }
 .hw-next .w-p.strong{-webkit-line-clamp:2}
 .hw-next .acts .pill{padding:7px 14px}
 .hw-cal .t-list li{padding:7px 0}
+
+/* ---------- page d'une journée : en-tête compact + sections ---------- */
+.view:has(.daytabs){gap:22px}
+.dayhead2{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:26px;align-items:center}
+.dayhead2 .dh-img{aspect-ratio:16/9}
+.dh-txt{display:grid;gap:10px;min-width:0}
+.dh-txt .h2{font-size:clamp(1.5rem,2.5vw,2.1rem)}
+.dh-lede{color:var(--muted);font-size:1.05rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.daytabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 80px);z-index:20;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:5px;border-radius:22px}
+.daytabs button{border-radius:17px;padding:11px 8px;font-weight:650;font-size:.95rem;color:var(--muted)}
+.daytabs button small{font-size:.75rem;opacity:.7;margin-left:3px}
+.daytabs button.on{background:var(--lens);color:var(--red-ink);box-shadow:inset 0 1px 0 var(--gl-edge),0 2px 8px rgba(0,0,0,.08)}
+.daybody{min-height:40vh}
+.pgrid.wide{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.pcard .sum{font-family:var(--f-ui);color:var(--muted);font-size:.9rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media (orientation:portrait){.dayhead2{grid-template-columns:1fr;gap:16px}.dayhead2 .dh-img{max-height:34vh;aspect-ratio:auto;height:34vh}}
