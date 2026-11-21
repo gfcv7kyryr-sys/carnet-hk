@@ -427,8 +427,8 @@ function mapStyle() {
       { id: "noms-eau", type: "symbol", source: "omt", "source-layer": "water_name", minzoom: 11,
         layout: { "text-field": name, "text-font": ["Noto Sans Italic"], "text-size": ["interpolate", ["linear"], ["zoom"], 11, 12, 15, 17], "text-letter-spacing": 0.25, "text-max-width": 12 },
         paint: { "text-color": "#3F8797", "text-halo-color": "rgba(255,255,255,.6)", "text-halo-width": 1 } },
-      // Premier niveau de zoom : seulement les grands quartiers (Central, Tsim Sha Tsui, Wan Chai…).
-      { id: "quartiers", type: "symbol", source: "omt", "source-layer": "place", minzoom: 12, filter: road(["suburb", "town"]),
+      // Vue du jour : aucun nom de quartier, seulement l'eau ; les quartiers apparaissent en zoomant (13,4), les rues à 15,5.
+      { id: "quartiers", type: "symbol", source: "omt", "source-layer": "place", minzoom: 13.4, filter: road(["suburb", "town"]),
         layout: { "text-field": name, "text-font": ["Noto Sans Bold"], "text-size": ["interpolate", ["linear"], ["zoom"], 12, 12, 16, 16], "text-padding": 24, "text-max-width": 8, "symbol-sort-key": ["coalesce", ["get", "rank"], 10] },
         paint: { "text-color": "#3A3A3C", "text-halo-color": "rgba(255,255,255,.9)", "text-halo-width": 1.6 } },
       { id: "voisinages", type: "symbol", source: "omt", "source-layer": "place", minzoom: 15, filter: road(["quarter", "neighbourhood"]),

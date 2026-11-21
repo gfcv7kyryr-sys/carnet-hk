@@ -189,6 +189,17 @@ def geocode(g):
             time.sleep(1.2)
     sys.exit(f"Point introuvable pour {g}")
 
+_entr = {}
+def entrance(st, toward):
+    """Sortie de métro (railway=subway_entrance) à moins de 350 m de la station, la plus proche de « toward »."""
+    k = (round(st[0], 5), round(st[1], 5))
+    if k not in _entr:
+        d = overpass(f'[out:json][timeout:60];node["railway"="subway_entrance"](around:350,{st[0]},{st[1]});out body;')
+        _entr[k] = [([e["lat"], e["lon"]], e.get("tags", {}).get("ref") or e.get("tags", {}).get("name:en") or "") for e in d["elements"]]
+    if not _entr[k]: return None, None
+    p, ref = min(_entr[k], key=lambda x: metres(x[0], toward))
+    return p, ref
+
 def osrm(profile, a, b):
     base = {"foot": "https://routing.openstreetmap.de/routed-foot", "car": "https://routing.openstreetmap.de/routed-car"}[profile]
     u = f"{base}/route/v1/driving/{a[1]},{a[0]};{b[1]},{b[0]}?overview=full&geometries=geojson"
@@ -239,7 +250,7 @@ def main(day):
     out = {}
     for leg in spec["legs"]:
         lid = f"{leg['from']}>{leg['to']}"
-        cur = pts[leg["from"]]; segs = []
+        cur = pts[leg["from"]]; segs = []; cur_station = False
         print(f"\n{lid}")
         for i, sg in enumerate(leg["segments"]):
             last = i == len(leg["segments"]) - 1
@@ -251,8 +262,18 @@ def main(day):
             if sg.get("path"):
                 path = [list(p) for p in sg["path"]]; src = sg.get("source", "tracé du carnet")
             elif sg.get("router"):
-                path, dur = osrm(sg["router"], start, end)
-                src = f"OSRM {'à pied' if sg['router'] == 'foot' else 'en voiture'} sur OpenStreetMap ({round(dur / 60)} min estimées)"
+                # Marche vers ou depuis le métro : on passe par la sortie la plus proche du but, pas par la voie souterraine.
+                a, b, via = start, end, ""
+                if sg["router"] == "foot" and cur_station:
+                    e, ref = entrance(start, end)
+                    if e: a, via = e, f", sortie {ref} de la station" if ref else ", sortie de la station"
+                if sg["router"] == "foot" and isinstance(sg.get("to"), dict) and "station" in sg["to"]:
+                    e, ref = entrance(end, start)
+                    if e: b, via = e, via + (f", entrée {ref} de la station" if ref else ", entrée de la station")
+                path, dur = osrm(sg["router"], a, b)
+                if a is not start: path.insert(0, list(a))
+                if b is not end: path.append(list(b))
+                src = f"OSRM {'à pied' if sg['router'] == 'foot' else 'en voiture'} sur OpenStreetMap ({round(dur / 60)} min estimées{via})"
             elif sg.get("rail"):
                 path, ga, gb = rails[sg["rail"]].path(start, end)
                 src = f"voie OSM railway={sg['rail']} (recollée à {ga:.0f} m / {gb:.0f} m des points)"
@@ -268,6 +289,7 @@ def main(day):
             segs.append({"mode": sg["mode"], "path": [r6(p) for p in path], "source": src, "m": round(m)})
             print(f"  {sg['mode']:<9} {m:7.0f} m  {src}")
             cur = end
+            cur_station = isinstance(sg.get("to"), dict) and "station" in sg["to"]
         out[lid] = {"segments": segs}
         report.append(f"{lid} : {sum(s['m'] for s in segs)} m en {len(segs)} segment(s)")
 
