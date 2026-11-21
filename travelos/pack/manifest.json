@@ -1583,6 +1583,51 @@
    "sha256": "3e43810b0ec7cfb747cc2b410732b3f5af3e15e55e68e41434d6d22b2e88e88d"
   },
   {
+   "path": "travelos/icons/ask.webp",
+   "size": 7400,
+   "sha256": "0a6cc14695042e8e58b036f137a6e240039b809dca4b1d15e386956f8a7d455d"
+  },
+  {
+   "path": "travelos/icons/audio.webp",
+   "size": 13542,
+   "sha256": "a2fa3781e1855d50cf49bf9813cfb6c7bb323c4d3cac5c0ac2a359bbfaec4609"
+  },
+  {
+   "path": "travelos/icons/conv.webp",
+   "size": 10062,
+   "sha256": "61fffaed4e466bd79e5caefb5aae3de244cd329c16b38d483375926024e5a991"
+  },
+  {
+   "path": "travelos/icons/games.webp",
+   "size": 11038,
+   "sha256": "8d863f78096ad3ecd85b2b12d8654a0780ff936212c4336ea16290c5aac092f1"
+  },
+  {
+   "path": "travelos/icons/photo.webp",
+   "size": 10918,
+   "sha256": "4bd83e00d6f762a5f70003b9e72add0a887940bb490e887c657a67c026d0ee61"
+  },
+  {
+   "path": "travelos/icons/phrases.webp",
+   "size": 8284,
+   "sha256": "b2d539c3211124fa08b1c76c7bd6671c8364badc3f5c6f6198a0aa6c2566b383"
+  },
+  {
+   "path": "travelos/icons/sos.webp",
+   "size": 12362,
+   "sha256": "191bd59d20517faeed34a8c5652870e964c41002e364d73eb3f52d8b36cefa3e"
+  },
+  {
+   "path": "travelos/icons/tickets.webp",
+   "size": 9926,
+   "sha256": "5f4e3f8521ae30ed98d35aa7b6e5a6c80c3dbd89beb896f0d062c4cb00f96606"
+  },
+  {
+   "path": "travelos/icons/translate.webp",
+   "size": 9152,
+   "sha256": "fbe4c72bfa32b00b12aec9b978d17d373cafc3857751437fa1891f1b4b3756b4"
+  },
+  {
    "path": "travelos/lockscreen/lanternes.webp",
    "size": 263412,
    "sha256": "086e02778cec377926f516f9e19c22b672cdae0c8a5731423d343a0264e03269"
