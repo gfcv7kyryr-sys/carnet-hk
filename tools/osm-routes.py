@@ -60,8 +60,23 @@ class Graph:
         for a, b in zip(pts, pts[1:]):
             w = metres(a, b)
             self.adj.setdefault(a, []).append((b, w)); self.adj.setdefault(b, []).append((a, w))
+    def main_part(self):
+        """Nœuds de la plus grande partie connexe (on écarte quais, dépôts et voies isolées)."""
+        if getattr(self, "_main", None) is None:
+            seen, best = set(), set()
+            for n0 in self.adj:
+                if n0 in seen: continue
+                comp, stack = {n0}, [n0]
+                while stack:
+                    u = stack.pop()
+                    for v, _ in self.adj[u]:
+                        if v not in comp: comp.add(v); stack.append(v)
+                seen |= comp
+                if len(comp) > len(best): best = comp
+            self._main = best
+        return self._main
     def nearest(self, p):
-        return min(self.adj, key=lambda n: metres(n, p))
+        return min(self.main_part(), key=lambda n: metres(n, p))
     def path(self, a, b):
         s, t = self.nearest(a), self.nearest(b)
         dist = {s: 0}; prev = {}; pq = [(0, s)]
@@ -101,7 +116,7 @@ def load_lines():
                 L = lines.setdefault(key, {"g": Graph(), "stops": [], "rels": []})
                 L["rels"].append(f"relation {rel['id']} ({name})")
                 for m in rel["members"]:
-                    if m["type"] == "way" and m["ref"] in ways and ways[m["ref"]].get("geometry"):
+                    if m["type"] == "way" and m["role"] in ("", "route", "forward", "backward") and m["ref"] in ways and ways[m["ref"]].get("geometry"):
                         L["g"].add_way(ways[m["ref"]]["geometry"])
                     if m["type"] == "node" and m["role"].startswith("stop") and m["ref"] in nodes:
                         nd = nodes[m["ref"]]; t = nd.get("tags", {})
