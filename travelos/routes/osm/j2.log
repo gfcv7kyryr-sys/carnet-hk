@@ -29,16 +29,16 @@ escalator>dejeuner
   walk          621 m  OSRM à pied sur OpenStreetMap (8 min estimées)
 
 dejeuner>hotel
-  walk          272 m  OSRM à pied sur OpenStreetMap (3 min estimées)
+  walk          264 m  OSRM à pied sur OpenStreetMap (1 min estimées, entrée E3 de la station)
   metro        1713 m  voies de la ligne Island (OSM), de la station précédente à Admiralty / 金鐘 Admiralty (OSM nœud 2564545111, ligne Island)
   metro        3524 m  voies de la ligne Tsuen Wan (OSM), de Admiralty / 金鐘 Admiralty (OSM nœud 2556738383, ligne Tsuen Wan) à Jordan / 佐敦 Jordan (OSM nœud 2554379407, ligne Tsuen Wan)
-  walk          335 m  OSRM à pied sur OpenStreetMap (4 min estimées)
+  walk          429 m  OSRM à pied sur OpenStreetMap (4 min estimées, sortie B2 de la station)
 
 hotel>monster
-  walk          335 m  OSRM à pied sur OpenStreetMap (4 min estimées)
+  walk          429 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée B2 de la station)
   metro        3460 m  voies de la ligne Tsuen Wan (OSM), de la station précédente à Admiralty / 金鐘 Admiralty (OSM nœud 2556738383, ligne Tsuen Wan)
   metro        5578 m  voies de la ligne Island (OSM), de Admiralty / 金鐘 Admiralty (OSM nœud 2564545111, ligne Island) à Quarry Bay / 鰂魚涌 Quarry Bay (OSM nœud 984741558, ligne Island)
-  walk         1407 m  OSRM à pied sur OpenStreetMap (18 min estimées)
+  walk          724 m  OSRM à pied sur OpenStreetMap (7 min estimées, sortie A de la station)
 
 monster>tram
   dingding     4359 m  voie OSM railway=tram (recollée à 2 m / 64 m des points)
@@ -54,8 +54,8 @@ star-ferry-central>peak-tram : 1422 m en 1 segment(s)
 peak-tram>peak-tram-haut : 1364 m en 1 segment(s)
 peak-tram-haut>escalator : 2413 m en 2 segment(s)
 escalator>dejeuner : 1348 m en 3 segment(s)
-dejeuner>hotel : 5844 m en 4 segment(s)
-hotel>monster : 10780 m en 4 segment(s)
+dejeuner>hotel : 5930 m en 4 segment(s)
+hotel>monster : 10191 m en 4 segment(s)
 monster>tram : 4359 m en 1 segment(s)
 tram>victoria-park : 681 m en 1 segment(s)
 victoria-park>hopewell : 2916 m en 1 segment(s)
