@@ -1,0 +1,62 @@
+Overpass : funiculaire et tram…
+  funicular : 52 nœuds
+  tram : 2514 nœuds
+Overpass : lignes de métro…
+  Tsuen Wan : 598 nœuds, 32 arrêts, relation 269669 (MTR Tsuen Wan Line (Southbound) 港鐵荃灣綫 MTR Tsuen Wan Line (南行 Southbound)); relation 9736530 (MTR Tsuen Wan Line (Northbound) 港鐵荃灣綫 MTR Tsuen Wan Line (北行 Northbound))
+  Tseung Kwan O : 472 nœuds, 26 arrêts, relation 269672 (MTR Tseung Kwan O Line 港鐵將軍澳綫 MTR Tseung Kwan O Line); relation 9736611 (MTR Tseung Kwan O Line 港鐵將軍澳綫 MTR Tseung Kwan O Line)
+  Kwun Tong : 719 nœuds, 91 arrêts, relation 272125 (MTR Kwun Tong Line 港鐵觀塘綫 MTR Kwun Tong Line); relation 6452935 (MTR Kwun Tong Line 港鐵觀塘綫 MTR Kwun Tong Line)
+  East Rail : 2222 nœuds, 254 arrêts, relation 4248589 (MTR East Rail Line 港鐵東鐵綫 MTR East Rail Line); relation 4248590 (MTR East Rail Line 港鐵東鐵綫 MTR East Rail Line)
+  Island : 1123 nœuds, 44 arrêts, relation 4432665 (MTR Island Line 港鐵港島綫 MTR Island Line); relation 4432666 (MTR Island Line 港鐵港島綫 MTR Island Line)
+  Tung Chung : 868 nœuds, 28 arrêts, relation 5317704 (Tung Chung Line 東涌綫 Tung Chung Line); relation 5317706 (Tung Chung Line 東涌綫 Tung Chung Line)
+
+star-ferry-tst>star-ferry-central
+  ferry        1077 m  Les deux embarcadères ; traversée directe sur l'eau.
+
+star-ferry-central>peak-tram
+  walk         1422 m  OSRM à pied sur OpenStreetMap (19 min estimées)
+
+peak-tram>peak-tram-haut
+  peaktram     1364 m  voie OSM railway=funicular (recollée à 87 m / 12 m des points)
+
+peak-tram-haut>escalator
+  peaktram     1364 m  voie OSM railway=funicular (recollée à 12 m / 87 m des points)
+  walk         1049 m  OSRM à pied sur OpenStreetMap (14 min estimées)
+
+escalator>dejeuner
+  Cochrane Street : 39 points, Hollywood Road : 215 points
+  walk          172 m  OSRM à pied sur OpenStreetMap (2 min estimées)
+  walk          555 m  OSRM à pied sur OpenStreetMap (7 min estimées)
+  walk          621 m  OSRM à pied sur OpenStreetMap (8 min estimées)
+
+dejeuner>hotel
+  walk          272 m  OSRM à pied sur OpenStreetMap (3 min estimées)
+  metro        1713 m  voies de la ligne Island (OSM), de la station précédente à Admiralty / 金鐘 Admiralty (OSM nœud 2564545111, ligne Island)
+  metro        3524 m  voies de la ligne Tsuen Wan (OSM), de Admiralty / 金鐘 Admiralty (OSM nœud 2556738383, ligne Tsuen Wan) à Jordan / 佐敦 Jordan (OSM nœud 2554379407, ligne Tsuen Wan)
+  walk          335 m  OSRM à pied sur OpenStreetMap (4 min estimées)
+
+hotel>monster
+  walk          335 m  OSRM à pied sur OpenStreetMap (4 min estimées)
+  metro        3460 m  voies de la ligne Tsuen Wan (OSM), de la station précédente à Admiralty / 金鐘 Admiralty (OSM nœud 2556738383, ligne Tsuen Wan)
+  metro        5578 m  voies de la ligne Island (OSM), de Admiralty / 金鐘 Admiralty (OSM nœud 2564545111, ligne Island) à Quarry Bay / 鰂魚涌 Quarry Bay (OSM nœud 984741558, ligne Island)
+  walk         1407 m  OSRM à pied sur OpenStreetMap (18 min estimées)
+
+monster>tram
+  dingding     4359 m  voie OSM railway=tram (recollée à 2 m / 64 m des points)
+
+tram>victoria-park
+  walk          681 m  OSRM à pied sur OpenStreetMap (8 min estimées)
+
+victoria-park>hopewell
+  taxi         2916 m  OSRM en voiture sur OpenStreetMap (4 min estimées)
+
+star-ferry-tst>star-ferry-central : 1077 m en 1 segment(s)
+star-ferry-central>peak-tram : 1422 m en 1 segment(s)
+peak-tram>peak-tram-haut : 1364 m en 1 segment(s)
+peak-tram-haut>escalator : 2413 m en 2 segment(s)
+escalator>dejeuner : 1348 m en 3 segment(s)
+dejeuner>hotel : 5844 m en 4 segment(s)
+hotel>monster : 10780 m en 4 segment(s)
+monster>tram : 4359 m en 1 segment(s)
+tram>victoria-park : 681 m en 1 segment(s)
+victoria-park>hopewell : 2916 m en 1 segment(s)
+→ /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j2.json
