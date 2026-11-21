@@ -39,6 +39,10 @@ jobs:
           mkdir -p travelos/routes/osm travelos/preview
           python3 tools/osm-routes.py j2 2>&1 | tee travelos/routes/osm/j2.log
 
+      - name: Signaler les erreurs du tracé
+        if: failure()
+        run: tail -40 travelos/routes/osm/j2.log | while IFS= read -r l; do echo "::error::$l"; done
+
       - name: Refaire le paquet
         run: node tools/build-pack.mjs
 
@@ -49,7 +53,7 @@ jobs:
           set -o pipefail
           pip install playwright==1.48.0
           python -m playwright install --with-deps chromium
-          python3 tools/map-preview.py 2>&1 | tee travelos/preview/map-preview.log
+          python3 tools/map-preview.py 2>&1 | tee travelos/preview/map-preview.log || { tail -30 travelos/preview/map-preview.log | while IFS= read -r l; do echo "::warning::$l"; done; exit 1; }
 
       - name: Enregistrer sur la branche
         run: |
