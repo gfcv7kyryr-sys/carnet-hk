@@ -25,7 +25,7 @@ UA = "TravelOS/0.11 (carnet de voyage familial; github travelos-socle)"
 BBOX = (22.255, 114.12, 22.335, 114.235)  # sud, ouest, nord, est : île de Hong Kong et Kowloon
 OVERPASS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
 
-def http(url, data=None, tries=4):
+def http(url, data=None, tries=3):
     last = None
     for i in range(tries):
         try:
@@ -130,29 +130,38 @@ def junction(a, b):
     return list(p), f"carrefour {a} × {b} (OSM)"
 
 def geocode(g):
-    """Point d'une étape sans fiche : d'abord par son nom dans OSM, puis par l'adresse, enfin Nominatim."""
-    s, w, n, e = BBOX
+    """Point d'une étape sans fiche, cherché autour de « near » (1,5 km) : nom exact dans OSM, puis adresse,
+    puis les géocodeurs Photon et Nominatim. Le premier résultat à moins de 1,5 km de « near » est retenu."""
+    near = g.get("near"); R = 1500
     def center(el): return [el["center"]["lat"], el["center"]["lon"]] if "center" in el else [el["lat"], el["lon"]]
+    def close(p): return near is None or metres(p, near) <= R
+    tries = []
     if g.get("osm"):
-        d = overpass(f'[out:json][timeout:120];nwr["name"~"{g["osm"]}",i]({s},{w},{n},{e});out center tags;')
-        els = [x for x in d["elements"] if "center" in x or "lat" in x]
-        els.sort(key=lambda x: (x["type"] == "node", -len(x.get("tags", {}))))  # bâtiment avant point isolé
-        if els:
-            x = els[0]; t = x.get("tags", {})
-            return center(x), f"OSM {x['type']} {x['id']} « {t.get('name')} »"
+        names = g["osm"] if isinstance(g["osm"], list) else [g["osm"]]
+        q = "".join(f'nwr["{k}"="{v}"](around:{R},{near[0]},{near[1]});' for v in names for k in ("name", "name:en", "name:zh"))
+        tries.append(("OSM (nom)", lambda: overpass(f"[out:json][timeout:60];({q});out center tags;")["elements"]))
     if g.get("addr"):
         st, no = g["addr"]
-        d = overpass(f'[out:json][timeout:120];nwr["addr:street"="{st}"]["addr:housenumber"="{no}"]({s},{w},{n},{e});out center tags;')
-        els = [x for x in d["elements"] if "center" in x or "lat" in x]
-        if els:
-            x = els[0]; t = x.get("tags", {})
-            return center(x), f"OSM {x['type']} {x['id']} ({no} {st}{', ' + t['name'] if t.get('name') else ''})"
+        tries.append(("OSM (adresse)", lambda: overpass(f'[out:json][timeout:60];nwr["addr:street"="{st}"]["addr:housenumber"="{no}"](around:{R},{near[0]},{near[1]});out center tags;')["elements"]))
+    for label, fn in tries:
+        try:
+            els = [x for x in fn() if ("center" in x or "lat" in x) and close(center(x))]
+            els.sort(key=lambda x: (x["type"] == "node", -len(x.get("tags", {}))))
+            if els:
+                x = els[0]; t = x.get("tags", {})
+                return center(x), f"{label} : {x['type']} {x['id']} « {t.get('name') or t.get('addr:housenumber', '') + ' ' + t.get('addr:street', '')} »"
+        except Exception as e: print("  ", label, e)
     if g.get("q"):
-        u = "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode({"q": g["q"], "format": "jsonv2", "limit": 5})
-        res = json.loads(http(u)); time.sleep(1.2)
-        for r in res:
-            if g.get("expect", "").lower() in r.get("display_name", "").lower():
-                return [float(r["lat"]), float(r["lon"])], f"Nominatim : {r['display_name'][:110]}"
+        for label, url in (("Photon", "https://photon.komoot.io/api/?" + urllib.parse.urlencode({"q": g["q"], "lat": near[0], "lon": near[1], "limit": 5})),
+                           ("Nominatim", "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode({"q": g["q"], "format": "geocodejson", "limit": 5}))):
+            try:
+                for f in json.loads(http(url, tries=2)).get("features", []):
+                    lng, lat = f["geometry"]["coordinates"][:2]; pr = f.get("properties", {})
+                    txt = json.dumps(pr, ensure_ascii=False)
+                    if close([lat, lng]) and g.get("expect", "").lower() in txt.lower():
+                        return [lat, lng], f"{label} : {pr.get('name') or pr.get('geocoding', {}).get('label', '')}"
+            except Exception as e: print("  ", label, e)
+            time.sleep(1.2)
     sys.exit(f"Point introuvable pour {g}")
 
 def osrm(profile, a, b):
