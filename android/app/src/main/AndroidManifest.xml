@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Synchroniser le paquet de contenu depuis le dépôt, en Wi-Fi. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Carte Amap : état du réseau pour les tuiles et les cartes hors ligne. -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- Mettre la photo du jour en fond de l'écran verrouillé (réglage facultatif). -->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
@@ -17,6 +19,8 @@
         <!-- Demander au guide (DeepSeek) et traduction (Google Traduction), si installés. -->
         <package android:name="com.deepseek.chat" />
         <package android:name="com.google.android.apps.translate" />
+        <!-- « Y aller » : itinéraire dans l'application Amap, si installée. -->
+        <package android:name="com.autonavi.minimap" />
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>

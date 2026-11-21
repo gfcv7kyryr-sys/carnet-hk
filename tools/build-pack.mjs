@@ -224,6 +224,27 @@ const days = [...DAYS]
     tips: list(d.tips),
   }));
 
+/* Carte du jour : arrêts dans l'ordre du programme et tronçons (mode, tracé vérifié).
+   travelos/routes/<id>.json précise les arrêts et les tracés ; sans fichier, les arrêts viennent
+   des étapes du programme et aucun trajet n'est dessiné. Coordonnées en WGS-84. */
+const placeIndex = new Map(places.map((p) => [p.id, p]));
+for (const d of days) {
+  let spec = null;
+  try { spec = JSON.parse(readFileSync(join(root, `travelos/routes/${d.id}.json`), "utf8")); } catch {}
+  const stepOf = (pid) => d.steps.find((s) => s.placeId === pid);
+  const ids = spec ? spec.stops : [...new Set(d.steps.map((s) => s.placeId).filter(Boolean))].map((id) => ({ id }));
+  const stops = ids.map((x, i) => {
+    const pl = placeIndex.get(x.place || x.id);
+    const step = stepOf(x.step || x.id);
+    const lat = x.lat ?? placeIndex.get(x.id)?.lat, lng = x.lng ?? placeIndex.get(x.id)?.lng;
+    if (lat == null || !pl) { console.warn(`Carte ${d.id} : arrêt ${x.id} sans coordonnées ou sans fiche`); return null; }
+    return { n: i + 1, id: x.id, name: x.name || placeIndex.get(x.id)?.name || pl.name, lat, lng, place: pl.id, step: step?.key || null, time: step?.time || "" };
+  }).filter(Boolean);
+  const legs = (spec?.legs || []).map((l) => ({ from: l.from, to: l.to, mode: l.mode, label: l.label || "", path: l.path || null, route: l.route || null, redraw: l.redraw !== false }));
+  for (const l of legs) for (const k of ["from", "to"]) if (!stops.some((s) => s.id === l[k])) console.warn(`Carte ${d.id} : tronçon vers un arrêt inconnu (${l[k]})`);
+  d.map = { stops, legs, verified: !!spec };
+}
+
 const pack = {
   formatVersion: 1,
   trip: {

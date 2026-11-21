@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.widget.FrameLayout
 import android.view.WindowManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
@@ -50,7 +51,11 @@ class MainActivity : ComponentActivity() {
 
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         js("window.TravelOS && TravelOS.onPermission && TravelOS.onPermission()")
+        mapHost.onPermission()
     }
+
+    /** Carte du jour (Amap), posée au-dessus de la WebView quand l'interface la demande. */
+    lateinit var mapHost: MapHost
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +104,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        setContentView(webView)
+        val root = FrameLayout(this)
+        root.addView(webView, FrameLayout.LayoutParams(-1, -1))
+        setContentView(root)
+        mapHost = MapHost(this, root)
         webView.loadUrl(LocalContent.UI + "index.html")
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -120,12 +128,19 @@ class MainActivity : ComponentActivity() {
     }
 
     /** Sortie de veille : l'accueil remet à jour l'heure, la scène du moment et la prochaine étape. */
+    override fun onPause() {
+        super.onPause()
+        if (::mapHost.isInitialized) mapHost.onPause()
+    }
+
     override fun onResume() {
         super.onResume()
+        if (::mapHost.isInitialized) mapHost.onResume()
         if (::webView.isInitialized) js("window.TravelOS && TravelOS.onResume && TravelOS.onResume()")
     }
 
     override fun onDestroy() {
+        if (::mapHost.isInitialized) mapHost.onDestroy()
         (application as TravelOsApp).container.gps.stop()
         webView.destroy()
         super.onDestroy()
@@ -199,6 +214,11 @@ class MainActivity : ComponentActivity() {
 
     fun toastJs(message: String) {
         js("window.TravelOS && TravelOS.toast(${JSONObject.quote(message)})")
+    }
+
+    /** Appelle une fonction de l'interface avec une chaîne en argument, si elle existe. */
+    fun jsCall(fn: String, arg: String) {
+        js("window.TravelOS && $fn && $fn(${JSONObject.quote(arg)})")
     }
 
     private fun js(code: String) {

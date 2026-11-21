@@ -474,3 +474,70 @@ main#view{max-width:var(--wide);margin:0 auto;padding:var(--top) var(--gut) var(
 .pgrid.wide{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
 .pcard .sum{font-family:var(--f-ui);color:var(--muted);font-size:.9rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 @media (orientation:portrait){.dayhead2{grid-template-columns:1fr;gap:16px}.dayhead2 .dh-img{max-height:34vh;aspect-ratio:auto;height:34vh}}
+
+/* ================= Carte du jour ================= */
+.pill.dark{background:var(--ink);color:var(--bg)}
+.ask-row{display:flex;gap:10px;align-items:center;margin:8px 0}.ask-row .search{flex:1;margin:0}
+.cw-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+.cw-foot .pill{padding:8px 14px;font-size:.9rem}
+.cw-foot .cwm.all{border:0;padding:6px 2px;display:flex;gap:6px}
+.dmap{--avail:calc(100dvh - var(--top) - var(--bottom));height:var(--avail);display:grid;gap:18px;grid-template:"map panel" minmax(0,1fr) / minmax(0,1fr) minmax(320px,30%)}
+.dm-map{grid-area:map;position:relative;border-radius:28px;overflow:hidden;background:#EEE9DF;color:#4a4a4f;min-height:0}
+:root[data-theme=dark] .dm-map{background:#1f2024;color:#c9c9ce}
+.dm-panel{grid-area:panel;display:flex;flex-direction:column;gap:12px;min-height:0;background:var(--bg2);border-radius:28px;padding:16px 16px 14px}
+.dm-day{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
+.dm-day b{display:block;font-size:1.05rem;font-weight:720}
+.dm-day small{display:block;color:var(--muted);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dm-arrow{width:36px;height:36px;border-radius:50%;background:var(--bg);font-size:1.3rem;line-height:1;color:var(--ink)}
+.dm-arrow:disabled{opacity:.3}
+.dm-panel h2{font-size:1.25rem;font-weight:760;letter-spacing:-.02em;position:relative;padding-bottom:6px}
+.dm-panel h2::after{content:"";position:absolute;left:0;bottom:0;width:34px;height:3px;border-radius:2px;background:var(--red)}
+.dm-list{list-style:none;margin:0;padding:0 2px 6px;overflow:auto;flex:1;min-height:0;display:grid;align-content:start;gap:0}
+.dm-stop{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;padding:10px 12px;border-radius:16px;background:var(--bg);box-shadow:0 1px 0 var(--line)}
+.dm-stop .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:750;font-size:.92rem;color:var(--red-ink);background:color-mix(in srgb,var(--red) 12%,transparent)}
+.dm-stop .t{display:grid;gap:1px;min-width:0}
+.dm-stop b{font-size:1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dm-stop small{color:var(--muted);font-size:.82rem;font-variant-numeric:tabular-nums}
+.dm-stop em{font-style:normal;background:var(--red);color:#fff;font-weight:700;font-size:.76rem;padding:2px 8px;border-radius:99px;margin-left:4px}
+.dm-stop .chev{color:var(--muted);font-size:1.3rem}
+.dm-stop.next{background:color-mix(in srgb,var(--red) 10%,var(--bg));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--red) 45%,transparent)}
+.dm-stop.next .n{background:var(--red);color:#fff;width:34px;height:34px}
+.dm-stop.done{opacity:.55}
+.dm-leg{display:flex;align-items:center;gap:10px;padding:4px 0 4px 26px;color:var(--muted);font-size:.8rem;min-height:26px}
+.dm-leg i{width:4px;align-self:stretch;min-height:18px;border-radius:2px;background:var(--line)}
+.dm-legend{display:flex;gap:16px;justify-content:space-around;padding:10px 6px 2px;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+.dm-legend span{display:grid;justify-items:center;gap:5px}
+.dm-legend i{width:46px;height:0;border-top:4px solid}
+.m-ferry i,.dm-legend .m-ferry i{border-color:#1E88E5;border-top-style:dashed;background:none}
+.m-walk i,.dm-legend .m-walk i{border-color:#2E9D4F;border-top-style:dotted;border-top-width:5px;background:none}
+.m-peaktram i,.dm-legend .m-peaktram i{border-color:#F07C00;background:none}
+.m-dingding i{border-color:#0B6E4F;background:none}.m-metro i{border-color:#C8102E;background:none}.m-taxi i{border-color:#8A8A8E;background:none}
+.dm-leg.m-ferry i{border-left:4px dashed #1E88E5;border-top:0;width:0}
+.dm-leg.m-walk i{border-left:4px dotted #2E9D4F;border-top:0;width:0}
+.dm-leg.m-peaktram i{background:#F07C00;border:0}
+.dm-leg.m-dingding i{background:#0B6E4F;border:0}.dm-leg.m-metro i{background:#C8102E;border:0}.dm-leg.m-taxi i{background:#8A8A8E;border:0}
+.dm-note{color:var(--muted);font-size:.85rem}
+.dm-empty{display:grid;place-items:center;height:100%;color:var(--muted)}
+/* Plan de secours */
+.plan{position:absolute;inset:0;width:100%;height:100%}
+.plan .pl{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.plan .m-ferry{stroke:#1E88E5;stroke-width:6;stroke-dasharray:16 10}
+.plan .m-walk{stroke:#2E9D4F;stroke-width:7;stroke-dasharray:.1 12}
+.plan .m-peaktram{stroke:#F07C00;stroke-width:7}
+.plan .pin{cursor:pointer}
+.plan .pin path{fill:#B3122E;stroke:#fff;stroke-width:3}
+.plan .pin.done path{fill:#9A9AA0}
+.plan .pin.next path{filter:drop-shadow(0 0 10px rgba(179,18,46,.55))}
+.plan .pin text{fill:#fff;font-weight:750;font-size:20px;text-anchor:middle}
+.plan .pin.next text{font-size:24px}
+.plan .pin text.lbl{fill:currentColor;text-anchor:start;font-size:17px;font-weight:650;paint-order:stroke;stroke:#EEE9DF;stroke-width:5px}
+:root[data-theme=dark] .plan .pin text.lbl{stroke:#1f2024}
+.plan .acc{fill:rgba(10,132,255,.18);stroke:rgba(10,132,255,.4)}
+.plan .me{fill:#0A84FF;stroke:#fff;stroke-width:4}
+.dm-chips{position:absolute;right:14px;bottom:14px;display:flex;gap:10px}
+.dm-chip{background:rgba(255,255,255,.94);color:#1d1d1f;font-weight:700;font-size:.9rem;padding:10px 16px;border-radius:22px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.dm-plan-note{position:absolute;left:16px;bottom:16px;max-width:45%;font-size:.78rem;color:var(--muted)}
+@media (orientation:portrait){
+  .dmap{grid-template:"map" minmax(0,1.1fr) "panel" minmax(0,1fr) / 1fr;gap:14px}
+}
+.view:has(.dmap){animation:none}

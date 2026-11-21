@@ -1,0 +1,31 @@
+{
+  "day": "j2",
+  "_doc": "Carte du jour 2. Coordonnées en WGS-84 (comme le carnet) ; l'app les convertit au format Amap (GCJ-02) sur la tablette. Un tronçon sans « path » n'est pas dessiné : on affiche seulement son mode. route=amap : itinéraire piéton demandé à Amap (en ligne) puis gardé en mémoire.",
+  "stops": [
+    { "id": "star-ferry-tst" },
+    { "id": "star-ferry-central" },
+    { "id": "peak-tram" },
+    { "id": "peak-tram-haut", "name": "Peak Tram, station haute", "lat": 22.27104, "lng": 114.14994, "place": "lugard", "step": "peak-tram",
+      "source": "The Peak Terminus, Peak Tower : 22.27104, 114.14994 (Wikipedia)" },
+    { "id": "escalator" },
+    { "id": "monster" },
+    { "id": "tram" },
+    { "id": "victoria-park" },
+    { "id": "hopewell" }
+  ],
+  "legs": [
+    { "from": "star-ferry-tst", "to": "star-ferry-central", "mode": "ferry", "label": "Star Ferry · 10 min",
+      "path": [[22.29400, 114.16857], [22.28722, 114.16111]],
+      "source": "Embarcadères vérifiés : Tsim Sha Tsui Star Ferry Pier 22.29400, 114.16857 ; Central Pier 7 22.28722, 114.16111 (Wikipedia). Traversée directe sur l'eau." },
+    { "from": "star-ferry-central", "to": "peak-tram", "mode": "walk", "label": "À pied · 15 min", "route": "amap",
+      "source": "Itinéraire piéton calculé par Amap quand la tablette est en ligne ; pas de tracé sinon." },
+    { "from": "peak-tram", "to": "peak-tram-haut", "mode": "peaktram", "label": "Peak Tram · 7 min",
+      "path": [[22.277729, 114.159172], [22.276501, 114.158112], [22.275128, 114.157133], [22.273363, 114.155934], [22.271008, 114.151675], [22.27104, 114.14994]],
+      "source": "Les six stations dans l'ordre (Wikipedia) : Central Terminus 22.277729, 114.159172 ; Kennedy Road 22.276501, 114.158112 ; MacDonnell Road 22.275128, 114.157133 ; May Road 22.273363, 114.155934 ; Barker Road 22.271008, 114.151675 ; The Peak 22.27104, 114.14994." },
+    { "from": "peak-tram-haut", "to": "escalator", "mode": "peaktram", "label": "Redescente en Peak Tram, puis à pied", "redraw": false },
+    { "from": "escalator", "to": "monster", "mode": "metro", "label": "Déjeuner, sieste, puis métro jusqu'à Quarry Bay" },
+    { "from": "monster", "to": "tram", "mode": "dingding", "label": "Tram « ding ding » · 30 min" },
+    { "from": "tram", "to": "victoria-park", "mode": "walk", "label": "À pied · 10 min", "route": "amap" },
+    { "from": "victoria-park", "to": "hopewell", "mode": "taxi", "label": "Taxi · 10 min" }
+  ]
+}

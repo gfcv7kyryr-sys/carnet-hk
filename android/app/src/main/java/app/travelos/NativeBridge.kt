@@ -160,9 +160,24 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
     /** Ouvre un lieu dans l'application de cartes choisie (Amap, Google Maps…). */
     @JavascriptInterface
     fun openMap(lat: Double, lng: Double, label: String) {
+        // « Y aller » : itinéraire dans Amap (transports en commun par défaut, modifiable dans Amap).
+        // dev=1 : coordonnées en WGS-84, Amap les convertit lui-même.
+        val amap = Uri.parse("androidamap://route/plan/?sourceApplication=TravelOS&dlat=$lat&dlon=$lng&dname=${Uri.encode(label)}&dev=1&t=1")
+        val intent = Intent(Intent.ACTION_VIEW, amap).setPackage("com.autonavi.minimap").addCategory(Intent.CATEGORY_DEFAULT)
+        if (intent.resolveActivity(activity.packageManager) != null) { start(intent); return }
         val q = Uri.encode("$lat,$lng($label)")
         start(Intent(Intent.ACTION_VIEW, Uri.parse("geo:$lat,$lng?q=$q")))
     }
+
+    /* ---------------- Carte du jour (Amap) ---------------- */
+
+    @JavascriptInterface fun mapState(): String = activity.mapHost.state()
+    @JavascriptInterface fun mapShow(json: String) = activity.mapHost.show(json)
+    @JavascriptInterface fun mapHide() = activity.mapHost.hide()
+    @JavascriptInterface fun mapFit() = activity.mapHost.fit(true)
+    @JavascriptInterface fun mapLocate() = activity.mapHost.locate()
+    @JavascriptInterface fun setAmapKey(key: String) = activity.mapHost.setKey(key)
+    @JavascriptInterface fun offlineMaps(cities: String) = activity.mapHost.downloadOffline(cities)
 
     @JavascriptInterface
     fun apps(): String {

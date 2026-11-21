@@ -111,11 +111,13 @@ function go(tab, view = null, arg = null, push = true) {
   });
   $("#lens").style.opacity = found ? "1" : "0";
   const v = $("#view");
-  const r = { today: viewToday, programme: view === "day" ? () => viewDay(arg) : viewProgramme, places: viewPlaces, food: () => viewFood(arg), guide: () => viewGuide(arg), pocket: () => viewPocket(arg), more: () => viewMore(arg) }[tab];
+  const r = { today: viewToday, programme: view === "day" ? () => viewDay(arg) : view === "map" ? () => viewMap(arg) : viewProgramme, places: viewPlaces, food: () => viewFood(arg), guide: () => viewGuide(arg), pocket: () => viewPocket(arg), more: () => viewMore(arg) }[tab];
   v.innerHTML = `<div class="view">${r()}</div>`;
-  $("#pageTitle").textContent = view === "day" ? `Jour ${dayById(arg)?.number} · ${dayById(arg)?.city}` : TABS[tab];
+  $("#pageTitle").textContent = view === "day" ? `Jour ${dayById(arg)?.number} · ${dayById(arg)?.city}` : view === "map" ? "Carte du jour" : TABS[tab];
   window.scrollTo(0, 0);
+  mapShownSig = "";
   after[tab]?.(view, arg);
+  if (view !== "map") mapSync();
 }
 const after = {};
 function back() {
@@ -246,7 +248,7 @@ function calWidget(h) {
   }
   const more = `<div class="cw-more"><small>Au programme</small>
       ${rest.map((x) => `<button class="cwm" data-day="${d.id}"><b>${esc(x.time)}</b><span>${esc(stepLabel(x))}</span></button>`).join("")}
-      <button class="cwm all" data-day="${d.id}">Toute la journée <span>›</span></button>
+      <div class="cw-foot"><button class="pill dark" data-daymap="${d.id}">🗺 Carte du jour</button><button class="cwm all" data-day="${d.id}">Toute la journée <span>›</span></button></div>
     </div>`;
   return `<div class="cal-w">${head}${next}${more}</div>`;
 }
@@ -295,6 +297,146 @@ function viewToday() {
     ${calWidget(h)}
     <div class="hw-apps">${HOME_APPS.map((id) => appIcon(id, h.d)).join("")}</div>
   </section>`;
+}
+
+/* ================= Carte du jour ================= */
+/* Carte Amap native posée par la tablette dans le rectangle #dmMap (MapHost.kt) ; sans clé Amap,
+   ou dans l'aperçu, un plan simplifié en SVG prend sa place. Même logique de « prochaine étape »
+   que le widget calendrier. Coordonnées du carnet en WGS-84. */
+const MODES = {
+  ferry: { label: "Ferry", icon: "⛴" }, walk: { label: "À pied", icon: "🚶" }, peaktram: { label: "Peak Tram", icon: "🚡" },
+  metro: { label: "Métro", icon: "Ⓜ" }, dingding: { label: "Tram", icon: "🚋" }, taxi: { label: "Taxi", icon: "🚕" },
+};
+let mapFailed = false;
+const mapScroll = {};
+const nativeMap = () => !mapFailed && !!json(N.mapState ? N.mapState() : "{}", {}).key;
+/* Arrêts du jour avec l'état : prochaine étape (même règle que l'accueil) et étapes faites. */
+function mapStops(d) {
+  const m = d.map || { stops: [], legs: [] };
+  const ph = phase();
+  const idx = (key) => d.steps.findIndex((x) => x.key === key);
+  let nextKey = null;
+  if (ph.kind === "during" && ph.day.id === d.id) nextKey = ph.next?.key || null;
+  else if (d.date > nowHK().date) nextKey = d.steps.find((x) => x.placeId && x.dayOffset === 0)?.key || null;
+  const ni = nextKey ? idx(nextKey) : -1;
+  let flagged = false;
+  return m.stops.map((x) => {
+    const done = x.step && status(x.step) === "DONE";
+    const next = !flagged && ni >= 0 && !done && x.step && idx(x.step) >= ni;
+    if (next) flagged = true;
+    return { ...x, next, done };
+  });
+}
+function viewMap(dayId) {
+  const d = dayById(dayId) || homeData().d;
+  const stops = mapStops(d), legs = d.map?.legs || [];
+  const legAfter = (id) => legs.find((l) => l.from === id);
+  const i = P.days.indexOf(d);
+  const shown = new Set(legs.filter((l) => l.path || l.route).map((l) => l.mode));
+  return `<section class="dmap" data-mapday="${d.id}">
+    <div class="dm-map" id="dmMap">${nativeMap() ? "" : planSvg(d, stops)}</div>
+    <aside class="dm-panel">
+      <div class="dm-day">
+        <button class="dm-arrow" data-mapgo="${P.days[i - 1]?.id || ""}" ${i ? "" : "disabled"} aria-label="Jour précédent">‹</button>
+        <div><b>Jour ${d.number} · ${esc(d.city)}</b><small>${esc(shortDate(d.date))} · ${esc(d.title)}</small></div>
+        <button class="dm-arrow" data-mapgo="${P.days[i + 1]?.id || ""}" ${i < P.days.length - 1 ? "" : "disabled"} aria-label="Jour suivant">›</button>
+      </div>
+      <h2>Les étapes</h2>
+      <ol class="dm-list" id="dmList">
+        ${stops.map((x) => {
+          const l = legAfter(x.id);
+          return `<li><button class="dm-stop ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}">
+              <span class="n">${x.n}</span><span class="t"><b>${esc(x.name)}</b><small>${esc(x.time)}${x.next ? ` <em>${d.date > nowHK().date ? "Première étape" : "Prochaine étape"}</em>` : ""}${x.done ? " · fait" : ""}</small></span><span class="chev">›</span>
+            </button></li>${l ? `<li class="dm-leg m-${l.mode}"><i></i><span>${esc(l.label || MODES[l.mode]?.label || "")}</span></li>` : ""}`;
+        }).join("")}
+      </ol>
+      ${!d.map?.verified ? `<p class="dm-note">Trajets pas encore préparés pour ce jour : repères seulement.</p>` : ""}
+      ${shown.size ? `<div class="dm-legend">${["ferry", "walk", "peaktram", "dingding", "metro"].filter((k) => shown.has(k)).map((k) => `<span class="m-${k}"><i></i>${MODES[k].label}</span>`).join("")}</div>` : ""}
+    </aside>
+  </section>`;
+}
+/* Plan de secours : projection simple des coordonnées, sans fond de carte. */
+function planSvg(d, stops) {
+  if (!stops.length) return `<div class="dm-empty">Pas de lieux à placer pour ce jour.</div>`;
+  const pts = [...stops.map((x) => [x.lat, x.lng]), ...(d.map?.legs || []).flatMap((l) => l.path || [])];
+  const lat0 = pts.reduce((a, p) => a + p[0], 0) / pts.length, k = Math.cos((lat0 * Math.PI) / 180);
+  const xs = pts.map((p) => p[1] * k), ys = pts.map((p) => -p[0]);
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  const W = 1000, H = 700, pad = 110, sc = Math.min((W - 2.6 * pad) / (x1 - x0 || 1e-3), (H - 2 * pad) / (y1 - y0 || 1e-3));
+  const ox = (W - sc * (x1 - x0)) / 2 - pad * 0.3, oy = (H - sc * (y1 - y0)) / 2 + 20;
+  const P2 = (lat, lng) => [ox + (lng * k - x0) * sc, oy + (-lat - y0) * sc];
+  planSvg.proj = { P2, W, H };
+  const line = (l) => {
+    if (!l.path || !l.redraw) return "";
+    const pth = l.path.map((p) => P2(p[0], p[1]).map((v) => v.toFixed(1)).join(",")).join(" ");
+    return `<polyline class="pl m-${l.mode}" points="${pth}"/>`;
+  };
+  return `<svg class="plan" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+      <defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="currentColor" stroke-opacity=".07"/></pattern></defs>
+      <rect width="${W}" height="${H}" fill="url(#grid)"/>
+      ${(d.map?.legs || []).map(line).join("")}
+      <g id="planMe"></g>
+      ${stops.slice().sort((a, b) => a.next - b.next).map((x) => { const [px, py] = P2(x.lat, x.lng); const r = x.next ? 25 : 19;
+        return `<g class="pin ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}" transform="translate(${px.toFixed(1)},${py.toFixed(1)})">
+          <path d="M0 0 C-${r * .5} -${r * .9} -${r} -${r * 1.25} -${r} -${r * 1.9} A${r} ${r} 0 1 1 ${r} -${r * 1.9} C${r} -${r * 1.25} ${r * .5} -${r * .9} 0 0Z"/>
+          <text y="-${(r * 1.9).toFixed(1)}" dy=".36em">${x.n}</text>
+          <text class="lbl" x="${px > W * 0.72 ? -(r + 8) : r + 8}" style="text-anchor:${px > W * 0.72 ? "end" : "start"}" y="-${(r * 1.9).toFixed(1)}" dy=".36em">${esc(x.name.split(",")[0])}</text></g>`; }).join("")}
+    </svg>
+    <div class="dm-chips"><button class="dm-chip" data-maplocate>◎ Ma position</button><button class="dm-chip" data-mapfit>⛶ Vue du jour</button></div>
+    <p class="dm-plan-note">Plan simplifié · la carte Amap s'affiche avec la clé Amap (Réglages).</p>`;
+}
+/* Carte native : pose, mise à jour ou masquage selon ce qui est à l'écran. */
+function mapSync(fit = false) {
+  const el = $("#dmMap");
+  const visible = el && $("#sheet").hidden && $("#show").hidden && $("#kids").hidden && $("#chooser").hidden;
+  if (!visible || !nativeMap()) { N.mapHide && N.mapHide(); return; }
+  const d = dayById($(".dmap").dataset.mapday), stops = mapStops(d);
+  const r = el.getBoundingClientRect();
+  N.mapShow(JSON.stringify({
+    rect: { x: r.left, y: r.top, w: r.width, h: r.height, r: parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0 },
+    key: d.id, sig: stops.map((x) => `${x.n}${x.next ? "n" : ""}${x.done ? "d" : ""}`).join(""), fit,
+    stops: stops.map(({ n, id, name, lat, lng, next, done }) => ({ n, id, name, lat, lng, next, done })),
+    legs: (d.map?.legs || []).map((l) => ({ ...l, path: l.redraw ? l.path : null, route: l.redraw ? l.route : null })),
+  }));
+}
+function openMapStop(id) {
+  const d = dayById($(".dmap")?.dataset.mapday);
+  const x = d?.map?.stops.find((s) => s.id === id);
+  if (x) openPlace(x.place);
+}
+/* Position dans le plan de secours (GPS de la tablette via le pont). */
+function planLocate() {
+  if (!N.hasLocationPermission()) { mapLocateAsked = true; N.requestLocationPermission(); return; }
+  N.gpsStart(); toast("Recherche de ta position…");
+  let tries = 0;
+  const poll = () => {
+    if (!$("#planMe")) return;
+    const g = json(N.gpsState(), {});
+    if (g.lat != null && planSvg.proj) {
+      const [x, y] = planSvg.proj.P2(g.lat, g.lng);
+      if (x < -200 || y < -200 || x > planSvg.proj.W + 200 || y > planSvg.proj.H + 200) return toast("Tu es hors de cette carte : ta position s'affichera sur place.");
+      $("#planMe").innerHTML = `<circle class="acc" cx="${x}" cy="${y}" r="${Math.max(10, Math.min(120, (g.accuracy || 20) / 4))}"/><circle class="me" cx="${x}" cy="${y}" r="9"/>`;
+      return;
+    }
+    if (++tries < 30) setTimeout(poll, 1000); else toast("Pas encore de position : réessaie à l'extérieur.");
+  };
+  poll();
+}
+let mapLocateAsked = false;
+after.programme = (view) => {
+  if (view !== "map") return;
+  const list = $("#dmList"), day = $(".dmap").dataset.mapday;
+  if (list) { list.scrollTop = mapScroll[day] || 0; list.addEventListener("scroll", () => { mapScroll[day] = list.scrollTop; }, { passive: true }); }
+  requestAnimationFrame(() => mapSync(false));
+};
+let mapShownSig = "";
+function refreshMap() {
+  const sec = $(".dmap");
+  if (!sec) return;
+  const d = dayById(sec.dataset.mapday);
+  const sig = mapStops(d).map((x) => `${x.next ? 1 : 0}${x.done ? 1 : 0}`).join("");
+  if (mapShownSig && sig !== mapShownSig) { const st = stack[stack.length - 1]; go(st.tab, st.view, st.arg, false); }
+  mapShownSig = sig;
 }
 
 /* ================= Programme ================= */
@@ -397,7 +539,7 @@ function openPlace(id) {
     ${n?.know?.length ? `<div class="tile"><h3>À savoir</h3><ul>${n.know.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
     ${sec("Sur place", n?.practical)}
     <div class="acts"><button class="pill red" data-showtext="${esc(p.nameZh)}" data-showfr="${esc(p.name)}">Montrer au chauffeur</button>
-      <button class="pill" data-map="${p.id}">Ouvrir dans une carte</button>
+      <button class="pill" data-map="${p.id}">Y aller (Amap)</button>
       <button class="pill" data-askplace="${p.id}">Demander au guide</button></div>
     ${days.length ? `<div class="fsec"><h3>Au programme</h3><div class="acts">${days.map((d) => `<button class="pill" data-day="${d.id}">Jour ${d.number} · ${esc(d.city)}</button>`).join("")}</div></div>` : ""}
   </div></div>
@@ -405,6 +547,7 @@ function openPlace(id) {
   <p class="muted" style="font-size:.85rem">${p.lat.toFixed(5)}, ${p.lng.toFixed(5)} (WGS-84)</p>`;
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
+  mapSync();
 }
 function openArticle(id) {
   const a = P.articles.find((x) => x.id === id);
@@ -417,7 +560,7 @@ function openArticle(id) {
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
 }
-function closeSheet() { $("#sheet").hidden = true; }
+function closeSheet() { const was = !$("#sheet").hidden; $("#sheet").hidden = true; if (was) mapSync(); }
 
 /* ================= Lieux ================= */
 
@@ -721,6 +864,10 @@ function moreSettings() {
       <div class="acts"><button class="pill red" data-settings="dream">Choisir l'économiseur</button></div>
       <p><b>Écran verrouillé</b> : les lanternes du carnet en fond (l'horloge reste celle d'Android).</p>
       <div class="seg" id="lockSeg"><button class="${store.get("lockWp", false) ? "" : "on"}" data-lockwp="0">Non</button><button class="${store.get("lockWp", false) ? "on" : ""}" data-lockwp="1">Oui</button></div></div>
+    <div class="tile"><h3>Carte Amap</h3><p>${json(N.mapState ? N.mapState() : "{}", {}).key ? `Clé enregistrée (${esc(json(N.mapState(), {}).keyHint || "")}).` : "Sans clé, la Carte du jour affiche un plan simplifié."} La clé se crée sur console.amap.com (plateforme Android, paquet app.travelos).</p>
+      <div class="ask-row"><input class="search" id="amapKey" placeholder="Coller la clé Amap" autocomplete="off" spellcheck="false"><button class="pill red" id="amapSave">Enregistrer</button></div>
+      <p><b>Cartes hors ligne</b> : à télécharger en Wi-Fi avant le départ (Hong Kong, Macao, Canton, Shenzhen, Guilin, Hezhou). <span class="muted" id="offlineState"></span></p>
+      <div class="acts"><button class="pill" id="offlineGo">Télécharger les cartes</button></div></div>
     <div class="tile"><h3>Taille du texte</h3><p>Pour lire de près sans lunettes, ou pour voir plus de choses à l'écran.</p>
       <div class="seg">${[[85, "Petit"], [100, "Normal"], [115, "Grand"], [130, "Très grand"]].map(([v, l]) => `<button class="${(store.get("textZoom", 100)) === v ? "on" : ""}" data-zoom="${v}" style="font-size:${(v / 100) * 0.92}rem">${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
@@ -733,6 +880,13 @@ function moreSettings() {
     <div class="tile"><h3>Profil</h3><p>Revenir à l'écran « Qui voyage ? ».</p><div class="acts"><button class="pill" id="toChooser">Changer de profil</button></div></div></div>`;
 }
 after.more = () => {
+  $("#amapSave")?.addEventListener("click", () => {
+    const k = $("#amapKey").value.trim();
+    if (!/^[0-9a-f]{32}$/i.test(k)) return toast("La clé Amap fait 32 caractères (chiffres et lettres a à f).");
+    N.setAmapKey(k); toast("Clé Amap enregistrée."); mapFailed = false;
+    setTimeout(() => go("more", null, "settings", false), 300);
+  });
+  $("#offlineGo")?.addEventListener("click", () => { N.offlineMaps("香港,澳门,广州,深圳,桂林,贺州"); toast("Téléchargement lancé : laisse la tablette en Wi-Fi."); });
   if ($("#syncKv")) {
     const draw = () => {
       const s = json(N.syncState(), {});
@@ -810,10 +964,15 @@ $("#mpClose").addEventListener("click", () => { player.pause(); $("#miniPlayer")
 /* ================= clics ================= */
 
 document.addEventListener("click", (e) => {
-  const t = e.target.closest("button,[data-day],[data-place]");
+  const t = e.target.closest("button,[data-day],[data-place],[data-mapstop]");
   if (!t) return;
   const d = t.dataset;
   if (d.tab) { stack = []; return go(d.tab); }
+  if (d.daymap) return go("programme", "map", d.daymap);
+  if (d.mapgo !== undefined) { if (d.mapgo) { stack[stack.length - 1] = { tab: "programme", view: "map", arg: d.mapgo }; go("programme", "map", d.mapgo, false); } return; }
+  if (d.mapstop) return openMapStop(d.mapstop);
+  if (d.maplocate !== undefined) return planLocate();
+  if (d.mapfit !== undefined) { $("#planMe") && ($("#planMe").innerHTML = ""); return; }
   if (d.day) return go("programme", "day", d.day);
   if (d.place) return openPlace(d.place);
   if (d.back !== undefined) return back();
@@ -899,6 +1058,7 @@ function tick() {
   const big = bigClock(n.hm);
   $$("[data-bigclock]").forEach((e) => { if (e.innerHTML !== big) e.innerHTML = big; });
   refreshHome();
+  refreshMap();
   $("#topStatus").innerHTML = statusIcons(json(N.device(), {}));
 }
 /* État de la tablette, dans la barre du haut comme sur iPhone. */
@@ -929,7 +1089,14 @@ function decorateChooser() {
 
 // Retour de veille ou de l'arrière-plan : heure, scène et prochaine étape à jour tout de suite.
 document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
-window.TravelOS = { back, onHome, toast, onResume: () => tick(), onPermission: () => {}, onTranslate, onSystemTheme: () => applyTheme() };
+window.addEventListener("resize", () => { if ($("#dmMap")) requestAnimationFrame(() => mapSync(false)); });
+window.TravelOS = {
+  back, onHome, toast, onResume: () => tick(), onTranslate, onSystemTheme: () => applyTheme(),
+  onPermission: () => { if (mapLocateAsked) { mapLocateAsked = false; if (N.hasLocationPermission()) planLocate(); else toast("Position non autorisée : la carte et les fiches restent disponibles."); } },
+  onMapStop: (id) => openMapStop(id),
+  onMapFailed: () => { mapFailed = true; const st = stack[stack.length - 1]; if (st?.view === "map") go(st.tab, st.view, st.arg, false); },
+  onOfflineMap: (j) => { const o = json(j, {}); const el = $("#offlineState"); if (el) el.textContent = `${o.city} : ${o.pct} %`; },
+};
 
 (async () => {
   applyPrefs();
@@ -968,5 +1135,12 @@ function mockBridge() {
     translatorDownload: () => {}, translate: (id) => setTimeout(() => window.TravelOS.onTranslate(id, { text: "你好", error: null }), 300),
     setLockWallpaper: () => "ok", setTextZoom: (v) => { document.documentElement.style.fontSize = `${v}%`; },
     speak: () => "ok", openGoogleTranslate: () => {}, hasApp: () => false, askGuide: () => {},
+    // Aperçu : « mock.amap »=1 simule la carte native par un cadre, pour vérifier son placement.
+    mapState: () => JSON.stringify({ key: localStorage.getItem("mock.amap") === "1" }),
+    mapShow: (j) => { const o = JSON.parse(j); let b = document.getElementById("mockMap"); if (!b) { b = document.createElement("div"); b.id = "mockMap"; document.body.appendChild(b); }
+      Object.assign(b.style, { position: "fixed", left: o.rect.x + "px", top: o.rect.y + "px", width: o.rect.w + "px", height: o.rect.h + "px", borderRadius: o.rect.r + "px", background: "repeating-linear-gradient(45deg,#cfe3f0,#cfe3f0 12px,#dbeaf3 12px,#dbeaf3 24px)", display: "grid", placeItems: "center", font: "600 18px Inter", color: "#246", zIndex: 5 });
+      b.textContent = `Carte Amap native · ${o.key} · ${o.stops.length} repères · prochaine : ${o.stops.find((x) => x.next)?.n || "–"}`; b.hidden = false; },
+    mapHide: () => { const b = document.getElementById("mockMap"); if (b) b.hidden = true; },
+    mapFit: () => {}, mapLocate: () => {}, setAmapKey: () => {}, offlineMaps: () => {},
   };
 }
