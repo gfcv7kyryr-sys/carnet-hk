@@ -224,40 +224,57 @@ const days = [...DAYS]
     tips: list(d.tips),
   }));
 
-/* Carte du jour : arrêts dans l'ordre du programme et tronçons (mode, tracé vérifié).
-   travelos/routes/<id>.json précise les arrêts et les tracés ; sans fichier, les arrêts viennent
-   des étapes du programme et aucun trajet n'est dessiné. Coordonnées en WGS-84. */
+/* Carte du jour : arrêts dans l'ordre du programme et tronçons découpés en segments (mode, tracé).
+   travelos/routes/<id>.json décrit les arrêts et la façon de tracer chaque tronçon ; les tracés
+   calculés sur OpenStreetMap sont dans travelos/routes/osm/<id>.json (tools/osm-routes.py).
+   Sans fichier, les arrêts viennent des étapes du programme et aucun trajet n'est dessiné.
+   Coordonnées en WGS-84 ; un seul point par arrêt, partagé par le repère, les tracés et « Y aller ». */
 const placeIndex = new Map(places.map((p) => [p.id, p]));
+const metres = (a, b) => { const k = Math.PI / 180, dy = (a[0] - b[0]) * 111320, dx = (a[1] - b[1]) * 111320 * Math.cos(a[0] * k); return Math.hypot(dx, dy); };
 for (const d of days) {
-  let spec = null;
+  let spec = null, osm = null;
   try { spec = JSON.parse(readFileSync(join(root, `travelos/routes/${d.id}.json`), "utf8")); } catch {}
-  const stepOf = (pid) => d.steps.find((s) => s.placeId === pid);
+  try { osm = JSON.parse(readFileSync(join(root, `travelos/routes/osm/${d.id}.json`), "utf8")); } catch {}
+  const stepOf = (ref) => d.steps.find((s) => s.key === ref) || d.steps.find((s) => s.placeId === ref);
   const ids = spec ? spec.stops : [...new Set(d.steps.map((s) => s.placeId).filter(Boolean))].map((id) => ({ id }));
-  const stops = ids.map((x, i) => {
-    const pl = placeIndex.get(x.place || x.id);
+  let n = 0;
+  const stops = ids.map((x) => {
+    const own = placeIndex.get(x.id);
+    const pl = x.minor ? null : placeIndex.get(x.place || x.id);
     const step = stepOf(x.step || x.id);
-    const lat = x.lat ?? placeIndex.get(x.id)?.lat, lng = x.lng ?? placeIndex.get(x.id)?.lng;
-    if (lat == null || !pl) { console.warn(`Carte ${d.id} : arrêt ${x.id} sans coordonnées ou sans fiche`); return null; }
-    /* Un seul point par arrêt (WGS-84) : repère de la carte, bout du tracé et « Y aller » le partagent.
-       zh : nom chinois (simplifié) transmis à Amap ; à défaut, le nom chinois de la fiche. */
-    return { n: i + 1, id: x.id, name: x.name || placeIndex.get(x.id)?.name || pl.name, zh: x.zh || placeIndex.get(x.id)?.nameZh || pl.nameZh || "",
-      lat, lng, verified: !!x.verified, place: pl.id, step: step?.key || null, time: step?.time || "" };
+    const at = x.lat != null ? [x.lat, x.lng] : osm?.anchors?.[x.id]?.p || (own ? [own.lat, own.lng] : null);
+    if (!at || (!x.minor && !pl)) { console.warn(`Carte ${d.id} : arrêt ${x.id} sans point ou sans fiche`); return null; }
+    return { n: x.minor ? 0 : ++n, id: x.id, minor: !!x.minor, kind: x.kind || "", name: x.name || own?.name || pl?.name, zh: x.zh || own?.nameZh || pl?.nameZh || "",
+      lat: at[0], lng: at[1], verified: !!x.verified, place: pl?.id || null, step: step?.key || null, time: step?.time || "" };
   }).filter(Boolean);
-  const legs = (spec?.legs || []).map((l) => ({ from: l.from, to: l.to, mode: l.mode, label: l.label || "", path: l.path || null, route: l.route || null, redraw: l.redraw !== false }));
-  for (const l of legs) for (const k of ["from", "to"]) if (!stops.some((s) => s.id === l[k])) console.warn(`Carte ${d.id} : tronçon vers un arrêt inconnu (${l[k]})`);
-  /* Contrôle : un tracé dessiné doit commencer et finir exactement sur les points des arrêts (≤ 15 m),
-     pour que la carte et « Y aller » désignent le même quai ou la même gare. */
-  const metres = (a, b) => { const k = Math.PI / 180, dy = (a[0] - b[0]) * 111320, dx = (a[1] - b[1]) * 111320 * Math.cos(a[0] * k); return Math.hypot(dx, dy); };
-  for (const l of legs) {
-    if (!l.path || !l.redraw) continue;
-    const a = stops.find((s) => s.id === l.from), z = stops.find((s) => s.id === l.to);
-    const dA = metres(l.path[0], [a.lat, a.lng]), dZ = metres(l.path[l.path.length - 1], [z.lat, z.lng]);
-    if (dA > 15 || dZ > 15) throw new Error(`Carte ${d.id} : le tracé ${l.from} > ${l.to} s'écarte des arrêts (${dA.toFixed(0)} m / ${dZ.toFixed(0)} m)`);
+  const pos = new Map(stops.map((s) => [s.id, [s.lat, s.lng]]));
+  const legs = (spec?.legs || []).map((l) => {
+    const id = `${l.from}>${l.to}`;
+    let segments = osm?.legs?.[id]?.segments;
+    if (!segments) segments = (l.segments || (l.path ? [{ mode: l.mode, path: l.path }] : [])).filter((s) => s.path).map((s) => ({ mode: s.mode, path: s.path }));
+    segments = segments.map((s) => ({ mode: s.mode, path: s.path }));
+    return { from: l.from, to: l.to, mode: l.mode, label: l.label || "", segments };
+  });
+  /* Contrôle : chaque tronçon dessiné part du point de son arrêt de départ, enchaîne ses segments
+     sans trou et finit sur le point de l'arrêt d'arrivée (≤ 15 m). Sinon, on refuse le paquet. */
+  for (let i = legs.length - 1; i >= 0; i--) {
+    const l = legs[i], miss = ["from", "to"].find((k) => !pos.has(l[k]));
+    if (miss) { console.warn(`Carte ${d.id} : tronçon ${l.from} > ${l.to} ignoré (arrêt ${l[miss]} sans point : lancer tools/osm-routes.py)`); legs.splice(i, 1); }
   }
-  for (const s of stops) if (!s.zh) console.warn(`Carte ${d.id} : arrêt ${s.id} sans nom chinois pour Amap`);
-  const far = stops.filter((s) => metres([s.lat, s.lng], [placeIndex.get(s.id)?.lat ?? s.lat, placeIndex.get(s.id)?.lng ?? s.lng]) > 150);
-  for (const s of far) console.warn(`Carte ${d.id} : le point de ${s.id} est à plus de 150 m de celui de sa fiche`);
-  d.map = { stops, legs, verified: !!spec };
+  for (const l of legs) {
+    if (!l.segments.length) { console.warn(`Carte ${d.id} : tronçon ${l.from} > ${l.to} sans tracé (mode seulement)`); continue; }
+    let cur = pos.get(l.from);
+    for (const s of l.segments) {
+      const gap = metres(s.path[0], cur);
+      if (gap > 15) throw new Error(`Carte ${d.id} : ${l.from} > ${l.to}, segment ${s.mode} décollé de ${gap.toFixed(0)} m`);
+      cur = s.path[s.path.length - 1];
+    }
+    const gap = metres(cur, pos.get(l.to));
+    if (gap > 15) throw new Error(`Carte ${d.id} : ${l.from} > ${l.to} finit à ${gap.toFixed(0)} m de l'arrêt`);
+  }
+  for (const s of stops) if (!s.zh) console.warn(`Carte ${d.id} : arrêt ${s.id} sans nom chinois pour AMap`);
+  for (const s of stops) { const own = placeIndex.get(s.id); if (own && metres([s.lat, s.lng], [own.lat, own.lng]) > 150) console.warn(`Carte ${d.id} : le point de ${s.id} est à plus de 150 m de celui de sa fiche`); }
+  d.map = { stops, legs, verified: !!spec, traced: legs.filter((l) => l.segments.length).length };
 }
 
 const pack = {

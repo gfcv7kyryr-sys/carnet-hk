@@ -1,0 +1,62 @@
+name: Données carte (trajets OSM et captures)
+
+# Calcule les tracés des Cartes du jour sur OpenStreetMap et photographie la carte avec les vraies
+# tuiles, puis enregistre le résultat sur la branche. Lancé à la main ou quand les trajets changent.
+on:
+  push:
+    branches: ["travelos-*"]
+    paths:
+      - "travelos/routes/*.json"
+      - "tools/osm-routes.py"
+      - "tools/map-preview.py"
+      - "android/app/src/main/assets/ui/**"
+      - "android/app/src/main/assets/map/**"
+      - ".github/workflows/map-data.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: travelos-map-data
+  cancel-in-progress: true
+
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Tracer les trajets sur OpenStreetMap
+        run: |
+          set -o pipefail
+          mkdir -p travelos/routes/osm travelos/preview
+          python3 tools/osm-routes.py j2 2>&1 | tee travelos/routes/osm/j2.log
+
+      - name: Refaire le paquet
+        run: node tools/build-pack.mjs
+
+      - name: Photographier la Carte du jour (vraies tuiles)
+        if: hashFiles('tools/map-preview.py') != ''
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          pip install playwright==1.48.0
+          python -m playwright install --with-deps chromium
+          python3 tools/map-preview.py 2>&1 | tee travelos/preview/map-preview.log
+
+      - name: Enregistrer sur la branche
+        run: |
+          git config user.name "travelos-bot"
+          git config user.email "travelos-bot@users.noreply.github.com"
+          git add travelos/routes/osm travelos/pack android/app/src/main/assets/seed travelos/preview 2>/dev/null || true
+          git diff --cached --quiet && { echo "Rien de neuf"; exit 0; }
+          git commit -m "Carte du jour : trajets OSM et captures (automatique)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
