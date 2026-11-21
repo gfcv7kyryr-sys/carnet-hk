@@ -41,7 +41,7 @@ jobs:
 
       - name: Signaler les erreurs du tracé
         if: failure()
-        run: tail -40 travelos/routes/osm/j2.log | while IFS= read -r l; do echo "::error::$l"; done
+        run: tail -7 travelos/routes/osm/j2.log | while IFS= read -r l; do echo "::error::$l"; done
 
       - name: Refaire le paquet
         run: node tools/build-pack.mjs
