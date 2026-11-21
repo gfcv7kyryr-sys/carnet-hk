@@ -564,30 +564,35 @@ function mapDeclutter() {
   const placed = [];
   for (const i of order) {
     const k = mapMarkers[i], p = pts[i];
-    for (const compact of k.x.minor ? [false] : [false, true]) {
+    // Par ordre de préférence : étiquette près du point, étiquette un peu plus loin, numéro seul près du point,
+    // étiquette loin, numéro seul loin. Une étiquette éloignée ne passe qu'après le numéro seul.
+    const near = (w, h) => [[0, -(h / 2 + gap + 6)], [w / 2 + gap, -h / 2], [-(w / 2 + gap), -h / 2], [w / 2 + gap, h / 2], [-(w / 2 + gap), h / 2], [0, h / 2 + gap + 2],
+      [w / 2 + gap + 8, -(h + gap)], [-(w / 2 + gap + 8), -(h + gap)], [w / 2 + gap + 8, h + gap], [-(w / 2 + gap + 8), h + gap]];
+    const ring = (w, rs) => rs.flatMap((r) => [...Array(8)].map((_, a) => { const t = -Math.PI / 2 + (a * Math.PI) / 4; return [Math.cos(t) * (r + w / 2), Math.sin(t) * r]; }));
+    const stages = k.x.minor ? [[false, "near"], [false, "mid"], [false, "far"]]
+      : [[false, "near"], [false, "mid"], [true, "near"], [false, "far"], [true, "mid"], [true, "far"]];
+    let done = false;
+    for (const [compact, dist] of stages) {
       k.el.classList.toggle("compact", compact);
       const w = k.b.offsetWidth, h = k.b.offsetHeight;
-      const c = [[0, -(h / 2 + gap + 6)], [w / 2 + gap, -h / 2], [-(w / 2 + gap), -h / 2], [w / 2 + gap, h / 2], [-(w / 2 + gap), h / 2], [0, h / 2 + gap + 2],
-        [w / 2 + gap + 8, -(h + gap)], [-(w / 2 + gap + 8), -(h + gap)], [0, -(h * 1.5 + gap * 2 + 6)], [w / 2 + gap + 8, h + gap], [-(w / 2 + gap + 8), h + gap],
-        [w + gap * 2, -h * 1.2], [-(w + gap * 2), -h * 1.2], [0, h * 1.5 + gap * 2]];
-      // Plus loin, avec un trait de rappel plus long : huit directions, trois distances.
-      for (const r of [64, 96, 132]) for (let a = 0; a < 8; a++) { const t = -Math.PI / 2 + (a * Math.PI) / 4; c.push([Math.cos(t) * (r + w / 2), Math.sin(t) * r]); }
+      const c = dist === "near" ? near(w, h) : dist === "mid" ? ring(w, [60]) : ring(w, [92, 128]);
       const rect = ([dx, dy]) => ({ l: p.x + dx - w / 2, r: p.x + dx + w / 2, t: p.y + dy - h / 2, b: p.y + dy + h / 2 });
       const ok = (q) => q.l >= 4 && q.r <= W - 4 && q.t >= 4 && q.b <= H - 4 && !placed.some((z) => hit(q, z)) && !obstacles.some((z) => hit(q, z)) && !dots.some((z, j) => j !== i && hit(q, z));
-      let best = c.find((o) => ok(rect(o)));
-      if (!best && compact) best = c[0];
-      if (!best) continue;
-      const q = rect(best);
-      placed.push(q);
-      k.pos = { dx: best[0], dy: best[1], w, h, compact };
-      k.b.style.transform = `translate(${best[0] - w / 2}px, ${best[1] - h / 2}px)`;
-      // Trait du point au bord de l'étiquette.
-      const tx = Math.max(q.l, Math.min(p.x, q.r)) - p.x, ty = Math.max(q.t, Math.min(p.y, q.b)) - p.y, len = Math.hypot(tx, ty);
-      k.line.style.width = `${Math.max(0, len - 4)}px`;
-      k.line.style.transform = `rotate(${Math.atan2(ty, tx)}rad)`;
-      break;
+      const best = c.find((o) => ok(rect(o)));
+      if (best) { mapPlace(k, p, best, w, h, rect(best), compact, placed); done = true; break; }
     }
+    if (!done) { k.el.classList.add("compact"); const w = k.b.offsetWidth, h = k.b.offsetHeight, o = [0, -(h / 2 + gap + 6)];
+      mapPlace(k, p, o, w, h, { l: p.x - w / 2, r: p.x + w / 2, t: p.y + o[1] - h / 2, b: p.y + o[1] + h / 2 }, true, placed); }
   }
+}
+function mapPlace(k, p, best, w, h, q, compact, placed) {
+  placed.push(q);
+  k.pos = { dx: best[0], dy: best[1], w, h, compact };
+  k.b.style.transform = `translate(${best[0] - w / 2}px, ${best[1] - h / 2}px)`;
+  // Trait du point au bord de l'étiquette.
+  const tx = Math.max(q.l, Math.min(p.x, q.r)) - p.x, ty = Math.max(q.t, Math.min(p.y, q.b)) - p.y, len = Math.hypot(tx, ty);
+  k.line.style.width = `${Math.max(0, len - 4)}px`;
+  k.line.style.transform = `rotate(${Math.atan2(ty, tx)}rad)`;
 }
 let mapDeclutterQueued = false;
 const mapQueueDeclutter = () => { if (mapDeclutterQueued) return; mapDeclutterQueued = true; requestAnimationFrame(() => { mapDeclutterQueued = false; mapDeclutter(); }); };
