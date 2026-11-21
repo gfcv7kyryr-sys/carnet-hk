@@ -2,9 +2,8 @@
   tuiles : https://tiles.openfreemap.org/planet/20261115_080022_pt/{z}/{x}/{y}.pbf
   tuiles : https://tiles.openfreemap.org/planet/20261115_080022_pt/{z}/{x}/{y}.pbf
   tuiles : https://tiles.openfreemap.org/planet/20261115_080022_pt/{z}/{x}/{y}.pbf
-  tuiles : https://tiles.openfreemap.org/planet/20261115_080022_pt/{z}/{x}/{y}.pbf
-  tuiles : https://tiles.openfreemap.org/planet/20261115_080022_pt/{z}/{x}/{y}.pbf
-paysage : zoom 12.71, repères visibles 11/11
-portrait : zoom 12.60, repères visibles 11/11
-portrait-replie : zoom 12.96, repères visibles 11/11
-apres-midi : zoom 14.60, repères visibles 11/11
+paysage : zoom 12.95, repères OK 12/12, Man Mo libellé : True
+portrait : zoom 12.72, repères OK 12/12, Man Mo libellé : True
+portrait-etapes : zoom 12.10, repères OK 12/12, Man Mo libellé : True
+matin-zoom : zoom 15.40, repères OK 12/12, Man Mo libellé : True
+apres-midi : zoom 14.60, repères OK 12/12, Man Mo libellé : True
