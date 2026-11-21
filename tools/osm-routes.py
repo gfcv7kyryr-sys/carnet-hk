@@ -125,9 +125,15 @@ def junction(a, b):
     A = {(round(g["lat"], 7), round(g["lon"], 7)) for el in d["elements"] if el["tags"].get("name") == a for g in el["geometry"]}
     B = {(round(g["lat"], 7), round(g["lon"], 7)) for el in d["elements"] if el["tags"].get("name") == b for g in el["geometry"]}
     common = A & B
-    if not common: sys.exit(f"Carrefour introuvable : {a} × {b}")
-    p = sorted(common)[0]
-    return list(p), f"carrefour {a} × {b} (OSM)"
+    if common:
+        p = sorted(common)[0]
+        return list(p), f"carrefour {a} × {b} (OSM)"
+    # Pas de nœud commun (passerelle, voie séparée) : les deux points les plus proches, s'ils sont à moins de 40 m.
+    if A and B:
+        da, pa, pb = min((metres(x, y), x, y) for x in A for y in B)
+        if da <= 40:
+            return [(pa[0] + pb[0]) / 2, (pa[1] + pb[1]) / 2], f"croisement {a} × {b} (OSM, voies à {da:.0f} m)"
+    sys.exit(f"Carrefour introuvable : {a} × {b}")
 
 def geocode(g):
     """Point d'une étape sans fiche, cherché autour de « near » (1,5 km) : nom exact dans OSM, puis adresse,
