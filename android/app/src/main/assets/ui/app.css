@@ -466,9 +466,15 @@ main#view{max-width:var(--wide);margin:0 auto;padding:var(--top) var(--gut) var(
 .dh-txt{display:grid;gap:10px;min-width:0}
 .dh-txt .h2{font-size:clamp(1.5rem,2.5vw,2.1rem)}
 .dh-lede{color:var(--muted);font-size:1.05rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.daytabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 80px);z-index:20;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:5px;border-radius:22px}
-.daytabs button{border-radius:17px;padding:11px 8px;font-weight:650;font-size:.95rem;color:var(--muted)}
-.daytabs button small{font-size:.75rem;opacity:.7;margin-left:3px}
+/* Cinq onglets sur une ligne, répartis sur toute la largeur ; compteurs retirés puis marges resserrées si la place manque (fitDayTabs). */
+.daytabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 80px);z-index:20;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px;border-radius:22px}
+.daytabs button{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:48px;border-radius:17px;padding:8px 10px;font-weight:650;font-size:.95rem;color:var(--muted);white-space:nowrap;overflow:hidden}
+.daytabs button .tl{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.daytabs button small{font-size:.75rem;opacity:.7;flex:none}
+.daytabs.nocount button small{display:none}
+.daytabs.tight{gap:2px;padding:4px}
+.daytabs.tight button{padding:8px 3px;letter-spacing:-.015em}
+.daytabs.smaller button{font-size:.8rem}
 .daytabs button.on{background:var(--lens);color:var(--red-ink);box-shadow:inset 0 1px 0 var(--gl-edge),0 2px 8px rgba(0,0,0,.08)}
 .daybody{min-height:40vh}
 .pgrid.wide{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
@@ -493,8 +499,8 @@ body.mapmode main#view{padding:0;max-width:none;min-height:0}
 .dm-back{display:flex;align-items:center;gap:6px;height:44px;padding:0 12px 0 8px;border-radius:16px;font-weight:650;font-size:.98rem;color:var(--red-ink);white-space:nowrap}
 .dm-back .chev{font-size:1.6rem;line-height:1;margin-top:-3px}
 .dm-day{font-size:1.06rem;font-weight:650;letter-spacing:-.02em;white-space:nowrap}
-.dm-tabs.daytabs{position:static;margin-left:auto;grid-template-columns:repeat(5,auto);padding:4px;border-radius:18px;background:rgba(255,255,255,.35);box-shadow:none}
-.dm-tabs.daytabs button{padding:9px 16px;font-size:.92rem}
+.dm-tabs.daytabs{position:static;margin-left:auto;grid-template-columns:repeat(5,minmax(0,auto));padding:4px;border-radius:18px;background:rgba(255,255,255,.35);box-shadow:none;min-width:0}
+.dm-tabs.daytabs button{padding:6px 16px;min-height:44px;font-size:.92rem}
 /* Outils : légende repliable, Ma position, Vue du jour. */
 .dm-tools{position:absolute;z-index:4;left:var(--edge);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;align-items:flex-end;gap:10px}
 .dm-tools .pill.glass{background:var(--gl-strong);padding:11px 18px;font-size:.92rem;box-shadow:var(--gl-shadow)}
@@ -564,6 +570,33 @@ body.mapmode main#view{padding:0;max-width:none;min-height:0}
 .plan .pin text{fill:#fff;font-weight:750;font-size:18px;text-anchor:middle}
 .plan .acc{fill:rgba(10,132,255,.18);stroke:rgba(10,132,255,.4)}.plan .me{fill:#0A84FF;stroke:#fff;stroke-width:4}
 .dm-plan-note{position:absolute;left:50%;transform:translateX(-50%);top:130px;font-size:.85rem;color:var(--muted);background:rgba(255,255,255,.85);padding:6px 12px;border-radius:12px}
+/* Bouton Réduire (plein écran) : coin supérieur droit, dans l'en-tête. */
+.dm-reduce{flex:none;padding:10px 16px;font-size:.92rem;background:var(--lens,#fff)}
+@media (orientation:portrait){.dm-reduce{order:2;margin-left:auto}.dm-tabs.daytabs{order:3}}
+/* Onglet Plan de la page du jour : carte intégrée comme un widget du carnet. */
+/* En-tête du jour compact sur l'onglet Plan : vignette, titre, retour ; la carte prend la place. */
+.dayhead2.compact{grid-template-columns:120px minmax(0,1fr) !important;gap:18px}
+.dayhead2.compact .dh-img{height:96px !important;max-height:none;aspect-ratio:auto;border-radius:20px}
+.dayhead2.compact .dh-lede{display:none}
+.dayhead2.compact .h2{font-size:1.45rem}
+.dayhead2.compact .acts{margin-top:4px}
+.view:has(.dayhead2.compact){gap:16px}
+.dm-embedwrap{display:grid;gap:14px}
+.dm-embed{position:relative;height:clamp(420px,calc(100dvh - 500px),880px);border-radius:var(--r-l,28px);overflow:hidden;box-shadow:0 1px 0 var(--gl-edge) inset,0 10px 30px rgba(0,0,0,.08);isolation:isolate}
+@media (orientation:landscape){.dm-embed{height:clamp(360px,calc(100dvh - 400px),720px)}}
+.dm-embed .dm-map{position:absolute;inset:0}
+.dm-full{position:absolute;z-index:4;top:14px;right:14px;background:var(--gl-strong);box-shadow:var(--gl-shadow);padding:10px 16px;font-size:.92rem}
+.dm-etools{position:absolute;z-index:4;left:14px;bottom:14px;display:flex;gap:8px}
+.dm-etools .pill{background:var(--gl-strong);box-shadow:var(--gl-shadow);padding:9px 14px;font-size:.88rem}
+.dm-embed .dm-attrib{right:12px;bottom:4px}
+.dm-under{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}
+.dm-under .dm-card{background:var(--bg2,rgba(255,255,255,.7))}
+.dm-legline{position:static;display:flex;flex-wrap:wrap;gap:8px 18px;padding:0;background:none;box-shadow:none;font-size:.88rem;color:var(--muted)}
+.dm-legline span{display:flex;align-items:center;gap:8px}.dm-legline i{width:26px;height:0;border-top:4px solid}
+@media (orientation:portrait){.dm-under{grid-template-columns:1fr}}
+/* Lieu sélectionné (gardé d'un format à l'autre). */
+.co.sel{z-index:4}
+.co.sel .co-b{box-shadow:0 0 0 3px var(--ink),0 3px 12px rgba(0,0,0,.25)}
 /* Bandeau : contenu d'une version précédente, à resynchroniser. */
 .stale{position:fixed;z-index:40;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 84px);width:min(calc(100% - 2*var(--gut)),720px);display:flex;align-items:center;gap:14px;padding:12px 12px 12px 18px;border-radius:var(--r-m);background:var(--gl-strong)}
 .stale p{flex:1;font-size:.92rem;line-height:1.35}
@@ -571,8 +604,8 @@ body.mapmode .stale{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 140px
 /* Portrait : en-tête sur deux lignes, fiche en bas (repliée par défaut), outils au-dessus de la fiche. */
 @media (orientation:portrait){
   .dm-top{flex-wrap:wrap;gap:6px 12px}
-  .dm-tabs.daytabs{margin-left:0;width:100%;grid-template-columns:repeat(5,1fr)}
-  .dm-tabs.daytabs button{padding:9px 6px}
+  .dm-tabs.daytabs{margin-left:0;width:100%;grid-template-columns:repeat(5,minmax(0,1fr))}
+  .dm-tabs.daytabs button{padding:6px 4px}
   .dm-side{left:calc(env(safe-area-inset-left,0px) + var(--gut));width:auto;max-height:62vh}
   .dm-listbox{max-height:44vh}
   .dm-tools{bottom:calc(var(--panel-h,120px) + env(safe-area-inset-bottom,0px) + 30px)}

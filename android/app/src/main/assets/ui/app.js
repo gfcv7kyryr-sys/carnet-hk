@@ -156,6 +156,7 @@ function go(tab, view = null, arg = null, push = true) {
   window.scrollTo(0, 0);
   mapShownSig = "";
   after[tab]?.(view, arg);
+  requestAnimationFrame(fitDayTabs);
 }
 const after = {};
 function back() {
@@ -351,6 +352,26 @@ const LEGEND_ORDER = ["ferry", "walk", "peaktram", "metro", "dingding", "taxi"];
 let mapFailed = false, glMap = null, glDay = null, mapUserMoved = false, mapListOpen = false, mapLegendOpen = false, mapMarkers = [];
 const mapCam = {}, mapScroll = {};
 const glOk = () => !mapFailed && !!window.maplibregl;
+const mapSel = {}; // lieu sélectionné par journée, gardé d'un format à l'autre
+const mapRoot = () => $(".dmap") || $(".dm-embed");
+const mapEmbedded = () => !$(".dmap") && !!$(".dm-embed");
+/* Onglet Plan de la page du jour : carte intégrée, avec Plein écran, la fiche compacte et la légende. */
+function mapEmbedHtml(d) {
+  const stops = mapStops(d), legs = d.map?.legs || [];
+  const modes = new Set(legs.flatMap((l) => l.segments.map((s) => s.mode)));
+  return `<div class="dm-embedwrap">
+    <section class="dm-embed" data-mapday="${d.id}">
+      <div class="dm-map" id="dmMap">${glOk() ? "" : planSvg(d, stops)}</div>
+      <button class="pill glass dm-full" data-mapfull aria-label="Afficher le plan en plein écran"><span aria-hidden="true">⤢</span> Plein écran</button>
+      <div class="dm-etools"><button class="pill glass" data-maplocate><span aria-hidden="true">➤</span> Ma position</button><button class="pill glass" data-mapfit><span aria-hidden="true">⤢</span> Vue du jour</button></div>
+      <span class="dm-attrib">© les contributeurs d'OpenStreetMap · OpenFreeMap</span>
+    </section>
+    <div class="dm-under">
+      <div id="dmCard">${mapCardHtml(d, stops, true)}</div>
+      ${modes.size ? `<div class="dm-legend dm-legline">${LEGEND_ORDER.filter((k) => modes.has(k)).map((k) => `<span class="m-${k}"><i></i>${MODES[k].label}</span>`).join("")}</div>` : ""}
+    </div>
+  </div>`;
+}
 
 /* Arrêts du jour avec l'état : prochaine étape (même règle que l'accueil) et étapes faites.
    Les étapes sans numéro (repas, sieste) ne sont jamais « prochaine étape ». */
@@ -388,18 +409,19 @@ function mapBackLabel() {
   if (o.view === "day") return `Jour ${dayById(o.arg)?.number ?? ""}`.trim();
   return TABS[o.tab] || "Retour";
 }
-function mapCardHtml(d, stops) {
-  const nx = stops.find((x) => x.next) || stops.find((x) => !x.minor && !x.done);
+function mapCardHtml(d, stops, embedded) {
+  const sel = stops.find((x) => x.id === mapSel[d.id] && !x.minor);
+  const nx = sel || stops.find((x) => x.next) || stops.find((x) => !x.minor && !x.done);
   if (!nx) return `<div class="dm-card glass"><p class="muted">Pas d'étape à placer pour ce jour.</p></div>`;
   const pl = placeById(nx.place), t = stopTitle(nx), before = d.date > nowHK().date;
   return `<div class="dm-card glass">
     <div class="dm-thumb">${art(pl?.image, toneOf(d), pl?.nameZh?.slice(0, 1) || d.glyph)}</div>
     <div class="dm-ct">
-      <p class="dm-k">${before ? "Première étape" : nx.next ? "Prochaine étape" : "Étape"}${nx.time ? ` · ${esc(nx.time)}` : ""}</p>
+      <p class="dm-k">${sel && !nx.next ? `Étape ${nx.n}` : before ? "Première étape" : nx.next ? "Prochaine étape" : "Étape"}${nx.time ? ` · ${esc(nx.time)}` : ""}</p>
       <h3>${esc(t.t)}</h3>${t.sub ? `<p class="dm-sub">${esc(t.sub)}</p>` : ""}
     </div>
     <div class="acts dm-acts"><button class="pill red" data-mapstop="${nx.id}">Voir la fiche</button>
-      <button class="pill" data-maplist aria-expanded="${mapListOpen}">${mapListOpen ? "Masquer les étapes" : "Voir les étapes"}</button></div>
+      ${embedded ? `<button class="pill" data-daysec="steps">Voir les étapes</button>` : `<button class="pill" data-maplist aria-expanded="${mapListOpen}">${mapListOpen ? "Masquer les étapes" : "Voir les étapes"}</button>`}</div>
   </div>`;
 }
 function mapListHtml(d, stops) {
@@ -426,7 +448,8 @@ function viewMap(dayId) {
       <button class="dm-back" data-mapback aria-label="Retour : ${esc(back)}"><span class="chev" aria-hidden="true">‹</span><span>${esc(back)}</span></button>
       <b class="dm-day">Jour ${d.number} · ${esc(d.city)}</b>
       <nav class="daytabs dm-tabs" aria-label="Sections du jour">${DAY_SECS.map(([k, l]) => k === "plan"
-        ? `<button class="on" aria-current="page">${l}</button>` : `<button data-mapsec="${k}">${l}</button>`).join("")}</nav>
+        ? `<button class="on" aria-current="page"><span class="tl">${l}</span></button>` : `<button data-mapsec="${k}"><span class="tl">${l}</span></button>`).join("")}</nav>
+      <button class="pill dm-reduce" data-mapreduce aria-label="Réduire le plan dans la page du jour"><span aria-hidden="true">⤡</span> Réduire</button>
     </header>
     <div class="dm-tools">
       ${modes.size ? `<div class="dm-legwrap"><button class="pill glass dm-legbtn" data-maplegend aria-expanded="${mapLegendOpen}">Légende</button>
@@ -508,10 +531,12 @@ function dayBounds(d) {
 }
 /* Ce qui couvre la carte : en-tête, fiche et liste, boutons. Sert au cadrage et au placement des étiquettes. */
 function mapObstacles() {
-  return [".dm-top", ".dm-card", ".dm-listbox:not([hidden])", ".dm-tools .pill", ".dm-legend"]
+  const sels = mapEmbedded() ? [".dm-full", ".dm-etools .pill"] : [".dm-top", ".dm-reduce", ".dm-card", ".dm-listbox:not([hidden])", ".dm-tools .pill", ".dm-legend"];
+  return sels
     .flatMap((sel) => $$(sel).map((e) => e.getBoundingClientRect())).filter((r) => r.width && r.height && getComputedStyle(document.elementFromPoint(r.left + 1, r.top + 1) || document.body).visibility !== "hidden");
 }
 function mapPadding() {
+  if (mapEmbedded()) return { top: 74, left: 70, right: 70, bottom: 74 };
   const W = innerWidth, H = innerHeight, m = 26, r = (sel) => $(sel)?.getBoundingClientRect();
   const top = r(".dm-top"), side = r("#dmPanel"), tools = r(".dm-tools");
   const pad = { top: (top ? top.bottom : 0) + m + 44, left: 90, right: 90, bottom: m + 20 };
@@ -531,7 +556,7 @@ function mapFit(animate) {
 /* ---------- repères : point exact, trait de rappel, étiquette numérotée ---------- */
 function calloutEl(x) {
   const el = document.createElement("div");
-  el.className = `co ${x.minor ? "minor" : ""} ${x.next ? "next" : ""} ${x.done ? "done" : ""}`;
+  el.className = `co ${x.minor ? "minor" : ""} ${x.next ? "next" : ""} ${x.done ? "done" : ""} ${glDay && mapSel[glDay.id] === x.id ? "sel" : ""}`;
   el.style.setProperty("--c", x.done ? "#9A9AA0" : MODES[x.mode]?.color || "#E3262B");
   el.innerHTML = `<i class="co-line"></i><span class="co-dot"></span>${x.minor
     ? `<span class="co-b" title="${esc(x.name)}" aria-label="${esc(x.name)}">${MINOR_ICON[x.kind] || "•"}</span>`
@@ -552,8 +577,8 @@ function mapPlaceMarkers(d, stops) {
    on garde le numéro seul. Le point reste toujours à l'endroit exact ; un trait le relie à l'étiquette. */
 function mapDeclutter() {
   if (!glMap || !mapMarkers.length) return;
-  const W = innerWidth, H = innerHeight, gap = 12, pad = 3;
-  const obstacles = mapObstacles().map((r) => ({ l: r.left - 4, r: r.right + 4, t: r.top - 4, b: r.bottom + 4 }));
+  const box = $("#dmMap").getBoundingClientRect(), W = box.width, H = box.height, gap = 12, pad = 3;
+  const obstacles = mapObstacles().map((r) => ({ l: r.left - box.left - 4, r: r.right - box.left + 4, t: r.top - box.top - 4, b: r.bottom - box.top + 4 }));
   const pts = mapMarkers.map((k) => glMap.project([k.x.lng, k.x.lat]));
   const dots = pts.map((p) => ({ l: p.x - 5, r: p.x + 5, t: p.y - 5, b: p.y + 5 }));
   const hit = (a, b) => a.l < b.r + pad && a.r > b.l - pad && a.t < b.b + pad && a.b > b.t - pad;
@@ -598,7 +623,7 @@ let mapDeclutterQueued = false;
 const mapQueueDeclutter = () => { if (mapDeclutterQueued) return; mapDeclutterQueued = true; requestAnimationFrame(() => { mapDeclutterQueued = false; mapDeclutter(); }); };
 
 function mapMount() {
-  const sec = $(".dmap"), el = $("#dmMap");
+  const sec = mapRoot(), el = $("#dmMap");
   if (!sec || !el || !glOk()) return;
   const d = dayById(sec.dataset.mapday), stops = mapStops(d);
   glDay = d; mapShownSig = stops.map((x) => `${x.next ? 1 : 0}${x.done ? 1 : 0}`).join("");
@@ -641,9 +666,9 @@ function mapMount() {
 /* Prochaine étape changée (heure, étape cochée) : on met à jour la fiche, la liste, les repères et les tracés
    sur place, sans recharger la vue : une fiche ouverte reste ouverte, le cadrage ne bouge pas. */
 function mapUpdate() {
-  const sec = $(".dmap"); if (!sec) return;
+  const sec = mapRoot(); if (!sec) return;
   const d = dayById(sec.dataset.mapday), stops = mapStops(d);
-  $("#dmCard").innerHTML = mapCardHtml(d, stops);
+  if ($("#dmCard")) $("#dmCard").innerHTML = mapCardHtml(d, stops, mapEmbedded());
   const list = $("#dmList"); if (list) { const y = list.scrollTop; list.innerHTML = mapListHtml(d, stops); list.scrollTop = y; }
   if (glMap) { glMap.getSource("legs")?.setData(lineFC(d, stops)); mapPlaceMarkers(d, stops); }
 }
@@ -731,9 +756,14 @@ function planLocate() {
 /* Arrêt dont la fiche est ouverte depuis la Carte du jour : « Y aller » y utilise exactement son point. */
 let sheetStop = null;
 function openMapStop(id) {
-  const d = dayById($(".dmap")?.dataset.mapday);
+  const d = dayById(mapRoot()?.dataset.mapday);
   const x = d?.map?.stops.find((s) => s.id === id);
-  if (x && x.place) { sheetStop = x.id; openPlace(x.place); }
+  if (!x || !x.place) return;
+  // Le lieu touché devient le lieu sélectionné, dans les deux formats.
+  mapSel[d.id] = x.id;
+  mapMarkers.forEach((k) => k.el.classList.toggle("sel", k.x.id === x.id));
+  if ($("#dmCard")) $("#dmCard").innerHTML = mapCardHtml(d, mapStops(d), mapEmbedded());
+  sheetStop = x.id; openPlace(x.place);
 }
 /* Destination de « Y aller » : le point de l'arrêt (celui du repère et du tracé), son nom chinois
    et le mode du tronçon qui y mène. Sans arrêt correspondant, repli sur la fiche du lieu. */
@@ -753,15 +783,28 @@ function goAmap(placeId) {
 }
 
 after.programme = (view) => {
+  if (view === "day" && $(".dm-embed")) return requestAnimationFrame(mapMount);
   if (view !== "map") return;
   const list = $("#dmList"), day = $(".dmap").dataset.mapday;
   if (list) { list.scrollTop = mapScroll[day] || 0; list.addEventListener("scroll", () => { mapScroll[day] = list.scrollTop; }, { passive: true }); }
   requestAnimationFrame(mapMount);
 };
+/* Les cinq onglets du jour tiennent sur une ligne : si un libellé déborde, on retire les compteurs,
+   puis on resserre les marges ; l'onglet actif garde son fond et sa couleur. */
+function fitDayTabs() {
+  for (const nav of $$(".daytabs")) {
+    nav.classList.remove("nocount", "tight", "smaller");
+    const over = () => [...nav.children].some((b) => { const t = b.querySelector(".tl") || b; return b.scrollWidth > b.clientWidth + 1 || t.scrollWidth > t.clientWidth + 1; });
+    if (over()) nav.classList.add("nocount");
+    if (over()) nav.classList.add("tight");
+    if (over()) nav.classList.add("smaller"); // écran très étroit seulement : on réduit un peu le texte
+  }
+}
+addEventListener("resize", () => requestAnimationFrame(fitDayTabs));
 function refreshView() { const st = stack[stack.length - 1]; if (st) go(st.tab, st.view, st.arg, false); }
 let mapShownSig = "";
 function refreshMap() {
-  const sec = $(".dmap");
+  const sec = mapRoot();
   if (!sec) return;
   const sig = mapStops(dayById(sec.dataset.mapday)).map((x) => `${x.next ? 1 : 0}${x.done ? 1 : 0}`).join("");
   if (mapShownSig && sig !== mapShownSig) mapUpdate();
@@ -771,13 +814,13 @@ function refreshMap() {
    point est-il exactement sur le lieu ? */
 window.__mapCheck = () => {
   if (!glMap) return null;
-  const W = innerWidth, H = innerHeight;
+  const bx = $("#dmMap").getBoundingClientRect();
   const ui = mapObstacles();
   const boxes = mapMarkers.map((k) => k.b.getBoundingClientRect());
   return mapMarkers.map((k, i) => {
-    const r = boxes[i], p = glMap.project([k.x.lng, k.x.lat]), dot = k.el.querySelector(".co-dot").getBoundingClientRect();
+    const r = boxes[i], p0 = glMap.project([k.x.lng, k.x.lat]), p = { x: p0.x + bx.left, y: p0.y + bx.top }, dot = k.el.querySelector(".co-dot").getBoundingClientRect();
     const ov = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
-    return { id: k.x.id, label: !k.el.classList.contains("compact"), inView: r.left >= 0 && r.right <= W && r.top >= 0 && r.bottom <= H,
+    return { id: k.x.id, label: !k.el.classList.contains("compact"), inView: r.left >= bx.left && r.right <= bx.right && r.top >= bx.top && r.bottom <= bx.bottom,
       hidden: ui.filter((q) => ov(r, q)).length, overlap: boxes.filter((q, j) => j !== i && ov(r, q)).length,
       off: Math.round(Math.hypot(dot.left + dot.width / 2 - p.x, dot.top + dot.height / 2 - p.y)) };
   });
@@ -818,7 +861,7 @@ function viewDay(id) {
   const d = dayById(id);
   if (!d) return `<p>Journée introuvable.</p>`;
   const tone = toneOf(d);
-  const sec = DAY_SECS.some(([k]) => k === store.get("daySec", "steps") && k !== "plan") ? store.get("daySec", "steps") : "steps";
+  const sec = DAY_SECS.some(([k]) => k === store.get("daySec", "steps")) ? store.get("daySec", "steps") : "steps";
   const ph = phase();
   const nowKey = ph.kind === "during" && ph.day.id === d.id ? ph.next?.key : null;
   const pr = dayProgress(d);
@@ -835,6 +878,8 @@ function viewDay(id) {
         <div class="acts">${pl ? `<button class="pill" data-place="${pl.id}">Fiche du lieu</button><button class="pill ghost" data-map="${pl.id}">Y aller ›</button>` : ""}
           <button class="pill ghost" data-skip="${s.key}">${st === "SKIPPED" ? "Rétablir" : "Ignorer"}</button></div></li>`;
     }).join("")}</ul>`;
+  } else if (sec === "plan") {
+    body = mapEmbedHtml(d);
   } else if (sec === "visits") {
     body = d.visits.length ? `<div class="pgrid wide">${d.visits.map((v) =>
       `<button class="pcard" data-place="${v.id}">${art(v.image, tone, v.nameZh?.slice(0, 1))}<b>${esc(v.name)}</b><small class="sum">${esc(v.summary)}</small></button>`).join("")}</div>` : `<p class="muted">Pas de visite détaillée ce jour-là.</p>`;
@@ -844,7 +889,7 @@ function viewDay(id) {
     const list = (title, items, cls = "") => items.length ? `<div class="tile ${cls}"><h3>${title}</h3><ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
     body = `<div class="bento">${list("Pour Charlie", d.charlie, `tone tone-${tone}`)}${list("Bon à savoir", d.tips)}${list("Les photos", d.photos)}${list("Plan B", d.planB)}</div>`;
   }
-  return `<header class="dayhead2 tone-${tone}">
+  return `<header class="dayhead2 tone-${tone} ${sec === "plan" ? "compact" : ""}">
       ${art(d.image, tone, d.glyph, "dh-img")}
       <div class="dh-txt">
         <p class="eyebrow">Jour ${d.number} · ${frDate(d.date)} · ${esc(d.city)}</p>
@@ -853,7 +898,7 @@ function viewDay(id) {
         <div class="acts"><button class="pill" data-back>‹ Programme</button>${audioBtn(d.audio, "Écouter la journée")}<span class="muted" style="font-size:.9rem;align-self:center">${pr.done}/${pr.total} étapes faites</span></div>
       </div>
     </header>
-    <nav class="daytabs glass">${DAY_SECS.map(([k, l]) => `<button class="${k === sec ? "on" : ""}" data-daysec="${k}">${l}${count[k] ? ` <small>${count[k]}</small>` : ""}</button>`).join("")}</nav>
+    <nav class="daytabs glass">${DAY_SECS.map(([k, l]) => `<button class="${k === sec ? "on" : ""}" data-daysec="${k}" ${k === sec ? `aria-current="page"` : ""}><span class="tl">${l}</span>${count[k] ? `<small>${count[k]}</small>` : ""}</button>`).join("")}</nav>
     <section class="daybody">${body}</section>`;
 }
 
@@ -1319,6 +1364,15 @@ document.addEventListener("click", (e) => {
   if (d.maplocate !== undefined) return mapLocate();
   if (d.mapfit !== undefined) { if (glMap) mapFit(true); else $("#planMe") && ($("#planMe").innerHTML = ""); return; }
   if (d.mapback !== undefined) return back();
+  if (d.mapfull !== undefined) { const day = mapRoot()?.dataset.mapday; return go("programme", "map", day); }
+  if (d.mapreduce !== undefined) {
+    // Retour à l'onglet Plan de la même journée (la page d'où l'on vient, si c'en est une).
+    const day = mapRoot()?.dataset.mapday, prev = stack[stack.length - 2];
+    store.set("daySec", "plan");
+    if (prev?.view === "day" && prev.arg === day) { stack.pop(); return go("programme", "day", day, false); }
+    stack[stack.length - 1] = { tab: "programme", view: "day", arg: day };
+    return go("programme", "day", day, false);
+  }
   if (d.resync !== undefined) { $("#stale")?.remove(); return resync(); }
   if (d.stalex !== undefined) { $("#stale")?.remove(); return; }
   if (d.maplist !== undefined) {
@@ -1344,7 +1398,6 @@ document.addEventListener("click", (e) => {
   if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
   if (d.article) return openArticle(d.article);
   if (d.soon) return toast(d.soon);
-  if (d.daysec === "plan") { const st = stack[stack.length - 1]; return go("programme", "map", st.arg); }
   if (d.daysec) { store.set("daySec", d.daysec); const st = stack[stack.length - 1]; go(st.tab, st.view, st.arg, false); return; }
   if (d.mapsec) {
     // Onglet du jour depuis le Plan : on revient sur la page du jour (celle d'où l'on vient, si c'en est une).
