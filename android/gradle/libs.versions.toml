@@ -8,8 +8,6 @@ room = "2.6.1"
 webkit = "1.12.1"
 coroutines = "1.9.0"
 mlkitTranslate = "17.0.3"
-# Carte : MapLibre Native (fond OpenStreetMap, sans compte ni clé).
-maplibre = "11.8.0"
 
 [libraries]
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
@@ -21,7 +19,6 @@ androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "w
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
 mlkit-translate = { group = "com.google.mlkit", name = "translate", version.ref = "mlkitTranslate" }
-maplibre = { group = "org.maplibre.gl", name = "android-sdk", version.ref = "maplibre" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

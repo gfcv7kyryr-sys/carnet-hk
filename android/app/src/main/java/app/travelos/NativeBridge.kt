@@ -184,14 +184,12 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
     fun openMap(lat: Double, lng: Double, label: String) =
         goAmap(JSONObject().put("lat", lat).put("lng", lng).put("name", label).toString())
 
-    /* ---------------- Carte du jour (MapLibre) ---------------- */
+    /* ---------------- Carte du jour (MapLibre dans la page, tuiles sous /osm/) ---------------- */
 
-    @JavascriptInterface fun mapState(): String = activity.mapHost.state()
-    @JavascriptInterface fun mapShow(json: String) = activity.mapHost.show(json)
-    @JavascriptInterface fun mapHide() = activity.mapHost.hide()
-    @JavascriptInterface fun mapFit() = activity.mapHost.fit(true)
-    @JavascriptInterface fun mapLocate() = activity.mapHost.locate()
-    @JavascriptInterface fun offlineMaps(regions: String) = activity.mapHost.downloadOffline(regions)
+    @JavascriptInterface fun mapState(): String = OsmTiles.get(activity).stats().put("ready", true).toString()
+    @JavascriptInterface fun offlineMaps(regions: String) = OsmTiles.get(activity).downloadDays(regions) { name, status, pct ->
+        activity.jsCall("TravelOS.onOfflineMap", JSONObject().put("city", name).put("status", status).put("pct", pct).toString())
+    }
 
     @JavascriptInterface
     fun apps(): String {

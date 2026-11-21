@@ -110,6 +110,8 @@ function go(tab, view = null, arg = null, push = true) {
     if (on) { $("#lens").style.transform = `translateX(${i * 100}%)`; found = true; }
   });
   $("#lens").style.opacity = found ? "1" : "0";
+  mapTeardown();
+  document.body.classList.toggle("mapmode", view === "map");
   const v = $("#view");
   const r = { today: viewToday, programme: view === "day" ? () => viewDay(arg) : view === "map" ? () => viewMap(arg) : viewProgramme, places: viewPlaces, food: () => viewFood(arg), guide: () => viewGuide(arg), pocket: () => viewPocket(arg), more: () => viewMore(arg) }[tab];
   v.innerHTML = `<div class="view">${r()}</div>`;
@@ -117,7 +119,6 @@ function go(tab, view = null, arg = null, push = true) {
   window.scrollTo(0, 0);
   mapShownSig = "";
   after[tab]?.(view, arg);
-  if (view !== "map") mapSync();
 }
 const after = {};
 function back() {
@@ -300,18 +301,23 @@ function viewToday() {
 }
 
 /* ================= Carte du jour ================= */
-/* Carte MapLibre (fond OpenStreetMap) posée par la tablette dans le rectangle #dmMap (MapHost.kt) ;
-   si elle ne démarre pas, ou dans l'aperçu, un plan simplifié en SVG prend sa place. Même logique de
-   « prochaine étape » que le widget calendrier. Tous les points sont en WGS-84 : carte, tracés et
-   « Y aller » partagent le même point par arrêt ; seul Amap convertit, de son côté (dev=1). */
+/* Carte MapLibre GL dans la page, en plein écran : fond vectoriel clair (OpenStreetMap, tuiles servies et
+   gardées par la tablette sous /osm/), panneau des étapes flottant à droite en paysage, en bas (repliable)
+   en portrait. Même logique de « prochaine étape » que le widget calendrier. Tous les points sont en WGS-84 :
+   un seul point par arrêt, partagé par le repère, les tracés et « Y aller » ; seul AMap convertit (dev=1).
+   Sans WebGL, un plan simplifié en SVG prend la place de la carte. */
 const MODES = {
-  ferry: { label: "Ferry", icon: "⛴" }, walk: { label: "À pied", icon: "🚶" }, peaktram: { label: "Peak Tram", icon: "🚡" },
-  metro: { label: "Métro", icon: "Ⓜ" }, dingding: { label: "Tram", icon: "🚋" }, taxi: { label: "Taxi", icon: "🚕" },
+  ferry: { label: "Ferry", color: "#1E88E5" }, walk: { label: "À pied", color: "#2E9D4F" }, peaktram: { label: "Peak Tram", color: "#F07C00" },
+  metro: { label: "Métro", color: "#C8102E" }, dingding: { label: "Tram", color: "#0B6E4F" }, taxi: { label: "Taxi", color: "#6E6E73" },
 };
-let mapFailed = false;
-const mapScroll = {};
-const nativeMap = () => !mapFailed && !!json(N.mapState ? N.mapState() : "{}", {}).ready;
-/* Arrêts du jour avec l'état : prochaine étape (même règle que l'accueil) et étapes faites. */
+const LEGEND_ORDER = ["ferry", "walk", "peaktram", "metro", "dingding", "taxi"];
+let mapFailed = false, glMap = null, glDay = null, mapUserMoved = false, mapPanelOpen = true;
+const mapCam = {}, mapScroll = {};
+const nativeMap = () => false; // ancienne carte native : remplacée par la carte dans la page
+const glOk = () => !mapFailed && !!window.maplibregl;
+
+/* Arrêts du jour avec l'état : prochaine étape (même règle que l'accueil) et étapes faites.
+   Les étapes sans numéro (repas, sieste) ne sont jamais « prochaine étape ». */
 function mapStops(d) {
   const m = d.map || { stops: [], legs: [] };
   const ph = phase();
@@ -321,109 +327,263 @@ function mapStops(d) {
   else if (d.date > nowHK().date) nextKey = d.steps.find((x) => x.placeId && x.dayOffset === 0)?.key || null;
   const ni = nextKey ? idx(nextKey) : -1;
   let flagged = false;
+  const legIn = (id) => m.legs.find((l) => l.to === id), legOut = (id) => m.legs.find((l) => l.from === id);
   return m.stops.map((x) => {
     const done = x.step && status(x.step) === "DONE";
-    const next = !flagged && ni >= 0 && !done && x.step && idx(x.step) >= ni;
+    const next = !x.minor && !flagged && ni >= 0 && !done && x.step && idx(x.step) >= ni;
     if (next) flagged = true;
-    return { ...x, next, done };
+    const mode = (legIn(x.id) || legOut(x.id))?.mode || "walk";
+    return { ...x, next, done, mode };
   });
 }
+/* Titre et sous-titre d'un arrêt : « Peak Tram, station basse (Garden Road) » → « Peak Tram » · « Station basse · Garden Road ». */
+function stopTitle(x) {
+  const [t, ...rest] = x.name.split(/,\s*|\s·\s/);
+  const sub = rest.join(" · ").replace(/\s*\(([^)]+)\)/, " · $1");
+  return { t, sub: sub ? sub.charAt(0).toUpperCase() + sub.slice(1) : "" };
+}
+const MINOR_ICON = { meal: "🥢", hotel: "🛏" };
+
 function viewMap(dayId) {
   const d = dayById(dayId) || homeData().d;
   const stops = mapStops(d), legs = d.map?.legs || [];
   const legAfter = (id) => legs.find((l) => l.from === id);
   const i = P.days.indexOf(d);
-  const shown = new Set(legs.filter((l) => l.path || l.route).map((l) => l.mode));
-  return `<section class="dmap" data-mapday="${d.id}">
-    <div class="dm-map" id="dmMap">${nativeMap() ? "" : planSvg(d, stops)}</div>
-    <aside class="dm-panel">
-      <div class="dm-day">
+  const nx = stops.find((x) => x.next) || stops.find((x) => !x.minor && !x.done);
+  const pl = nx && placeById(nx.place);
+  const before = d.date > nowHK().date;
+  const modes = new Set(legs.flatMap((l) => l.segments.map((s) => s.mode)));
+  const nt = nx && stopTitle(nx);
+  return `<section class="dmap ${mapPanelOpen ? "" : "collapsed"}" data-mapday="${d.id}">
+    <div class="dm-map" id="dmMap">${glOk() ? "" : planSvg(d, stops)}</div>
+    <span class="dm-attrib">© les contributeurs d'OpenStreetMap · OpenFreeMap</span>
+    <header class="dm-head">
+      <button class="dm-back" data-mapback aria-label="Retour">←<span>TravelOS</span></button>
+      <div class="dm-title"><b>Carte du jour</b><small>Jour ${d.number} · ${esc(d.city)}</small></div>
+      <div class="dm-days">
         <button class="dm-arrow" data-mapgo="${P.days[i - 1]?.id || ""}" ${i ? "" : "disabled"} aria-label="Jour précédent">‹</button>
-        <div><b>Jour ${d.number} · ${esc(d.city)}</b><small>${esc(shortDate(d.date))} · ${esc(d.title)}</small></div>
         <button class="dm-arrow" data-mapgo="${P.days[i + 1]?.id || ""}" ${i < P.days.length - 1 ? "" : "disabled"} aria-label="Jour suivant">›</button>
       </div>
-      <h2>Les étapes</h2>
+    </header>
+    ${modes.size ? `<div class="dm-legend">${LEGEND_ORDER.filter((k) => modes.has(k)).map((k) => `<span class="m-${k}"><i></i>${MODES[k].label}</span>`).join("")}</div>` : ""}
+    <div class="dm-chips"><button class="dm-chip" data-maplocate><span class="ic">➤</span>Ma position</button><button class="dm-chip" data-mapfit><span class="ic">▢</span>Vue du jour</button></div>
+    <aside class="dm-panel" id="dmPanel">
+      <button class="dm-grab" data-mappanel aria-label="${mapPanelOpen ? "Replier" : "Déplier"} le panneau"><i></i></button>
+      ${nx ? `<div class="dm-next">
+        <div class="dm-ill">${art(pl?.image, toneOf(d), pl?.nameZh?.slice(0, 1) || d.glyph)}</div>
+        <div class="dm-nt">
+          <p class="eyebrow-red">${before ? "Première étape" : "Prochaine étape"}${nx.time ? ` · ${esc(nx.time)}` : ""}</p>
+          <h2>${esc(nt.t)}</h2>${nt.sub ? `<p class="sub">${esc(nt.sub)}</p>` : ""}
+          <button class="dm-link" data-mapstop="${nx.id}">Voir la fiche <span>→</span></button>
+        </div></div>` : ""}
       <ol class="dm-list" id="dmList">
         ${stops.map((x) => {
-          const l = legAfter(x.id);
-          return `<li><button class="dm-stop ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}">
-              <span class="n">${x.n}</span><span class="t"><b>${esc(x.name)}</b><small>${esc(x.time)}${x.next ? ` <em>${d.date > nowHK().date ? "Première étape" : "Prochaine étape"}</em>` : ""}${x.done ? " · fait" : ""}</small></span><span class="chev">›</span>
-            </button></li>${l ? `<li class="dm-leg m-${l.mode}"><i></i><span>${esc(l.label || MODES[l.mode]?.label || "")}</span></li>` : ""}`;
+          const l = legAfter(x.id), tt = stopTitle(x);
+          const row = x.minor
+            ? `<li class="dm-minor"><span class="mi">${MINOR_ICON[x.kind] || "•"}</span><span>${esc(x.name)}</span><small>${esc(x.time)}</small></li>`
+            : `<li><button class="dm-stop ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}">
+                <span class="n" style="--c:${x.done ? "#9A9AA0" : MODES[x.mode]?.color}">${x.n}</span><span class="t"><b>${esc(tt.t)}</b>${tt.sub ? `<small>${esc(tt.sub)}</small>` : ""}</span><small class="tm">${x.done ? "fait" : esc(x.time)}</small>
+              </button></li>`;
+          return row + (l ? `<li class="dm-leg m-${l.mode}"><i></i><span>${esc(l.label || MODES[l.mode]?.label || "")}</span></li>` : "");
         }).join("")}
       </ol>
       ${!d.map?.verified ? `<p class="dm-note">Trajets pas encore préparés pour ce jour : repères seulement.</p>` : ""}
-      ${shown.size ? `<div class="dm-legend">${["ferry", "walk", "peaktram", "dingding", "metro"].filter((k) => shown.has(k)).map((k) => `<span class="m-${k}"><i></i>${MODES[k].label}</span>`).join("")}</div>` : ""}
     </aside>
   </section>`;
 }
-/* Plan de secours : projection simple des coordonnées, sans fond de carte. */
+
+/* ---------- fond de carte : style vectoriel clair, peu de libellés au premier niveau de zoom ---------- */
+function mapStyle() {
+  const o = location.origin;
+  const name = ["coalesce", ["get", "name:fr"], ["get", "name:en"], ["get", "name_en"], ["get", "name:latin"], ["get", "name"]];
+  const road = (cls) => ["in", ["get", "class"], ["literal", cls]];
+  const W = (pairs) => ["interpolate", ["exponential", 1.6], ["zoom"], ...pairs];
+  return {
+    version: 8,
+    glyphs: `${o}/osm/fonts/{fontstack}/{range}.pbf`,
+    sources: { omt: { type: "vector", tiles: [`${o}/osm/t/{z}/{x}/{y}.pbf`], minzoom: 0, maxzoom: 14,
+      attribution: "© OpenStreetMap · OpenFreeMap" } },
+    layers: [
+      { id: "fond", type: "background", paint: { "background-color": "#F5F1E8" } },
+      { id: "verdure", type: "fill", source: "omt", "source-layer": "landcover", filter: road(["wood", "forest", "grass", "scrub"]), paint: { "fill-color": "#D7ECC9", "fill-opacity": 0.9 } },
+      { id: "parcs", type: "fill", source: "omt", "source-layer": "park", paint: { "fill-color": "#CFE8C0", "fill-opacity": 0.85 } },
+      { id: "sable", type: "fill", source: "omt", "source-layer": "landcover", filter: road(["sand"]), paint: { "fill-color": "#F3E9CF" } },
+      { id: "eau", type: "fill", source: "omt", "source-layer": "water", paint: { "fill-color": "#A6DCE7" } },
+      { id: "rivieres", type: "line", source: "omt", "source-layer": "waterway", paint: { "line-color": "#A6DCE7", "line-width": 1.2 } },
+      { id: "batiments", type: "fill", source: "omt", "source-layer": "building", minzoom: 14.5, paint: { "fill-color": "#ECE5D8", "fill-outline-color": "#E0D6C5" } },
+      { id: "chemins", type: "line", source: "omt", "source-layer": "transportation", minzoom: 15, filter: road(["path", "track"]), paint: { "line-color": "#D8CFBE", "line-width": 1, "line-dasharray": [2, 1.5] } },
+      { id: "rues-bord", type: "line", source: "omt", "source-layer": "transportation", minzoom: 13, filter: ["all", road(["minor", "service", "tertiary"]), ["!=", ["get", "brunnel"], "tunnel"]],
+        layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#E4DCCC", "line-width": W([13, 1.2, 18, 16]) } },
+      { id: "rues", type: "line", source: "omt", "source-layer": "transportation", minzoom: 13, filter: ["all", road(["minor", "service", "tertiary"]), ["!=", ["get", "brunnel"], "tunnel"]],
+        layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#FFFFFF", "line-width": W([13, 0.6, 18, 13]) } },
+      { id: "axes-bord", type: "line", source: "omt", "source-layer": "transportation", filter: ["all", road(["motorway", "trunk", "primary", "secondary"]), ["!=", ["get", "brunnel"], "tunnel"]],
+        layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#E2D8C4", "line-width": W([10, 1.4, 18, 22]) } },
+      { id: "axes", type: "line", source: "omt", "source-layer": "transportation", filter: ["all", road(["motorway", "trunk", "primary", "secondary"]), ["!=", ["get", "brunnel"], "tunnel"]],
+        layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#FFFFFF", "line-width": W([10, 0.8, 18, 18]) } },
+      { id: "voies-ferrees", type: "line", source: "omt", "source-layer": "transportation", minzoom: 14, filter: ["all", road(["rail", "transit"]), ["!=", ["get", "brunnel"], "tunnel"]], paint: { "line-color": "#D2C9B8", "line-width": 1 } },
+      { id: "noms-rues", type: "symbol", source: "omt", "source-layer": "transportation_name", minzoom: 15.5,
+        layout: { "symbol-placement": "line", "text-field": name, "text-font": ["Noto Sans Regular"], "text-size": 11.5, "text-max-angle": 30 },
+        paint: { "text-color": "#77756F", "text-halo-color": "#FFFFFF", "text-halo-width": 1.4 } },
+      { id: "noms-eau", type: "symbol", source: "omt", "source-layer": "water_name", minzoom: 11,
+        layout: { "text-field": name, "text-font": ["Noto Sans Italic"], "text-size": ["interpolate", ["linear"], ["zoom"], 11, 12, 15, 17], "text-letter-spacing": 0.25, "text-max-width": 12 },
+        paint: { "text-color": "#3F8797", "text-halo-color": "rgba(255,255,255,.6)", "text-halo-width": 1 } },
+      // Premier niveau de zoom : seulement les grands quartiers (Central, Tsim Sha Tsui, Wan Chai…).
+      { id: "quartiers", type: "symbol", source: "omt", "source-layer": "place", minzoom: 12, filter: road(["suburb", "town"]),
+        layout: { "text-field": name, "text-font": ["Noto Sans Bold"], "text-size": ["interpolate", ["linear"], ["zoom"], 12, 12, 16, 16], "text-padding": 24, "text-max-width": 8, "symbol-sort-key": ["coalesce", ["get", "rank"], 10] },
+        paint: { "text-color": "#3A3A3C", "text-halo-color": "rgba(255,255,255,.9)", "text-halo-width": 1.6 } },
+      { id: "voisinages", type: "symbol", source: "omt", "source-layer": "place", minzoom: 15, filter: road(["quarter", "neighbourhood"]),
+        layout: { "text-field": name, "text-font": ["Noto Sans Regular"], "text-size": 12, "text-padding": 16, "text-max-width": 8 },
+        paint: { "text-color": "#6E6C66", "text-halo-color": "#FFFFFF", "text-halo-width": 1.4 } },
+    ],
+  };
+}
+
+/* ---------- carte ---------- */
+const lineFC = (d) => ({ type: "FeatureCollection", features: (d.map?.legs || []).flatMap((l) => l.segments.map((s) => ({
+  type: "Feature", properties: { mode: s.mode }, geometry: { type: "LineString", coordinates: s.path.map((p) => [p[1], p[0]]) } }))) });
+function dayBounds(d) {
+  const pts = [...(d.map?.stops || []).map((x) => [x.lat, x.lng]), ...(d.map?.legs || []).flatMap((l) => l.segments.flatMap((s) => s.path))];
+  if (!pts.length) return null;
+  const la = pts.map((p) => p[0]), ln = pts.map((p) => p[1]);
+  return [[Math.min(...ln), Math.min(...la)], [Math.max(...ln), Math.max(...la)]];
+}
+/* Marges du cadrage : la carte occupe tout l'écran, on réserve la place du panneau, de l'en-tête, de la
+   légende et des boutons pour qu'aucun repère ne soit caché au cadrage initial. */
+function mapPadding() {
+  const W = innerWidth, H = innerHeight, r = (sel) => $(sel)?.getBoundingClientRect();
+  const panel = r("#dmPanel"), head = r(".dm-head"), chips = r(".dm-chips"), legend = r(".dm-legend");
+  const pin = 52, m = 28;
+  const pad = { top: (head ? head.bottom : 0) + m + pin, left: m + 18, right: m + 18, bottom: m };
+  if (panel && panel.left > W * 0.45) pad.right = W - panel.left + m; // panneau à droite (paysage)
+  else if (panel) pad.bottom = H - panel.top + m;                      // panneau en bas (portrait)
+  if (chips) pad.bottom = Math.max(pad.bottom, H - chips.top + m);
+  if (legend && legend.top > H * 0.5) pad.bottom = Math.max(pad.bottom, H - legend.top + m);
+  if (legend && legend.top < H * 0.5) pad.top = Math.max(pad.top, legend.bottom + m + pin);
+  return pad;
+}
+function mapFit(animate) {
+  if (!glMap || !glDay) return;
+  const b = dayBounds(glDay);
+  if (!b) return;
+  glMap.fitBounds(b, { padding: mapPadding(), duration: animate ? 600 : 0, maxZoom: 16 });
+  mapUserMoved = false;
+}
+function pinEl(x) {
+  const el = document.createElement("button");
+  el.type = "button";
+  if (x.minor) { el.className = "gl-minor"; el.textContent = MINOR_ICON[x.kind] || "•"; el.title = x.name; }
+  else {
+    el.className = `gl-pin ${x.next ? "next" : ""} ${x.done ? "done" : ""}`;
+    el.style.setProperty("--c", x.done ? "#9A9AA0" : MODES[x.mode]?.color || "#B3122E");
+    el.innerHTML = `<b>${x.n}</b>`;
+    el.dataset.mapstop = x.id;
+    el.setAttribute("aria-label", `${x.n}. ${x.name}`);
+  }
+  return el;
+}
+function mapMount() {
+  const sec = $(".dmap"), el = $("#dmMap");
+  if (!sec || !el || !glOk()) return;
+  const d = dayById(sec.dataset.mapday), stops = mapStops(d);
+  glDay = d;
+  let m;
+  try {
+    m = new maplibregl.Map({ container: el, style: mapStyle(), attributionControl: false, dragRotate: false, pitchWithRotate: false, touchPitch: false,
+      minZoom: 9, maxZoom: 18, fadeDuration: 150, localIdeographFontFamily: "'Noto Sans CJK SC','Noto Sans SC',sans-serif", center: [114.17, 22.29], zoom: 12 });
+  } catch (e) { mapFailed = true; el.innerHTML = planSvg(d, stops); return; }
+  glMap = m;
+  m.touchZoomRotate.disableRotation();
+  m.on("error", (e) => { if (/webgl/i.test(String(e?.error?.message || ""))) { mapFailed = true; refreshView(); } });
+  const lines = lineFC(d);
+  m.on("load", () => {
+    m.addSource("legs", { type: "geojson", data: lines });
+    m.addSource("acc", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    m.addSource("me", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    m.addLayer({ id: "legs-casing", type: "line", source: "legs", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#FFFFFF", "line-width": ["interpolate", ["linear"], ["zoom"], 11, 6, 16, 11], "line-opacity": 0.92 } });
+    const dash = { ferry: [2.2, 1.6], walk: [0, 2], taxi: [1.4, 1.4] };
+    for (const k of LEGEND_ORDER) {
+      m.addLayer({ id: `leg-${k}`, type: "line", source: "legs", filter: ["==", ["get", "mode"], k],
+        layout: { "line-cap": k === "walk" ? "round" : k === "ferry" || k === "taxi" ? "butt" : "round", "line-join": "round" },
+        paint: { "line-color": MODES[k].color, "line-width": ["interpolate", ["linear"], ["zoom"], 11, k === "walk" ? 4 : 3.5, 16, k === "walk" ? 7 : 6], ...(dash[k] ? { "line-dasharray": dash[k] } : {}) } });
+    }
+    m.addLayer({ id: "acc", type: "fill", source: "acc", paint: { "fill-color": "rgba(10,132,255,.16)", "fill-outline-color": "rgba(10,132,255,.45)" } });
+    m.addLayer({ id: "me", type: "circle", source: "me", paint: { "circle-radius": 8, "circle-color": "#0A84FF", "circle-stroke-color": "#FFFFFF", "circle-stroke-width": 3 } });
+    if (mapMe) mapShowMe(mapMe);
+  });
+  // Repères : la prochaine étape au-dessus des autres ; les étapes sans numéro en dessous.
+  stops.slice().sort((a, b) => (a.minor - b.minor) * -1 || a.next - b.next).forEach((x) => {
+    new maplibregl.Marker({ element: pinEl(x), anchor: x.minor ? "center" : "bottom" }).setLngLat([x.lng, x.lat]).addTo(m);
+  });
+  const panel = $("#dmPanel");
+  if (panel && window.ResizeObserver) new ResizeObserver(() => sec.style.setProperty("--panel-h", `${panel.offsetHeight}px`)).observe(panel);
+  const cam = mapCam[d.id];
+  if (cam) m.jumpTo(cam); else requestAnimationFrame(() => mapFit(false));
+  m.on("moveend", () => { mapCam[d.id] = { center: m.getCenter(), zoom: m.getZoom() }; });
+  m.on("dragstart", () => { mapUserMoved = true; });
+  m.on("zoomstart", (e) => { if (e.originalEvent) mapUserMoved = true; });
+}
+function mapTeardown() {
+  if (glMap) { try { glMap.remove(); } catch {} glMap = null; glDay = null; }
+  mapStopGps();
+}
+/* Le panneau change de taille (orientation, repli) : on recadre si l'utilisateur n'a pas bougé la carte. */
+function mapRelayout() {
+  if (!glMap) return;
+  glMap.resize();
+  if (!mapUserMoved) mapFit(false);
+}
+addEventListener("resize", () => { clearTimeout(mapRelayout.t); mapRelayout.t = setTimeout(mapRelayout, 120); });
+function mapSync() { if (glMap) glMap.resize(); }
+
+/* ---------- position : point bleu et cercle de précision ---------- */
+let mapMe = null, mapGpsTimer = null, mapLocateAsked = false;
+function mapCircle(lat, lng, r) {
+  const ring = [];
+  for (let i = 0; i <= 48; i++) { const a = (i / 48) * 2 * Math.PI; ring.push([lng + (r / (111320 * Math.cos((lat * Math.PI) / 180))) * Math.cos(a), lat + (r / 111320) * Math.sin(a)]); }
+  return { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [ring] } };
+}
+function mapShowMe(g) {
+  const m = glMap; if (!m || !m.getSource("me")) return;
+  m.getSource("me").setData({ type: "FeatureCollection", features: [{ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: [g.lng, g.lat] } }] });
+  m.getSource("acc").setData({ type: "FeatureCollection", features: [mapCircle(g.lat, g.lng, Math.max(5, g.accuracy || 20))] });
+}
+function mapLocate() {
+  if (!glMap) return planLocate();
+  if (!N.hasLocationPermission()) { mapLocateAsked = true; N.requestLocationPermission(); return; }
+  N.gpsStart();
+  if (!mapMe) toast("Recherche de ta position…");
+  clearInterval(mapGpsTimer);
+  const t0 = Date.now(); let first = !mapMe, warned = false;
+  mapGpsTimer = setInterval(() => {
+    const g = json(N.gpsState(), {});
+    if (g.lat != null) {
+      mapMe = g; mapShowMe(g);
+      if (first) { first = false; glMap?.easeTo({ center: [g.lng, g.lat], zoom: Math.max(glMap.getZoom(), 15), duration: 600 }); mapUserMoved = true; }
+    } else if (!warned && Date.now() - t0 > 25000) { warned = true; toast("Pas encore de position : réessaie à l'extérieur."); }
+    if (Date.now() - t0 > 120000) mapStopGps(); // économie de batterie
+  }, 1000);
+}
+function mapStopGps() { if (mapGpsTimer) { clearInterval(mapGpsTimer); mapGpsTimer = null; N.gpsStop && N.gpsStop(); } }
+
+/* Plan de secours (sans WebGL) : projection simple des coordonnées, sans fond de carte. */
 function planSvg(d, stops) {
   if (!stops.length) return `<div class="dm-empty">Pas de lieux à placer pour ce jour.</div>`;
-  const pts = [...stops.map((x) => [x.lat, x.lng]), ...(d.map?.legs || []).flatMap((l) => l.path || [])];
+  const segs = (d.map?.legs || []).flatMap((l) => l.segments);
+  const pts = [...stops.map((x) => [x.lat, x.lng]), ...segs.flatMap((s) => s.path)];
   const lat0 = pts.reduce((a, p) => a + p[0], 0) / pts.length, k = Math.cos((lat0 * Math.PI) / 180);
   const xs = pts.map((p) => p[1] * k), ys = pts.map((p) => -p[0]);
   const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
-  const W = 1000, H = 700, pad = 110, sc = Math.min((W - 2.6 * pad) / (x1 - x0 || 1e-3), (H - 2 * pad) / (y1 - y0 || 1e-3));
-  const ox = (W - sc * (x1 - x0)) / 2 - pad * 0.3, oy = (H - sc * (y1 - y0)) / 2 + 20;
+  const W = 1000, H = 700, pad = 90, sc = Math.min((W - 2 * pad) / (x1 - x0 || 1e-3), (H - 2 * pad) / (y1 - y0 || 1e-3));
+  const ox = (W - sc * (x1 - x0)) / 2, oy = (H - sc * (y1 - y0)) / 2;
   const P2 = (lat, lng) => [ox + (lng * k - x0) * sc, oy + (-lat - y0) * sc];
   planSvg.proj = { P2, W, H };
-  const line = (l) => {
-    if (!l.path || !l.redraw) return "";
-    const pth = l.path.map((p) => P2(p[0], p[1]).map((v) => v.toFixed(1)).join(",")).join(" ");
-    return `<polyline class="pl m-${l.mode}" points="${pth}"/>`;
-  };
   return `<svg class="plan" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
-      <defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="currentColor" stroke-opacity=".07"/></pattern></defs>
-      <rect width="${W}" height="${H}" fill="url(#grid)"/>
-      ${(d.map?.legs || []).map(line).join("")}
+      ${segs.map((s) => `<polyline class="pl m-${s.mode}" points="${s.path.map((p) => P2(p[0], p[1]).map((v) => v.toFixed(1)).join(",")).join(" ")}"/>`).join("")}
       <g id="planMe"></g>
-      ${stops.slice().sort((a, b) => a.next - b.next).map((x) => { const [px, py] = P2(x.lat, x.lng); const r = x.next ? 25 : 19;
-        return `<g class="pin ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}" transform="translate(${px.toFixed(1)},${py.toFixed(1)})">
-          <path d="M0 0 C-${r * .5} -${r * .9} -${r} -${r * 1.25} -${r} -${r * 1.9} A${r} ${r} 0 1 1 ${r} -${r * 1.9} C${r} -${r * 1.25} ${r * .5} -${r * .9} 0 0Z"/>
-          <text y="-${(r * 1.9).toFixed(1)}" dy=".36em">${x.n}</text>
-          <text class="lbl" x="${px > W * 0.72 ? -(r + 8) : r + 8}" style="text-anchor:${px > W * 0.72 ? "end" : "start"}" y="-${(r * 1.9).toFixed(1)}" dy=".36em">${esc(x.name.split(",")[0])}</text></g>`; }).join("")}
-    </svg>
-    <div class="dm-chips"><button class="dm-chip" data-maplocate>◎ Ma position</button><button class="dm-chip" data-mapfit>⛶ Vue du jour</button></div>
-    <p class="dm-plan-note">Plan simplifié · le fond de carte OpenStreetMap s'affiche sur la tablette.</p>`;
+      ${stops.filter((x) => !x.minor).map((x) => { const [px, py] = P2(x.lat, x.lng);
+        return `<g class="pin ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}" transform="translate(${px.toFixed(1)},${py.toFixed(1)})"><circle r="${x.next ? 22 : 17}" style="fill:${MODES[x.mode]?.color}"/><text dy=".36em">${x.n}</text></g>`; }).join("")}
+    </svg><p class="dm-plan-note">Plan simplifié : la carte n'a pas pu s'afficher sur cet écran.</p>`;
 }
-/* Carte native : pose, mise à jour ou masquage selon ce qui est à l'écran. */
-function mapSync(fit = false) {
-  const el = $("#dmMap");
-  const visible = el && $("#sheet").hidden && $("#show").hidden && $("#kids").hidden && $("#chooser").hidden;
-  if (!visible || !nativeMap()) { N.mapHide && N.mapHide(); return; }
-  const d = dayById($(".dmap").dataset.mapday), stops = mapStops(d);
-  const r = el.getBoundingClientRect();
-  N.mapShow(JSON.stringify({
-    rect: { x: r.left, y: r.top, w: r.width, h: r.height, r: parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0 },
-    key: d.id, sig: stops.map((x) => `${x.n}${x.next ? "n" : ""}${x.done ? "d" : ""}`).join(""), fit,
-    stops: stops.map(({ n, id, name, lat, lng, next, done }) => ({ n, id, name, lat, lng, next, done })),
-    legs: (d.map?.legs || []).map((l) => ({ ...l, path: l.redraw ? l.path : null, route: l.redraw ? l.route : null })),
-  }));
-}
-/* Arrêt dont la fiche est ouverte depuis la Carte du jour : « Y aller » y utilise exactement son point. */
-let sheetStop = null;
-function openMapStop(id) {
-  const d = dayById($(".dmap")?.dataset.mapday);
-  const x = d?.map?.stops.find((s) => s.id === id);
-  if (x) { sheetStop = x.id; openPlace(x.place); }
-}
-/* Destination de « Y aller » : le point de l'arrêt (celui du repère et du tracé), son nom chinois
-   et le mode du tronçon qui y mène. Sans arrêt correspondant, repli sur la fiche du lieu. */
-function amapTarget(placeId) {
-  let stop = null, day = null;
-  const scan = (id, ds) => { for (const d of ds) { const s = d.map?.stops.find((x) => x.id === id); if (s) return [s, d]; } return null; };
-  if (sheetStop) { const hit = scan(sheetStop, P.days); if (hit && hit[0].place === placeId) [stop, day] = hit; }
-  if (!stop) { const hit = scan(placeId, P.days); if (hit) [stop, day] = hit; }
-  const p = placeById(placeId);
-  if (!stop) return { lat: p.lat, lng: p.lng, zh: p.nameZh, name: p.name, mode: "transit" };
-  const leg = day.map.legs.find((l) => l.to === stop.id);
-  return { lat: stop.lat, lng: stop.lng, zh: stop.zh || p.nameZh, name: stop.name, mode: leg?.mode || "transit" };
-}
-function goAmap(placeId) {
-  const t = amapTarget(placeId);
-  if (N.goAmap) N.goAmap(JSON.stringify(t)); else N.openMap(t.lat, t.lng, t.zh || t.name);
-}
-/* Position dans le plan de secours (GPS de la tablette via le pont). */
 function planLocate() {
   if (!N.hasLocationPermission()) { mapLocateAsked = true; N.requestLocationPermission(); return; }
   N.gpsStart(); toast("Recherche de ta position…");
@@ -441,22 +601,63 @@ function planLocate() {
   };
   poll();
 }
-let mapLocateAsked = false;
+
+/* Arrêt dont la fiche est ouverte depuis la Carte du jour : « Y aller » y utilise exactement son point. */
+let sheetStop = null;
+function openMapStop(id) {
+  const d = dayById($(".dmap")?.dataset.mapday);
+  const x = d?.map?.stops.find((s) => s.id === id);
+  if (x && x.place) { sheetStop = x.id; openPlace(x.place); }
+}
+/* Destination de « Y aller » : le point de l'arrêt (celui du repère et du tracé), son nom chinois
+   et le mode du tronçon qui y mène. Sans arrêt correspondant, repli sur la fiche du lieu. */
+function amapTarget(placeId) {
+  let stop = null, day = null;
+  const scan = (id, ds) => { for (const d of ds) { const s = d.map?.stops.find((x) => x.id === id); if (s) return [s, d]; } return null; };
+  if (sheetStop) { const hit = scan(sheetStop, P.days); if (hit && hit[0].place === placeId) [stop, day] = hit; }
+  if (!stop) { const hit = scan(placeId, P.days); if (hit) [stop, day] = hit; }
+  const p = placeById(placeId);
+  if (!stop) return { lat: p.lat, lng: p.lng, zh: p.nameZh, name: p.name, mode: "transit" };
+  const leg = day.map.legs.find((l) => l.to === stop.id);
+  return { lat: stop.lat, lng: stop.lng, zh: stop.zh || p.nameZh, name: stop.name, mode: leg?.mode || "transit" };
+}
+function goAmap(placeId) {
+  const t = amapTarget(placeId);
+  if (N.goAmap) N.goAmap(JSON.stringify(t)); else N.openMap(t.lat, t.lng, t.zh || t.name);
+}
+
 after.programme = (view) => {
   if (view !== "map") return;
   const list = $("#dmList"), day = $(".dmap").dataset.mapday;
   if (list) { list.scrollTop = mapScroll[day] || 0; list.addEventListener("scroll", () => { mapScroll[day] = list.scrollTop; }, { passive: true }); }
-  requestAnimationFrame(() => mapSync(false));
+  requestAnimationFrame(mapMount);
 };
+function refreshView() { const st = stack[stack.length - 1]; if (st) go(st.tab, st.view, st.arg, false); }
 let mapShownSig = "";
 function refreshMap() {
   const sec = $(".dmap");
   if (!sec) return;
   const d = dayById(sec.dataset.mapday);
   const sig = mapStops(d).map((x) => `${x.next ? 1 : 0}${x.done ? 1 : 0}`).join("");
-  if (mapShownSig && sig !== mapShownSig) { const st = stack[stack.length - 1]; go(st.tab, st.view, st.arg, false); }
+  if (mapShownSig && sig !== mapShownSig) refreshView();
   mapShownSig = sig;
 }
+/* Contrôle (aperçu et tests) : chaque repère est-il visible, hors du panneau, de l'en-tête et des boutons ? */
+window.__mapCheck = () => {
+  if (!glMap) return null;
+  const W = innerWidth, H = innerHeight;
+  const rects = [".dm-panel", ".dm-head", ".dm-chips .dm-chip", ".dm-legend"].flatMap((s) => $$(s).map((e) => [s, e.getBoundingClientRect()]));
+  const els = new Map($$(".gl-pin,.gl-minor").map((e) => [e.dataset.mapstop || e.title, e]));
+  return mapStops(glDay).map((x) => {
+    const e = els.get(x.minor ? x.name : x.id), r = e?.getBoundingClientRect(), p = glMap.project([x.lng, x.lat]);
+    if (!r) return { id: x.id, inView: false, hidden: ["absent"] };
+    const hit = rects.filter(([, q]) => r.left < q.right && r.right > q.left && r.top < q.bottom && r.bottom > q.top).map(([s]) => s);
+    // Le repère doit aussi pointer exactement sur son lieu (pointe en bas au centre, ou centre pour les petits).
+    const tip = x.minor ? [r.left + r.width / 2, r.top + r.height / 2] : [r.left + r.width / 2, r.bottom];
+    const off = Math.round(Math.hypot(tip[0] - p.x, tip[1] - p.y));
+    return { id: x.id, x: Math.round(p.x), y: Math.round(p.y), off, inView: r.left >= 0 && r.right <= W && r.top >= 0 && r.bottom <= H, hidden: hit };
+  });
+};
 
 /* ================= Programme ================= */
 
@@ -945,7 +1146,7 @@ after.more = () => {
       if (!N.hasLocationPermission()) { N.requestLocationPermission(); return; }
       N.gpsStart(); setTimeout(poll, 300);
     });
-    window.TravelOS.onPermission = () => { if (N.hasLocationPermission()) { N.gpsStart(); setTimeout(poll, 300); } else draw(); };
+    window.TravelOS.onGpsPermission = () => { if (N.hasLocationPermission()) { N.gpsStart(); setTimeout(poll, 300); } else draw(); };
     draw();
   }
   $("#glassSeg")?.addEventListener("click", (e) => { const b = e.target.closest("[data-matte]"); if (!b) return; store.set("matte", b.dataset.matte === "1"); applyPrefs(); go("more", null, "settings", false); });
@@ -991,8 +1192,15 @@ document.addEventListener("click", (e) => {
   if (d.daymap) return go("programme", "map", d.daymap);
   if (d.mapgo !== undefined) { if (d.mapgo) { stack[stack.length - 1] = { tab: "programme", view: "map", arg: d.mapgo }; go("programme", "map", d.mapgo, false); } return; }
   if (d.mapstop) return openMapStop(d.mapstop);
-  if (d.maplocate !== undefined) return planLocate();
-  if (d.mapfit !== undefined) { $("#planMe") && ($("#planMe").innerHTML = ""); return; }
+  if (d.maplocate !== undefined) return mapLocate();
+  if (d.mapfit !== undefined) { if (glMap) mapFit(true); else $("#planMe") && ($("#planMe").innerHTML = ""); return; }
+  if (d.mapback !== undefined) return back();
+  if (d.mappanel !== undefined) {
+    mapPanelOpen = !mapPanelOpen;
+    $(".dmap")?.classList.toggle("collapsed", !mapPanelOpen);
+    t.setAttribute("aria-label", `${mapPanelOpen ? "Replier" : "Déplier"} le panneau`);
+    setTimeout(mapRelayout, 260); return;
+  }
   if (d.day) return go("programme", "day", d.day);
   if (d.place) return openPlace(d.place);
   if (d.back !== undefined) return back();
@@ -1112,7 +1320,10 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) tick
 window.addEventListener("resize", () => { if ($("#dmMap")) requestAnimationFrame(() => mapSync(false)); });
 window.TravelOS = {
   back, onHome, toast, onResume: () => tick(), onTranslate, onSystemTheme: () => applyTheme(),
-  onPermission: () => { if (mapLocateAsked) { mapLocateAsked = false; if (N.hasLocationPermission()) planLocate(); else toast("Position non autorisée : la carte et les fiches restent disponibles."); } },
+  onPermission: () => {
+    if (mapLocateAsked) { mapLocateAsked = false; if (N.hasLocationPermission()) mapLocate(); else toast("Position non autorisée : la carte et les fiches restent disponibles."); }
+    else window.TravelOS.onGpsPermission?.();
+  },
   onMapStop: (id) => openMapStop(id),
   onMapFailed: () => { mapFailed = true; const st = stack[stack.length - 1]; if (st?.view === "map") go(st.tab, st.view, st.arg, false); },
   onOfflineMap: (j) => { const o = json(j, {}); const el = $("#offlineState"); if (el) el.textContent = o.status < 0 ? `${o.city} : échec, réessaie en Wi-Fi` : `${o.city} : ${o.pct} %`; },

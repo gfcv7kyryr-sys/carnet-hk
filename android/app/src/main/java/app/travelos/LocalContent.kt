@@ -21,6 +21,7 @@ object LocalContent {
             .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(context))
             .addPathHandler("/pack/", WebViewAssetLoader.InternalStoragePathHandler(context, packDir))
             .addPathHandler("/appicon/", AppIconHandler(context.packageManager))
+            .addPathHandler("/osm/", OsmTiles.get(context))
             .build()
 
     private fun empty(code: Int, reason: String) =

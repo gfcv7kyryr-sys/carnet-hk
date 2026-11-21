@@ -129,14 +129,31 @@ def junction(a, b):
     p = sorted(common)[0]
     return list(p), f"carrefour {a} × {b} (OSM)"
 
-def geocode(q, expect):
-    u = "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode({"q": q, "format": "jsonv2", "limit": 5})
-    res = json.loads(http(u))
-    time.sleep(1.2)
-    for r in res:
-        if expect.lower() in (r.get("display_name", "") + r.get("name", "")).lower():
-            return [float(r["lat"]), float(r["lon"])], f"Nominatim : {r['display_name'][:110]}"
-    sys.exit(f"Géocodage sans résultat fiable pour « {q} » : {[r.get('display_name') for r in res]}")
+def geocode(g):
+    """Point d'une étape sans fiche : d'abord par son nom dans OSM, puis par l'adresse, enfin Nominatim."""
+    s, w, n, e = BBOX
+    def center(el): return [el["center"]["lat"], el["center"]["lon"]] if "center" in el else [el["lat"], el["lon"]]
+    if g.get("osm"):
+        d = overpass(f'[out:json][timeout:120];nwr["name"~"{g["osm"]}",i]({s},{w},{n},{e});out center tags;')
+        els = [x for x in d["elements"] if "center" in x or "lat" in x]
+        els.sort(key=lambda x: (x["type"] == "node", -len(x.get("tags", {}))))  # bâtiment avant point isolé
+        if els:
+            x = els[0]; t = x.get("tags", {})
+            return center(x), f"OSM {x['type']} {x['id']} « {t.get('name')} »"
+    if g.get("addr"):
+        st, no = g["addr"]
+        d = overpass(f'[out:json][timeout:120];nwr["addr:street"="{st}"]["addr:housenumber"="{no}"]({s},{w},{n},{e});out center tags;')
+        els = [x for x in d["elements"] if "center" in x or "lat" in x]
+        if els:
+            x = els[0]; t = x.get("tags", {})
+            return center(x), f"OSM {x['type']} {x['id']} ({no} {st}{', ' + t['name'] if t.get('name') else ''})"
+    if g.get("q"):
+        u = "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode({"q": g["q"], "format": "jsonv2", "limit": 5})
+        res = json.loads(http(u)); time.sleep(1.2)
+        for r in res:
+            if g.get("expect", "").lower() in r.get("display_name", "").lower():
+                return [float(r["lat"]), float(r["lon"])], f"Nominatim : {r['display_name'][:110]}"
+    sys.exit(f"Point introuvable pour {g}")
 
 def osrm(profile, a, b):
     base = {"foot": "https://routing.openstreetmap.de/routed-foot", "car": "https://routing.openstreetmap.de/routed-car"}[profile]
@@ -158,7 +175,7 @@ def main(day):
     for s in spec["stops"]:
         if "lat" in s: pts[s["id"]] = [s["lat"], s["lng"]]
         elif s.get("geocode"):
-            p, src = geocode(s["geocode"]["q"], s["geocode"]["expect"]); pts[s["id"]] = p
+            p, src = geocode(s["geocode"]); pts[s["id"]] = p
             anchors[s["id"]] = {"p": r6(p), "source": src}
         elif s["id"] in places: pts[s["id"]] = [places[s["id"]]["lat"], places[s["id"]]["lng"]]
         else: sys.exit(f"Arrêt sans point : {s['id']}")
