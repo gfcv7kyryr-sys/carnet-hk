@@ -121,9 +121,13 @@ def station(lines, name, line):
 
 def junction(a, b):
     s, w, n, e = BBOX
-    d = overpass(f'[out:json][timeout:120];(way["name"="{a}"]({s},{w},{n},{e});way["name"="{b}"]({s},{w},{n},{e}););out geom;')
-    A = {(round(g["lat"], 7), round(g["lon"], 7)) for el in d["elements"] if el["tags"].get("name") == a for g in el["geometry"]}
-    B = {(round(g["lat"], 7), round(g["lon"], 7)) for el in d["elements"] if el["tags"].get("name") == b for g in el["geometry"]}
+    # À Hong Kong, « name » est souvent bilingue (« 閣麟街 Cochrane Street ») : on cherche aussi name:en.
+    d = overpass(f'[out:json][timeout:120];(way["name:en"="{a}"]({s},{w},{n},{e});way["name"="{a}"]({s},{w},{n},{e});'
+                 f'way["name:en"="{b}"]({s},{w},{n},{e});way["name"="{b}"]({s},{w},{n},{e}););out geom tags;')
+    def nm(el): return {el["tags"].get("name:en"), el["tags"].get("name")}
+    A = {(round(g["lat"], 7), round(g["lon"], 7)) for el in d["elements"] if a in nm(el) for g in el["geometry"]}
+    B = {(round(g["lat"], 7), round(g["lon"], 7)) for el in d["elements"] if b in nm(el) for g in el["geometry"]}
+    print(f"  {a} : {len(A)} points, {b} : {len(B)} points")
     common = A & B
     if common:
         p = sorted(common)[0]
