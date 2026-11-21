@@ -300,16 +300,17 @@ function viewToday() {
 }
 
 /* ================= Carte du jour ================= */
-/* Carte Amap native posée par la tablette dans le rectangle #dmMap (MapHost.kt) ; sans clé Amap,
-   ou dans l'aperçu, un plan simplifié en SVG prend sa place. Même logique de « prochaine étape »
-   que le widget calendrier. Coordonnées du carnet en WGS-84. */
+/* Carte MapLibre (fond OpenStreetMap) posée par la tablette dans le rectangle #dmMap (MapHost.kt) ;
+   si elle ne démarre pas, ou dans l'aperçu, un plan simplifié en SVG prend sa place. Même logique de
+   « prochaine étape » que le widget calendrier. Tous les points sont en WGS-84 : carte, tracés et
+   « Y aller » partagent le même point par arrêt ; seul Amap convertit, de son côté (dev=1). */
 const MODES = {
   ferry: { label: "Ferry", icon: "⛴" }, walk: { label: "À pied", icon: "🚶" }, peaktram: { label: "Peak Tram", icon: "🚡" },
   metro: { label: "Métro", icon: "Ⓜ" }, dingding: { label: "Tram", icon: "🚋" }, taxi: { label: "Taxi", icon: "🚕" },
 };
 let mapFailed = false;
 const mapScroll = {};
-const nativeMap = () => !mapFailed && !!json(N.mapState ? N.mapState() : "{}", {}).key;
+const nativeMap = () => !mapFailed && !!json(N.mapState ? N.mapState() : "{}", {}).ready;
 /* Arrêts du jour avec l'état : prochaine étape (même règle que l'accueil) et étapes faites. */
 function mapStops(d) {
   const m = d.map || { stops: [], legs: [] };
@@ -383,7 +384,7 @@ function planSvg(d, stops) {
           <text class="lbl" x="${px > W * 0.72 ? -(r + 8) : r + 8}" style="text-anchor:${px > W * 0.72 ? "end" : "start"}" y="-${(r * 1.9).toFixed(1)}" dy=".36em">${esc(x.name.split(",")[0])}</text></g>`; }).join("")}
     </svg>
     <div class="dm-chips"><button class="dm-chip" data-maplocate>◎ Ma position</button><button class="dm-chip" data-mapfit>⛶ Vue du jour</button></div>
-    <p class="dm-plan-note">Plan simplifié · la carte Amap s'affiche avec la clé Amap (Réglages).</p>`;
+    <p class="dm-plan-note">Plan simplifié · le fond de carte OpenStreetMap s'affiche sur la tablette.</p>`;
 }
 /* Carte native : pose, mise à jour ou masquage selon ce qui est à l'écran. */
 function mapSync(fit = false) {
@@ -399,10 +400,28 @@ function mapSync(fit = false) {
     legs: (d.map?.legs || []).map((l) => ({ ...l, path: l.redraw ? l.path : null, route: l.redraw ? l.route : null })),
   }));
 }
+/* Arrêt dont la fiche est ouverte depuis la Carte du jour : « Y aller » y utilise exactement son point. */
+let sheetStop = null;
 function openMapStop(id) {
   const d = dayById($(".dmap")?.dataset.mapday);
   const x = d?.map?.stops.find((s) => s.id === id);
-  if (x) openPlace(x.place);
+  if (x) { sheetStop = x.id; openPlace(x.place); }
+}
+/* Destination de « Y aller » : le point de l'arrêt (celui du repère et du tracé), son nom chinois
+   et le mode du tronçon qui y mène. Sans arrêt correspondant, repli sur la fiche du lieu. */
+function amapTarget(placeId) {
+  let stop = null, day = null;
+  const scan = (id, ds) => { for (const d of ds) { const s = d.map?.stops.find((x) => x.id === id); if (s) return [s, d]; } return null; };
+  if (sheetStop) { const hit = scan(sheetStop, P.days); if (hit && hit[0].place === placeId) [stop, day] = hit; }
+  if (!stop) { const hit = scan(placeId, P.days); if (hit) [stop, day] = hit; }
+  const p = placeById(placeId);
+  if (!stop) return { lat: p.lat, lng: p.lng, zh: p.nameZh, name: p.name, mode: "transit" };
+  const leg = day.map.legs.find((l) => l.to === stop.id);
+  return { lat: stop.lat, lng: stop.lng, zh: stop.zh || p.nameZh, name: stop.name, mode: leg?.mode || "transit" };
+}
+function goAmap(placeId) {
+  const t = amapTarget(placeId);
+  if (N.goAmap) N.goAmap(JSON.stringify(t)); else N.openMap(t.lat, t.lng, t.zh || t.name);
 }
 /* Position dans le plan de secours (GPS de la tablette via le pont). */
 function planLocate() {
@@ -539,7 +558,7 @@ function openPlace(id) {
     ${n?.know?.length ? `<div class="tile"><h3>À savoir</h3><ul>${n.know.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
     ${sec("Sur place", n?.practical)}
     <div class="acts"><button class="pill red" data-showtext="${esc(p.nameZh)}" data-showfr="${esc(p.name)}">Montrer au chauffeur</button>
-      <button class="pill" data-map="${p.id}">Y aller (Amap)</button>
+      <button class="pill" data-map="${p.id}">Y aller (AMap)</button>
       <button class="pill" data-askplace="${p.id}">Demander au guide</button></div>
     ${days.length ? `<div class="fsec"><h3>Au programme</h3><div class="acts">${days.map((d) => `<button class="pill" data-day="${d.id}">Jour ${d.number} · ${esc(d.city)}</button>`).join("")}</div></div>` : ""}
   </div></div>
@@ -560,7 +579,7 @@ function openArticle(id) {
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
 }
-function closeSheet() { const was = !$("#sheet").hidden; $("#sheet").hidden = true; if (was) mapSync(); }
+function closeSheet() { const was = !$("#sheet").hidden; $("#sheet").hidden = true; sheetStop = null; if (was) mapSync(); }
 
 /* ================= Lieux ================= */
 
@@ -864,10 +883,9 @@ function moreSettings() {
       <div class="acts"><button class="pill red" data-settings="dream">Choisir l'économiseur</button></div>
       <p><b>Écran verrouillé</b> : les lanternes du carnet en fond (l'horloge reste celle d'Android).</p>
       <div class="seg" id="lockSeg"><button class="${store.get("lockWp", false) ? "" : "on"}" data-lockwp="0">Non</button><button class="${store.get("lockWp", false) ? "on" : ""}" data-lockwp="1">Oui</button></div></div>
-    <div class="tile"><h3>Carte Amap</h3><p>${json(N.mapState ? N.mapState() : "{}", {}).key ? `Clé enregistrée (${esc(json(N.mapState(), {}).keyHint || "")}).` : "Sans clé, la Carte du jour affiche un plan simplifié."} La clé se crée sur console.amap.com (plateforme Android, paquet app.travelos).</p>
-      <div class="ask-row"><input class="search" id="amapKey" placeholder="Coller la clé Amap" autocomplete="off" spellcheck="false"><button class="pill red" id="amapSave">Enregistrer</button></div>
-      <p><b>Cartes hors ligne</b> : à télécharger en Wi-Fi avant le départ (Hong Kong, Macao, Canton, Shenzhen, Guilin, Hezhou). <span class="muted" id="offlineState"></span></p>
-      <div class="acts"><button class="pill" id="offlineGo">Télécharger les cartes</button></div></div>
+    <div class="tile"><h3>Carte</h3><p>Fond de carte OpenStreetMap, sans compte ni clé. <b>Y aller</b> ouvre AMap avec la destination et le mode déjà choisis.</p>
+      <p><b>Cartes hors ligne</b> : une zone par journée, à télécharger en Wi-Fi avant le départ pour garder la carte sans réseau. <span class="muted" id="offlineState"></span></p>
+      <div class="acts"><button class="pill" id="offlineGo">Télécharger les journées</button></div></div>
     <div class="tile"><h3>Taille du texte</h3><p>Pour lire de près sans lunettes, ou pour voir plus de choses à l'écran.</p>
       <div class="seg">${[[85, "Petit"], [100, "Normal"], [115, "Grand"], [130, "Très grand"]].map(([v, l]) => `<button class="${(store.get("textZoom", 100)) === v ? "on" : ""}" data-zoom="${v}" style="font-size:${(v / 100) * 0.92}rem">${l}</button>`).join("")}</div></div>
     <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
@@ -880,13 +898,15 @@ function moreSettings() {
     <div class="tile"><h3>Profil</h3><p>Revenir à l'écran « Qui voyage ? ».</p><div class="acts"><button class="pill" id="toChooser">Changer de profil</button></div></div></div>`;
 }
 after.more = () => {
-  $("#amapSave")?.addEventListener("click", () => {
-    const k = $("#amapKey").value.trim();
-    if (!/^[0-9a-f]{32}$/i.test(k)) return toast("La clé Amap fait 32 caractères (chiffres et lettres a à f).");
-    N.setAmapKey(k); toast("Clé Amap enregistrée."); mapFailed = false;
-    setTimeout(() => go("more", null, "settings", false), 300);
+  $("#offlineGo")?.addEventListener("click", () => {
+    /* Une région par journée : boîte autour des arrêts et des tracés (WGS-84). */
+    const regs = P.days.filter((d) => d.map?.stops?.length).map((d) => {
+      const pts = [...d.map.stops.map((x) => [x.lat, x.lng]), ...d.map.legs.flatMap((l) => l.path || [])];
+      const lat = pts.map((p) => p[0]), lng = pts.map((p) => p[1]);
+      return { id: d.id, name: `Jour ${d.number}`, s: Math.min(...lat), n: Math.max(...lat), w: Math.min(...lng), e: Math.max(...lng) };
+    });
+    N.offlineMaps(JSON.stringify(regs)); toast("Téléchargement lancé : laisse la tablette en Wi-Fi.");
   });
-  $("#offlineGo")?.addEventListener("click", () => { N.offlineMaps("香港,澳门,广州,深圳,桂林,贺州"); toast("Téléchargement lancé : laisse la tablette en Wi-Fi."); });
   if ($("#syncKv")) {
     const draw = () => {
       const s = json(N.syncState(), {});
@@ -994,7 +1014,7 @@ document.addEventListener("click", (e) => {
   if (d.theme) { store.set("theme", d.theme); applyTheme(); return go("more", null, "settings", false); }
   if (d.audio) return playAudio(d.audio, d.title);
   if (d.showtext) return openShow(d.showtext, d.showalt, d.showfr);
-  if (d.map) { const p = placeById(d.map); if (p) N.openMap(p.lat, p.lng, p.name); return; }
+  if (d.map) { if (placeById(d.map)) goAmap(d.map); return; }
   if (d.app) return N.launchApp(d.app);
   if (d.settings) return N.openSettings(d.settings);
   if (d.toggle) { setStatus(d.toggle, status(d.toggle) === "DONE" ? "PLANNED" : "DONE"); return refreshKeepScroll(); }
@@ -1095,7 +1115,7 @@ window.TravelOS = {
   onPermission: () => { if (mapLocateAsked) { mapLocateAsked = false; if (N.hasLocationPermission()) planLocate(); else toast("Position non autorisée : la carte et les fiches restent disponibles."); } },
   onMapStop: (id) => openMapStop(id),
   onMapFailed: () => { mapFailed = true; const st = stack[stack.length - 1]; if (st?.view === "map") go(st.tab, st.view, st.arg, false); },
-  onOfflineMap: (j) => { const o = json(j, {}); const el = $("#offlineState"); if (el) el.textContent = `${o.city} : ${o.pct} %`; },
+  onOfflineMap: (j) => { const o = json(j, {}); const el = $("#offlineState"); if (el) el.textContent = o.status < 0 ? `${o.city} : échec, réessaie en Wi-Fi` : `${o.city} : ${o.pct} %`; },
 };
 
 (async () => {
@@ -1135,12 +1155,13 @@ function mockBridge() {
     translatorDownload: () => {}, translate: (id) => setTimeout(() => window.TravelOS.onTranslate(id, { text: "你好", error: null }), 300),
     setLockWallpaper: () => "ok", setTextZoom: (v) => { document.documentElement.style.fontSize = `${v}%`; },
     speak: () => "ok", openGoogleTranslate: () => {}, hasApp: () => false, askGuide: () => {},
-    // Aperçu : « mock.amap »=1 simule la carte native par un cadre, pour vérifier son placement.
-    mapState: () => JSON.stringify({ key: localStorage.getItem("mock.amap") === "1" }),
-    mapShow: (j) => { const o = JSON.parse(j); let b = document.getElementById("mockMap"); if (!b) { b = document.createElement("div"); b.id = "mockMap"; document.body.appendChild(b); }
+    // Aperçu : « mock.map »=1 simule la carte native par un cadre, pour vérifier son placement.
+    mapState: () => JSON.stringify({ ready: localStorage.getItem("mock.map") === "1" }),
+    goAmap: (j) => { (window.__goAmap = window.__goAmap || []).push(JSON.parse(j)); },
+    mapShow: (j) => { const o = JSON.parse(j); window.__mapShow = o; let b = document.getElementById("mockMap"); if (!b) { b = document.createElement("div"); b.id = "mockMap"; document.body.appendChild(b); }
       Object.assign(b.style, { position: "fixed", left: o.rect.x + "px", top: o.rect.y + "px", width: o.rect.w + "px", height: o.rect.h + "px", borderRadius: o.rect.r + "px", background: "repeating-linear-gradient(45deg,#cfe3f0,#cfe3f0 12px,#dbeaf3 12px,#dbeaf3 24px)", display: "grid", placeItems: "center", font: "600 18px Inter", color: "#246", zIndex: 5 });
-      b.textContent = `Carte Amap native · ${o.key} · ${o.stops.length} repères · prochaine : ${o.stops.find((x) => x.next)?.n || "–"}`; b.hidden = false; },
+      b.textContent = `Carte MapLibre native · ${o.key} · ${o.stops.length} repères · prochaine : ${o.stops.find((x) => x.next)?.n || "–"}`; b.hidden = false; },
     mapHide: () => { const b = document.getElementById("mockMap"); if (b) b.hidden = true; },
-    mapFit: () => {}, mapLocate: () => {}, setAmapKey: () => {}, offlineMaps: () => {},
+    mapFit: () => {}, mapLocate: () => {}, offlineMaps: () => {},
   };
 }

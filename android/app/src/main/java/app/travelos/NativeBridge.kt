@@ -157,27 +157,41 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
         start(Intent(Intent.ACTION_VIEW, uri))
     }
 
-    /** Ouvre un lieu dans l'application de cartes choisie (Amap, Google Maps…). */
+    /**
+     * « Y aller » : ouvre AMap sur l'itinéraire vers la destination, avec le mode déjà choisi.
+     * json : { lat, lng, zh, name, mode } — point en WGS-84, tel que la carte l'affiche.
+     * Lien officiel AMap : amapuri://route/plan/ (destination dlat/dlon/dname, dev=1 : AMap convertit lui-même
+     * le format des coordonnées ; t : 0 voiture, 1 transports, 2 marche). Départ : position de la tablette.
+     */
     @JavascriptInterface
-    fun openMap(lat: Double, lng: Double, label: String) {
-        // « Y aller » : itinéraire dans Amap (transports en commun par défaut, modifiable dans Amap).
-        // dev=1 : coordonnées en WGS-84, Amap les convertit lui-même.
-        val amap = Uri.parse("androidamap://route/plan/?sourceApplication=TravelOS&dlat=$lat&dlon=$lng&dname=${Uri.encode(label)}&dev=1&t=1")
-        val intent = Intent(Intent.ACTION_VIEW, amap).setPackage("com.autonavi.minimap").addCategory(Intent.CATEGORY_DEFAULT)
-        if (intent.resolveActivity(activity.packageManager) != null) { start(intent); return }
-        val q = Uri.encode("$lat,$lng($label)")
-        start(Intent(Intent.ACTION_VIEW, Uri.parse("geo:$lat,$lng?q=$q")))
+    fun goAmap(json: String) {
+        val o = try { JSONObject(json) } catch (e: Exception) { return }
+        val lat = o.optDouble("lat", Double.NaN); val lng = o.optDouble("lng", Double.NaN)
+        if (lat.isNaN() || lng.isNaN()) return
+        val name = o.optString("zh").ifBlank { o.optString("name") }
+        val t = when (o.optString("mode")) { "walk" -> 2; "taxi" -> 0; else -> 1 }
+        val q = "sourceApplication=TravelOS&dlat=$lat&dlon=$lng&dname=${Uri.encode(name)}&dev=1&t=$t"
+        val pm = activity.packageManager
+        for (uri in listOf("amapuri://route/plan/?$q", "androidamap://route/plan/?$q")) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri)).addCategory(Intent.CATEGORY_DEFAULT)
+            if (intent.resolveActivity(pm) != null) { start(intent); return }
+        }
+        // AMap absent : n'importe quelle appli de cartes, avec le même point.
+        start(Intent(Intent.ACTION_VIEW, Uri.parse("geo:$lat,$lng?q=${Uri.encode("$lat,$lng($name)")}")))
     }
 
-    /* ---------------- Carte du jour (Amap) ---------------- */
+    @JavascriptInterface
+    fun openMap(lat: Double, lng: Double, label: String) =
+        goAmap(JSONObject().put("lat", lat).put("lng", lng).put("name", label).toString())
+
+    /* ---------------- Carte du jour (MapLibre) ---------------- */
 
     @JavascriptInterface fun mapState(): String = activity.mapHost.state()
     @JavascriptInterface fun mapShow(json: String) = activity.mapHost.show(json)
     @JavascriptInterface fun mapHide() = activity.mapHost.hide()
     @JavascriptInterface fun mapFit() = activity.mapHost.fit(true)
     @JavascriptInterface fun mapLocate() = activity.mapHost.locate()
-    @JavascriptInterface fun setAmapKey(key: String) = activity.mapHost.setKey(key)
-    @JavascriptInterface fun offlineMaps(cities: String) = activity.mapHost.downloadOffline(cities)
+    @JavascriptInterface fun offlineMaps(regions: String) = activity.mapHost.downloadOffline(regions)
 
     @JavascriptInterface
     fun apps(): String {

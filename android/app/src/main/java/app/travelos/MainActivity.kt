@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
         mapHost.onPermission()
     }
 
-    /** Carte du jour (Amap), posée au-dessus de la WebView quand l'interface la demande. */
+    /** Carte du jour (MapLibre), posée au-dessus de la WebView quand l'interface la demande. */
     lateinit var mapHost: MapHost
 
     @SuppressLint("SetJavaScriptEnabled")

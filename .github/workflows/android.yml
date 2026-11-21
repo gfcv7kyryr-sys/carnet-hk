@@ -44,9 +44,6 @@ jobs:
       - name: Fabriquer l'APK
         working-directory: android
         shell: bash
-        env:
-          # Clé Amap (facultative) : sinon elle se saisit dans les réglages de l'app.
-          AMAP_KEY: ${{ secrets.AMAP_KEY }}
         run: |
           chmod +x gradlew
           set -o pipefail

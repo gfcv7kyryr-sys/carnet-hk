@@ -19,8 +19,16 @@
         <!-- Demander au guide (DeepSeek) et traduction (Google Traduction), si installés. -->
         <package android:name="com.deepseek.chat" />
         <package android:name="com.google.android.apps.translate" />
-        <!-- « Y aller » : itinéraire dans l'application Amap, si installée. -->
+        <!-- « Y aller » : itinéraire dans AMap (lien officiel amapuri://route/plan), quelle que soit sa version. -->
         <package android:name="com.autonavi.minimap" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="amapuri" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="androidamap" />
+        </intent>
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>

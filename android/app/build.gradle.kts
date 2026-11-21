@@ -16,12 +16,10 @@ android {
         minSdk = 30
         targetSdk = 35
         versionCode = runNumber
-        versionName = "0.9.$runNumber"
+        versionName = "0.10.$runNumber"
         // La tablette (MediaTek Dimensity 6300) est en 64 bits ARM : on n'embarque que cette
         // architecture pour les bibliothèques natives du traducteur, ce qui divise la taille de l'APK.
         ndk { abiFilters += "arm64-v8a" }
-        // Clé Amap compilée dans l'APK (secret GitHub AMAP_KEY) ; sinon saisie dans les réglages.
-        buildConfigField("String", "AMAP_KEY", "\"${System.getenv("AMAP_KEY") ?: ""}\"")
     }
 
     buildFeatures { buildConfig = true }
@@ -70,5 +68,5 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.webkit)
     implementation(libs.mlkit.translate)
-    implementation(libs.amap.map)
+    implementation(libs.maplibre)
 }

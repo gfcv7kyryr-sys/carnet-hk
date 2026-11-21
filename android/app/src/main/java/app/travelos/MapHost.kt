@@ -25,39 +25,62 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.amap.api.maps.AMap
-import com.amap.api.maps.CameraUpdateFactory
-import com.amap.api.maps.CoordinateConverter
-import com.amap.api.maps.MapsInitializer
-import com.amap.api.maps.TextureMapView
-import com.amap.api.maps.model.BitmapDescriptorFactory
-import com.amap.api.maps.model.Circle
-import com.amap.api.maps.model.CircleOptions
-import com.amap.api.maps.model.LatLng
-import com.amap.api.maps.model.LatLngBounds
-import com.amap.api.maps.model.Marker
-import com.amap.api.maps.model.MarkerOptions
-import com.amap.api.maps.model.Polyline
-import com.amap.api.maps.model.PolylineOptions
-import com.amap.api.maps.offlinemap.OfflineMapManager
-import com.amap.api.services.core.LatLonPoint
-import com.amap.api.services.core.ServiceSettings
-import com.amap.api.services.route.BusRouteResult
-import com.amap.api.services.route.DriveRouteResult
-import com.amap.api.services.route.RideRouteResult
-import com.amap.api.services.route.RouteSearch
-import com.amap.api.services.route.WalkRouteResult
 import org.json.JSONArray
 import org.json.JSONObject
+import org.maplibre.android.MapLibre
+import org.maplibre.android.camera.CameraUpdate
+import org.maplibre.android.camera.CameraUpdateFactory
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.geometry.LatLngBounds
+import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.MapLibreMapOptions
+import org.maplibre.android.maps.MapView
+import org.maplibre.android.maps.Style
+import org.maplibre.android.offline.OfflineManager
+import org.maplibre.android.offline.OfflineRegion
+import org.maplibre.android.offline.OfflineRegionError
+import org.maplibre.android.offline.OfflineRegionStatus
+import org.maplibre.android.offline.OfflineTilePyramidRegionDefinition
+import org.maplibre.android.style.expressions.Expression
+import org.maplibre.android.style.layers.CircleLayer
+import org.maplibre.android.style.layers.FillLayer
+import org.maplibre.android.style.layers.LineLayer
+import org.maplibre.android.style.layers.Property
+import org.maplibre.android.style.layers.PropertyFactory.circleColor
+import org.maplibre.android.style.layers.PropertyFactory.circleRadius
+import org.maplibre.android.style.layers.PropertyFactory.circleStrokeColor
+import org.maplibre.android.style.layers.PropertyFactory.circleStrokeWidth
+import org.maplibre.android.style.layers.PropertyFactory.fillColor
+import org.maplibre.android.style.layers.PropertyFactory.fillOutlineColor
+import org.maplibre.android.style.layers.PropertyFactory.iconAllowOverlap
+import org.maplibre.android.style.layers.PropertyFactory.iconAnchor
+import org.maplibre.android.style.layers.PropertyFactory.iconIgnorePlacement
+import org.maplibre.android.style.layers.PropertyFactory.iconImage
+import org.maplibre.android.style.layers.PropertyFactory.lineCap
+import org.maplibre.android.style.layers.PropertyFactory.lineColor
+import org.maplibre.android.style.layers.PropertyFactory.lineDasharray
+import org.maplibre.android.style.layers.PropertyFactory.lineJoin
+import org.maplibre.android.style.layers.PropertyFactory.lineOpacity
+import org.maplibre.android.style.layers.PropertyFactory.lineWidth
+import org.maplibre.android.style.layers.PropertyFactory.symbolSortKey
+import org.maplibre.android.style.layers.SymbolLayer
+import org.maplibre.android.style.sources.GeoJsonSource
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.ln
+import kotlin.math.tan
 
 /**
- * Carte du jour : une carte Amap native posée au-dessus de la WebView, dans le rectangle que
- * l'interface lui réserve. La page garde l'en-tête, la liste des étapes et la légende ; la carte
- * dessine les repères numérotés, les trajets par mode et la position.
+ * Carte du jour : une carte MapLibre (fond OpenStreetMap) posée au-dessus de la WebView, dans le
+ * rectangle que l'interface lui réserve. La page garde l'en-tête, la liste des étapes et la légende ;
+ * la carte dessine les repères numérotés, les trajets par mode et la position.
+ *
+ * Tous les points sont en WGS-84 (carnet, GPS, OpenStreetMap) : aucune conversion ici. Le seul endroit
+ * où le format change est le lien « Y aller », qui laisse AMap convertir (dev=1).
  *
  * La vue est gardée en vie quand on ouvre une fiche : au retour, cadrage et zoom sont intacts.
- * Les coordonnées du carnet sont en WGS-84 ; Amap affiche Hong Kong, Macao et la Chine
- * continentale en GCJ-02, d'où la conversion par CoordinateConverter (type GPS → Amap).
  */
 class MapHost(private val activity: MainActivity, private val root: FrameLayout) {
     private val ctx: Context = activity
@@ -66,88 +89,100 @@ class MapHost(private val activity: MainActivity, private val root: FrameLayout)
     private val density = ctx.resources.displayMetrics.density
 
     private var box: FrameLayout? = null
-    private var mapView: TextureMapView? = null
-    private var map: AMap? = null
-    private var shownKey = ""
-    private var bounds: LatLngBounds? = null
-    private val markerStop = HashMap<String, String>()
-    private val walkLines = HashMap<String, Polyline>()
+    private var mapView: MapView? = null
+    private var map: MapLibreMap? = null
+    private var style: Style? = null
+    private var pending: JSONObject? = null
     private var resumed = true
 
-    private var me: Marker? = null
-    private var meCircle: Circle? = null
+    private var shownKey = ""
+    private val fitPts = ArrayList<LatLng>()
+    private val stopPos = ArrayList<Triple<String, LatLng, Boolean>>() // id, position, prochaine étape
+    private val legLines = LinkedHashMap<String, JSONObject>()
+    private val pinImages = HashSet<String>()
+
+    private var srcStops: GeoJsonSource? = null
+    private var srcLegs: GeoJsonSource? = null
+    private var srcAcc: GeoJsonSource? = null
+    private var srcMe: GeoJsonSource? = null
+
+    private var hasMe = false
     private var locating = false
     private var pendingLocate = false
     private var bestFix: Location? = null
     private val lm by lazy { ctx.getSystemService(LocationManager::class.java) }
 
-    /* ---------------- clé et état ---------------- */
-
-    /** Clé Amap : celle saisie dans les réglages, sinon celle compilée dans l'APK (secret AMAP_KEY). */
-    fun key(): String = prefs.getString("key", null)?.takeIf { it.isNotBlank() } ?: BuildConfig.AMAP_KEY
-
-    fun setKey(k: String) {
-        prefs.edit().putString("key", k.trim()).apply()
-        main.post { destroyMap() }
-    }
-
     fun state(): String = JSONObject()
-        .put("key", key().isNotBlank())
-        .put("keyHint", key().takeIf { it.length > 8 }?.let { it.take(4) + "…" + it.takeLast(4) } ?: "")
+        .put("ready", true)
+        .put("engine", "MapLibre · OpenStreetMap")
         .put("visible", box?.visibility == View.VISIBLE)
         .toString()
-
-    private fun initSdk() {
-        MapsInitializer.updatePrivacyShow(ctx, true, true)
-        MapsInitializer.updatePrivacyAgree(ctx, true)
-        MapsInitializer.setApiKey(key())
-        ServiceSettings.updatePrivacyShow(ctx, true, true)
-        ServiceSettings.updatePrivacyAgree(ctx, true)
-        ServiceSettings.getInstance().setApiKey(key())
-    }
 
     /* ---------------- affichage ---------------- */
 
     /**
-     * data : { rect:{x,y,w,h} en pixels CSS, key: identifiant du jour, fit: recadrer,
+     * data : { rect:{x,y,w,h,r} en pixels CSS, key: identifiant du jour, sig, fit: recadrer,
      *          stops:[{n,id,name,lat,lng,next,done}], legs:[{from,to,mode,path,route}] }
      */
     fun show(json: String) = main.post {
-        if (key().isBlank()) return@post
         val data = try { JSONObject(json) } catch (e: Exception) { return@post }
-        val m = ensureMap() ?: return@post
+        if (!ensureView()) return@post
         val r = data.getJSONObject("rect")
         val lp = FrameLayout.LayoutParams(px(r.getDouble("w")), px(r.getDouble("h")))
         lp.leftMargin = px(r.getDouble("x")); lp.topMargin = px(r.getDouble("y"))
         box!!.layoutParams = lp
         (box!!.background as? GradientDrawable)?.cornerRadius = (r.optDouble("r", 0.0) * density).toFloat()
         box!!.visibility = View.VISIBLE
+        if (style == null) { pending = data; return@post }
+        apply(data)
+    }
+
+    private fun apply(data: JSONObject) {
+        val st = style ?: return
         val k = data.optString("key") + "|" + data.optString("sig")
         if (k != shownKey) {
             val sameDay = shownKey.substringBefore("|") == data.optString("key")
             shownKey = k
-            draw(m, data)
+            draw(st, data)
             if (!sameDay || data.optBoolean("fit")) fit(false)
         } else if (data.optBoolean("fit")) fit(true)
     }
 
     fun hide() = main.post { box?.visibility = View.GONE }
 
-    fun fit(animate: Boolean = true) = main.post {
-        val m = map ?: return@post
-        val b = bounds ?: return@post
-        val pad = (56 * density).toInt()
-        val u = CameraUpdateFactory.newLatLngBounds(b, pad)
+    fun fit(animate: Boolean = true) = main.post { doFit(animate, 0) }
+
+    private fun doFit(animate: Boolean, tries: Int) {
+        val m = map ?: return
+        val v = mapView ?: return
+        if (fitPts.isEmpty()) return
         // La carte doit avoir sa taille pour cadrer : on attend qu'elle soit posée.
-        mapView?.post { if (animate) m.animateCamera(u, 450, null) else m.moveCamera(u) }
+        if ((v.width == 0 || v.height == 0) && tries < 30) { v.postDelayed({ doFit(animate, tries + 1) }, 50); return }
+        try {
+            val u: CameraUpdate = if (fitPts.size == 1) CameraUpdateFactory.newLatLngZoom(fitPts[0], 16.0) else {
+                val b = LatLngBounds.Builder()
+                fitPts.forEach { b.include(it) }
+                CameraUpdateFactory.newLatLngBounds(b.build(), dp(56))
+            }
+            if (animate) m.animateCamera(u, 450) else m.moveCamera(u)
+        } catch (_: Throwable) { /* cadrage impossible : la carte reste où elle est */ }
     }
 
-    private fun ensureMap(): AMap? {
-        map?.let { return it }
+    /** Crée la vue carte si besoin ; renvoie false si elle n'a pas pu démarrer (plan simplifié alors). */
+    private fun ensureView(): Boolean {
+        if (box != null) return true
         return try {
-            initSdk()
-            val mv = TextureMapView(ctx)
+            MapLibre.getInstance(ctx)
+            val opts = MapLibreMapOptions.createFromAttributes(ctx, null)
+                .textureMode(true)
+                .logoEnabled(false)
+                .attributionEnabled(false)
+                .compassEnabled(false)
+                .rotateGesturesEnabled(false)
+                .tiltGesturesEnabled(false)
+            val mv = MapView(ctx, opts)
             mv.onCreate(null)
+            mv.onStart()
             if (resumed) mv.onResume()
             val frame = FrameLayout(ctx).apply {
                 visibility = View.GONE
@@ -158,120 +193,178 @@ class MapHost(private val activity: MainActivity, private val root: FrameLayout)
                 addView(chips(), FrameLayout.LayoutParams(-2, -2, Gravity.BOTTOM or Gravity.END).apply {
                     setMargins(0, 0, dp(14), dp(14))
                 })
+                addView(attribution(), FrameLayout.LayoutParams(-2, -2, Gravity.BOTTOM or Gravity.START).apply {
+                    setMargins(dp(10), 0, 0, dp(8))
+                })
             }
             root.addView(frame, FrameLayout.LayoutParams(1, 1))
             box = frame; mapView = mv
-            val m = mv.map
-            m.uiSettings.apply {
-                isZoomControlsEnabled = false
-                isRotateGesturesEnabled = false
-                isTiltGesturesEnabled = false
-                isScaleControlsEnabled = true
-                isCompassEnabled = false
+            mv.getMapAsync { m ->
+                map = m
+                m.uiSettings.isRotateGesturesEnabled = false
+                m.uiSettings.isTiltGesturesEnabled = false
+                m.uiSettings.isCompassEnabled = false
+                m.uiSettings.isLogoEnabled = false
+                m.uiSettings.isAttributionEnabled = false
+                m.setMinZoomPreference(9.0)
+                m.setMaxZoomPreference(19.0)
+                m.addOnMapClickListener { ll -> tap(m, ll) }
+                m.setStyle(Style.Builder().fromUri("asset://map/osm.json")) { st ->
+                    style = st
+                    addLayers(st)
+                    pending?.let { d -> pending = null; apply(d) }
+                }
             }
-            try { m.setMapLanguage(AMap.ENGLISH) } catch (_: Throwable) {}
-            // Premier affichage : on cadre quand la carte est prête (sa taille est connue).
-            m.setOnMapLoadedListener { fit(false) }
-            m.setOnMarkerClickListener { mk ->
-                markerStop[mk.id]?.let { activity.jsCall("TravelOS.onMapStop", it) }
-                true
-            }
-            map = m
-            m
+            true
         } catch (t: Throwable) {
-            activity.toastJs("La carte Amap n'a pas pu démarrer : plan simplifié affiché.")
+            activity.toastJs("La carte n'a pas pu démarrer : plan simplifié affiché.")
             activity.jsCall("TravelOS.onMapFailed", t.javaClass.simpleName)
-            null
+            false
         }
     }
 
     private fun destroyMap() {
-        mapView?.onDestroy()
+        mapView?.onStop(); mapView?.onDestroy()
         box?.let { root.removeView(it) }
-        box = null; mapView = null; map = null; shownKey = ""; me = null; meCircle = null
-        markerStop.clear(); walkLines.clear()
+        box = null; mapView = null; map = null; style = null; shownKey = ""; hasMe = false
+        legLines.clear(); pinImages.clear(); stopPos.clear(); fitPts.clear()
+        srcStops = null; srcLegs = null; srcAcc = null; srcMe = null
     }
 
-    private fun draw(m: AMap, data: JSONObject) {
-        m.clear(true)
-        markerStop.clear(); walkLines.clear(); me = null; meCircle = null
+    /** Touche sur la carte : le repère le plus proche du doigt ouvre la fiche du lieu. */
+    private fun tap(m: MapLibreMap, ll: LatLng): Boolean {
+        var best: String? = null; var bestD = Double.MAX_VALUE
+        val t = m.projection.toScreenLocation(ll)
+        for ((id, pos, next) in stopPos) {
+            val p = m.projection.toScreenLocation(pos)
+            val h = dp(if (next) 61 else 48)
+            val dx = (t.x - p.x).toDouble(); val dy = (t.y - (p.y - h / 2f)).toDouble()
+            val d = Math.hypot(dx, dy)
+            if (d < bestD) { bestD = d; best = id }
+        }
+        if (best != null && bestD <= dp(34)) { activity.jsCall("TravelOS.onMapStop", best); return true }
+        return false
+    }
+
+    /* ---------------- couches ---------------- */
+
+    private fun addLayers(st: Style) {
+        val empty = """{"type":"FeatureCollection","features":[]}"""
+        srcLegs = GeoJsonSource("legs", empty); srcAcc = GeoJsonSource("acc", empty)
+        srcStops = GeoJsonSource("stops", empty); srcMe = GeoJsonSource("me", empty)
+        st.addSource(srcLegs!!); st.addSource(srcAcc!!); st.addSource(srcStops!!); st.addSource(srcMe!!)
+
+        // Un liseré blanc sous chaque trajet, pour qu'il se lise sur n'importe quel fond de carte.
+        st.addLayer(LineLayer("legs-casing", "legs").withProperties(
+            lineColor("#FFFFFF"), lineWidth(10f), lineOpacity(0.9f),
+            lineCap(Property.LINE_CAP_ROUND), lineJoin(Property.LINE_JOIN_ROUND)))
+        // Ferry : tirets bleus. Marche : pointillés verts. Peak Tram : trait orange plein. Autres modes : trait plein.
+        fun leg(mode: String, color: String, width: Float, dash: Array<Float>?, cap: String) {
+            val l = LineLayer("leg-$mode", "legs").withFilter(Expression.eq(Expression.get("mode"), Expression.literal(mode)))
+            l.setProperties(lineColor(color), lineWidth(width), lineCap(cap), lineJoin(Property.LINE_JOIN_ROUND))
+            if (dash != null) l.setProperties(lineDasharray(dash))
+            st.addLayer(l)
+        }
+        leg("ferry", "#1E88E5", 5f, arrayOf(2.2f, 1.5f), Property.LINE_CAP_BUTT)
+        leg("walk", "#2E9D4F", 6f, arrayOf(0.05f, 1.9f), Property.LINE_CAP_ROUND)
+        leg("peaktram", "#F07C00", 6f, null, Property.LINE_CAP_ROUND)
+        leg("dingding", "#0B6E4F", 5f, null, Property.LINE_CAP_ROUND)
+        leg("metro", "#C8102E", 5f, null, Property.LINE_CAP_ROUND)
+
+        st.addLayer(FillLayer("acc-fill", "acc").withProperties(
+            fillColor(Color.argb(46, 10, 132, 255)), fillOutlineColor(Color.argb(90, 10, 132, 255))))
+        st.addLayer(SymbolLayer("stops-pins", "stops").withProperties(
+            iconImage(Expression.get("icon")), iconAnchor(Property.ICON_ANCHOR_BOTTOM),
+            iconAllowOverlap(true), iconIgnorePlacement(true), symbolSortKey(Expression.get("z"))))
+        // Ta position : point bleu cerné de blanc, à part des repères numérotés.
+        st.addLayer(CircleLayer("me-dot", "me").withProperties(
+            circleRadius(8f), circleColor(Color.parseColor("#0A84FF")),
+            circleStrokeColor(Color.WHITE), circleStrokeWidth(3f)))
+    }
+
+    private fun feature(geometry: JSONObject, props: JSONObject) =
+        JSONObject().put("type", "Feature").put("properties", props).put("geometry", geometry)
+
+    private fun collection(features: Collection<JSONObject>) =
+        JSONObject().put("type", "FeatureCollection").put("features", JSONArray(features.toList())).toString()
+
+    private fun point(lat: Double, lng: Double) =
+        JSONObject().put("type", "Point").put("coordinates", JSONArray().put(lng).put(lat))
+
+    private fun line(mode: String, pts: List<DoubleArray>): JSONObject {
+        val c = JSONArray(); pts.forEach { c.put(JSONArray().put(it[1]).put(it[0])) }
+        return feature(JSONObject().put("type", "LineString").put("coordinates", c), JSONObject().put("mode", mode))
+    }
+
+    private fun draw(st: Style, data: JSONObject) {
+        legLines.clear(); stopPos.clear(); fitPts.clear()
         val stops = data.optJSONArray("stops") ?: JSONArray()
-        val pos = HashMap<String, LatLng>()
-        val b = LatLngBounds.Builder()
-        var any = false
+        val pos = HashMap<String, DoubleArray>()
+        val feats = ArrayList<JSONObject>()
         for (i in 0 until stops.length()) {
             val s = stops.getJSONObject(i)
-            val p = gcj(s.getDouble("lat"), s.getDouble("lng"))
-            pos[s.getString("id")] = p
-            b.include(p); any = true
-            val mk = m.addMarker(MarkerOptions()
-                .position(p)
-                .anchor(0.5f, 1f)
-                .zIndex(if (s.optBoolean("next")) 30f else 20f)
-                .icon(BitmapDescriptorFactory.fromBitmap(pin(s.getInt("n"), s.optBoolean("next"), s.optBoolean("done")))))
-            markerStop[mk.id] = s.getString("id")
+            val lat = s.getDouble("lat"); val lng = s.getDouble("lng")
+            val n = s.getInt("n"); val next = s.optBoolean("next"); val done = s.optBoolean("done")
+            pos[s.getString("id")] = doubleArrayOf(lat, lng)
+            fitPts.add(LatLng(lat, lng)); stopPos.add(Triple(s.getString("id"), LatLng(lat, lng), next))
+            val icon = "pin-$n-${if (next) "n" else if (done) "d" else "o"}"
+            if (pinImages.add(icon)) st.addImage(icon, pin(n, next, done))
+            feats.add(feature(point(lat, lng), JSONObject().put("id", s.getString("id")).put("icon", icon).put("z", if (next) 2 else 1)))
         }
-        bounds = if (any) b.build() else null
+        srcStops?.setGeoJson(collection(feats))
+
         val legs = data.optJSONArray("legs") ?: JSONArray()
         for (i in 0 until legs.length()) {
             val l = legs.getJSONObject(i)
+            val id = l.optString("from") + ">" + l.optString("to")
             val path = l.optJSONArray("path")
             if (path != null && path.length() > 1) {
-                val pts = (0 until path.length()).map { j -> path.getJSONArray(j).let { gcj(it.getDouble(0), it.getDouble(1)) } }
-                m.addPolyline(style(l.optString("mode"), PolylineOptions().addAll(pts)))
-            } else if (l.optString("route") == "amap") {
+                // Tracé vérifié du carnet : tel quel.
+                legLines[id] = line(l.optString("mode"), (0 until path.length()).map { j -> path.getJSONArray(j).let { doubleArrayOf(it.getDouble(0), it.getDouble(1)) } })
+            } else if (l.optString("route") == "osm-foot") {
                 val a = pos[l.optString("from")]; val z = pos[l.optString("to")]
-                if (a != null && z != null) walk(m, l.optString("from") + ">" + l.optString("to"), a, z)
+                if (a != null && z != null) walk(id, a, z)
             }
+            // Sans tracé : rien n'est dessiné, le mode reste indiqué dans la liste.
         }
+        pushLegs()
     }
 
-    /** Style par mode : ferry en tirets bleus, marche en pointillés verts, Peak Tram en trait orange. */
-    private fun style(mode: String, o: PolylineOptions): PolylineOptions = when (mode) {
-        "ferry" -> o.color(Color.parseColor("#1E88E5")).width(dp(5).toFloat()).setDottedLine(true)
-            .setDottedLineType(PolylineOptions.DOTTEDLINE_TYPE_SQUARE).zIndex(10f)
-        "walk" -> o.color(Color.parseColor("#2E9D4F")).width(dp(6).toFloat()).setDottedLine(true)
-            .setDottedLineType(PolylineOptions.DOTTEDLINE_TYPE_CIRCLE).zIndex(10f)
-        "peaktram" -> o.color(Color.parseColor("#F07C00")).width(dp(6).toFloat()).zIndex(11f)
-        "dingding" -> o.color(Color.parseColor("#0B6E4F")).width(dp(5).toFloat()).zIndex(10f)
-        "metro" -> o.color(Color.parseColor("#C8102E")).width(dp(5).toFloat()).zIndex(10f)
-        else -> o.color(Color.parseColor("#8A8A8E")).width(dp(4).toFloat()).zIndex(9f)
-    }
+    private fun pushLegs() { srcLegs?.setGeoJson(collection(legLines.values)) }
 
-    /** Marche : itinéraire piéton calculé par Amap (réseau requis la première fois), gardé en mémoire. */
-    private fun walk(m: AMap, id: String, a: LatLng, z: LatLng) {
-        val cacheKey = "walk:$id:${"%.5f,%.5f>%.5f,%.5f".format(a.latitude, a.longitude, z.latitude, z.longitude)}"
-        prefs.getString(cacheKey, null)?.let { cached ->
+    /**
+     * Marche : itinéraire piéton OpenStreetMap, demandé en ligne la première fois puis gardé en mémoire.
+     * Il est relié exactement aux points des deux arrêts. Hors ligne et sans mémoire : pas de tracé.
+     */
+    private fun walk(id: String, a: DoubleArray, z: DoubleArray) {
+        val ck = "walk2:$id:${"%.5f,%.5f>%.5f,%.5f".format(a[0], a[1], z[0], z[1])}"
+        prefs.getString(ck, null)?.let { cached ->
             val arr = JSONArray(cached)
-            val pts = (0 until arr.length()).map { arr.getJSONArray(it).let { p -> LatLng(p.getDouble(0), p.getDouble(1)) } }
-            walkLines[id] = m.addPolyline(style("walk", PolylineOptions().addAll(pts)))
+            legLines[id] = line("walk", (0 until arr.length()).map { arr.getJSONArray(it).let { p -> doubleArrayOf(p.getDouble(0), p.getDouble(1)) } })
             return
         }
-        try {
-            val rs = RouteSearch(ctx)
-            val day = shownKey
-            rs.setRouteSearchListener(object : RouteSearch.OnRouteSearchListener {
-                override fun onBusRouteSearched(r: BusRouteResult?, code: Int) {}
-                override fun onDriveRouteSearched(r: DriveRouteResult?, code: Int) {}
-                override fun onRideRouteSearched(r: RideRouteResult?, code: Int) {}
-                override fun onWalkRouteSearched(r: WalkRouteResult?, code: Int) {
-                    val path = r?.paths?.firstOrNull() ?: return
-                    if (code != 1000) return
-                    val pts = ArrayList<LatLng>()
-                    pts.add(a)
-                    for (st in path.steps) for (p in st.polyline) pts.add(LatLng(p.latitude, p.longitude))
-                    pts.add(z)
-                    if (pts.size < 3) return
-                    val arr = JSONArray(); pts.forEach { arr.put(JSONArray().put(it.latitude).put(it.longitude)) }
-                    prefs.edit().putString(cacheKey, arr.toString()).apply()
-                    if (shownKey == day && map === m) walkLines[id] = m.addPolyline(style("walk", PolylineOptions().addAll(pts)))
-                }
-            })
-            rs.calculateWalkRouteAsyn(RouteSearch.WalkRouteQuery(RouteSearch.FromAndTo(
-                LatLonPoint(a.latitude, a.longitude), LatLonPoint(z.latitude, z.longitude))))
-        } catch (_: Throwable) {
-            // Pas de réseau ou service refusé : le tronçon reste sans tracé, le mode est affiché dans la liste.
-        }
+        val day = shownKey
+        Thread {
+            try {
+                val u = URL("https://routing.openstreetmap.de/routed-foot/route/v1/foot/${a[1]},${a[0]};${z[1]},${z[0]}?overview=full&geometries=geojson")
+                val c = u.openConnection() as HttpURLConnection
+                c.connectTimeout = 8000; c.readTimeout = 12000
+                c.setRequestProperty("User-Agent", "TravelOS/0.10 (carnet de voyage familial)")
+                if (c.responseCode != 200) return@Thread
+                val body = c.inputStream.bufferedReader().use { it.readText() }
+                val co = JSONObject(body).getJSONArray("routes").getJSONObject(0).getJSONObject("geometry").getJSONArray("coordinates")
+                if (co.length() < 2) return@Thread
+                val pts = ArrayList<DoubleArray>()
+                pts.add(a)
+                for (k in 0 until co.length()) co.getJSONArray(k).let { pts.add(doubleArrayOf(it.getDouble(1), it.getDouble(0))) }
+                pts.add(z)
+                val arr = JSONArray(); pts.forEach { arr.put(JSONArray().put(it[0]).put(it[1])) }
+                prefs.edit().putString(ck, arr.toString()).apply()
+                main.post { if (shownKey == day && map != null) { legLines[id] = line("walk", pts); pushLegs() } }
+            } catch (_: Exception) {
+                // Pas de réseau : le tronçon reste sans tracé, son mode est affiché dans la liste.
+            }
+        }.start()
     }
 
     /* ---------------- position ---------------- */
@@ -309,7 +402,7 @@ class MapHost(private val activity: MainActivity, private val root: FrameLayout)
             .filter { SystemClock.elapsedRealtimeNanos() - it.elapsedRealtimeNanos < 180_000_000_000L }
             .minByOrNull { it.accuracy }
             ?.let { onFix(it, false) }
-        if (locating) { me?.let { map?.animateCamera(CameraUpdateFactory.changeLatLng(it.position)) }; return }
+        if (locating) { bestFix?.let { map?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude))) }; return }
         locating = true
         var started = false
         for (p in listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)) {
@@ -318,9 +411,9 @@ class MapHost(private val activity: MainActivity, private val root: FrameLayout)
             } catch (_: Exception) {}
         }
         if (!started) { locating = false; activity.toastJs("Localisation désactivée dans les réglages Android."); return }
-        if (me == null) activity.toastJs("Recherche de ta position…")
+        if (!hasMe) activity.toastJs("Recherche de ta position…")
         // Si rien n'arrive en 25 s, on le dit ; la carte reste utilisable.
-        main.postDelayed({ if (locating && me == null) activity.toastJs("Pas encore de position : réessaie à l'extérieur.") }, 25_000)
+        main.postDelayed({ if (locating && !hasMe) activity.toastJs("Pas encore de position : réessaie à l'extérieur.") }, 25_000)
         // Économie de batterie : on arrête après 2 minutes.
         main.postDelayed({ stopFix() }, 120_000)
     }
@@ -333,65 +426,115 @@ class MapHost(private val activity: MainActivity, private val root: FrameLayout)
 
     private fun onFix(loc: Location, live: Boolean) {
         val m = map ?: return
-        val first = me == null
+        if (style == null) return
         val best = bestFix
         if (!live && best != null && best.accuracy < loc.accuracy) return
         bestFix = loc
-        val p = gcj(loc.latitude, loc.longitude)
+        val first = !hasMe
+        hasMe = true
         val acc = loc.accuracy.toDouble().coerceAtLeast(5.0)
-        if (me == null) {
-            meCircle = m.addCircle(CircleOptions().center(p).radius(acc)
-                .fillColor(Color.argb(46, 10, 132, 255)).strokeColor(Color.argb(90, 10, 132, 255)).strokeWidth(dp(1).toFloat()).zIndex(5f))
-            me = m.addMarker(MarkerOptions().position(p).anchor(0.5f, 0.5f).zIndex(40f)
-                .icon(BitmapDescriptorFactory.fromBitmap(blueDot())))
-        } else {
-            me!!.position = p; meCircle?.center = p; meCircle?.radius = acc
-        }
+        srcMe?.setGeoJson(collection(listOf(feature(point(loc.latitude, loc.longitude), JSONObject()))))
+        srcAcc?.setGeoJson(collection(listOf(feature(circle(loc.latitude, loc.longitude, acc), JSONObject()))))
         if (first) {
-            val z = m.cameraPosition.zoom.coerceAtLeast(15f)
-            m.animateCamera(CameraUpdateFactory.newLatLngZoom(p, z), 500, null)
+            val z = m.cameraPosition.zoom.coerceAtLeast(15.0)
+            m.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(loc.latitude, loc.longitude), z), 500)
         }
+    }
+
+    /** Cercle de précision : polygone de 48 côtés, rayon en mètres. */
+    private fun circle(lat: Double, lng: Double, meters: Double): JSONObject {
+        val ring = JSONArray()
+        val dLat = meters / 111_320.0
+        val dLng = meters / (111_320.0 * cos(Math.toRadians(lat)))
+        for (i in 0..48) {
+            val a = 2 * Math.PI * i / 48
+            ring.put(JSONArray().put(lng + dLng * Math.cos(a)).put(lat + dLat * Math.sin(a)))
+        }
+        return JSONObject().put("type", "Polygon").put("coordinates", JSONArray().put(ring))
     }
 
     /* ---------------- cartes hors ligne ---------------- */
 
-    private var offline: OfflineMapManager? = null
-
-    /** Télécharge les cartes hors ligne des villes du voyage (à faire en Wi-Fi avant le départ). */
-    fun downloadOffline(cities: String) = main.post {
-        if (key().isBlank()) { activity.toastJs("Ajoute d'abord la clé Amap."); return@post }
+    /**
+     * Télécharge, une région par journée, le fond de carte autour des étapes (à faire en Wi-Fi).
+     * regions : [{id,name,s,w,n,e}] en degrés WGS-84. Le niveau de détail baisse si la zone est vaste,
+     * pour rester à quelques milliers de tuiles par journée.
+     */
+    fun downloadOffline(json: String) = main.post {
         try {
-            initSdk()
-            val mgr = offline ?: OfflineMapManager(ctx, object : OfflineMapManager.OfflineMapDownloadListener {
-                override fun onDownload(status: Int, completeCode: Int, downName: String?) {
-                    activity.jsCall("TravelOS.onOfflineMap", JSONObject().put("city", downName ?: "").put("status", status).put("pct", completeCode).toString())
+            MapLibre.getInstance(ctx)
+            val list = JSONArray(json)
+            val mgr = OfflineManager.getInstance(ctx)
+            mgr.listOfflineRegions(object : OfflineManager.ListOfflineRegionsCallback {
+                override fun onList(existing: Array<OfflineRegion>?) {
+                    val have = (existing ?: emptyArray()).mapNotNull { r ->
+                        try { JSONObject(String(r.metadata)).optString("id") } catch (_: Exception) { null }
+                    }.toSet()
+                    var todo = 0
+                    for (i in 0 until list.length()) {
+                        val o = list.getJSONObject(i)
+                        if (o.getString("id") in have) { report(o.getString("name"), 2, 100); continue }
+                        todo++
+                        create(mgr, o)
+                    }
+                    if (todo == 0) activity.toastJs("Les cartes de toutes les journées sont déjà sur la tablette.")
                 }
-                override fun onCheckUpdate(hasNew: Boolean, name: String?) {}
-                override fun onRemove(success: Boolean, name: String?, describe: String?) {}
-            }).also { offline = it }
-            val wanted = cities.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-            val list = mgr.offlineMapCityList
-            for (w in wanted) {
-                val c = list.firstOrNull { it.city.contains(w) }
-                if (c == null) activity.toastJs("Carte hors ligne introuvable : $w")
-                else mgr.downloadByCityCode(c.code)
-            }
+                override fun onError(error: String) { activity.toastJs("Téléchargement des cartes impossible pour l'instant.") }
+            })
         } catch (t: Throwable) {
             activity.toastJs("Téléchargement des cartes impossible pour l'instant.")
         }
+    }
+
+    private fun create(mgr: OfflineManager, o: JSONObject) {
+        val padLat = 0.010; val padLng = 0.010
+        val bounds = LatLngBounds.Builder()
+            .include(LatLng(o.getDouble("s") - padLat, o.getDouble("w") - padLng))
+            .include(LatLng(o.getDouble("n") + padLat, o.getDouble("e") + padLng)).build()
+        var maxZ = 16
+        while (maxZ > 11 && tiles(bounds, 10, maxZ) > 3500) maxZ--
+        val def = OfflineTilePyramidRegionDefinition("asset://map/osm.json", bounds, 10.0, maxZ.toDouble(), density)
+        val meta = JSONObject().put("id", o.getString("id")).put("name", o.getString("name")).toString().toByteArray()
+        mgr.createOfflineRegion(def, meta, object : OfflineManager.CreateOfflineRegionCallback {
+            override fun onCreate(region: OfflineRegion) {
+                region.setObserver(object : OfflineRegion.OfflineRegionObserver {
+                    override fun onStatusChanged(status: OfflineRegionStatus) {
+                        val req = status.requiredResourceCount.coerceAtLeast(1)
+                        val pct = (status.completedResourceCount * 100 / req).toInt()
+                        report(o.getString("name"), if (status.isComplete) 2 else 1, if (status.isComplete) 100 else pct)
+                        if (status.isComplete) region.setDownloadState(OfflineRegion.STATE_INACTIVE)
+                    }
+                    override fun onError(error: OfflineRegionError) {}
+                    override fun mapboxTileCountLimitExceeded(limit: Long) {}
+                })
+                region.setDownloadState(OfflineRegion.STATE_ACTIVE)
+            }
+            override fun onError(error: String) { report(o.getString("name"), -1, 0) }
+        })
+    }
+
+    private fun report(name: String, status: Int, pct: Int) =
+        activity.jsCall("TravelOS.onOfflineMap", JSONObject().put("city", name).put("status", status).put("pct", pct).toString())
+
+    /** Nombre de tuiles de la zone entre deux niveaux de zoom (projection de Mercator). */
+    private fun tiles(b: LatLngBounds, z0: Int, z1: Int): Long {
+        fun x(lng: Double, z: Int) = floor((lng + 180.0) / 360.0 * (1 shl z)).toLong()
+        fun y(lat: Double, z: Int): Long {
+            val r = Math.toRadians(lat)
+            return floor((1 - ln(tan(r) + 1 / cos(r)) / Math.PI) / 2 * (1 shl z)).toLong()
+        }
+        var n = 0L
+        for (z in z0..z1) n += (x(b.longitudeEast, z) - x(b.longitudeWest, z) + 1) * (y(b.latitudeSouth, z) - y(b.latitudeNorth, z) + 1)
+        return n
     }
 
     /* ---------------- cycle de vie ---------------- */
 
     fun onResume() { resumed = true; mapView?.onResume() }
     fun onPause() { resumed = false; mapView?.onPause(); stopFix() }
-    fun onDestroy() { stopFix(); offline?.destroy(); mapView?.onDestroy() }
+    fun onDestroy() { stopFix(); mapView?.onStop(); mapView?.onDestroy() }
 
     /* ---------------- dessin ---------------- */
-
-    private fun gcj(lat: Double, lng: Double): LatLng = try {
-        CoordinateConverter(ctx).from(CoordinateConverter.CoordType.GPS).coord(LatLng(lat, lng)).convert()
-    } catch (_: Throwable) { LatLng(lat, lng) }
 
     private fun chips(): View = LinearLayout(ctx).apply {
         orientation = LinearLayout.HORIZONTAL
@@ -410,7 +553,16 @@ class MapHost(private val activity: MainActivity, private val root: FrameLayout)
         setOnClickListener { onClick() }
     }
 
-    /** Repère en goutte, numéroté ; la prochaine étape est plus grande, avec un halo. */
+    /** Mention obligatoire d'OpenStreetMap, toujours visible. */
+    private fun attribution() = TextView(ctx).apply {
+        text = "© les contributeurs d'OpenStreetMap"
+        setTextColor(Color.parseColor("#3A3A3C"))
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
+        setPadding(dp(8), dp(3), dp(8), dp(3))
+        background = GradientDrawable().apply { cornerRadius = dp(8).toFloat(); setColor(Color.argb(200, 255, 255, 255)) }
+    }
+
+    /** Repère en goutte, numéroté ; la prochaine étape est plus grande, avec un liseré épais. */
     private fun pin(n: Int, next: Boolean, done: Boolean): Bitmap {
         val w = dp(if (next) 46 else 36); val h = (w * 1.32f).toInt()
         val bmp = Bitmap.createBitmap(w + dp(8), h + dp(4), Bitmap.Config.ARGB_8888)
@@ -431,16 +583,6 @@ class MapHost(private val activity: MainActivity, private val root: FrameLayout)
         p.textAlign = Paint.Align.CENTER; p.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         p.textSize = r * (if (n > 9) .82f else 1.0f)
         c.drawText(n.toString(), cx, r + dp(2) - (p.descent() + p.ascent()) / 2, p)
-        return bmp
-    }
-
-    private fun blueDot(): Bitmap {
-        val s = dp(24)
-        val bmp = Bitmap.createBitmap(s, s, Bitmap.Config.ARGB_8888)
-        val c = Canvas(bmp); val p = Paint(Paint.ANTI_ALIAS_FLAG)
-        p.color = Color.argb(60, 0, 0, 0); c.drawCircle(s / 2f, s / 2f + 1, s / 2f - 1, p)
-        p.color = Color.WHITE; c.drawCircle(s / 2f, s / 2f, s / 2f - 2, p)
-        p.color = Color.parseColor("#0A84FF"); c.drawCircle(s / 2f, s / 2f, s / 2f - dp(5), p)
         return bmp
     }
 

@@ -238,10 +238,25 @@ for (const d of days) {
     const step = stepOf(x.step || x.id);
     const lat = x.lat ?? placeIndex.get(x.id)?.lat, lng = x.lng ?? placeIndex.get(x.id)?.lng;
     if (lat == null || !pl) { console.warn(`Carte ${d.id} : arrêt ${x.id} sans coordonnées ou sans fiche`); return null; }
-    return { n: i + 1, id: x.id, name: x.name || placeIndex.get(x.id)?.name || pl.name, lat, lng, place: pl.id, step: step?.key || null, time: step?.time || "" };
+    /* Un seul point par arrêt (WGS-84) : repère de la carte, bout du tracé et « Y aller » le partagent.
+       zh : nom chinois (simplifié) transmis à Amap ; à défaut, le nom chinois de la fiche. */
+    return { n: i + 1, id: x.id, name: x.name || placeIndex.get(x.id)?.name || pl.name, zh: x.zh || placeIndex.get(x.id)?.nameZh || pl.nameZh || "",
+      lat, lng, verified: !!x.verified, place: pl.id, step: step?.key || null, time: step?.time || "" };
   }).filter(Boolean);
   const legs = (spec?.legs || []).map((l) => ({ from: l.from, to: l.to, mode: l.mode, label: l.label || "", path: l.path || null, route: l.route || null, redraw: l.redraw !== false }));
   for (const l of legs) for (const k of ["from", "to"]) if (!stops.some((s) => s.id === l[k])) console.warn(`Carte ${d.id} : tronçon vers un arrêt inconnu (${l[k]})`);
+  /* Contrôle : un tracé dessiné doit commencer et finir exactement sur les points des arrêts (≤ 15 m),
+     pour que la carte et « Y aller » désignent le même quai ou la même gare. */
+  const metres = (a, b) => { const k = Math.PI / 180, dy = (a[0] - b[0]) * 111320, dx = (a[1] - b[1]) * 111320 * Math.cos(a[0] * k); return Math.hypot(dx, dy); };
+  for (const l of legs) {
+    if (!l.path || !l.redraw) continue;
+    const a = stops.find((s) => s.id === l.from), z = stops.find((s) => s.id === l.to);
+    const dA = metres(l.path[0], [a.lat, a.lng]), dZ = metres(l.path[l.path.length - 1], [z.lat, z.lng]);
+    if (dA > 15 || dZ > 15) throw new Error(`Carte ${d.id} : le tracé ${l.from} > ${l.to} s'écarte des arrêts (${dA.toFixed(0)} m / ${dZ.toFixed(0)} m)`);
+  }
+  for (const s of stops) if (!s.zh) console.warn(`Carte ${d.id} : arrêt ${s.id} sans nom chinois pour Amap`);
+  const far = stops.filter((s) => metres([s.lat, s.lng], [placeIndex.get(s.id)?.lat ?? s.lat, placeIndex.get(s.id)?.lng ?? s.lng]) > 150);
+  for (const s of far) console.warn(`Carte ${d.id} : le point de ${s.id} est à plus de 150 m de celui de sa fiche`);
   d.map = { stops, legs, verified: !!spec };
 }
 
