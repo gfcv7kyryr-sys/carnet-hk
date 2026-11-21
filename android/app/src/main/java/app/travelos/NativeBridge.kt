@@ -170,7 +170,7 @@ class NativeBridge(private val activity: MainActivity, private val c: AppContain
         if (lat.isNaN() || lng.isNaN()) return
         val name = o.optString("zh").ifBlank { o.optString("name") }
         val t = when (o.optString("mode")) { "walk" -> 2; "taxi" -> 0; else -> 1 }
-        val q = "sourceApplication=TravelOS&dlat=$lat&dlon=$lng&dname=${Uri.encode(name)}&dev=1&t=$t"
+        val q = "sourceApplication=CarnetDeVoyage&dlat=$lat&dlon=$lng&dname=${Uri.encode(name)}&dev=1&t=$t"
         val pm = activity.packageManager
         for (uri in listOf("amapuri://route/plan/?$q", "androidamap://route/plan/?$q")) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri)).addCategory(Intent.CATEGORY_DEFAULT)

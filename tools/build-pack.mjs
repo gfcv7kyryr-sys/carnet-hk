@@ -244,7 +244,7 @@ for (const d of days) {
     const step = stepOf(x.step || x.id);
     const at = x.lat != null ? [x.lat, x.lng] : osm?.anchors?.[x.id]?.p || (own ? [own.lat, own.lng] : null);
     if (!at || (!x.minor && !pl)) { console.warn(`Carte ${d.id} : arrêt ${x.id} sans point ou sans fiche`); return null; }
-    return { n: x.minor ? 0 : ++n, id: x.id, minor: !!x.minor, kind: x.kind || "", name: x.name || own?.name || pl?.name, zh: x.zh || own?.nameZh || pl?.nameZh || "",
+    return { n: x.minor ? 0 : ++n, id: x.id, minor: !!x.minor, kind: x.kind || "", short: x.short || "", name: x.name || own?.name || pl?.name, zh: x.zh || own?.nameZh || pl?.nameZh || "",
       lat: at[0], lng: at[1], verified: !!x.verified, place: pl?.id || null, step: step?.key || null, time: step?.time || "" };
   }).filter(Boolean);
   const pos = new Map(stops.map((s) => [s.id, [s.lat, s.lng]]));
@@ -279,6 +279,8 @@ for (const d of days) {
 
 const pack = {
   formatVersion: 1,
+  // Version du schéma : l'app refuse un paquet plus ancien que celui qu'elle attend (plans en segments = 3).
+  schema: 3,
   trip: {
     id: "hk-china-2027",
     name: "Hong Kong & Chine du Sud",

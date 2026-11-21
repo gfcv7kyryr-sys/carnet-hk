@@ -48,14 +48,51 @@ const dur = (s) => `${Math.floor(s / 60)}:${pad(Math.round(s % 60))}`;
 
 /* ================= données ================= */
 
+/* Paquet de contenu. Celui synchronisé sur la tablette passe avant celui livré avec l'application, sauf s'il
+   est d'un schéma plus ancien que celui que cette version attend : on prend alors le paquet livré, et on
+   invite à resynchroniser (packStale). Dans tous les cas, normalizePack() complète un paquet ancien. */
+const PACK_SCHEMA = 3;
+let packStale = false;
 async function loadPack() {
-  for (const url of ["/pack/travelos/pack/pack.json", "/assets/seed/pack.json"]) {
-    try {
-      const r = await fetch(url, { cache: "no-store" });
-      if (r.ok) return await r.json();
-    } catch {}
-  }
+  const get = async (url) => { try { const r = await fetch(url, { cache: "no-store" }); return r.ok ? await r.json() : null; } catch { return null; } };
+  const synced = await get("/pack/travelos/pack/pack.json");
+  if (synced && (synced.schema || 1) >= PACK_SCHEMA) return normalizePack(synced);
+  const seed = await get("/assets/seed/pack.json");
+  if (synced) packStale = true;
+  if (seed && (seed.schema || 1) >= (synced?.schema || 1)) return normalizePack(seed);
+  if (synced) return normalizePack(synced);
   throw new Error("Paquet introuvable");
+}
+/* Bandeau : le paquet synchronisé sur la tablette est plus ancien que celui de l'application. */
+function showStale() {
+  if ($("#stale")) return;
+  const el = document.createElement("div");
+  el.id = "stale"; el.className = "stale glass";
+  el.innerHTML = `<p><b>Contenu à mettre à jour.</b> Celui enregistré sur la tablette vient d'une version précédente : l'application affiche le sien en attendant. Mettez à jour en Wi-Fi pour récupérer les dernières photos et corrections.</p>
+    <button class="pill red" data-resync>Mettre à jour</button><button class="dm-x" data-stalex aria-label="Masquer">×</button>`;
+  document.body.appendChild(el);
+}
+function resync() {
+  N.startSync(); toast("Mise à jour du contenu…");
+  const t = setInterval(() => {
+    const st = json(N.syncState(), {});
+    if (st.running) return;
+    clearInterval(t);
+    if (st.error) toast(`Mise à jour impossible : ${st.error}`); else location.reload();
+  }, 2000);
+}
+/* Complète un paquet d'une version précédente pour qu'aucun écran ne casse (plans sans segments, etc.). */
+function normalizePack(p) {
+  for (const d of p.days || []) {
+    d.steps ||= []; d.visits ||= []; d.meals ||= []; d.mealNotes ||= []; d.charlie ||= []; d.tips ||= []; d.photos ||= []; d.planB ||= [];
+    const m = (d.map ||= {});
+    m.stops = (m.stops || []).filter((x) => x && Number.isFinite(x.lat) && Number.isFinite(x.lng)).map((x, i) => ({ minor: false, short: "", zh: "", n: i + 1, ...x }));
+    const ids = new Set(m.stops.map((x) => x.id));
+    m.legs = (m.legs || []).filter((l) => ids.has(l.from) && ids.has(l.to)).map((l) => ({ ...l,
+      segments: Array.isArray(l.segments) ? l.segments.filter((g) => Array.isArray(g.path) && g.path.length > 1)
+        : (Array.isArray(l.path) && l.path.length > 1 && l.redraw !== false ? [{ mode: l.mode, path: l.path }] : []) }));
+  }
+  return p;
 }
 
 const dayById = (id) => P.days.find((d) => d.id === id);
@@ -115,7 +152,7 @@ function go(tab, view = null, arg = null, push = true) {
   const v = $("#view");
   const r = { today: viewToday, programme: view === "day" ? () => viewDay(arg) : view === "map" ? () => viewMap(arg) : viewProgramme, places: viewPlaces, food: () => viewFood(arg), guide: () => viewGuide(arg), pocket: () => viewPocket(arg), more: () => viewMore(arg) }[tab];
   v.innerHTML = `<div class="view">${r()}</div>`;
-  $("#pageTitle").textContent = view === "day" ? `Jour ${dayById(arg)?.number} · ${dayById(arg)?.city}` : view === "map" ? "Carte du jour" : TABS[tab];
+  $("#pageTitle").textContent = view === "day" ? `Jour ${dayById(arg)?.number} · ${dayById(arg)?.city}` : view === "map" ? "Plan du jour" : TABS[tab];
   window.scrollTo(0, 0);
   mapShownSig = "";
   after[tab]?.(view, arg);
@@ -249,7 +286,7 @@ function calWidget(h) {
   }
   const more = `<div class="cw-more"><small>Au programme</small>
       ${rest.map((x) => `<button class="cwm" data-day="${d.id}"><b>${esc(x.time)}</b><span>${esc(stepLabel(x))}</span></button>`).join("")}
-      <div class="cw-foot"><button class="pill dark" data-daymap="${d.id}">🗺 Carte du jour</button><button class="cwm all" data-day="${d.id}">Toute la journée <span>›</span></button></div>
+      <div class="cw-foot"><button class="pill dark" data-daymap="${d.id}">Voir le plan du jour</button><button class="cwm all" data-day="${d.id}">Toute la journée <span>›</span></button></div>
     </div>`;
   return `<div class="cal-w">${head}${next}${more}</div>`;
 }
@@ -300,20 +337,19 @@ function viewToday() {
   </section>`;
 }
 
-/* ================= Carte du jour ================= */
-/* Carte MapLibre GL dans la page, en plein écran : fond vectoriel clair (OpenStreetMap, tuiles servies et
-   gardées par la tablette sous /osm/), panneau des étapes flottant à droite en paysage, en bas (repliable)
-   en portrait. Même logique de « prochaine étape » que le widget calendrier. Tous les points sont en WGS-84 :
-   un seul point par arrêt, partagé par le repère, les tracés et « Y aller » ; seul AMap convertit (dev=1).
-   Sans WebGL, un plan simplifié en SVG prend la place de la carte. */
+/* ================= Plan du jour ================= */
+/* Carte MapLibre GL en plein écran : fond vectoriel clair (OpenStreetMap, tuiles servies et gardées par la
+   tablette sous /osm/). Par-dessus : un en-tête compact « Jour 2 · Hong Kong » avec les onglets du jour, une
+   fiche compacte (prochain lieu, Voir la fiche, Voir les étapes), Ma position, Vue du jour et la légende
+   repliable. Même logique de « prochaine étape » que le widget calendrier. Tous les points sont en WGS-84 :
+   un seul point par arrêt, partagé par le repère, les tracés et « Y aller » ; seul AMap convertit (dev=1). */
 const MODES = {
   ferry: { label: "Ferry", color: "#1E88E5" }, walk: { label: "À pied", color: "#2E9D4F" }, peaktram: { label: "Peak Tram", color: "#F07C00" },
   metro: { label: "Métro", color: "#C8102E" }, dingding: { label: "Tram", color: "#0B6E4F" }, taxi: { label: "Taxi", color: "#6E6E73" },
 };
 const LEGEND_ORDER = ["ferry", "walk", "peaktram", "metro", "dingding", "taxi"];
-let mapFailed = false, glMap = null, glDay = null, mapUserMoved = false, mapPanelOpen = true;
+let mapFailed = false, glMap = null, glDay = null, mapUserMoved = false, mapListOpen = false, mapLegendOpen = false, mapMarkers = [];
 const mapCam = {}, mapScroll = {};
-const nativeMap = () => false; // ancienne carte native : remplacée par la carte dans la page
 const glOk = () => !mapFailed && !!window.maplibregl;
 
 /* Arrêts du jour avec l'état : prochaine étape (même règle que l'accueil) et étapes faites.
@@ -336,58 +372,75 @@ function mapStops(d) {
     return { ...x, next, done, mode };
   });
 }
-/* Titre et sous-titre d'un arrêt : « Peak Tram, station basse (Garden Road) » → « Peak Tram » · « Station basse · Garden Road ». */
+/* « Peak Tram, station basse (Garden Road) » → « Peak Tram » · « Station basse · Garden Road ». */
 function stopTitle(x) {
-  const [t, ...rest] = x.name.split(/,\s*|\s·\s/);
+  const [t, ...rest] = String(x.name || "").split(/,\s*|\s·\s/);
   const sub = rest.join(" · ").replace(/\s*\(([^)]+)\)/, " · $1");
   return { t, sub: sub ? sub.charAt(0).toUpperCase() + sub.slice(1) : "" };
 }
 const MINOR_ICON = { meal: "🥢", hotel: "🛏" };
+const shortOf = (x) => x.short || stopTitle(x).t;
 
+/* Libellé du retour : l'écran d'où l'on vient (« Jour 2 », « Aujourd'hui »…). */
+function mapBackLabel() {
+  const o = stack[stack.length - 2];
+  if (!o) return "Aujourd'hui";
+  if (o.view === "day") return `Jour ${dayById(o.arg)?.number ?? ""}`.trim();
+  return TABS[o.tab] || "Retour";
+}
+function mapCardHtml(d, stops) {
+  const nx = stops.find((x) => x.next) || stops.find((x) => !x.minor && !x.done);
+  if (!nx) return `<div class="dm-card glass"><p class="muted">Pas d'étape à placer pour ce jour.</p></div>`;
+  const pl = placeById(nx.place), t = stopTitle(nx), before = d.date > nowHK().date;
+  return `<div class="dm-card glass">
+    <div class="dm-thumb">${art(pl?.image, toneOf(d), pl?.nameZh?.slice(0, 1) || d.glyph)}</div>
+    <div class="dm-ct">
+      <p class="dm-k">${before ? "Première étape" : nx.next ? "Prochaine étape" : "Étape"}${nx.time ? ` · ${esc(nx.time)}` : ""}</p>
+      <h3>${esc(t.t)}</h3>${t.sub ? `<p class="dm-sub">${esc(t.sub)}</p>` : ""}
+    </div>
+    <div class="acts dm-acts"><button class="pill red" data-mapstop="${nx.id}">Voir la fiche</button>
+      <button class="pill" data-maplist aria-expanded="${mapListOpen}">${mapListOpen ? "Masquer les étapes" : "Voir les étapes"}</button></div>
+  </div>`;
+}
+function mapListHtml(d, stops) {
+  const legs = d.map?.legs || [], legAfter = (id) => legs.find((l) => l.from === id);
+  return stops.map((x) => {
+    const l = legAfter(x.id), tt = stopTitle(x);
+    const row = x.minor
+      ? `<li class="dm-minor"><span class="mi">${MINOR_ICON[x.kind] || "•"}</span><span>${esc(x.name)}</span><small>${esc(x.time)}</small></li>`
+      : `<li><button class="dm-stop ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}">
+          <span class="n" style="--c:${x.done ? "#9A9AA0" : MODES[x.mode]?.color}">${x.n}</span><span class="t"><b>${esc(tt.t)}</b>${tt.sub ? `<small>${esc(tt.sub)}</small>` : ""}</span><small class="tm">${x.done ? "fait" : esc(x.time)}</small>
+        </button></li>`;
+    return row + (l ? `<li class="dm-leg m-${l.mode}"><i></i><span>${esc(l.label || MODES[l.mode]?.label || "")}</span></li>` : "");
+  }).join("");
+}
 function viewMap(dayId) {
   const d = dayById(dayId) || homeData().d;
   const stops = mapStops(d), legs = d.map?.legs || [];
-  const legAfter = (id) => legs.find((l) => l.from === id);
-  const i = P.days.indexOf(d);
-  const nx = stops.find((x) => x.next) || stops.find((x) => !x.minor && !x.done);
-  const pl = nx && placeById(nx.place);
-  const before = d.date > nowHK().date;
   const modes = new Set(legs.flatMap((l) => l.segments.map((s) => s.mode)));
-  const nt = nx && stopTitle(nx);
-  return `<section class="dmap ${mapPanelOpen ? "" : "collapsed"}" data-mapday="${d.id}">
+  const back = mapBackLabel();
+  return `<section class="dmap ${mapListOpen ? "list-open" : ""} ${mapLegendOpen ? "legend-open" : ""}" data-mapday="${d.id}">
     <div class="dm-map" id="dmMap">${glOk() ? "" : planSvg(d, stops)}</div>
     <span class="dm-attrib">© les contributeurs d'OpenStreetMap · OpenFreeMap</span>
-    <header class="dm-head">
-      <button class="dm-back" data-mapback aria-label="Retour">←<span>TravelOS</span></button>
-      <div class="dm-title"><b>Carte du jour</b><small>Jour ${d.number} · ${esc(d.city)}</small></div>
-      <div class="dm-days">
-        <button class="dm-arrow" data-mapgo="${P.days[i - 1]?.id || ""}" ${i ? "" : "disabled"} aria-label="Jour précédent">‹</button>
-        <button class="dm-arrow" data-mapgo="${P.days[i + 1]?.id || ""}" ${i < P.days.length - 1 ? "" : "disabled"} aria-label="Jour suivant">›</button>
-      </div>
+    <header class="dm-top glass">
+      <button class="dm-back" data-mapback aria-label="Retour : ${esc(back)}"><span class="chev" aria-hidden="true">‹</span><span>${esc(back)}</span></button>
+      <b class="dm-day">Jour ${d.number} · ${esc(d.city)}</b>
+      <nav class="daytabs dm-tabs" aria-label="Sections du jour">${DAY_SECS.map(([k, l]) => k === "plan"
+        ? `<button class="on" aria-current="page">${l}</button>` : `<button data-mapsec="${k}">${l}</button>`).join("")}</nav>
     </header>
-    ${modes.size ? `<div class="dm-legend">${LEGEND_ORDER.filter((k) => modes.has(k)).map((k) => `<span class="m-${k}"><i></i>${MODES[k].label}</span>`).join("")}</div>` : ""}
-    <div class="dm-chips"><button class="dm-chip" data-maplocate><span class="ic">➤</span>Ma position</button><button class="dm-chip" data-mapfit><span class="ic">▢</span>Vue du jour</button></div>
-    <aside class="dm-panel" id="dmPanel">
-      <button class="dm-grab" data-mappanel aria-label="${mapPanelOpen ? "Replier" : "Déplier"} le panneau"><i></i></button>
-      ${nx ? `<div class="dm-next">
-        <div class="dm-ill">${art(pl?.image, toneOf(d), pl?.nameZh?.slice(0, 1) || d.glyph)}</div>
-        <div class="dm-nt">
-          <p class="eyebrow-red">${before ? "Première étape" : "Prochaine étape"}${nx.time ? ` · ${esc(nx.time)}` : ""}</p>
-          <h2>${esc(nt.t)}</h2>${nt.sub ? `<p class="sub">${esc(nt.sub)}</p>` : ""}
-          <button class="dm-link" data-mapstop="${nx.id}">Voir la fiche <span>→</span></button>
-        </div></div>` : ""}
-      <ol class="dm-list" id="dmList">
-        ${stops.map((x) => {
-          const l = legAfter(x.id), tt = stopTitle(x);
-          const row = x.minor
-            ? `<li class="dm-minor"><span class="mi">${MINOR_ICON[x.kind] || "•"}</span><span>${esc(x.name)}</span><small>${esc(x.time)}</small></li>`
-            : `<li><button class="dm-stop ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}">
-                <span class="n" style="--c:${x.done ? "#9A9AA0" : MODES[x.mode]?.color}">${x.n}</span><span class="t"><b>${esc(tt.t)}</b>${tt.sub ? `<small>${esc(tt.sub)}</small>` : ""}</span><small class="tm">${x.done ? "fait" : esc(x.time)}</small>
-              </button></li>`;
-          return row + (l ? `<li class="dm-leg m-${l.mode}"><i></i><span>${esc(l.label || MODES[l.mode]?.label || "")}</span></li>` : "");
-        }).join("")}
-      </ol>
-      ${!d.map?.verified ? `<p class="dm-note">Trajets pas encore préparés pour ce jour : repères seulement.</p>` : ""}
+    <div class="dm-tools">
+      ${modes.size ? `<div class="dm-legwrap"><button class="pill glass dm-legbtn" data-maplegend aria-expanded="${mapLegendOpen}">Légende</button>
+        <div class="dm-legend glass">${LEGEND_ORDER.filter((k) => modes.has(k)).map((k) => `<span class="m-${k}"><i></i>${MODES[k].label}</span>`).join("")}</div></div>` : ""}
+      <button class="pill glass" data-maplocate><span aria-hidden="true">➤</span> Ma position</button>
+      <button class="pill glass" data-mapfit><span aria-hidden="true">⤢</span> Vue du jour</button>
+    </div>
+    <aside class="dm-side" id="dmPanel">
+      <div class="dm-listbox glass" ${mapListOpen ? "" : "hidden"}>
+        <div class="dm-lhead"><b>Les étapes</b><button class="dm-x" data-maplist aria-label="Masquer les étapes">×</button></div>
+        <ol class="dm-list" id="dmList">${mapListHtml(d, stops)}</ol>
+        ${!d.map?.verified ? `<p class="dm-note">Trajets pas encore préparés pour ce jour : repères seulement.</p>` : ""}
+      </div>
+      <div id="dmCard">${mapCardHtml(d, stops)}</div>
     </aside>
   </section>`;
 }
@@ -401,8 +454,7 @@ function mapStyle() {
   return {
     version: 8,
     glyphs: `${o}/osm/fonts/{fontstack}/{range}.pbf`,
-    sources: { omt: { type: "vector", tiles: [`${o}/osm/t/{z}/{x}/{y}.pbf`], minzoom: 0, maxzoom: 14,
-      attribution: "© OpenStreetMap · OpenFreeMap" } },
+    sources: { omt: { type: "vector", tiles: [`${o}/osm/t/{z}/{x}/{y}.pbf`], minzoom: 0, maxzoom: 14, attribution: "© OpenStreetMap · OpenFreeMap" } },
     layers: [
       { id: "fond", type: "background", paint: { "background-color": "#F5F1E8" } },
       { id: "verdure", type: "fill", source: "omt", "source-layer": "landcover", filter: road(["wood", "forest", "grass", "scrub"]), paint: { "fill-color": "#D7ECC9", "fill-opacity": 0.9 } },
@@ -427,9 +479,9 @@ function mapStyle() {
       { id: "noms-eau", type: "symbol", source: "omt", "source-layer": "water_name", minzoom: 11,
         layout: { "text-field": name, "text-font": ["Noto Sans Italic"], "text-size": ["interpolate", ["linear"], ["zoom"], 11, 12, 15, 17], "text-letter-spacing": 0.25, "text-max-width": 12 },
         paint: { "text-color": "#3F8797", "text-halo-color": "rgba(255,255,255,.6)", "text-halo-width": 1 } },
-      // Vue du jour : aucun nom de quartier, seulement l'eau ; les quartiers apparaissent en zoomant (13,4), les rues à 15,5.
+      // Vue du jour : pas de nom de quartier ; ils apparaissent en zoomant (13,4), les rues à 15,5.
       { id: "quartiers", type: "symbol", source: "omt", "source-layer": "place", minzoom: 13.4, filter: road(["suburb", "town"]),
-        layout: { "text-field": name, "text-font": ["Noto Sans Bold"], "text-size": ["interpolate", ["linear"], ["zoom"], 12, 12, 16, 16], "text-padding": 24, "text-max-width": 8, "symbol-sort-key": ["coalesce", ["get", "rank"], 10] },
+        layout: { "text-field": name, "text-font": ["Noto Sans Bold"], "text-size": ["interpolate", ["linear"], ["zoom"], 12, 12, 16, 16], "text-padding": 24, "text-max-width": 8 },
         paint: { "text-color": "#3A3A3C", "text-halo-color": "rgba(255,255,255,.9)", "text-halo-width": 1.6 } },
       { id: "voisinages", type: "symbol", source: "omt", "source-layer": "place", minzoom: 15, filter: road(["quarter", "neighbourhood"]),
         layout: { "text-field": name, "text-font": ["Noto Sans Regular"], "text-size": 12, "text-padding": 16, "text-max-width": 8 },
@@ -438,27 +490,34 @@ function mapStyle() {
   };
 }
 
-/* ---------- carte ---------- */
-const lineFC = (d) => ({ type: "FeatureCollection", features: (d.map?.legs || []).flatMap((l) => l.segments.map((s) => ({
-  type: "Feature", properties: { mode: s.mode }, geometry: { type: "LineString", coordinates: s.path.map((p) => [p[1], p[0]]) } }))) });
+/* ---------- tracés ---------- */
+/* Le prochain tronçon (celui qui mène à la prochaine étape) est mis en avant ; les autres sont atténués. */
+function lineFC(d, stops) {
+  const nx = stops.find((x) => x.next);
+  const hl = (l) => (!nx || l.to === nx.id ? 1 : 0);
+  const feats = (d.map?.legs || []).flatMap((l) => l.segments.map((s) => ({
+    type: "Feature", properties: { mode: s.mode, hl: hl(l) }, geometry: { type: "LineString", coordinates: s.path.map((p) => [p[1], p[0]]) } })));
+  feats.sort((a, b) => a.properties.hl - b.properties.hl);
+  return { type: "FeatureCollection", features: feats };
+}
 function dayBounds(d) {
   const pts = [...(d.map?.stops || []).map((x) => [x.lat, x.lng]), ...(d.map?.legs || []).flatMap((l) => l.segments.flatMap((s) => s.path))];
   if (!pts.length) return null;
   const la = pts.map((p) => p[0]), ln = pts.map((p) => p[1]);
   return [[Math.min(...ln), Math.min(...la)], [Math.max(...ln), Math.max(...la)]];
 }
-/* Marges du cadrage : la carte occupe tout l'écran, on réserve la place du panneau, de l'en-tête, de la
-   légende et des boutons pour qu'aucun repère ne soit caché au cadrage initial. */
+/* Ce qui couvre la carte : en-tête, fiche et liste, boutons. Sert au cadrage et au placement des étiquettes. */
+function mapObstacles() {
+  return [".dm-top", ".dm-card", ".dm-listbox:not([hidden])", ".dm-tools .pill", ".dm-legend"]
+    .flatMap((sel) => $$(sel).map((e) => e.getBoundingClientRect())).filter((r) => r.width && r.height && getComputedStyle(document.elementFromPoint(r.left + 1, r.top + 1) || document.body).visibility !== "hidden");
+}
 function mapPadding() {
-  const W = innerWidth, H = innerHeight, r = (sel) => $(sel)?.getBoundingClientRect();
-  const panel = r("#dmPanel"), head = r(".dm-head"), chips = r(".dm-chips"), legend = r(".dm-legend");
-  const pin = 52, m = 28;
-  const pad = { top: (head ? head.bottom : 0) + m + pin, left: m + 18, right: m + 18, bottom: m };
-  if (panel && panel.left > W * 0.45) pad.right = W - panel.left + m; // panneau à droite (paysage)
-  else if (panel) pad.bottom = H - panel.top + m;                      // panneau en bas (portrait)
-  if (chips) pad.bottom = Math.max(pad.bottom, H - chips.top + m);
-  if (legend && legend.top > H * 0.5) pad.bottom = Math.max(pad.bottom, H - legend.top + m);
-  if (legend && legend.top < H * 0.5) pad.top = Math.max(pad.top, legend.bottom + m + pin);
+  const W = innerWidth, H = innerHeight, m = 26, r = (sel) => $(sel)?.getBoundingClientRect();
+  const top = r(".dm-top"), side = r("#dmPanel"), tools = r(".dm-tools");
+  const pad = { top: (top ? top.bottom : 0) + m + 44, left: 90, right: 90, bottom: m + 20 };
+  if (side && side.left > W * 0.45 && side.top < H * 0.6) pad.right = W - side.left + m + 40; // fiche à droite (paysage)
+  else if (side) pad.bottom = H - side.top + m + 20;                                           // fiche en bas (portrait)
+  if (tools) pad.bottom = Math.max(pad.bottom, H - tools.top + m + 20);
   return pad;
 }
 function mapFit(animate) {
@@ -468,24 +527,76 @@ function mapFit(animate) {
   glMap.fitBounds(b, { padding: mapPadding(), duration: animate ? 600 : 0, maxZoom: 16 });
   mapUserMoved = false;
 }
-function pinEl(x) {
-  const el = document.createElement("button");
-  el.type = "button";
-  if (x.minor) { el.className = "gl-minor"; el.textContent = MINOR_ICON[x.kind] || "•"; el.title = x.name; }
-  else {
-    el.className = `gl-pin ${x.next ? "next" : ""} ${x.done ? "done" : ""}`;
-    el.style.setProperty("--c", x.done ? "#9A9AA0" : MODES[x.mode]?.color || "#B3122E");
-    el.innerHTML = `<b>${x.n}</b>`;
-    el.dataset.mapstop = x.id;
-    el.setAttribute("aria-label", `${x.n}. ${x.name}`);
-  }
+
+/* ---------- repères : point exact, trait de rappel, étiquette numérotée ---------- */
+function calloutEl(x) {
+  const el = document.createElement("div");
+  el.className = `co ${x.minor ? "minor" : ""} ${x.next ? "next" : ""} ${x.done ? "done" : ""}`;
+  el.style.setProperty("--c", x.done ? "#9A9AA0" : MODES[x.mode]?.color || "#E3262B");
+  el.innerHTML = `<i class="co-line"></i><span class="co-dot"></span>${x.minor
+    ? `<span class="co-b" title="${esc(x.name)}" aria-label="${esc(x.name)}">${MINOR_ICON[x.kind] || "•"}</span>`
+    : `<button class="co-b" data-mapstop="${x.id}" aria-label="${x.n}. ${esc(x.name)}"><b>${x.n}</b><span class="co-t">${esc(shortOf(x))}</span></button>`}`;
   return el;
 }
+function mapPlaceMarkers(d, stops) {
+  mapMarkers.forEach((k) => k.marker.remove());
+  mapMarkers = stops.map((x) => {
+    const el = calloutEl(x);
+    const marker = new maplibregl.Marker({ element: el, anchor: "center" }).setLngLat([x.lng, x.lat]).addTo(glMap);
+    return { x, el, marker, b: el.querySelector(".co-b"), line: el.querySelector(".co-line") };
+  });
+  requestAnimationFrame(mapDeclutter);
+}
+/* Place chaque étiquette autour de son point sans chevaucher les autres ni l'interface : la prochaine étape
+   d'abord, puis les étapes dans l'ordre, puis les repas et la sieste. Sans place pour l'étiquette entière,
+   on garde le numéro seul. Le point reste toujours à l'endroit exact ; un trait le relie à l'étiquette. */
+function mapDeclutter() {
+  if (!glMap || !mapMarkers.length) return;
+  const W = innerWidth, H = innerHeight, gap = 12, pad = 3;
+  const obstacles = mapObstacles().map((r) => ({ l: r.left - 4, r: r.right + 4, t: r.top - 4, b: r.bottom + 4 }));
+  const pts = mapMarkers.map((k) => glMap.project([k.x.lng, k.x.lat]));
+  const dots = pts.map((p) => ({ l: p.x - 5, r: p.x + 5, t: p.y - 5, b: p.y + 5 }));
+  const hit = (a, b) => a.l < b.r + pad && a.r > b.l - pad && a.t < b.b + pad && a.b > b.t - pad;
+  const order = mapMarkers.map((k, i) => i).sort((i, j) => {
+    const a = mapMarkers[i].x, b = mapMarkers[j].x;
+    return (b.next - a.next) || (a.minor - b.minor) || (a.n - b.n);
+  });
+  const placed = [];
+  for (const i of order) {
+    const k = mapMarkers[i], p = pts[i];
+    for (const compact of k.x.minor ? [false] : [false, true]) {
+      k.el.classList.toggle("compact", compact);
+      const w = k.b.offsetWidth, h = k.b.offsetHeight;
+      const c = [[0, -(h / 2 + gap + 6)], [w / 2 + gap, -h / 2], [-(w / 2 + gap), -h / 2], [w / 2 + gap, h / 2], [-(w / 2 + gap), h / 2], [0, h / 2 + gap + 2],
+        [w / 2 + gap + 8, -(h + gap)], [-(w / 2 + gap + 8), -(h + gap)], [0, -(h * 1.5 + gap * 2 + 6)], [w / 2 + gap + 8, h + gap], [-(w / 2 + gap + 8), h + gap],
+        [w + gap * 2, -h * 1.2], [-(w + gap * 2), -h * 1.2], [0, h * 1.5 + gap * 2]];
+      // Plus loin, avec un trait de rappel plus long : huit directions, trois distances.
+      for (const r of [64, 96, 132]) for (let a = 0; a < 8; a++) { const t = -Math.PI / 2 + (a * Math.PI) / 4; c.push([Math.cos(t) * (r + w / 2), Math.sin(t) * r]); }
+      const rect = ([dx, dy]) => ({ l: p.x + dx - w / 2, r: p.x + dx + w / 2, t: p.y + dy - h / 2, b: p.y + dy + h / 2 });
+      const ok = (q) => q.l >= 4 && q.r <= W - 4 && q.t >= 4 && q.b <= H - 4 && !placed.some((z) => hit(q, z)) && !obstacles.some((z) => hit(q, z)) && !dots.some((z, j) => j !== i && hit(q, z));
+      let best = c.find((o) => ok(rect(o)));
+      if (!best && compact) best = c[0];
+      if (!best) continue;
+      const q = rect(best);
+      placed.push(q);
+      k.pos = { dx: best[0], dy: best[1], w, h, compact };
+      k.b.style.transform = `translate(${best[0] - w / 2}px, ${best[1] - h / 2}px)`;
+      // Trait du point au bord de l'étiquette.
+      const tx = Math.max(q.l, Math.min(p.x, q.r)) - p.x, ty = Math.max(q.t, Math.min(p.y, q.b)) - p.y, len = Math.hypot(tx, ty);
+      k.line.style.width = `${Math.max(0, len - 4)}px`;
+      k.line.style.transform = `rotate(${Math.atan2(ty, tx)}rad)`;
+      break;
+    }
+  }
+}
+let mapDeclutterQueued = false;
+const mapQueueDeclutter = () => { if (mapDeclutterQueued) return; mapDeclutterQueued = true; requestAnimationFrame(() => { mapDeclutterQueued = false; mapDeclutter(); }); };
+
 function mapMount() {
   const sec = $(".dmap"), el = $("#dmMap");
   if (!sec || !el || !glOk()) return;
   const d = dayById(sec.dataset.mapday), stops = mapStops(d);
-  glDay = d;
+  glDay = d; mapShownSig = stops.map((x) => `${x.next ? 1 : 0}${x.done ? 1 : 0}`).join("");
   let m;
   try {
     m = new maplibregl.Map({ container: el, style: mapStyle(), attributionControl: false, dragRotate: false, pitchWithRotate: false, touchPitch: false,
@@ -494,46 +605,56 @@ function mapMount() {
   glMap = m;
   m.touchZoomRotate.disableRotation();
   m.on("error", (e) => { if (/webgl/i.test(String(e?.error?.message || ""))) { mapFailed = true; refreshView(); } });
-  const lines = lineFC(d);
   m.on("load", () => {
-    m.addSource("legs", { type: "geojson", data: lines });
+    m.addSource("legs", { type: "geojson", data: lineFC(d, mapStops(d)) });
     m.addSource("acc", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
     m.addSource("me", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-    m.addLayer({ id: "legs-casing", type: "line", source: "legs", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#FFFFFF", "line-width": ["interpolate", ["linear"], ["zoom"], 11, 6, 16, 11], "line-opacity": 0.92 } });
+    const hl = (a, b) => ["case", ["==", ["get", "hl"], 1], a, b];
+    m.addLayer({ id: "legs-casing", type: "line", source: "legs", layout: { "line-cap": "round", "line-join": "round" },
+      paint: { "line-color": "#FFFFFF", "line-width": ["interpolate", ["linear"], ["zoom"], 11, hl(8, 5.5), 16, hl(14, 10)], "line-opacity": hl(0.95, 0.7) } });
     const dash = { ferry: [2.2, 1.6], walk: [0, 2], taxi: [1.4, 1.4] };
     for (const k of LEGEND_ORDER) {
+      const w0 = k === "walk" ? 4 : 3.5, w1 = k === "walk" ? 7 : 6;
       m.addLayer({ id: `leg-${k}`, type: "line", source: "legs", filter: ["==", ["get", "mode"], k],
-        layout: { "line-cap": k === "walk" ? "round" : k === "ferry" || k === "taxi" ? "butt" : "round", "line-join": "round" },
-        paint: { "line-color": MODES[k].color, "line-width": ["interpolate", ["linear"], ["zoom"], 11, k === "walk" ? 4 : 3.5, 16, k === "walk" ? 7 : 6], ...(dash[k] ? { "line-dasharray": dash[k] } : {}) } });
+        layout: { "line-cap": k === "ferry" || k === "taxi" ? "butt" : "round", "line-join": "round" },
+        paint: { "line-color": MODES[k].color, "line-width": ["interpolate", ["linear"], ["zoom"], 11, hl(w0 * 1.4, w0), 16, hl(w1 * 1.3, w1)], "line-opacity": hl(1, 0.62), ...(dash[k] ? { "line-dasharray": dash[k] } : {}) } });
     }
     m.addLayer({ id: "acc", type: "fill", source: "acc", paint: { "fill-color": "rgba(10,132,255,.16)", "fill-outline-color": "rgba(10,132,255,.45)" } });
     m.addLayer({ id: "me", type: "circle", source: "me", paint: { "circle-radius": 8, "circle-color": "#0A84FF", "circle-stroke-color": "#FFFFFF", "circle-stroke-width": 3 } });
     if (mapMe) mapShowMe(mapMe);
   });
-  // Repères : la prochaine étape au-dessus des autres ; les étapes sans numéro en dessous.
-  stops.slice().sort((a, b) => (a.minor - b.minor) * -1 || a.next - b.next).forEach((x) => {
-    new maplibregl.Marker({ element: pinEl(x), anchor: x.minor ? "center" : "bottom" }).setLngLat([x.lng, x.lat]).addTo(m);
-  });
+  mapPlaceMarkers(d, stops);
   const panel = $("#dmPanel");
-  if (panel && window.ResizeObserver) new ResizeObserver(() => sec.style.setProperty("--panel-h", `${panel.offsetHeight}px`)).observe(panel);
+  if (panel && window.ResizeObserver) new ResizeObserver(() => { sec.style.setProperty("--panel-h", `${panel.offsetHeight}px`); mapQueueDeclutter(); }).observe(panel);
   const cam = mapCam[d.id];
-  if (cam) m.jumpTo(cam); else requestAnimationFrame(() => mapFit(false));
+  if (cam) { m.jumpTo(cam); mapUserMoved = true; } else requestAnimationFrame(() => mapFit(false));
+  m.on("move", mapQueueDeclutter);
   m.on("moveend", () => { mapCam[d.id] = { center: m.getCenter(), zoom: m.getZoom() }; });
   m.on("dragstart", () => { mapUserMoved = true; });
   m.on("zoomstart", (e) => { if (e.originalEvent) mapUserMoved = true; });
 }
+/* Prochaine étape changée (heure, étape cochée) : on met à jour la fiche, la liste, les repères et les tracés
+   sur place, sans recharger la vue : une fiche ouverte reste ouverte, le cadrage ne bouge pas. */
+function mapUpdate() {
+  const sec = $(".dmap"); if (!sec) return;
+  const d = dayById(sec.dataset.mapday), stops = mapStops(d);
+  $("#dmCard").innerHTML = mapCardHtml(d, stops);
+  const list = $("#dmList"); if (list) { const y = list.scrollTop; list.innerHTML = mapListHtml(d, stops); list.scrollTop = y; }
+  if (glMap) { glMap.getSource("legs")?.setData(lineFC(d, stops)); mapPlaceMarkers(d, stops); }
+}
 function mapTeardown() {
+  mapMarkers = [];
   if (glMap) { try { glMap.remove(); } catch {} glMap = null; glDay = null; }
   mapStopGps();
 }
-/* Le panneau change de taille (orientation, repli) : on recadre si l'utilisateur n'a pas bougé la carte. */
+/* La fiche ou la liste change de taille (orientation, ouverture) : on recadre si l'utilisateur n'a pas bougé la carte. */
 function mapRelayout() {
   if (!glMap) return;
   glMap.resize();
-  if (!mapUserMoved) mapFit(false);
+  if (!mapUserMoved) mapFit(false); else mapQueueDeclutter();
 }
 addEventListener("resize", () => { clearTimeout(mapRelayout.t); mapRelayout.t = setTimeout(mapRelayout, 120); });
-function mapSync() { if (glMap) glMap.resize(); }
+function mapSync() { if (glMap) { glMap.resize(); mapQueueDeclutter(); } }
 
 /* ---------- position : point bleu et cercle de précision ---------- */
 let mapMe = null, mapGpsTimer = null, mapLocateAsked = false;
@@ -637,25 +758,23 @@ let mapShownSig = "";
 function refreshMap() {
   const sec = $(".dmap");
   if (!sec) return;
-  const d = dayById(sec.dataset.mapday);
-  const sig = mapStops(d).map((x) => `${x.next ? 1 : 0}${x.done ? 1 : 0}`).join("");
-  if (mapShownSig && sig !== mapShownSig) refreshView();
+  const sig = mapStops(dayById(sec.dataset.mapday)).map((x) => `${x.next ? 1 : 0}${x.done ? 1 : 0}`).join("");
+  if (mapShownSig && sig !== mapShownSig) mapUpdate();
   mapShownSig = sig;
 }
-/* Contrôle (aperçu et tests) : chaque repère est-il visible, hors du panneau, de l'en-tête et des boutons ? */
+/* Contrôle (aperçu et tests) : chaque repère est-il visible, hors de l'interface, sans chevauchement, et son
+   point est-il exactement sur le lieu ? */
 window.__mapCheck = () => {
   if (!glMap) return null;
   const W = innerWidth, H = innerHeight;
-  const rects = [".dm-panel", ".dm-head", ".dm-chips .dm-chip", ".dm-legend"].flatMap((s) => $$(s).map((e) => [s, e.getBoundingClientRect()]));
-  const els = new Map($$(".gl-pin,.gl-minor").map((e) => [e.dataset.mapstop || e.title, e]));
-  return mapStops(glDay).map((x) => {
-    const e = els.get(x.minor ? x.name : x.id), r = e?.getBoundingClientRect(), p = glMap.project([x.lng, x.lat]);
-    if (!r) return { id: x.id, inView: false, hidden: ["absent"] };
-    const hit = rects.filter(([, q]) => r.left < q.right && r.right > q.left && r.top < q.bottom && r.bottom > q.top).map(([s]) => s);
-    // Le repère doit aussi pointer exactement sur son lieu (pointe en bas au centre, ou centre pour les petits).
-    const tip = x.minor ? [r.left + r.width / 2, r.top + r.height / 2] : [r.left + r.width / 2, r.bottom];
-    const off = Math.round(Math.hypot(tip[0] - p.x, tip[1] - p.y));
-    return { id: x.id, x: Math.round(p.x), y: Math.round(p.y), off, inView: r.left >= 0 && r.right <= W && r.top >= 0 && r.bottom <= H, hidden: hit };
+  const ui = mapObstacles();
+  const boxes = mapMarkers.map((k) => k.b.getBoundingClientRect());
+  return mapMarkers.map((k, i) => {
+    const r = boxes[i], p = glMap.project([k.x.lng, k.x.lat]), dot = k.el.querySelector(".co-dot").getBoundingClientRect();
+    const ov = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+    return { id: k.x.id, label: !k.el.classList.contains("compact"), inView: r.left >= 0 && r.right <= W && r.top >= 0 && r.bottom <= H,
+      hidden: ui.filter((q) => ov(r, q)).length, overlap: boxes.filter((q, j) => j !== i && ov(r, q)).length,
+      off: Math.round(Math.hypot(dot.left + dot.width / 2 - p.x, dot.top + dot.height / 2 - p.y)) };
   });
 };
 
@@ -676,7 +795,7 @@ function viewProgramme() {
 }
 
 /* Page d'une journée : en-tête compact, puis quatre sections au lieu d'une longue page. */
-const DAY_SECS = [["steps", "Heure par heure"], ["visits", "Visites"], ["meals", "Repas"], ["infos", "Infos"]];
+const DAY_SECS = [["steps", "Étapes"], ["plan", "Plan"], ["visits", "Visites"], ["meals", "Repas"], ["infos", "Infos"]];
 function mealSlots(day) {
   const tone = toneOf(day);
   if (!day.meals.length) return day.mealNotes.length ? `<div class="tile"><ul>${day.mealNotes.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : `<p class="muted">Pas de repas prévu.</p>`;
@@ -694,11 +813,11 @@ function viewDay(id) {
   const d = dayById(id);
   if (!d) return `<p>Journée introuvable.</p>`;
   const tone = toneOf(d);
-  const sec = DAY_SECS.some(([k]) => k === store.get("daySec", "steps")) ? store.get("daySec", "steps") : "steps";
+  const sec = DAY_SECS.some(([k]) => k === store.get("daySec", "steps") && k !== "plan") ? store.get("daySec", "steps") : "steps";
   const ph = phase();
   const nowKey = ph.kind === "during" && ph.day.id === d.id ? ph.next?.key : null;
   const pr = dayProgress(d);
-  const count = { steps: pr.total, visits: d.visits.length, meals: d.meals.length || d.mealNotes.length, infos: d.charlie.length + d.tips.length + d.photos.length + d.planB.length };
+  const count = { plan: 0, steps: pr.total, visits: d.visits.length, meals: d.meals.length || d.mealNotes.length, infos: d.charlie.length + d.tips.length + d.photos.length + d.planB.length };
   let body = "";
   if (sec === "steps") {
     body = `<ul class="steps">${d.steps.map((s) => {
@@ -764,7 +883,7 @@ function openPlace(id) {
     ${days.length ? `<div class="fsec"><h3>Au programme</h3><div class="acts">${days.map((d) => `<button class="pill" data-day="${d.id}">Jour ${d.number} · ${esc(d.city)}</button>`).join("")}</div></div>` : ""}
   </div></div>
   ${p.shots?.length ? `<section class="sec"><h2 class="h3">Conseils photo et vidéo</h2><div class="bento">${p.shots.map(shotHtml).join("")}</div></section>` : ""}
-  <p class="muted" style="font-size:.85rem">${p.lat.toFixed(5)}, ${p.lng.toFixed(5)} (WGS-84)</p>`;
+  <p class="muted" style="font-size:.85rem">${(() => { const t = amapTarget(p.id); return `${t.lat.toFixed(5)}, ${t.lng.toFixed(5)} (WGS-84) · point visé par Y aller`; })()}</p>`;
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
   mapSync();
@@ -1059,7 +1178,7 @@ function moreContent() {
 }
 function moreApps() {
   const apps = json(N.apps(), []);
-  return `<p class="sub" style="margin:0 auto;text-align:center">TravelOS est l'écran d'accueil : les autres applications s'ouvrent d'ici.</p>
+  return `<p class="sub" style="margin:0 auto;text-align:center">Le carnet est l'écran d'accueil : les autres applications s'ouvrent d'ici.</p>
     <div class="apps">${apps.map((a) => `<button class="app" data-app="${esc(a.pkg)}"><img src="/appicon/${esc(a.pkg)}.png" alt="">${esc(a.label)}</button>`).join("")}</div>`;
 }
 function moreDevice() {
@@ -1069,7 +1188,7 @@ function moreDevice() {
       <li><span>Modèle</span><span>${esc(d.model)}</span></li><li><span>Android</span><span>${esc(d.android)} (API ${d.sdk})</span></li>
       <li><span>Mémoire vive</span><span>${f(d.ramGb)} Go</span></li><li><span>Stockage libre</span><span>${f(d.freeGb)} Go sur ${f(d.totalGb)} Go</span></li>
       <li><span>Services Google</span><span>${d.playServices ? "présents, non utilisés" : "absents"}</span></li><li><span>Puce GNSS</span><span>${esc(d.gnss)}</span></li>
-      <li><span>Version TravelOS</span><span>${esc(N.version())}</span></li></ul></div>
+      <li><span>Version de l'application</span><span>${esc(N.version())}</span></li></ul></div>
     <div class="tile"><h3>Test GPS sans Google</h3><p>La puce GPS seule : dehors, Wi-Fi coupé, pour une mesure réaliste.</p>
       <ul class="kv" id="gpsKv"></ul><div class="acts"><button class="pill red" id="gpsBtn">Lancer le test</button></div></div></div>`;
 }
@@ -1077,10 +1196,10 @@ function moreSettings() {
   const home = N.isDefaultHome();
   const sim = store.get("simDate", "");
   return `<div class="bento">
-    <div class="tile"><h3>Écran d'accueil</h3><p>${home ? "TravelOS est l'écran d'accueil : la tablette démarre sur le choix du profil." : "Pour démarrer la tablette sur TravelOS, choisissez-le comme application d'accueil."}</p>
-      <div class="acts"><button class="pill ${home ? "" : "red"}" data-settings="home">${home ? "Changer d'écran d'accueil" : "Choisir TravelOS"}</button><button class="pill" data-settings="android">Réglages Android</button></div></div>
+    <div class="tile"><h3>Écran d'accueil</h3><p>${home ? "Le carnet est l'écran d'accueil : la tablette démarre sur le choix du profil." : "Pour démarrer la tablette sur le carnet, choisissez « Carnet de voyage » comme application d'accueil."}</p>
+      <div class="acts"><button class="pill ${home ? "" : "red"}" data-settings="home">${home ? "Changer d'écran d'accueil" : "Choisir le carnet"}</button><button class="pill" data-settings="android">Réglages Android</button></div></div>
     <div class="tile"><h3>Écran de veille</h3>
-      <p><b>Économiseur d'écran</b> : quand la tablette charge, TravelOS affiche la photo du jour, l'heure et la prochaine étape. Choisissez « TravelOS » dans le réglage Android.</p>
+      <p><b>Économiseur d'écran</b> : quand la tablette charge, le carnet affiche la photo du jour, l'heure et la prochaine étape. Choisissez « Carnet de voyage » dans le réglage Android.</p>
       <div class="acts"><button class="pill red" data-settings="dream">Choisir l'économiseur</button></div>
       <p><b>Écran verrouillé</b> : les lanternes du carnet en fond (l'horloge reste celle d'Android).</p>
       <div class="seg" id="lockSeg"><button class="${store.get("lockWp", false) ? "" : "on"}" data-lockwp="0">Non</button><button class="${store.get("lockWp", false) ? "on" : ""}" data-lockwp="1">Oui</button></div></div>
@@ -1195,11 +1314,19 @@ document.addEventListener("click", (e) => {
   if (d.maplocate !== undefined) return mapLocate();
   if (d.mapfit !== undefined) { if (glMap) mapFit(true); else $("#planMe") && ($("#planMe").innerHTML = ""); return; }
   if (d.mapback !== undefined) return back();
-  if (d.mappanel !== undefined) {
-    mapPanelOpen = !mapPanelOpen;
-    $(".dmap")?.classList.toggle("collapsed", !mapPanelOpen);
-    t.setAttribute("aria-label", `${mapPanelOpen ? "Replier" : "Déplier"} le panneau`);
-    setTimeout(mapRelayout, 260); return;
+  if (d.resync !== undefined) { $("#stale")?.remove(); return resync(); }
+  if (d.stalex !== undefined) { $("#stale")?.remove(); return; }
+  if (d.maplist !== undefined) {
+    mapListOpen = !mapListOpen;
+    $(".dmap")?.classList.toggle("list-open", mapListOpen);
+    const lb = $(".dm-listbox"); if (lb) lb.hidden = !mapListOpen;
+    const dd = dayById($(".dmap").dataset.mapday); $("#dmCard").innerHTML = mapCardHtml(dd, mapStops(dd));
+    setTimeout(mapRelayout, 60); return;
+  }
+  if (d.maplegend !== undefined) {
+    mapLegendOpen = !mapLegendOpen;
+    $(".dmap")?.classList.toggle("legend-open", mapLegendOpen);
+    t.setAttribute("aria-expanded", mapLegendOpen); setTimeout(mapQueueDeclutter, 50); return;
   }
   if (d.day) return go("programme", "day", d.day);
   if (d.place) return openPlace(d.place);
@@ -1212,7 +1339,16 @@ document.addEventListener("click", (e) => {
   if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
   if (d.article) return openArticle(d.article);
   if (d.soon) return toast(d.soon);
+  if (d.daysec === "plan") { const st = stack[stack.length - 1]; return go("programme", "map", st.arg); }
   if (d.daysec) { store.set("daySec", d.daysec); const st = stack[stack.length - 1]; go(st.tab, st.view, st.arg, false); return; }
+  if (d.mapsec) {
+    // Onglet du jour depuis le Plan : on revient sur la page du jour (celle d'où l'on vient, si c'en est une).
+    store.set("daySec", d.mapsec);
+    const day = $(".dmap")?.dataset.mapday, prev = stack[stack.length - 2];
+    if (prev?.view === "day" && prev.arg === day) { stack.pop(); return go("programme", "day", day, false); }
+    stack[stack.length - 1] = { tab: "programme", view: "day", arg: day };
+    return go("programme", "day", day, false);
+  }
   if (d.zoom) { const v = +d.zoom; store.set("textZoom", v); N.setTextZoom && N.setTextZoom(v); return go("more", null, "settings", false); }
   if (d.lockwp) { store.set("lockWp", d.lockwp === "1"); store.set("lockWpDate", null); if (d.lockwp === "1") updateLockWallpaper(true); return go("more", null, "settings", false); }
   if (d.photoday) { store.set("photoDay", d.photoday); return go("guide", null, "photo", false); }
@@ -1333,6 +1469,7 @@ window.TravelOS = {
   applyPrefs();
   try {
     P = await loadPack();
+    if (packStale) setTimeout(showStale, 600);
   } catch (e) {
     document.body.innerHTML = `<p style="padding:40px">Le contenu du voyage est introuvable.</p>`;
     return;

@@ -161,6 +161,26 @@ def geocode(g):
     def center(el): return [el["center"]["lat"], el["center"]["lon"]] if "center" in el else [el["lat"], el["lon"]]
     def close(p): return near is None or metres(p, near) <= R
     tries = []
+    if g.get("osm") and g.get("facade"):
+        # Entrée d'un bâtiment sur une rue : nœud « entrance » du bâtiment le plus proche de la rue,
+        # sinon milieu du côté du bâtiment qui fait face à la rue.
+        names = g["osm"]; st = g["facade"]
+        q = "".join(f'way["{k}"="{v}"](around:{R},{near[0]},{near[1]});' for v in names for k in ("name", "name:en", "name:zh"))
+        d = overpass(f'[out:json][timeout:60];({q})->.b;.b out geom tags;node(w.b)["entrance"];out body;'
+                     f'(way["name:en"="{st}"](around:{R},{near[0]},{near[1]});way["name"="{st}"](around:{R},{near[0]},{near[1]}););out geom;')
+        bld = [x for x in d["elements"] if x["type"] == "way" and x.get("tags", {}).get("building") or (x["type"] == "way" and x.get("tags", {}).get("amenity") == "place_of_worship")]
+        road = [(g2["lat"], g2["lon"]) for x in d["elements"] if x["type"] == "way" and st in {x.get("tags", {}).get("name:en"), x.get("tags", {}).get("name")} for g2 in x["geometry"]]
+        if bld and road:
+            b = bld[0]; ring = [(p["lat"], p["lon"]) for p in b["geometry"]]
+            to_road = lambda p: min(metres(p, r) for r in road)
+            ents = [x for x in d["elements"] if x["type"] == "node" and "entrance" in x.get("tags", {})]
+            if ents:
+                e = min(ents, key=lambda x: to_road((x["lat"], x["lon"])))
+                return [e["lat"], e["lon"]], f"OSM : entrée (nœud {e['id']}, entrance={e['tags']['entrance']}) de « {b['tags'].get('name')} » sur {st}"
+            mids = [((a[0] + c[0]) / 2, (a[1] + c[1]) / 2) for a, c in zip(ring, ring[1:])]
+            m = min(mids, key=to_road)
+            return list(m), f"OSM : façade de « {b['tags'].get('name')} » (way {b['id']}) côté {st}, à {to_road(m):.0f} m de la rue"
+        print("   façade introuvable, repli sur le nom")
     if g.get("osm"):
         names = g["osm"] if isinstance(g["osm"], list) else [g["osm"]]
         q = "".join(f'nwr["{k}"="{v}"](around:{R},{near[0]},{near[1]});' for v in names for k in ("name", "name:en", "name:zh"))

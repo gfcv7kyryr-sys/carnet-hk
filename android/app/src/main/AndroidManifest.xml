@@ -60,7 +60,7 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
-        android:label="TravelOS"
+        android:label="Carnet de voyage"
         android:largeHeap="true"
         android:usesCleartextTraffic="false"
         android:supportsRtl="true"
@@ -88,7 +88,7 @@
         <service
             android:name=".TravelDream"
             android:exported="true"
-            android:label="TravelOS"
+            android:label="Carnet de voyage"
             android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter>
                 <action android:name="android.service.dreams.DreamService" />
