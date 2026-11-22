@@ -43147,45 +43147,152 @@
 },
 "cormorans": {
 "carnet": [
-24.9283,
-110.5168
+24.9191,
+110.5215
 ],
 "name": "Ponton de Xingping, les pêcheurs aux cormorans",
 "zh": "兴坪码头",
 "named": [
 {
-"t": "n4376696293",
-"name": "黄布倒影",
-"en": "20 Yuan View",
+"t": "n12182045164",
+"name": "兴坪 (pedestrians only)",
+"en": "Xingping",
 "zh": null,
 "k": {
-"tourism": "viewpoint"
+"amenity": "ferry_terminal",
+"public_transport": "station"
 },
 "p": [
-24.925103,
-110.51664
+24.919088,
+110.521545
 ],
-"d": 356,
-"score": 0
+"d": 5,
+"score": 3
 },
 {
-"t": "n6255301985",
-"name": "20元人民币背景图取景地",
-"en": "20 CNY banknote background image",
+"t": "n2751337944",
+"name": "兴坪",
+"en": "Xingping",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.919619,
+110.519652
+],
+"d": 195,
+"score": 3
+},
+{
+"t": "n9921956319",
+"name": "兴坪古镇",
+"en": "Xingping Ancient Town",
 "zh": null,
 "k": {
 "tourism": "attraction"
 },
 "p": [
-24.92454,
-110.517387
+24.919123,
+110.523609
 ],
-"d": 423,
+"d": 213,
+"score": 3
+},
+{
+"t": "n2509040860",
+"name": "阳朔兴坪老地方国际青年旅舍(兴坪店)",
+"en": "This Old Place",
+"zh": "老地方",
+"k": {
+"tourism": "hostel"
+},
+"p": [
+24.919211,
+110.522285
+],
+"d": 80,
+"score": 2
+},
+{
+"t": "n9772178915",
+"name": "老寨山公园",
+"en": null,
+"zh": "老寨山公园",
+"k": {
+"leisure": "park"
+},
+"p": [
+24.918933,
+110.521845
+],
+"d": 39,
+"score": 0
+},
+{
+"t": "n2639671616",
+"name": "漓江湾客栈",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "guest_house"
+},
+"p": [
+24.922628,
+110.522777
+],
+"d": 413,
 "score": 0
 }
 ],
 "entrances": [],
-"transit": []
+"transit": [
+{
+"t": "n12182045164",
+"name": "兴坪 (pedestrians only)",
+"en": "Xingping",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.919088,
+110.521545
+],
+"d": 5
+},
+{
+"t": "n2751337944",
+"name": "兴坪",
+"en": "Xingping",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.919619,
+110.519652
+],
+"d": 195
+},
+{
+"t": "w400661513",
+"name": "兴坪旅游客运站",
+"en": "Xingping bus station",
+"zh": null,
+"k": {
+"public_transport": "station"
+},
+"p": [
+24.920954,
+110.527382
+],
+"d": 629
+}
+]
 },
 "huangyao": {
 "carnet": [

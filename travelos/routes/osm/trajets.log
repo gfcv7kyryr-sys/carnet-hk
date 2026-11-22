@@ -92,10 +92,14 @@ huangyao-depart>hotel-soir : 1 segment(s) tracé(s)
   ⚠ arrêt hotel-valises : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
 
 hotel-matin>xianggong
-  car        ⚠ à confirmer : bac et transfert vers Xianggong à confirmer sur place
+  walk            55 m  OSRM à pied sur OpenStreetMap (0 min estimées)
+  car           9244 m  OSRM en voiture sur OpenStreetMap (20 min estimées)
+  walk          1159 m  OSRM à pied sur OpenStreetMap (14 min estimées)
 
 xianggong>hotel-valises
-  car        ⚠ à confirmer : bac et transfert vers Xianggong à confirmer sur place
+  walk          1159 m  OSRM à pied sur OpenStreetMap (14 min estimées)
+  car           9244 m  OSRM en voiture sur OpenStreetMap (20 min estimées)
+  walk            55 m  OSRM à pied sur OpenStreetMap (0 min estimées)
 
 hotel-valises>yangshuo-station
   car           8932 m  OSRM en voiture sur OpenStreetMap (13 min estimées)
@@ -109,8 +113,8 @@ west-kowloon>hotel-disney
   metro         3126 m  voies de la ligne Disneyland Resort Line|迪士尼綫 (relation 4709540 (MTR Disneyland Resort Line (Southbound))) jusqu'à Disneyland Resort / 迪士尼 Disneyland Resort / 迪士尼 (OSM nœud 357138078, relation 4709540 (MTR Disneyland Resort Line (Southbound)))
   bus           2327 m  OSRM en voiture sur OpenStreetMap (5 min estimées)
 
-hotel-matin>xianggong : 0 segment(s) tracé(s), 1 à confirmer
-xianggong>hotel-valises : 0 segment(s) tracé(s), 1 à confirmer
+hotel-matin>xianggong : 3 segment(s) tracé(s)
+xianggong>hotel-valises : 3 segment(s) tracé(s)
 hotel-valises>yangshuo-station : 1 segment(s) tracé(s)
 yangshuo-station>west-kowloon : 1 segment(s) tracé(s)
 west-kowloon>hotel-disney : 4 segment(s) tracé(s)
@@ -294,9 +298,7 @@ wong-tai-sin>choi-hung
   walk           659 m  OSRM à pied sur OpenStreetMap (8 min estimées, sortie C2 de la station)
 
 choi-hung>nan-lian
-  walk           659 m  OSRM à pied sur OpenStreetMap (8 min estimées, entrée C2 de la station)
-  metro          903 m  voies de la ligne Kwun Tong Line|觀塘綫 (relation 272125 (MTR Kwun Tong Line)) jusqu'à Diamond Hill / 鑽石山 Diamond Hill / 鑽石山 (OSM nœud 4331887005, relation 272125 (MTR Kwun Tong Line))
-  walk           341 m  OSRM à pied sur OpenStreetMap (3 min estimées, sortie C2 de la station)
+  walk           782 m  OSRM à pied sur OpenStreetMap (10 min estimées)
 
 nan-lian>hotel-sieste
   walk           341 m  OSRM à pied sur OpenStreetMap (3 min estimées, entrée C2 de la station)
@@ -335,7 +337,7 @@ changsha>hotel-nuit
 
 hotel-matin>wong-tai-sin : 4 segment(s) tracé(s)
 wong-tai-sin>choi-hung : 3 segment(s) tracé(s)
-choi-hung>nan-lian : 3 segment(s) tracé(s)
+choi-hung>nan-lian : 1 segment(s) tracé(s)
 nan-lian>hotel-sieste : 3 segment(s) tracé(s)
 hotel-sieste>ten-thousand : 4 segment(s) tracé(s)
 ten-thousand>goldfish : 3 segment(s) tracé(s)
@@ -361,8 +363,12 @@ terminal-hk>outer-harbour
 outer-harbour>senado
   taxi          3433 m  OSRM en voiture sur OpenStreetMap (4 min estimées)
 
-senado>a-ma
-  taxi          3800 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
+senado>st-paul
+  walk           248 m  OSRM à pied sur OpenStreetMap (3 min estimées)
+  walk           372 m  OSRM à pied sur OpenStreetMap (5 min estimées)
+
+st-paul>a-ma
+  taxi          4134 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
 
 a-ma>taipa
   taxi          8020 m  OSRM en voiture sur OpenStreetMap (11 min estimées)
@@ -371,7 +377,8 @@ taipa>cotai
   walk          1975 m  OSRM à pied sur OpenStreetMap (25 min estimées)
 
 cotai>terminal-taipa
-  taxi          3957 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
+  walk           714 m  OSRM à pied sur OpenStreetMap (8 min estimées)
+  taxi          4181 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
 
 terminal-taipa>macau-ferry
   ferry        65371 m  voies OSM (ferry), recollées à 259 m / 144 m des points
@@ -383,10 +390,11 @@ macau-ferry>hotel-soir
 hotel-matin>terminal-hk : 4 segment(s) tracé(s)
 terminal-hk>outer-harbour : 1 segment(s) tracé(s)
 outer-harbour>senado : 1 segment(s) tracé(s)
-senado>a-ma : 1 segment(s) tracé(s)
+senado>st-paul : 2 segment(s) tracé(s)
+st-paul>a-ma : 1 segment(s) tracé(s)
 a-ma>taipa : 1 segment(s) tracé(s)
 taipa>cotai : 1 segment(s) tracé(s)
-cotai>terminal-taipa : 1 segment(s) tracé(s)
+cotai>terminal-taipa : 2 segment(s) tracé(s)
 terminal-taipa>macau-ferry : 1 segment(s) tracé(s)
 macau-ferry>hotel-soir : 2 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j4.json
@@ -551,7 +559,6 @@ beijing-road>hotel-soir : 1 segment(s) tracé(s)
 ================ j9 ================
   ⚠ arrêt hotel-gz : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
   ⚠ arrêt hotel-xp : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
-  ⚠ arrêt cormorans : « 兴坪码头 / Xingping Pier » introuvable dans OSM → point du carnet, à confirmer
   ⚠ arrêt hotel-soir : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
 
 hotel-gz>gz-south
@@ -570,16 +577,16 @@ xingping>vingt-yuans
   walk          1125 m  OSRM à pied sur OpenStreetMap (15 min estimées)
 
 vingt-yuans>cormorans
-  walk       ⚠ à confirmer : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
+  walk          1238 m  OSRM à pied sur OpenStreetMap (16 min estimées)
 
 cormorans>hotel-soir
-  walk       ⚠ à confirmer : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
+  walk           255 m  OSRM à pied sur OpenStreetMap (3 min estimées)
 
 hotel-gz>gz-south : 1 segment(s) tracé(s)
 gz-south>yangshuo-station : 1 segment(s) tracé(s)
 yangshuo-station>hotel-xp : 1 segment(s) tracé(s)
 hotel-xp>xingping : 1 segment(s) tracé(s)
 xingping>vingt-yuans : 1 segment(s) tracé(s)
-vingt-yuans>cormorans : 0 segment(s) tracé(s), 1 à confirmer
-cormorans>hotel-soir : 0 segment(s) tracé(s), 1 à confirmer
+vingt-yuans>cormorans : 1 segment(s) tracé(s)
+cormorans>hotel-soir : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j9.json
