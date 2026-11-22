@@ -118,6 +118,31 @@ class Graph:
         out = [nb]
         while out[-1] != na: out.append(prev[out[-1]])
         return [list(x) for x in reversed(out)], da, db
+    def path_best(self, a, b, radius=400, k=3.0):
+        """Plus court trajet entre n'importe quel nœud proche de a et n'importe quel nœud proche de b
+        (coût d'accroche pondéré par k). Évite l'aller-retour au terminus quand les deux sens de la ligne
+        sont deux voies séparées, ou le détour par une autre ligne de ferry."""
+        near = lambda p: [(metres(n, p), n) for n in self.adj if abs(n[0] - p[0]) < 0.012 and abs(n[1] - p[1]) < 0.012]
+        ca = [x for x in near(a) if x[0] <= radius]; cb = {n: d for d, n in near(b) if d <= radius}
+        if not ca or not cb: raise Fail("voie trop loin des points")
+        dist, prev, pq = {}, {}, []
+        for d, n in ca:
+            c = k * d
+            if c < dist.get(n, 1e18): dist[n] = c; heapq.heappush(pq, (c, n))
+        best = None
+        while pq:
+            d, u = heapq.heappop(pq)
+            if d > dist[u]: continue
+            if best and d >= best[0]: break
+            if u in cb and (best is None or d + k * cb[u] < best[0]): best = (d + k * cb[u], u)
+            for v, w in self.adj[u]:
+                nd = d + w
+                if nd < dist.get(v, 1e18): dist[v] = nd; prev[v] = u; heapq.heappush(pq, (nd, v))
+        if not best: raise Fail("aucune voie continue entre les deux points")
+        out = [best[1]]
+        while out[-1] in prev: out.append(prev[out[-1]])
+        out.reverse()
+        return [list(x) for x in out], metres(out[0], a), metres(out[-1], b)
     def path(self, a, b):
         s, t = self.nearest(a), self.nearest(b)
         dist = {s: 0}; prev = {}; pq = [(0, s)]
@@ -262,6 +287,9 @@ def osrm(profile, a, b):
     # OSRM accroche départ et arrivée à la route la plus proche : si c'est loin, l'itinéraire n'est pas fiable.
     lim = 250 if profile == "foot" else 400
     if metres(path[0], a) > lim or metres(path[-1], b) > lim: raise Fail(f"OSRM {profile} : départ ou arrivée à plus de {lim} m d'une voie")
+    # Détour absurde (accroche sur une voie privée, un quai, un pont lointain) : on refuse plutôt que d'afficher un faux chemin.
+    crow = metres(a, b); dist = r.get("distance") or 0
+    if dist > 4 * crow + 2500: raise Fail(f"OSRM {profile} : détour invraisemblable ({dist / 1000:.0f} km pour {crow / 1000:.1f} km à vol d'oiseau)")
     return path, r["duration"]
 
 # ---------------- tronçons ----------------
@@ -358,15 +386,16 @@ def main(day):
                     if b is not end: path.append(list(b))
                     src = f"OSRM {'à pied' if sg['router'] == 'foot' else 'en voiture'} sur OpenStreetMap ({round(dur / 60)} min estimées{via})"
                 elif sg.get("rail"):
-                    try: path, ga, gb = rail_graph(sg["rail"], start, end).path_any(start, end, sg.get("snap", 400))
+                    try: path, ga, gb = rail_graph(sg["rail"], start, end).path_best(start, end, sg.get("snap", 400))
                     except (Fail, RuntimeError):
                         if sg["rail"] != "highspeed": raise
-                        path, ga, gb = rail_graph("rail", start, end).path_any(start, end, sg.get("snap", 400))  # voie non marquée « grande vitesse »
+                        path, ga, gb = rail_graph("rail", start, end).path_best(start, end, sg.get("snap", 400))  # voie non marquée « grande vitesse »
                     if ga > sg.get("snap", 400) or gb > sg.get("snap", 400): raise Fail(f"voie {sg['rail']} à {ga:.0f} m / {gb:.0f} m des points")
                     src = f"voies OSM ({sg['rail']}), recollées à {ga:.0f} m / {gb:.0f} m des points"
                 elif sg.get("line"):
                     g, _, rels = line_data(sg["line"], bb)
-                    path, ga, gb = g.path(start, end)
+                    try: path, ga, gb = g.path_best(start, end, 400)
+                    except Fail: path, ga, gb = g.path(start, end)
                     if ga > 400 or gb > 400: raise Fail(f"ligne {sg['line']} à {ga:.0f} m / {gb:.0f} m des stations")
                     src = f"voies de la ligne {sg['line']} ({rels[0]}) jusqu'à {endsrc}"
                 else: raise Fail("segment sans méthode")

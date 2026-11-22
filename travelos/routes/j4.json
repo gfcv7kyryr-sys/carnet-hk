@@ -355,6 +355,16 @@
    "label": "Dîner chez One Dim Sum, puis taxi (proposé)",
    "segments": [
     {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "ll": [
+       22.29845,
+       114.16905
+      ]
+     }
+    },
+    {
      "mode": "taxi",
      "router": "car"
     }

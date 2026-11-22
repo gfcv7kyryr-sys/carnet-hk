@@ -166,7 +166,7 @@ DAYS["j4"] = {
     leg("taipa", "cotai", "walk", "À pied jusqu'au Cotai Strip", walk()),
     leg("cotai", "terminal-taipa", "taxi", "Taxi · 10 min", taxi()),
     leg("terminal-taipa", "macau-ferry", "ferry", "Cotai Water Jet jusqu'à Tsim Sha Tsui", ferry()),
-    leg("macau-ferry", "hotel-soir", "taxi", "Dîner chez One Dim Sum, puis taxi (proposé)", taxi()),
+    leg("macau-ferry", "hotel-soir", "taxi", "Dîner chez One Dim Sum, puis taxi (proposé)", walk(to={"ll": [22.29845, 114.16905]}), taxi()),
   ],
 }
 
