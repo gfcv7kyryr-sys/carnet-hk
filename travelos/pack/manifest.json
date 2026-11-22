@@ -1,6 +1,6 @@
 {
  "formatVersion": 1,
- "packVersion": "58bae02a1961",
+ "packVersion": "a6c69dc2427b",
  "files": [
   {
    "path": "audio/a-ma.mp3",
@@ -863,6 +863,11 @@
    "sha256": "308037df127298fb0849e3c967d520d57ab9201393471f9a56798d86e60045e1"
   },
   {
+   "path": "travelos/album/la-lanterne-de-la-maison.mp3",
+   "size": 5803436,
+   "sha256": "c03a3c9d0ccd7d917c84cf7b80f4f050a1425134dfd00cf0813f17f0cd4fa381"
+  },
+  {
    "path": "travelos/album/lantern-road.mp3",
    "size": 6135536,
    "sha256": "67317d68cfdba2130547bae42eb201d1869d55d5bb692470eb7caade2e9024de"
@@ -871,6 +876,11 @@
    "path": "travelos/album/lanterns-in-the-dark.mp3",
    "size": 4691395,
    "sha256": "1410d88395fd64561964a5ba583d7068d236339f402eab96a2506617fc4e9adf"
+  },
+  {
+   "path": "travelos/album/les-pierres-parlent.mp3",
+   "size": 7035473,
+   "sha256": "73340e5482e210d6de94073e642950046465cbdcb86c02c2049771905962f42a"
   },
   {
    "path": "travelos/album/li-river-soul.mp3",
@@ -921,6 +931,21 @@
    "path": "travelos/album/trois-voix-sur-la-riviere.mp3",
    "size": 5188463,
    "sha256": "483c4e3ae7133e076c66e82509273d288da2838498254ac7619f6143f1e8e3d8"
+  },
+  {
+   "path": "travelos/album/xiao-long-fly-with-me.mp3",
+   "size": 4945654,
+   "sha256": "f7067a1c47d5e792886c719652f688026cca8c276fe30b401b954af4be689282"
+  },
+  {
+   "path": "travelos/album/xiao-long-is-by-your-side.mp3",
+   "size": 3758621,
+   "sha256": "f4a294abbcf68bf6a1a15aa62ce77fc863b3755027fcd7834c4192c0917b8e4f"
+  },
+  {
+   "path": "travelos/album/yum-cha.mp3",
+   "size": 5266876,
+   "sha256": "0ff7b8366d12206b115de5f8213ceb0b41c939107ef2715f45e80087141a1569"
   },
   {
    "path": "travelos/depth/j1-bg.webp",
@@ -1744,8 +1769,8 @@
   },
   {
    "path": "travelos/pack/pack.json",
-   "size": 1171439,
-   "sha256": "58bae02a19611be6b470802c64472bcc18d1d1f1c33056a5e2294b1b9afdfb89"
+   "size": 1172043,
+   "sha256": "a6c69dc2427bbbf62e952290264a659a470cd331454255e8df806e280412a33a"
   },
   {
    "path": "travelos/scenes/j1-1-bg.webp",

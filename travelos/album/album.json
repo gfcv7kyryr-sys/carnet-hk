@@ -1,24 +1,39 @@
 {
  "title": "Dragons et lanternes",
- "subtitle": "L'album du voyage",
+ "subtitle": "L'album du voyage · 25 chansons",
  "chapters": [
   {
-   "title": "Le départ",
+   "title": "Introduction",
    "tracks": [
     {
-     "title": "Lantern road",
-     "src": "travelos/album/lantern-road.mp3",
-     "seconds": 214
-    },
-    {
-     "title": "Dragons et lanternes",
-     "src": "travelos/album/dragons-et-lanternes.mp3",
-     "seconds": 207
+     "title": "Petite Lanterne",
+     "src": "travelos/album/petite-lanterne.mp3",
+     "seconds": 224
     }
    ]
   },
   {
-   "title": "Hong Kong",
+   "title": "Disque 1 · Dragons et lanternes",
+   "tracks": [
+    {
+     "title": "Dragons et lanternes",
+     "src": "travelos/album/dragons-et-lanternes.mp3",
+     "seconds": 207
+    },
+    {
+     "title": "Lantern Road",
+     "src": "travelos/album/lantern-road.mp3",
+     "seconds": 214
+    },
+    {
+     "title": "Lanterns in the Dark",
+     "src": "travelos/album/lanterns-in-the-dark.mp3",
+     "seconds": 163
+    }
+   ]
+  },
+  {
+   "title": "Disque 2 · Hong Kong",
    "tracks": [
     {
      "title": "Neon Harbour",
@@ -38,17 +53,17 @@
    ]
   },
   {
-   "title": "Macao",
+   "title": "Disque 3 · Macao",
    "tracks": [
-    {
-     "title": "Azulejos",
-     "src": "travelos/album/azulejos.mp3",
-     "seconds": 168
-    },
     {
      "title": "Pastel de nata",
      "src": "travelos/album/pastel-de-nata.mp3",
      "seconds": 262
+    },
+    {
+     "title": "Azulejos",
+     "src": "travelos/album/azulejos.mp3",
+     "seconds": 168
     },
     {
      "title": "Saudade à trois",
@@ -58,10 +73,15 @@
    ]
   },
   {
-   "title": "Canton",
+   "title": "Disque 4 · Canton",
    "tracks": [
     {
-     "title": "Sunday swing",
+     "title": "Yum Cha",
+     "src": "travelos/album/yum-cha.mp3",
+     "seconds": 208
+    },
+    {
+     "title": "Sunday Swing",
      "src": "travelos/album/sunday-swing.mp3",
      "seconds": 165
     },
@@ -73,7 +93,7 @@
    ]
   },
   {
-   "title": "Shenzhen",
+   "title": "Disque 5 · Shenzhen",
    "tracks": [
     {
      "title": "Neon Grid",
@@ -93,7 +113,7 @@
    ]
   },
   {
-   "title": "Xingping · la rivière Li",
+   "title": "Disque 6 · La rivière Li",
    "tracks": [
     {
      "title": "Li River Soul",
@@ -113,37 +133,42 @@
    ]
   },
   {
-   "title": "Huangyao",
+   "title": "Disque 7 · Huangyao",
    "tracks": [
+    {
+     "title": "石头会说话 · Les pierres parlent",
+     "src": "travelos/album/les-pierres-parlent.mp3",
+     "seconds": 268
+    },
     {
      "title": "Matin à Huangyao",
      "src": "travelos/album/matin-a-huangyao.mp3",
      "seconds": 177
+    },
+    {
+     "title": "回家的灯 · La lanterne de la maison",
+     "src": "travelos/album/la-lanterne-de-la-maison.mp3",
+     "seconds": 225
     }
    ]
   },
   {
-   "title": "Charlie et Xiao Long",
+   "title": "Disque 8 · Xiao Long",
    "tracks": [
     {
-     "title": "Petite Lanterne",
-     "src": "travelos/album/petite-lanterne.mp3",
-     "seconds": 224
+     "title": "Xiao Long Is by Your Side",
+     "src": "travelos/album/xiao-long-is-by-your-side.mp3",
+     "seconds": 143
+    },
+    {
+     "title": "Xiao Long, Fly With Me",
+     "src": "travelos/album/xiao-long-fly-with-me.mp3",
+     "seconds": 183
     },
     {
      "title": "Bonne nuit Xiao Long",
      "src": "travelos/album/bonne-nuit-xiao-long.mp3",
      "seconds": 207
-    }
-   ]
-  },
-  {
-   "title": "Le retour",
-   "tracks": [
-    {
-     "title": "Lanterns in the Dark",
-     "src": "travelos/album/lanterns-in-the-dark.mp3",
-     "seconds": 163
     }
    ]
   }
