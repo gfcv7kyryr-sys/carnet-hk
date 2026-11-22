@@ -19,7 +19,8 @@ Jour 10 · Xingping : repères OK 1/1
 Jour 10 · Huangyao : repères OK 6/6
 Jour 11 · Xingping : repères OK 3/3
 Jour 11 · Hong Kong : repères OK 2/2
-Jour 12 : repères OK 14/14
+Jour 12 · Le parc : repères OK 12/12
+Jour 12 · Accès : repères OK 3/3
 Jour 13 : repères OK 8/8
 Jour 1 (Hong Kong) : 8/8 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['pier1']
 Jour 2 (Hong Kong) : 13/13 tronçons tracés ; à confirmer : 0 ; points à confirmer : []
@@ -30,14 +31,12 @@ Jour 6 (Canton) : 2/2 tronçons tracés ; à confirmer : 0 ; points à confirmer
 Jour 7 (Shenzhen) : 13/14 tronçons tracés ; à confirmer : 1 ; points à confirmer : ['hotel-matin', 'talent-park', 'orbit-one', 'hotel-soir']
     - zhongshuge → gangxia-north : station de départ près de Happy Harbour à préciser
 Jour 8 (Canton) : 8/8 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['hotel-matin', 'hotel-soir']
-Jour 9 (Xingping) : 4/7 tronçons tracés ; à confirmer : 3 ; points à confirmer : ['hotel-gz', 'yangshuo-station', 'hotel-xp', 'cormorans', 'hotel-soir']
-    - gz-south → yangshuo-station : aucune voie continue entre les deux points
+Jour 9 (Xingping) : 5/7 tronçons tracés ; à confirmer : 2 ; points à confirmer : ['hotel-gz', 'hotel-xp', 'cormorans', 'hotel-soir']
     - vingt-yuans → cormorans : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
     - cormorans → hotel-soir : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
 Jour 10 (Huangyao) : 7/7 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['hotel-matin', 'hy-banian', 'hy-dailong', 'hy-anle', 'hotel-soir']
-Jour 11 (Xingping) : 2/5 tronçons tracés ; à confirmer : 3 ; points à confirmer : ['hotel-matin', 'xianggong', 'hotel-valises', 'yangshuo-station']
+Jour 11 (Xingping) : 3/5 tronçons tracés ; à confirmer : 2 ; points à confirmer : ['hotel-matin', 'hotel-valises']
     - hotel-matin → xianggong : bac et transfert vers Xianggong à confirmer sur place
     - xianggong → hotel-valises : bac et transfert vers Xianggong à confirmer sur place
-    - yangshuo-station → west-kowloon : aucune voie continue entre les deux points
 Jour 12 (Disneyland) : 15/15 tronçons tracés ; à confirmer : 0 ; points à confirmer : []
 Jour 13 (Lantau) : 7/7 tronçons tracés ; à confirmer : 0 ; points à confirmer : []

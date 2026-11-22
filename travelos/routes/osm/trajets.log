@@ -89,9 +89,7 @@ huangyao-depart>hotel-soir : 1 segment(s) tracé(s)
 
 ================ j11 ================
   ⚠ arrêt hotel-matin : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
-  ⚠ arrêt xianggong : « 相公山 / Xianggong Hill / Xianggong Mountain » introuvable dans OSM → point du carnet, à confirmer
   ⚠ arrêt hotel-valises : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
-  ⚠ arrêt yangshuo-station : « 阳朔站 / 桂林阳朔 / 阳朔 / Yangshuo » introuvable dans OSM → point du carnet, à confirmer
 
 hotel-matin>xianggong
   car        ⚠ à confirmer : bac et transfert vers Xianggong à confirmer sur place
@@ -100,10 +98,10 @@ xianggong>hotel-valises
   car        ⚠ à confirmer : bac et transfert vers Xianggong à confirmer sur place
 
 hotel-valises>yangshuo-station
-  car           6018 m  OSRM en voiture sur OpenStreetMap (15 min estimées)
+  car           8932 m  OSRM en voiture sur OpenStreetMap (13 min estimées)
 
 yangshuo-station>west-kowloon
-  train      ⚠ à confirmer : aucune voie continue entre les deux points
+  train       687242 m  voies OSM (highspeed), recollées à 176 m / 15 m des points
 
 west-kowloon>hotel-disney
   walk           621 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée L de la station)
@@ -114,7 +112,7 @@ west-kowloon>hotel-disney
 hotel-matin>xianggong : 0 segment(s) tracé(s), 1 à confirmer
 xianggong>hotel-valises : 0 segment(s) tracé(s), 1 à confirmer
 hotel-valises>yangshuo-station : 1 segment(s) tracé(s)
-yangshuo-station>west-kowloon : 0 segment(s) tracé(s), 1 à confirmer
+yangshuo-station>west-kowloon : 1 segment(s) tracé(s)
 west-kowloon>hotel-disney : 4 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j11.json
 
@@ -551,7 +549,6 @@ beijing-road>hotel-soir : 1 segment(s) tracé(s)
 
 ================ j9 ================
   ⚠ arrêt hotel-gz : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
-  ⚠ arrêt yangshuo-station : « 阳朔站 / 桂林阳朔 / 阳朔 / Yangshuo » introuvable dans OSM → point du carnet, à confirmer
   ⚠ arrêt hotel-xp : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
   ⚠ arrêt cormorans : « 兴坪码头 / Xingping Pier » introuvable dans OSM → point du carnet, à confirmer
   ⚠ arrêt hotel-soir : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
@@ -560,10 +557,10 @@ hotel-gz>gz-south
   taxi         20039 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
 
 gz-south>yangshuo-station
-  train      ⚠ à confirmer : aucune voie continue entre les deux points
+  train       450082 m  voies OSM (highspeed), recollées à 141 m / 176 m des points
 
 yangshuo-station>hotel-xp
-  car           6018 m  OSRM en voiture sur OpenStreetMap (16 min estimées)
+  car           8950 m  OSRM en voiture sur OpenStreetMap (13 min estimées)
 
 hotel-xp>xingping
   walk           582 m  OSRM à pied sur OpenStreetMap (7 min estimées)
@@ -578,7 +575,7 @@ cormorans>hotel-soir
   walk       ⚠ à confirmer : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
 
 hotel-gz>gz-south : 1 segment(s) tracé(s)
-gz-south>yangshuo-station : 0 segment(s) tracé(s), 1 à confirmer
+gz-south>yangshuo-station : 1 segment(s) tracé(s)
 yangshuo-station>hotel-xp : 1 segment(s) tracé(s)
 hotel-xp>xingping : 1 segment(s) tracé(s)
 xingping>vingt-yuans : 1 segment(s) tracé(s)

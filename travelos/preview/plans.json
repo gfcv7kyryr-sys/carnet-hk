@@ -105,15 +105,13 @@
   "ville": "Xingping",
   "arrets": 8,
   "troncons": 7,
-  "traces": 4,
+  "traces": 5,
   "a_confirmer": [
-   "gz-south → yangshuo-station : aucune voie continue entre les deux points",
    "vingt-yuans → cormorans : OSRM foot : départ ou arrivée à plus de 250 m d'une voie",
    "cormorans → hotel-soir : OSRM foot : départ ou arrivée à plus de 250 m d'une voie"
   ],
   "points_a_confirmer": [
    "hotel-gz",
-   "yangshuo-station",
    "hotel-xp",
    "cormorans",
    "hotel-soir"
@@ -141,17 +139,14 @@
   "ville": "Xingping",
   "arrets": 6,
   "troncons": 5,
-  "traces": 2,
+  "traces": 3,
   "a_confirmer": [
    "hotel-matin → xianggong : bac et transfert vers Xianggong à confirmer sur place",
-   "xianggong → hotel-valises : bac et transfert vers Xianggong à confirmer sur place",
-   "yangshuo-station → west-kowloon : aucune voie continue entre les deux points"
+   "xianggong → hotel-valises : bac et transfert vers Xianggong à confirmer sur place"
   ],
   "points_a_confirmer": [
    "hotel-matin",
-   "xianggong",
-   "hotel-valises",
-   "yangshuo-station"
+   "hotel-valises"
   ]
  },
  {
