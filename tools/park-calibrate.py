@@ -72,9 +72,9 @@ arr = np.asarray(src).astype(np.float32)
 out = np.zeros((OH, OW, 4), np.float32)
 for ch in range(4):
     out[..., ch] = map_coordinates(arr[..., ch], [Q[..., 1], Q[..., 0]], order=1, mode="constant", cval=0)
-# Bords adoucis (25 px) pour que l'illustration se fonde dans le fond de carte.
+# Bords adoucis (90 px de forêt) pour que l'illustration se fonde dans le fond de carte.
 d = np.minimum.reduce([Q[..., 0], W0 - Q[..., 0], Q[..., 1], H0 - Q[..., 1]])
-out[..., 3] *= np.clip(d / 25.0, 0, 1)
+out[..., 3] *= np.clip(d / 90.0, 0, 1) ** 1.5
 img = Image.fromarray(out.clip(0, 255).astype(np.uint8), "RGBA")
 dst = os.path.join(ROOT, "android/app/src/main/assets/map/hkdl-plan.webp")
 os.makedirs(os.path.dirname(dst), exist_ok=True)
