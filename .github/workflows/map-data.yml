@@ -8,6 +8,7 @@ on:
     paths:
       - "travelos/routes/*.json"
       - "tools/osm-routes.py"
+      - "tools/osm-discover.py"
       - "tools/map-preview.py"
       - "android/app/src/main/assets/ui/**"
       - "android/app/src/main/assets/map/**"
@@ -26,12 +27,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      - name: Inventaire OpenStreetMap (une fois, ou si le script change)
+        run: |
+          mkdir -p travelos/routes/osm
+          if [ ! -f travelos/routes/osm/discover.json ] || git diff --name-only HEAD~1 HEAD | grep -q osm-discover.py; then
+            python3 tools/osm-discover.py 2>&1 | tail -20
+          fi
 
       - name: Tracer les trajets sur OpenStreetMap
         run: |
