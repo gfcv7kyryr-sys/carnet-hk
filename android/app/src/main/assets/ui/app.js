@@ -1109,18 +1109,18 @@ function openArticle(id) {
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
 }
-/* « Se faire comprendre » : le carnet remplit les phrases, panneaux et chiffres par script ; l'app les remplit ici. */
+/* « Se faire comprendre » : la fiche garde ce qui lui est propre (cantonais ou mandarin, compter sur les doigts)
+   et renvoie vers les listes, qui ne vivent qu'à un seul endroit : Guide › Traduire. */
 function fillLangue() {
   const box = $("#sheetBody article"); if (!box) return;
   const mods = $$(".mod", box);
   const phr = mods.find((m) => m.querySelector("ul.phr"));
-  if (phr) phr.innerHTML = pocketPhrases().replace('id="langSeg"', 'id="langSegA"');
-  const grid = (items) => `<div class="signs">${items.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.fr)}"><span class="zh">${esc(x.zh)}</span><small>${esc(x.fr)}</small></button>`).join("")}</div>`;
-  mods.filter((m) => m.querySelector(".tiles")).forEach((m, i) => { m.querySelector(".tiles").outerHTML = grid(i === 0 ? P.signs : P.numbers); });
-  $("#langSegA")?.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-lang]"); if (!b) return;
-    store.set("phrLang", b.dataset.lang); const y = $("#sheet").scrollTop; openArticle("langue"); $("#sheet").scrollTop = y;
+  if (phr) phr.innerHTML = `<div class="acts" style="justify-content:center"><button class="pill red" data-guide="phrases">Phrases utiles</button><button class="pill" data-guide="signs">Panneaux et chiffres</button></div>`;
+  mods.filter((m) => m.querySelector(".tiles")).forEach((m) => {
+    const cap = m.querySelector(".caption");
+    if (cap) { m.querySelector(".tiles").remove(); m.querySelector("h2").textContent = "Compter sur les doigts."; } else m.remove();
   });
+  box.querySelector(".printonly")?.remove();
 }
 function closeSheet() { const was = !$("#sheet").hidden; $("#sheet").hidden = true; sheetStop = null; if (was) mapSync(); }
 
@@ -1193,8 +1193,8 @@ function foodDimsum() {
 
 const GUIDE = [["learn", "Comprendre"], ["ask", "Demander"], ["translate", "Traduire"], ["photo", "Photo"]];
 function viewGuide(arg) {
-  const sub = arg === "phrases" ? "phrases" : "translate"; // Traduire regroupe Traduction et Phrases utiles
-  if (arg === "phrases") arg = "translate";
+  const sub = arg === "phrases" || arg === "signs" ? arg : "translate"; // Traduire regroupe Traduction, Phrases utiles et Panneaux
+  if (sub !== "translate") arg = "translate";
   const seg = GUIDE.some(([k]) => k === arg) ? arg : store.get("guideSeg", "learn");
   store.set("guideSeg", seg);
   const body = { learn: guideLearn, ask: guideAsk, translate: () => guideTranslateTabs(sub), photo: guidePhoto }[seg]();
@@ -1243,8 +1243,9 @@ function guideAsk(ctx) {
 function guideTranslateTabs(sub) {
   return `<div style="text-align:center;margin-top:-4px"><div class="seg sub" role="tablist">
       <button role="tab" aria-selected="${sub === "translate"}" class="${sub === "translate" ? "on" : ""}" data-guide="translate">Traduction</button>
-      <button role="tab" aria-selected="${sub === "phrases"}" class="${sub === "phrases" ? "on" : ""}" data-guide="phrases">Phrases utiles</button></div></div>
-    ${sub === "phrases" ? pocketPhrases() : guideTranslate()}`;
+      <button role="tab" aria-selected="${sub === "phrases"}" class="${sub === "phrases" ? "on" : ""}" data-guide="phrases">Phrases utiles</button>
+      <button role="tab" aria-selected="${sub === "signs"}" class="${sub === "signs" ? "on" : ""}" data-guide="signs">Panneaux</button></div></div>
+    ${sub === "phrases" ? pocketPhrases() : sub === "signs" ? pocketSigns() : guideTranslate()}`;
 }
 function guideTranslate() {
   return `<div class="tile tr"><h3>Traducteur hors ligne</h3>
@@ -1256,7 +1257,7 @@ function guideTranslate() {
     <div class="acts" id="trActs" hidden><button class="pill red" id="trShow">Montrer en grand</button><button class="pill" id="trSpeakZh">Écouter (mandarin)</button><button class="pill" id="trSpeakYue">Écouter (cantonais)</button></div></div>
   <div class="tile"><h3>Conversation et caméra</h3><p>Pour traduire en parlant ou en photographiant un menu, Google Traduction fonctionne aussi hors ligne une fois la langue « chinois » téléchargée dans l'appli. À installer avant le départ : le Play Store ne fonctionne pas en Chine continentale.</p>
     <div class="acts"><button class="pill" id="gTr">Ouvrir Google Traduction</button></div></div>
-  <div class="acts" style="justify-content:center"><button class="pill" data-guide="phrases">Phrases utiles</button><button class="pill" data-pocket="signs">Panneaux</button></div>`;
+  <div class="acts" style="justify-content:center"></div>`;
 }
 function guidePhoto() {
   const d = phase().day || P.days[0];
@@ -1320,10 +1321,10 @@ function askGuide(withPhoto) {
 
 /* ================= Poche ================= */
 
-const POCKET = [["resas", "Billets"], ["hotels", "Hôtels"], ["conv", "Devises"], ["signs", "Panneaux"], ["sos", "SOS"]];
+const POCKET = [["resas", "Billets"], ["hotels", "Hôtels"], ["conv", "Devises"], ["sos", "SOS"]];
 function viewPocket(seg) {
   seg = seg || store.get("pocketSeg", "resas");
-  if (seg === "phrases") seg = "resas"; // les phrases vivent désormais dans Guide › Traduire › Phrases utiles
+  if (seg === "phrases" || seg === "signs") seg = "resas"; // phrases et panneaux vivent désormais dans Guide › Traduire
   store.set("pocketSeg", seg);
   const body = { resas: pocketResas, hotels: pocketHotels, phrases: pocketPhrases, conv: pocketConv, signs: pocketSigns, sos: pocketSos }[seg]();
   return `<header class="hero-t small"><h1 class="display">Dans la poche</h1></header>
@@ -1370,7 +1371,7 @@ function pocketSigns() {
   const grid = (items, a, b) => `<div class="signs">${items.map((x) => `<button data-showtext="${esc(x[a])}" data-showfr="${esc(x[b])}"><span class="zh">${esc(x[a])}</span><small>${esc(x[b])}</small></button>`).join("")}</div>`;
   return `<section class="sec"><h2 class="h3">Panneaux</h2>${grid(P.signs, "zh", "fr")}</section>
     <section class="sec"><h2 class="h3">Les nombres</h2>${grid(P.numbers, "zh", "fr")}</section>
-    <section class="sec"><h2 class="h3">Dim sum</h2>${grid(P.dimsum.map((x) => ({ zh: x.zh, fr: `${x.roman} · ${x.fr}` })), "zh", "fr")}</section>`;
+    <div class="acts" style="justify-content:center"><button class="pill" data-article="dimsum">La carte du dim sum</button></div>`;
 }
 function pocketSos() {
   const e = P.emergency;
@@ -1622,7 +1623,7 @@ document.addEventListener("click", (e) => {
   if (d.back !== undefined) return back();
   if (d.close !== undefined) return closeSheet();
   if (d.closeShow !== undefined) return closeShow();
-  if (d.pocket === "phrases") return go("guide", null, "phrases", stack[stack.length - 1]?.tab !== "guide");
+  if (d.pocket === "phrases" || d.pocket === "signs") return go("guide", null, d.pocket, stack[stack.length - 1]?.tab !== "guide");
   if (d.pocket) return go("pocket", null, d.pocket, stack[stack.length - 1]?.tab !== "pocket");
   if (d.music !== undefined) return go("music");
   if (d.track !== undefined) return playAlbum(+d.track);

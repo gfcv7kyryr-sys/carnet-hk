@@ -1,0 +1,151 @@
+{
+ "title": "Dragons et lanternes",
+ "subtitle": "L'album du voyage",
+ "chapters": [
+  {
+   "title": "Le départ",
+   "tracks": [
+    {
+     "title": "Lantern road",
+     "src": "travelos/album/lantern-road.mp3",
+     "seconds": 214
+    },
+    {
+     "title": "Dragons et lanternes",
+     "src": "travelos/album/dragons-et-lanternes.mp3",
+     "seconds": 207
+    }
+   ]
+  },
+  {
+   "title": "Hong Kong",
+   "tracks": [
+    {
+     "title": "Neon Harbour",
+     "src": "travelos/album/neon-harbour.mp3",
+     "seconds": 252
+    },
+    {
+     "title": "Harbour Light",
+     "src": "travelos/album/harbour-light.mp3",
+     "seconds": 162
+    },
+    {
+     "title": "Harbour Home",
+     "src": "travelos/album/harbour-home.mp3",
+     "seconds": 212
+    }
+   ]
+  },
+  {
+   "title": "Macao",
+   "tracks": [
+    {
+     "title": "Azulejos",
+     "src": "travelos/album/azulejos.mp3",
+     "seconds": 168
+    },
+    {
+     "title": "Pastel de nata",
+     "src": "travelos/album/pastel-de-nata.mp3",
+     "seconds": 262
+    },
+    {
+     "title": "Saudade à trois",
+     "src": "travelos/album/saudade-a-trois.mp3",
+     "seconds": 247
+    }
+   ]
+  },
+  {
+   "title": "Canton",
+   "tracks": [
+    {
+     "title": "Sunday swing",
+     "src": "travelos/album/sunday-swing.mp3",
+     "seconds": 165
+    },
+    {
+     "title": "Table pour trois",
+     "src": "travelos/album/table-pour-trois.mp3",
+     "seconds": 145
+    }
+   ]
+  },
+  {
+   "title": "Shenzhen",
+   "tracks": [
+    {
+     "title": "Neon Grid",
+     "src": "travelos/album/neon-grid.mp3",
+     "seconds": 230
+    },
+    {
+     "title": "Circuit in the Sky",
+     "src": "travelos/album/circuit-in-the-sky.mp3",
+     "seconds": 126
+    },
+    {
+     "title": "Home Signal",
+     "src": "travelos/album/home-signal.mp3",
+     "seconds": 177
+    }
+   ]
+  },
+  {
+   "title": "Xingping · la rivière Li",
+   "tracks": [
+    {
+     "title": "Li River Soul",
+     "src": "travelos/album/li-river-soul.mp3",
+     "seconds": 272
+    },
+    {
+     "title": "Amen, Li River",
+     "src": "travelos/album/amen-li-river.mp3",
+     "seconds": 167
+    },
+    {
+     "title": "Trois voix sur la rivière",
+     "src": "travelos/album/trois-voix-sur-la-riviere.mp3",
+     "seconds": 197
+    }
+   ]
+  },
+  {
+   "title": "Huangyao",
+   "tracks": [
+    {
+     "title": "Matin à Huangyao",
+     "src": "travelos/album/matin-a-huangyao.mp3",
+     "seconds": 177
+    }
+   ]
+  },
+  {
+   "title": "Charlie et Xiao Long",
+   "tracks": [
+    {
+     "title": "Petite Lanterne",
+     "src": "travelos/album/petite-lanterne.mp3",
+     "seconds": 224
+    },
+    {
+     "title": "Bonne nuit Xiao Long",
+     "src": "travelos/album/bonne-nuit-xiao-long.mp3",
+     "seconds": 207
+    }
+   ]
+  },
+  {
+   "title": "Le retour",
+   "tracks": [
+    {
+     "title": "Lanterns in the Dark",
+     "src": "travelos/album/lanterns-in-the-dark.mp3",
+     "seconds": 163
+    }
+   ]
+  }
+ ]
+}
