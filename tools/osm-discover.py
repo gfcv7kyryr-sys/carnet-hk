@@ -14,7 +14,7 @@ Tout est en WGS-84 (OpenStreetMap). À lancer là où Internet est ouvert (workf
 import json, math, os, re, sys, time, urllib.parse, urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = "TravelOS/0.14 (carnet de voyage familial)"
-OVERPASS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
+OVERPASS = ["https://maps.mail.ru/osm/tools/overpass/api/interpreter", "https://overpass.private.coffee/api/interpreter", "https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
 KEEP = ("tourism", "leisure", "historic", "railway", "public_transport", "aerialway", "man_made", "amenity", "building", "attraction", "place", "highway", "natural", "landuse", "route")
 AMENITY_OK = {"place_of_worship", "ferry_terminal", "bus_station", "taxi", "theatre", "arts_centre", "library", "marketplace", "parking", "townhall", "public_bookcase", "community_centre"}
 
@@ -75,6 +75,11 @@ def around(lat, lng, R, names):
     ent.sort(key=lambda s: s["d"]); trans.sort(key=lambda s: s["d"])
     return {"named": named[:30], "entrances": ent[:25], "transit": trans[:20]}
 
+DST = os.path.join(ROOT, "travelos/routes/osm/discover.json")
+def save(out):
+    os.makedirs(os.path.dirname(DST), exist_ok=True)
+    json.dump(out, open(DST, "w", encoding="utf8"), ensure_ascii=False, indent=0)
+
 def main():
     pack = json.load(open(os.path.join(ROOT, "travelos/pack/pack.json"), encoding="utf8"))
     pl = {x["id"]: x for x in pack["places"]}
@@ -84,11 +89,15 @@ def main():
             for i in (s.get("placeIds") or ([s["placeId"]] if s.get("placeId") else [])):
                 if i not in ids and i in pl: ids.append(i)
     out = {"places": {}, "hotels": {}, "hkdl": []}
+    print("Hong Kong Disneyland…", flush=True)
+    d = overpass('[out:json][timeout:120];nwr(22.3040,114.0320,22.3200,114.0530)["name"];out center tags qt;')
+    out["hkdl"] = [slim(e, [22.3125, 114.0415]) for e in d["elements"] if pt(e)]
+    save(out)
     for i in ids:
         x = pl[i]
         print(i, x["name"], flush=True)
         out["places"][i] = {"carnet": [x["lat"], x["lng"]], "name": x["name"], "zh": x.get("nameZh"), **around(x["lat"], x["lng"], 450, [x["name"], x.get("nameZh")])}
-        time.sleep(1)
+        save(out)  # résultat partiel gardé au fil de l'eau
     hotels = {"nathan": ("Nathan Hotel|彌敦酒店", 22.3047, 114.1715), "voco": ("voco|Shifu|十甫", 23.1225, 113.2500),
               "lijiang": ("Lijiang|漓江|Riverside|Island", 24.9200, 110.5200), "hollywood": ("Hollywood|好萊塢", 22.3095, 114.0480)}
     for k, (rx, la, ln) in hotels.items():
@@ -97,13 +106,8 @@ def main():
         out["hotels"][k] = [slim(e, [la, ln]) for e in d["elements"] if pt(e)][:10]
         d = overpass(f'[out:json][timeout:90];nwr(around:2500,{la},{ln})["tourism"~"hotel|guest_house|resort"];out center tags qt;')
         out["hotels"][k + "-tous"] = sorted([slim(e, [la, ln]) for e in d["elements"] if pt(e)], key=lambda s: s["d"])[:25]
-    print("Hong Kong Disneyland…")
-    d = overpass('[out:json][timeout:120];nwr(22.3040,114.0320,22.3200,114.0530)["name"];out center tags qt;')
-    out["hkdl"] = [slim(e, [22.3125, 114.0415]) for e in d["elements"] if pt(e)]
-    dst = os.path.join(ROOT, "travelos/routes/osm/discover.json")
-    os.makedirs(os.path.dirname(dst), exist_ok=True)
-    json.dump(out, open(dst, "w", encoding="utf8"), ensure_ascii=False, indent=0)
-    print(f"→ {dst} : {len(out['places'])} lieux, {len(out['hkdl'])} éléments dans le parc")
+    save(out)
+    print(f"→ {DST} : {len(out['places'])} lieux, {len(out['hkdl'])} éléments dans le parc")
 
 if __name__ == "__main__":
     main()

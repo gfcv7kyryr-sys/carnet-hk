@@ -27,7 +27,7 @@ from datetime import datetime, timezone
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = "TravelOS/0.11 (carnet de voyage familial; github travelos-socle)"
 BBOX = (22.255, 114.12, 22.335, 114.235)  # sud, ouest, nord, est : île de Hong Kong et Kowloon
-OVERPASS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
+OVERPASS = ["https://maps.mail.ru/osm/tools/overpass/api/interpreter", "https://overpass.private.coffee/api/interpreter", "https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
 
 def http(url, data=None, tries=3):
     last = None

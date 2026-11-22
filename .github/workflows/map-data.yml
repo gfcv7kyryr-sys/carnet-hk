@@ -38,10 +38,12 @@ jobs:
           node-version: "20"
 
       - name: Inventaire OpenStreetMap (une fois, ou si le script change)
+        timeout-minutes: 25
+        continue-on-error: true
         run: |
           mkdir -p travelos/routes/osm
           if [ ! -f travelos/routes/osm/discover.json ] || git diff --name-only HEAD~1 HEAD | grep -q osm-discover.py; then
-            python3 tools/osm-discover.py 2>&1 | tail -20
+            python3 -u tools/osm-discover.py 2>&1 | tee travelos/routes/osm/discover.log | tail -20
           fi
 
       - name: Caler le plan illustré de Disneyland
@@ -52,10 +54,11 @@ jobs:
           python3 tools/park-calibrate.py 2>&1 | tee travelos/routes/osm/hkdl-calage.log
 
       - name: Tracer les trajets sur OpenStreetMap
+        timeout-minutes: 60
         run: |
           set -o pipefail
           mkdir -p travelos/routes/osm travelos/preview
-          python3 tools/osm-routes.py 2>&1 | tee travelos/routes/osm/trajets.log
+          python3 -u tools/osm-routes.py 2>&1 | tee travelos/routes/osm/trajets.log
 
       - name: Signaler les erreurs du tracé
         if: failure()
@@ -74,6 +77,7 @@ jobs:
           python3 tools/map-preview.py 2>&1 | tee travelos/preview/map-preview.log || { tail -30 travelos/preview/map-preview.log | while IFS= read -r l; do echo "::warning::$l"; done; exit 1; }
 
       - name: Enregistrer sur la branche
+        if: always()
         run: |
           git config user.name "travelos-bot"
           git config user.email "travelos-bot@users.noreply.github.com"
