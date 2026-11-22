@@ -9,7 +9,7 @@
   chargement sz.overpass.json…
   chargement xp.overpass.json…
   OSM local : 39467 nœuds, 65293 voies, 4586 relations
-  ⚠ arrêt pier1 : « Pier 1, Tsim Sha Tsui · Aqua Luna / 尖沙咀1號公眾碼頭 » introuvable dans OSM → point du carnet, à confirmer
+  ⚠ arrêt pier1 : « Tsim Sha Tsui Public Pier No. 1 / 尖沙咀1號公眾碼頭 / Tsim Sha Tsui Pier 1 / Public Pier No. 1 » introuvable dans OSM → point du carnet, à confirmer
 
 aeroport>kowloon-station
   train        31237 m  voies de la ligne Airport Express|機場快綫 (relation 5317238 (Airport Express)) jusqu'à Kowloon / 九龍 Kowloon / 九龍 (OSM nœud 1295654836, relation 5317238 (Airport Express))
@@ -48,20 +48,20 @@ k11>hotel-c : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j1.json
 
 ================ j10 ================
-  ✗ arrêt hotel-matin : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM
-  ⚠ arrêt hy-theatre : « 黄姚古戏台 / 宝珠观 » introuvable dans OSM → point du carnet, à confirmer
+  ⚠ arrêt hotel-matin : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
   ⚠ arrêt hy-banian : « 龙爪榕 » introuvable dans OSM → point du carnet, à confirmer
   ⚠ arrêt hy-dailong : « 带龙桥 » introuvable dans OSM → point du carnet, à confirmer
   ⚠ arrêt hy-anle : « 安乐街 » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt hotel-soir : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-soir : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
 
-hotel-matin>huangyao : arrêt sans point, ignoré
+hotel-matin>huangyao
+  car         122771 m  OSRM en voiture sur OpenStreetMap (117 min estimées)
 
 huangyao>hy-theatre
-  walk           677 m  OSRM à pied sur OpenStreetMap (8 min estimées)
+  walk          1250 m  OSRM à pied sur OpenStreetMap (16 min estimées)
 
 hy-theatre>hy-banian
-  walk           207 m  OSRM à pied sur OpenStreetMap (1 min estimées)
+  walk           693 m  OSRM à pied sur OpenStreetMap (8 min estimées)
 
 hy-banian>hy-dailong
   walk           715 m  OSRM à pied sur OpenStreetMap (6 min estimées)
@@ -72,29 +72,35 @@ hy-dailong>hy-anle
 hy-anle>huangyao-depart
   walk           741 m  OSRM à pied sur OpenStreetMap (8 min estimées)
 
-huangyao-depart>hotel-soir : arrêt sans point, ignoré
+huangyao-depart>hotel-soir
+  car         122597 m  OSRM en voiture sur OpenStreetMap (117 min estimées)
 
+hotel-matin>huangyao : 1 segment(s) tracé(s)
 huangyao>hy-theatre : 1 segment(s) tracé(s)
 hy-theatre>hy-banian : 1 segment(s) tracé(s)
 hy-banian>hy-dailong : 1 segment(s) tracé(s)
 hy-dailong>hy-anle : 1 segment(s) tracé(s)
 hy-anle>huangyao-depart : 1 segment(s) tracé(s)
+huangyao-depart>hotel-soir : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j10.json
 
 ================ j11 ================
-  ✗ arrêt hotel-matin : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-matin : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
   ⚠ arrêt xianggong : « 相公山 / Xianggong Hill / Xianggong Mountain » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt hotel-valises : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-valises : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
   ⚠ arrêt yangshuo-station : « 阳朔站 / Yangshuo Railway Station / Yangshuo Station » introuvable dans OSM → point du carnet, à confirmer
 
-hotel-matin>xianggong : arrêt sans point, ignoré
+hotel-matin>xianggong
+  car        ⚠ à confirmer : bac et transfert vers Xianggong à confirmer sur place
 
-xianggong>hotel-valises : arrêt sans point, ignoré
+xianggong>hotel-valises
+  car        ⚠ à confirmer : bac et transfert vers Xianggong à confirmer sur place
 
-hotel-valises>yangshuo-station : arrêt sans point, ignoré
+hotel-valises>yangshuo-station
+  car           6018 m  OSRM en voiture sur OpenStreetMap (15 min estimées)
 
 yangshuo-station>west-kowloon
-  train      ⚠ à confirmer : voie highspeed à 6619 m / 63765 m des points
+  train      ⚠ à confirmer : aucune voie continue entre les deux points
 
 west-kowloon>hotel-disney
   walk           621 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée L de la station)
@@ -102,27 +108,26 @@ west-kowloon>hotel-disney
   metro         3126 m  voies de la ligne Disneyland Resort Line|迪士尼綫 (relation 4709540 (MTR Disneyland Resort Line (Southbound))) jusqu'à Disneyland Resort / 迪士尼 Disneyland Resort / 迪士尼 (OSM nœud 357138078, relation 4709540 (MTR Disneyland Resort Line (Southbound)))
   bus           2327 m  OSRM en voiture sur OpenStreetMap (5 min estimées)
 
+hotel-matin>xianggong : 0 segment(s) tracé(s), 1 à confirmer
+xianggong>hotel-valises : 0 segment(s) tracé(s), 1 à confirmer
+hotel-valises>yangshuo-station : 1 segment(s) tracé(s)
 yangshuo-station>west-kowloon : 0 segment(s) tracé(s), 1 à confirmer
 west-kowloon>hotel-disney : 4 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j11.json
 
 ================ j12 ================
-  ⚠ arrêt disney : « Disneyland Resort Public Transport Interchange / 迪士尼樂園公共運輸交匯處 / Disneyland Resort Station / 迪士尼站 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt dl-adventure : « Adventureland / 探險世界 » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt cinema : « Main Street Cinema / 大街電影院 » introuvable dans OSM
-  ⚠ arrêt dl-tomorrow : « Orbitron / 太空飛碟 / Tomorrowland » introuvable dans OSM → point du carnet, à confirmer
 
 hotel-matin>disney
-  bus           1283 m  OSRM en voiture sur OpenStreetMap (3 min estimées)
+  bus           3057 m  OSRM en voiture sur OpenStreetMap (4 min estimées)
 
 disney>dl-main
-  walk           396 m  OSRM à pied sur OpenStreetMap (5 min estimées)
+  walk           625 m  OSRM à pied sur OpenStreetMap (8 min estimées)
 
 dl-main>dl-frozen
-  walk           860 m  OSRM à pied sur OpenStreetMap (11 min estimées)
+  walk           797 m  OSRM à pied sur OpenStreetMap (10 min estimées)
 
 dl-frozen>dl-castle
-  walk           427 m  OSRM à pied sur OpenStreetMap (5 min estimées)
+  walk           405 m  OSRM à pied sur OpenStreetMap (5 min estimées)
 
 dl-castle>dl-fantasy
   walk           104 m  OSRM à pied sur OpenStreetMap (1 min estimées)
@@ -137,24 +142,26 @@ philharmagic>plaza-inn
   walk           326 m  OSRM à pied sur OpenStreetMap (4 min estimées)
 
 plaza-inn>dl-adventure
-  walk           357 m  OSRM à pied sur OpenStreetMap (4 min estimées)
+  walk           247 m  OSRM à pied sur OpenStreetMap (3 min estimées)
 
 dl-adventure>dl-toy
-  walk           263 m  OSRM à pied sur OpenStreetMap (3 min estimées)
+  walk           431 m  OSRM à pied sur OpenStreetMap (5 min estimées)
 
 dl-toy>dl-mystic
   walk           301 m  OSRM à pied sur OpenStreetMap (3 min estimées)
 
-dl-mystic>cinema : arrêt sans point, ignoré
+dl-mystic>cinema
+  walk           783 m  OSRM à pied sur OpenStreetMap (10 min estimées)
 
-cinema>jungle : arrêt sans point, ignoré
+cinema>jungle
+  walk           480 m  OSRM à pied sur OpenStreetMap (6 min estimées)
 
 jungle>dl-tomorrow
-  walk           510 m  OSRM à pied sur OpenStreetMap (6 min estimées)
+  walk           426 m  OSRM à pied sur OpenStreetMap (5 min estimées)
 
 dl-tomorrow>hotel-soir
-  walk       ⚠ à confirmer : « Disneyland Resort Public Transport Interchange / 迪士尼樂園公共運輸交匯處 / Disneyland Resort Station / 迪士尼站 » introuvable dans OSM
-  bus           2253 m  OSRM en voiture sur OpenStreetMap (4 min estimées)
+  walk           946 m  OSRM à pied sur OpenStreetMap (12 min estimées)
+  bus           2221 m  OSRM en voiture sur OpenStreetMap (3 min estimées)
 
 hotel-matin>disney : 1 segment(s) tracé(s)
 disney>dl-main : 1 segment(s) tracé(s)
@@ -167,19 +174,19 @@ philharmagic>plaza-inn : 1 segment(s) tracé(s)
 plaza-inn>dl-adventure : 1 segment(s) tracé(s)
 dl-adventure>dl-toy : 1 segment(s) tracé(s)
 dl-toy>dl-mystic : 1 segment(s) tracé(s)
+dl-mystic>cinema : 1 segment(s) tracé(s)
+cinema>jungle : 1 segment(s) tracé(s)
 jungle>dl-tomorrow : 1 segment(s) tracé(s)
-dl-tomorrow>hotel-soir : 1 segment(s) tracé(s), 1 à confirmer
+dl-tomorrow>hotel-soir : 2 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j12.json
 
 ================ j13 ================
-  ⚠ arrêt airport : « Hong Kong International Airport Terminal 1 / 香港國際機場一號客運大樓 / Terminal 1 » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt airport-soir : « Hong Kong International Airport Terminal 1 / 香港國際機場一號客運大樓 / Terminal 1 » introuvable dans OSM
 
 hotel>airport
-  taxi       ⚠ à confirmer : OSRM car : départ ou arrivée à plus de 250 m d'une voie
+  taxi         15240 m  OSRM en voiture sur OpenStreetMap (16 min estimées)
 
 airport>ngong-ping
-  bus        ⚠ à confirmer : OSRM car : départ ou arrivée à plus de 250 m d'une voie
+  bus           5617 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
 
 ngong-ping>ngong-ping-haut
   cablecar      5802 m  voies OSM (aerialway), recollées à 13 m / 15 m des points
@@ -193,14 +200,16 @@ big-buddha>tai-o
 tai-o>tung-chung
   bus          24891 m  OSRM en voiture sur OpenStreetMap (29 min estimées)
 
-tung-chung>airport-soir : arrêt sans point, ignoré
+tung-chung>airport-soir
+  bus           4631 m  OSRM en voiture sur OpenStreetMap (6 min estimées)
 
-hotel>airport : 0 segment(s) tracé(s), 1 à confirmer
-airport>ngong-ping : 0 segment(s) tracé(s), 1 à confirmer
+hotel>airport : 1 segment(s) tracé(s)
+airport>ngong-ping : 1 segment(s) tracé(s)
 ngong-ping>ngong-ping-haut : 1 segment(s) tracé(s)
 ngong-ping-haut>big-buddha : 1 segment(s) tracé(s)
 big-buddha>tai-o : 1 segment(s) tracé(s)
 tai-o>tung-chung : 1 segment(s) tracé(s)
+tung-chung>airport-soir : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j13.json
 
 ================ j2 ================
@@ -337,9 +346,7 @@ changsha>hotel-nuit : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j3.json
 
 ================ j4 ================
-  ⚠ arrêt senado : « Place du Sénat / 議事亭前地 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt taipa : « Village de Taipa / 氹仔舊城區 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt cotai : « Cotai Strip : Venetian, Parisian, Londoner / 路氹金光大道 » introuvable dans OSM → point du carnet, à confirmer
+  ⚠ arrêt senado : « Largo do Senado / 議事亭前地 / 議事亭前地 Largo do Senado » introuvable dans OSM → point du carnet, à confirmer
 
 hotel-matin>terminal-hk
   walk           429 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée B2 de la station)
@@ -357,13 +364,13 @@ senado>a-ma
   taxi          3800 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
 
 a-ma>taipa
-  taxi          8176 m  OSRM en voiture sur OpenStreetMap (11 min estimées)
+  taxi          8020 m  OSRM en voiture sur OpenStreetMap (11 min estimées)
 
 taipa>cotai
-  walk          2223 m  OSRM à pied sur OpenStreetMap (28 min estimées)
+  walk          1975 m  OSRM à pied sur OpenStreetMap (25 min estimées)
 
 cotai>terminal-taipa
-  taxi          4615 m  OSRM en voiture sur OpenStreetMap (9 min estimées)
+  taxi          3957 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
 
 terminal-taipa>macau-ferry
   ferry       120946 m  voies OSM (ferry), recollées à 259 m / 23 m des points
@@ -383,91 +390,89 @@ macau-ferry>hotel-soir : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j4.json
 
 ================ j5 ================
-  ✗ arrêt hotel-matin : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-matin : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
   ⚠ arrêt talent-park : « Talent Park, drone Meituan / 人才公园 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt inno100 : « INNO100, boutique de robots / INNO100 深圳湾文化广场 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt zhongshuge : « Librairie Zhongshuge, Happy Harbour / 钟书阁 欢乐港湾 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt gangxia-north : ligne « 深圳地铁11号线|Shenzhen Metro Line 11\b » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt mocaup : « MOCAUP, musée d'art et d'urbanisme / 深圳当代艺术与城市规划馆 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt children-palace : « Palais des enfants de Shenzhen / 深圳少年宫 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt one-avenue : « One Avenue, Futian / 卓悦中心 » introuvable dans OSM → point du carnet, à confirmer
   ⚠ arrêt orbit-one : « Orbit One, IN City Plaza / 轨道餐厅 印力中心 » introuvable dans OSM → point du carnet, à confirmer
-  ⚠ arrêt civic-center : « Centre civique de Shenzhen / 深圳市民中心 » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt hotel-soir : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-soir : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
 
-hotel-matin>gz-south : arrêt sans point, ignoré
+hotel-matin>gz-south
+  taxi         20039 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
 
 gz-south>futian
-  train      ⚠ à confirmer : voie highspeed à 141 m / 53360 m des points
+  train       111638 m  voies OSM (highspeed), recollées à 242 m / 34 m des points
 
 futian>talent-park
-  walk       ⚠ à confirmer : ligne « 深圳地铁11号线|Shenzhen Metro Line 11\b » introuvable dans OSM
-  metro      ⚠ à confirmer : ligne « 深圳地铁11号线|Shenzhen Metro Line 11\b » introuvable dans OSM
-  metro        14814 m  voies de la ligne 深圳地铁13号线|Shenzhen Metro Line 13\b (relation 18470804 (Subway Line 13: Shenzhen Bay Checkpoint → Lisonglang)) jusqu'à sortie B1 (OSM nœud 12558430569)
+  walk           623 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée 7 de la station)
+  metro        12065 m  voies de la ligne ^(?=.*(深圳|Shenzhen))(?=.*(?<!\d)11(?!\d)) (relation 6450277 (Subway Line 11: Hongling South → Bitou)) jusqu'à Houhai / 后海 / 后海 (OSM nœud 4136048004, relation 6450277 (Subway Line 11: Hongling South → Bitou))
+  metro         3153 m  voies de la ligne ^(?=.*(深圳|Shenzhen))(?=.*(?<!\d)13(?!\d)) (relation 18470804 (Subway Line 13: Shenzhen Bay Checkpoint → Lisonglang)) jusqu'à sortie B1 (OSM nœud 12558430569)
   walk          1058 m  OSRM à pied sur OpenStreetMap (11 min estimées, sortie B1 de la station)
 
 talent-park>inno100
-  walk          1030 m  OSRM à pied sur OpenStreetMap (11 min estimées)
+  walk           512 m  OSRM à pied sur OpenStreetMap (4 min estimées)
 
 inno100>zhongshuge
-  taxi          9897 m  OSRM en voiture sur OpenStreetMap (9 min estimées)
+  taxi         10649 m  OSRM en voiture sur OpenStreetMap (10 min estimées)
 
 zhongshuge>gangxia-north
   metro      ⚠ à confirmer : station de départ près de Happy Harbour à préciser
 
 gangxia-north>mocaup
-  walk          1681 m  OSRM à pied sur OpenStreetMap (21 min estimées)
+  walk          1726 m  OSRM à pied sur OpenStreetMap (22 min estimées)
 
 mocaup>children-palace
-  walk           576 m  OSRM à pied sur OpenStreetMap (7 min estimées)
+  walk           553 m  OSRM à pied sur OpenStreetMap (7 min estimées)
 
 children-palace>one-avenue
-  walk          2010 m  OSRM à pied sur OpenStreetMap (26 min estimées)
+  walk          2261 m  OSRM à pied sur OpenStreetMap (29 min estimées)
 
 one-avenue>orbit-one
-  walk       ⚠ à confirmer : ligne « 深圳地铁1号线|Shenzhen Metro Line 1\b » introuvable dans OSM
-  metro      ⚠ à confirmer : ligne « 深圳地铁1号线|Shenzhen Metro Line 1\b » introuvable dans OSM
-  walk          3439 m  OSRM à pied sur OpenStreetMap (41 min estimées, sortie 11 de la station)
+  walk           507 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée B de la station)
+  metro         2970 m  voies de la ligne ^(?=.*(深圳|Shenzhen))(?=.*(?<!\d)1(?!\d)) (relation 2287554 (Subway Line 1: Luohu → Airport East)) jusqu'à Science Museum / 科学馆 (OSM nœud 350405863, relation 2287554 (Subway Line 1: Luohu → Airport East))
+  walk           358 m  OSRM à pied sur OpenStreetMap (2 min estimées, sortie C de la station)
 
 orbit-one>civic-center
-  taxi          4504 m  OSRM en voiture sur OpenStreetMap (6 min estimées)
+  taxi          5059 m  OSRM en voiture sur OpenStreetMap (6 min estimées)
 
 civic-center>futian-retour
-  walk          1536 m  OSRM à pied sur OpenStreetMap (20 min estimées)
+  walk          1008 m  OSRM à pied sur OpenStreetMap (13 min estimées)
 
 futian-retour>gz-south-retour
-  train      ⚠ à confirmer : voie highspeed à 53360 m / 141 m des points
+  train       111638 m  voies OSM (highspeed), recollées à 34 m / 242 m des points
 
-gz-south-retour>hotel-soir : arrêt sans point, ignoré
+gz-south-retour>hotel-soir
+  taxi         20510 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
 
-gz-south>futian : 0 segment(s) tracé(s), 1 à confirmer
-futian>talent-park : 2 segment(s) tracé(s), 2 à confirmer
+hotel-matin>gz-south : 1 segment(s) tracé(s)
+gz-south>futian : 1 segment(s) tracé(s)
+futian>talent-park : 4 segment(s) tracé(s)
 talent-park>inno100 : 1 segment(s) tracé(s)
 inno100>zhongshuge : 1 segment(s) tracé(s)
 zhongshuge>gangxia-north : 0 segment(s) tracé(s), 1 à confirmer
 gangxia-north>mocaup : 1 segment(s) tracé(s)
 mocaup>children-palace : 1 segment(s) tracé(s)
 children-palace>one-avenue : 1 segment(s) tracé(s)
-one-avenue>orbit-one : 1 segment(s) tracé(s), 2 à confirmer
+one-avenue>orbit-one : 3 segment(s) tracé(s)
 orbit-one>civic-center : 1 segment(s) tracé(s)
 civic-center>futian-retour : 1 segment(s) tracé(s)
-futian-retour>gz-south-retour : 0 segment(s) tracé(s), 1 à confirmer
+futian-retour>gz-south-retour : 1 segment(s) tracé(s)
+gz-south-retour>hotel-soir : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j5.json
 
 ================ j6 ================
-  ✗ arrêt hotel-gz : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
-  ⚠ arrêt croisiere : « 广州塔码头 / Canton Tower Pier » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt hotel-soir : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-gz : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
+  ⚠ arrêt hotel-soir : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
 
 hotel-hk>west-kowloon
   taxi          1297 m  OSRM en voiture sur OpenStreetMap (2 min estimées)
 
 west-kowloon>gz-south
-  train      ⚠ à confirmer : voie highspeed à 63765 m / 141 m des points
+  train       141418 m  voies OSM (highspeed), recollées à 15 m / 242 m des points
 
-gz-south>hotel-gz : arrêt sans point, ignoré
+gz-south>hotel-gz
+  taxi         20510 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
 
-hotel-gz>huacheng : arrêt sans point, ignoré
+hotel-gz>huacheng
+  taxi          9849 m  OSRM en voiture sur OpenStreetMap (9 min estimées)
 
 huacheng>canton-tower
   walk           758 m  OSRM à pied sur OpenStreetMap (8 min estimées, entrée E de la station)
@@ -475,34 +480,40 @@ huacheng>canton-tower
   walk           167 m  OSRM à pied sur OpenStreetMap (1 min estimées, sortie A de la station)
 
 canton-tower>croisiere
-  walk           567 m  OSRM à pied sur OpenStreetMap (8 min estimées)
+  walk           599 m  OSRM à pied sur OpenStreetMap (8 min estimées)
 
-croisiere>hotel-soir : arrêt sans point, ignoré
+croisiere>hotel-soir
+  taxi          9903 m  OSRM en voiture sur OpenStreetMap (12 min estimées)
 
 hotel-hk>west-kowloon : 1 segment(s) tracé(s)
-west-kowloon>gz-south : 0 segment(s) tracé(s), 1 à confirmer
+west-kowloon>gz-south : 1 segment(s) tracé(s)
+gz-south>hotel-gz : 1 segment(s) tracé(s)
+hotel-gz>huacheng : 1 segment(s) tracé(s)
 huacheng>canton-tower : 3 segment(s) tracé(s)
 canton-tower>croisiere : 1 segment(s) tracé(s)
+croisiere>hotel-soir : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j6.json
 
 ================ j7 ================
-  ✗ arrêt hotel-matin : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
-  ✗ arrêt hotel-soir : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-matin : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
+  ⚠ arrêt hotel-soir : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
 
-hotel-matin>chimelong : arrêt sans point, ignoré
+hotel-matin>chimelong
+  car          19285 m  OSRM en voiture sur OpenStreetMap (22 min estimées)
 
-chimelong>hotel-soir : arrêt sans point, ignoré
+chimelong>hotel-soir
+  car          18900 m  OSRM en voiture sur OpenStreetMap (21 min estimées)
 
-
+hotel-matin>chimelong : 1 segment(s) tracé(s)
+chimelong>hotel-soir : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j7.json
 
 ================ j8 ================
-  ✗ arrêt hotel-matin : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
-  ⚠ arrêt shamian : « 沙面岛 / 沙面 / Shamian Island » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt nanxin : « 南信牛奶甜品专家 / 南信 / Nanxin » introuvable dans OSM
-  ✗ arrêt hotel-soir : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-matin : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
+  ⚠ arrêt hotel-soir : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
 
-hotel-matin>yuexiu : arrêt sans point, ignoré
+hotel-matin>yuexiu
+  taxi          3711 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
 
 yuexiu>chen
   taxi          4804 m  OSRM en voiture sur OpenStreetMap (8 min estimées)
@@ -511,38 +522,48 @@ chen>yongqingfang
   walk          2068 m  OSRM à pied sur OpenStreetMap (27 min estimées)
 
 yongqingfang>shamian
-  taxi          2195 m  OSRM en voiture sur OpenStreetMap (5 min estimées)
+  taxi          2137 m  OSRM en voiture sur OpenStreetMap (5 min estimées)
 
-shamian>nanxin : arrêt sans point, ignoré
+shamian>nanxin
+  taxi          2940 m  OSRM en voiture sur OpenStreetMap (5 min estimées)
 
-nanxin>dafo : arrêt sans point, ignoré
+nanxin>dafo
+  taxi          4027 m  OSRM en voiture sur OpenStreetMap (6 min estimées)
 
 dafo>beijing-road
   walk           245 m  OSRM à pied sur OpenStreetMap (3 min estimées)
 
-beijing-road>hotel-soir : arrêt sans point, ignoré
+beijing-road>hotel-soir
+  taxi          2941 m  OSRM en voiture sur OpenStreetMap (5 min estimées)
 
+hotel-matin>yuexiu : 1 segment(s) tracé(s)
 yuexiu>chen : 1 segment(s) tracé(s)
 chen>yongqingfang : 1 segment(s) tracé(s)
 yongqingfang>shamian : 1 segment(s) tracé(s)
+shamian>nanxin : 1 segment(s) tracé(s)
+nanxin>dafo : 1 segment(s) tracé(s)
 dafo>beijing-road : 1 segment(s) tracé(s)
+beijing-road>hotel-soir : 1 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j8.json
 
 ================ j9 ================
-  ✗ arrêt hotel-gz : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-gz : « voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM → point approché, à confirmer
   ⚠ arrêt yangshuo-station : « 阳朔站 / Yangshuo Railway Station / Yangshuo Station » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt hotel-xp : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-xp : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
   ⚠ arrêt cormorans : « 兴坪码头 / Xingping Pier » introuvable dans OSM → point du carnet, à confirmer
-  ✗ arrêt hotel-soir : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM
+  ⚠ arrêt hotel-soir : « Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM → point approché, à confirmer
 
-hotel-gz>gz-south : arrêt sans point, ignoré
+hotel-gz>gz-south
+  taxi         20039 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
 
 gz-south>yangshuo-station
-  train      ⚠ à confirmer : voie highspeed à 141 m / 6619 m des points
+  train      ⚠ à confirmer : aucune voie continue entre les deux points
 
-yangshuo-station>hotel-xp : arrêt sans point, ignoré
+yangshuo-station>hotel-xp
+  car           6018 m  OSRM en voiture sur OpenStreetMap (16 min estimées)
 
-hotel-xp>xingping : arrêt sans point, ignoré
+hotel-xp>xingping
+  walk           582 m  OSRM à pied sur OpenStreetMap (7 min estimées)
 
 xingping>vingt-yuans
   walk          1125 m  OSRM à pied sur OpenStreetMap (15 min estimées)
@@ -550,9 +571,14 @@ xingping>vingt-yuans
 vingt-yuans>cormorans
   walk       ⚠ à confirmer : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
 
-cormorans>hotel-soir : arrêt sans point, ignoré
+cormorans>hotel-soir
+  walk       ⚠ à confirmer : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
 
+hotel-gz>gz-south : 1 segment(s) tracé(s)
 gz-south>yangshuo-station : 0 segment(s) tracé(s), 1 à confirmer
+yangshuo-station>hotel-xp : 1 segment(s) tracé(s)
+hotel-xp>xingping : 1 segment(s) tracé(s)
 xingping>vingt-yuans : 1 segment(s) tracé(s)
 vingt-yuans>cormorans : 0 segment(s) tracé(s), 1 à confirmer
+cormorans>hotel-soir : 0 segment(s) tracé(s), 1 à confirmer
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j9.json

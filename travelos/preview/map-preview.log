@@ -8,46 +8,36 @@ Jour 3 : repères OK 12/12
 Jour 4 · Hong Kong : repères OK 4/4
 Jour 4 · Macao : repères OK 6/6
 Jour 5 · Hong Kong : repères OK 2/2
-Jour 5 · Canton : repères OK 4/4
-Jour 6 : repères OK 1/1
-Jour 7 · Canton : repères OK 2/2
+Jour 5 · Canton : repères OK 6/6
+Jour 6 : repères OK 3/3
+Jour 7 · Canton : repères OK 4/4
 Jour 7 · Shenzhen : repères OK 11/11
-Jour 8 : repères OK 6/6
-Jour 9 · Canton : repères OK 1/1
-Jour 9 · Xingping : repères OK 4/4
-Jour 10 : repères OK 6/6
-Jour 11 · Xingping : repères OK 2/2
+Jour 8 : repères OK 9/9
+Jour 9 · Canton : repères OK 2/2
+Jour 9 · Xingping : repères OK 6/6
+Jour 10 · Xingping : repères OK 2/2
+Jour 10 · Huangyao : repères OK 6/6
+Jour 11 · Xingping : repères OK 4/4
 Jour 11 · Hong Kong : repères OK 2/2
-Jour 12 : repères OK 15/15
-Jour 13 : repères OK 7/7
-Traceback (most recent call last):
-  File "/home/runner/work/carnet-hk/carnet-hk/tools/map-preview.py", line 121, in <module>
-    asyncio.run(shoot())
-  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/asyncio/runners.py", line 195, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/home/runner/work/carnet-hk/carnet-hk/tools/map-preview.py", line 101, in shoot
-    if not illu: await pg.click("[data-mapillu]")
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 9851, in click
-    await self._impl_obj.click(
-  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/playwright/_impl/_page.py", line 828, in click
-    return await self._main_frame.click(**locals_to_params(locals()))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 488, in click
-    await self._channel.send("click", locals_to_params(locals()))
-  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 59, in send
-    return await self._connection.wrap_api_call(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 520, in wrap_api_call
-    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
-playwright._impl._errors.TimeoutError: Page.click: Timeout 30000ms exceeded.
-Call log:
-waiting for locator("[data-mapillu]")
-
+Jour 12 : repères OK 16/16
+Jour 13 : repères OK 8/8
+Jour 1 (Hong Kong) : 8/8 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['pier1']
+Jour 2 (Hong Kong) : 13/13 tronçons tracés ; à confirmer : 0 ; points à confirmer : []
+Jour 3 (Hong Kong) : 11/11 tronçons tracés ; à confirmer : 0 ; points à confirmer : []
+Jour 4 (Macao) : 9/9 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['senado']
+Jour 5 (Canton) : 7/7 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['hotel-gz', 'hotel-soir']
+Jour 6 (Canton) : 2/2 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['hotel-matin', 'hotel-soir']
+Jour 7 (Shenzhen) : 13/14 tronçons tracés ; à confirmer : 1 ; points à confirmer : ['hotel-matin', 'talent-park', 'orbit-one', 'hotel-soir']
+    - zhongshuge → gangxia-north : station de départ près de Happy Harbour à préciser
+Jour 8 (Canton) : 8/8 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['hotel-matin', 'hotel-soir']
+Jour 9 (Xingping) : 4/7 tronçons tracés ; à confirmer : 3 ; points à confirmer : ['hotel-gz', 'yangshuo-station', 'hotel-xp', 'cormorans', 'hotel-soir']
+    - gz-south → yangshuo-station : aucune voie continue entre les deux points
+    - vingt-yuans → cormorans : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
+    - cormorans → hotel-soir : OSRM foot : départ ou arrivée à plus de 250 m d'une voie
+Jour 10 (Huangyao) : 7/7 tronçons tracés ; à confirmer : 0 ; points à confirmer : ['hotel-matin', 'hy-banian', 'hy-dailong', 'hy-anle', 'hotel-soir']
+Jour 11 (Xingping) : 2/5 tronçons tracés ; à confirmer : 3 ; points à confirmer : ['hotel-matin', 'xianggong', 'hotel-valises', 'yangshuo-station']
+    - hotel-matin → xianggong : bac et transfert vers Xianggong à confirmer sur place
+    - xianggong → hotel-valises : bac et transfert vers Xianggong à confirmer sur place
+    - yangshuo-station → west-kowloon : aucune voie continue entre les deux points
+Jour 12 (Disneyland) : 15/15 tronçons tracés ; à confirmer : 0 ; points à confirmer : []
+Jour 13 (Lantau) : 7/7 tronçons tracés ; à confirmer : 0 ; points à confirmer : []

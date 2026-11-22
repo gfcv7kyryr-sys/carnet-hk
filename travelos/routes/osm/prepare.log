@@ -1,16 +1,14 @@
 · hk-ville (cache)
 · hk-lantau (cache)
 · mo (cache)
-  gz via overpass-api.de : HTTP Error 504: Gateway Timeout (52 s)
-  gz via z.overpass-api.de : HTTP Error 504: Gateway Timeout (58 s)
-· gz : 30618 éléments, 34 Mo, 51 s (lz4.overpass-api.de)
+· gz (cache)
 · sz (cache)
 · xp (cache)
 · hy (cache)
 · rail (cache)
 total 140996
 drwxr-xr-x  2 runner runner     4096 Nov 22 04:58 .
-drwxr-xr-x 11 runner runner     4096 Nov 22 04:55 ..
+drwxr-xr-x 11 runner runner     4096 Nov 22 05:11 ..
 -rw-r--r--  1 runner runner 36196099 Nov 22 04:58 gz.overpass.json
 -rw-r--r--  1 runner runner  5250225 Nov 22 04:12 hk-lantau.overpass.json
 -rw-r--r--  1 runner runner 46533155 Nov 22 04:11 hk-ville.overpass.json

@@ -1,6 +1,6 @@
 {
  "day": "j1",
- "generated": "2026-11-22T04:59:20+00:00",
+ "generated": "2026-11-22T05:12:25+00:00",
  "license": "© les contributeurs d'OpenStreetMap (ODbL)",
  "anchors": {
   "station:Airport:Airport Express|機場快綫": {
@@ -71,7 +71,7 @@
     22.2932,
     114.1686
    ],
-   "source": "point du carnet (« Pier 1, Tsim Sha Tsui · Aqua Luna / 尖沙咀1號公眾碼頭 » introuvable dans OSM)",
+   "source": "point du carnet (« Tsim Sha Tsui Public Pier No. 1 / 尖沙咀1號公眾碼頭 / Tsim Sha Tsui Pier 1 / Public Pier No. 1 » introuvable dans OSM)",
    "confirm": true
   },
   "osm:{\"R\": 600, \"entrance\": true, \"near\": [22.293, 114.174], \"osm\": [\"Avenue des Stars\", \"星光大道\"]}": {

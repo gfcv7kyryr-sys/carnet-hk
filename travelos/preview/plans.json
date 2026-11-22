@@ -1,0 +1,177 @@
+[
+ {
+  "jour": 1,
+  "id": "j1",
+  "ville": "Hong Kong",
+  "arrets": 9,
+  "troncons": 8,
+  "traces": 8,
+  "a_confirmer": [],
+  "points_a_confirmer": [
+   "pier1"
+  ]
+ },
+ {
+  "jour": 2,
+  "id": "j2",
+  "ville": "Hong Kong",
+  "arrets": 14,
+  "troncons": 13,
+  "traces": 13,
+  "a_confirmer": [],
+  "points_a_confirmer": []
+ },
+ {
+  "jour": 3,
+  "id": "j3",
+  "ville": "Hong Kong",
+  "arrets": 12,
+  "troncons": 11,
+  "traces": 11,
+  "a_confirmer": [],
+  "points_a_confirmer": []
+ },
+ {
+  "jour": 4,
+  "id": "j4",
+  "ville": "Macao",
+  "arrets": 10,
+  "troncons": 9,
+  "traces": 9,
+  "a_confirmer": [],
+  "points_a_confirmer": [
+   "senado"
+  ]
+ },
+ {
+  "jour": 5,
+  "id": "j6",
+  "ville": "Canton",
+  "arrets": 8,
+  "troncons": 7,
+  "traces": 7,
+  "a_confirmer": [],
+  "points_a_confirmer": [
+   "hotel-gz",
+   "hotel-soir"
+  ]
+ },
+ {
+  "jour": 6,
+  "id": "j7",
+  "ville": "Canton",
+  "arrets": 3,
+  "troncons": 2,
+  "traces": 2,
+  "a_confirmer": [],
+  "points_a_confirmer": [
+   "hotel-matin",
+   "hotel-soir"
+  ]
+ },
+ {
+  "jour": 7,
+  "id": "j5",
+  "ville": "Shenzhen",
+  "arrets": 15,
+  "troncons": 14,
+  "traces": 13,
+  "a_confirmer": [
+   "zhongshuge → gangxia-north : station de départ près de Happy Harbour à préciser"
+  ],
+  "points_a_confirmer": [
+   "hotel-matin",
+   "talent-park",
+   "orbit-one",
+   "hotel-soir"
+  ]
+ },
+ {
+  "jour": 8,
+  "id": "j8",
+  "ville": "Canton",
+  "arrets": 9,
+  "troncons": 8,
+  "traces": 8,
+  "a_confirmer": [],
+  "points_a_confirmer": [
+   "hotel-matin",
+   "hotel-soir"
+  ]
+ },
+ {
+  "jour": 9,
+  "id": "j9",
+  "ville": "Xingping",
+  "arrets": 8,
+  "troncons": 7,
+  "traces": 4,
+  "a_confirmer": [
+   "gz-south → yangshuo-station : aucune voie continue entre les deux points",
+   "vingt-yuans → cormorans : OSRM foot : départ ou arrivée à plus de 250 m d'une voie",
+   "cormorans → hotel-soir : OSRM foot : départ ou arrivée à plus de 250 m d'une voie"
+  ],
+  "points_a_confirmer": [
+   "hotel-gz",
+   "yangshuo-station",
+   "hotel-xp",
+   "cormorans",
+   "hotel-soir"
+  ]
+ },
+ {
+  "jour": 10,
+  "id": "j10",
+  "ville": "Huangyao",
+  "arrets": 8,
+  "troncons": 7,
+  "traces": 7,
+  "a_confirmer": [],
+  "points_a_confirmer": [
+   "hotel-matin",
+   "hy-banian",
+   "hy-dailong",
+   "hy-anle",
+   "hotel-soir"
+  ]
+ },
+ {
+  "jour": 11,
+  "id": "j11",
+  "ville": "Xingping",
+  "arrets": 6,
+  "troncons": 5,
+  "traces": 2,
+  "a_confirmer": [
+   "hotel-matin → xianggong : bac et transfert vers Xianggong à confirmer sur place",
+   "xianggong → hotel-valises : bac et transfert vers Xianggong à confirmer sur place",
+   "yangshuo-station → west-kowloon : aucune voie continue entre les deux points"
+  ],
+  "points_a_confirmer": [
+   "hotel-matin",
+   "xianggong",
+   "hotel-valises",
+   "yangshuo-station"
+  ]
+ },
+ {
+  "jour": 12,
+  "id": "j12",
+  "ville": "Disneyland",
+  "arrets": 16,
+  "troncons": 15,
+  "traces": 15,
+  "a_confirmer": [],
+  "points_a_confirmer": []
+ },
+ {
+  "jour": 13,
+  "id": "j13",
+  "ville": "Lantau",
+  "arrets": 8,
+  "troncons": 7,
+  "traces": 7,
+  "a_confirmer": [],
+  "points_a_confirmer": []
+ }
+]
