@@ -91,6 +91,9 @@ def main():
             for i in (s.get("placeIds") or ([s["placeId"]] if s.get("placeId") else [])):
                 if i not in ids and i in pl: ids.append(i)
     out = {"places": {}, "hotels": {}, "hkdl": []}
+    # Gares et sommets autour de Xingping (noms exacts à reprendre dans make-routes.py).
+    out["gares_xp"] = [slim2(e, [24.93, 110.55]) for e in L().around([24.93, 110.55], 30000, lambda e: e["tags"].get("railway") in ("station", "halt") or e["tags"].get("public_transport") == "station")]
+    out["sommets_xp"] = [slim2(e, [24.95, 110.47]) for e in L().around([24.95, 110.47], 12000, lambda e: e["tags"].get("natural") == "peak" and bool(e["tags"].get("name")))]
     out["hkdl"] = [slim2(e, [22.3125, 114.0415]) for e in L().around([22.3120, 114.0425], 1100, lambda e: bool(e["tags"].get("name")))]
     for i in ids:
         x = pl[i]
