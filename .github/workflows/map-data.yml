@@ -12,6 +12,7 @@ on:
       - "tools/park-calibrate.py"
       - "tools/osmlocal.py"
       - "tools/osm-prepare.sh"
+      - "tools/osm-fetch.py"
       - "tools/map-preview.py"
       - "android/app/src/main/assets/ui/**"
       - "android/app/src/main/assets/map/**"
@@ -44,13 +45,14 @@ jobs:
         run: echo "w=$(date +%G-%V)" >> "$GITHUB_OUTPUT"
       - uses: actions/cache@v4
         with:
-          path: .osm/*.osm.pbf
-          key: osm-${{ steps.semaine.outputs.w }}-v2
+          path: .osm/*.overpass.json
+          key: osm-${{ steps.semaine.outputs.w }}-v3
       - name: Préparer OpenStreetMap en local
+        timeout-minutes: 90
         run: |
           set -o pipefail
           mkdir -p travelos/routes/osm
-          { sudo apt-get update -qq >/dev/null && sudo apt-get install -y -qq osmium-tool >/dev/null && pip install -q osmium numpy scipy pillow && bash tools/osm-prepare.sh; } 2>&1 | tee travelos/routes/osm/prepare.log \
+          { pip install -q numpy scipy pillow && bash tools/osm-prepare.sh; } 2>&1 | tee travelos/routes/osm/prepare.log \
             || { tail -8 travelos/routes/osm/prepare.log | while IFS= read -r l; do echo "::error::$l"; done; exit 1; }
 
       - name: Inventaire OpenStreetMap

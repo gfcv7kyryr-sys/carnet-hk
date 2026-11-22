@@ -5,8 +5,7 @@ recherches dont les Plans du jour ont besoin (lieu par son nom, entrées d'un b�
 de transport et leurs stations, voies ferrées, ferries, téléphériques, rues nommées). Remplace Overpass : rapide,
 sans limite de requêtes, et le même résultat d'un calcul à l'autre.
 """
-import glob, math, os, re
-import osmium
+import glob, json, math, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIR = os.environ.get("OSM_DIR", os.path.join(ROOT, ".osm"))
@@ -16,30 +15,44 @@ def metres(a, b):
     k = math.pi / 180
     return math.hypot((a[1] - b[1]) * 111320 * math.cos((a[0] + b[0]) / 2 * k), (a[0] - b[0]) * 111320)
 
-class _H(osmium.SimpleHandler):
-    def __init__(self, db):
-        super().__init__(); self.db = db
-    def node(self, n):
-        if not n.location.valid(): return
-        t = {x.k: x.v for x in n.tags}
-        if t and any(k in t for k in KEEP_N):
-            self.db.nodes[n.id] = {"t": "n", "id": n.id, "tags": t, "p": [n.location.lat, n.location.lon]}
-    def way(self, w):
-        try: pts = [[nd.location.lat, nd.location.lon] for nd in w.nodes]
-        except osmium.InvalidLocationError: pts = [[nd.location.lat, nd.location.lon] for nd in w.nodes if nd.location.valid()]
-        if len(pts) < 1: return
-        self.db.ways[w.id] = {"t": "w", "id": w.id, "tags": {x.k: x.v for x in w.tags}, "geom": pts, "nodes": [nd.ref for nd in w.nodes]}
-    def relation(self, r):
-        self.db.rels[r.id] = {"t": "r", "id": r.id, "tags": {x.k: x.v for x in r.tags}, "members": [(m.type, m.ref, m.role) for m in r.members]}
+class _Shim:
+    def __init__(self, db): self.db = db
+
+def _H(shim):
+    import osmium
+    class H(osmium.SimpleHandler):
+        def __init__(s): super().__init__(); s.db = shim.db
+        node = _node; way = _way; relation = _relation
+    return H()
+
+class _Unused:
+    pass
+
+def _node(self, n):
+    if not n.location.valid(): return
+    t = {x.k: x.v for x in n.tags}
+    if t and any(k in t for k in KEEP_N):
+        self.db.nodes[n.id] = {"t": "n", "id": n.id, "tags": t, "p": [n.location.lat, n.location.lon]}
+
+def _way(self, w):
+    pts = [[nd.location.lat, nd.location.lon] for nd in w.nodes if nd.location.valid()]
+    if len(pts) < 1: return
+    self.db.ways[w.id] = {"t": "w", "id": w.id, "tags": {x.k: x.v for x in w.tags}, "geom": pts, "nodes": [nd.ref for nd in w.nodes]}
+
+def _relation(self, r):
+    self.db.rels[r.id] = {"t": "r", "id": r.id, "tags": {x.k: x.v for x in r.tags}, "members": [(m.type, m.ref, m.role) for m in r.members]}
 
 class OSM:
     def __init__(self, d=DIR):
         self.nodes, self.ways, self.rels = {}, {}, {}
-        files = sorted(glob.glob(os.path.join(d, "*.filtre.osm.pbf")))
+        files = sorted(glob.glob(os.path.join(d, "*.filtre.osm.pbf"))) + sorted(glob.glob(os.path.join(d, "*.overpass.json")))
         if not files: raise RuntimeError(f"aucun extrait OSM dans {d} (lancer tools/osm-prepare.sh)")
         for f in files:
             print(f"  chargement {os.path.basename(f)}…", flush=True)
-            _H(self).apply_file(f, locations=True, idx="flex_mem")
+            if f.endswith(".json"): self._load_json(f)
+            else:
+                import osmium
+                _H(_Shim(self)).apply_file(f, locations=True, idx="flex_mem")
         self.grid = {}
         for col in (self.nodes, self.ways):
             for e in col.values():
@@ -47,6 +60,21 @@ class OSM:
                 p = self.center(e)
                 if p: self.grid.setdefault((int(p[0] * 100), int(p[1] * 100)), []).append(e)
         print(f"  OSM local : {len(self.nodes)} nœuds, {len(self.ways)} voies, {len(self.rels)} relations", flush=True)
+
+    def _load_json(self, f):
+        """Réponse Overpass (out body geom) : nœuds étiquetés, voies avec leur géométrie, relations."""
+        for el in json.load(open(f, encoding="utf8"))["elements"]:
+            t = el.get("tags", {})
+            if el["type"] == "node":
+                if t and any(k in t for k in KEEP_N) and el["id"] not in self.nodes:
+                    self.nodes[el["id"]] = {"t": "n", "id": el["id"], "tags": t, "p": [el["lat"], el["lon"]]}
+            elif el["type"] == "way":
+                g = [[p["lat"], p["lon"]] for p in el.get("geometry", []) if p]
+                if g and (el["id"] not in self.ways or (t and not self.ways[el["id"]]["tags"])):
+                    self.ways[el["id"]] = {"t": "w", "id": el["id"], "tags": t, "geom": g, "nodes": el.get("nodes", [])}
+            elif el["type"] == "relation":
+                if el["id"] not in self.rels:
+                    self.rels[el["id"]] = {"t": "r", "id": el["id"], "tags": t, "members": [(m["type"][0], m["ref"], m.get("role", "")) for m in el.get("members", [])]}
 
     # ---------- géométrie ----------
     def center(self, e):
