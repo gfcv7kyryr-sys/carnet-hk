@@ -153,8 +153,30 @@
    "label": "Bac (5 min), transfert (25 min), puis les marches",
    "segments": [
     {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "ll": [
+       24.919619,
+       110.519652
+      ],
+      "src": "embarcadère du bac de Xingping (OSM)"
+     }
+    },
+    {
      "mode": "car",
-     "confirm": "bac et transfert vers Xianggong à confirmer sur place"
+     "router": "car",
+     "to": {
+      "ll": [
+       24.9238,
+       110.4836
+      ],
+      "src": "pied des marches de Xianggong (approché)"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
     }
    ]
   },
@@ -162,11 +184,33 @@
    "from": "xianggong",
    "to": "hotel-valises",
    "mode": "car",
-   "label": "Retour à l'hôtel",
+   "label": "Les marches, transfert, puis le bac pour rentrer",
    "segments": [
     {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "ll": [
+       24.9238,
+       110.4836
+      ],
+      "src": "pied des marches de Xianggong (approché)"
+     }
+    },
+    {
      "mode": "car",
-     "confirm": "bac et transfert vers Xianggong à confirmer sur place"
+     "router": "car",
+     "to": {
+      "ll": [
+       24.919619,
+       110.519652
+      ],
+      "src": "embarcadère du bac de Xingping (OSM)"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
     }
    ]
   },

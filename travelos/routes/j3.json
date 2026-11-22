@@ -293,25 +293,9 @@
   {
    "from": "choi-hung",
    "to": "nan-lian",
-   "mode": "metro",
-   "label": "Métro jusqu'à Diamond Hill",
+   "mode": "walk",
+   "label": "À pied jusqu'au jardin Nan Lian · 20 min",
    "segments": [
-    {
-     "mode": "walk",
-     "router": "foot",
-     "to": {
-      "station": "Choi Hung",
-      "line": "Kwun Tong Line|觀塘綫"
-     }
-    },
-    {
-     "mode": "metro",
-     "line": "Kwun Tong Line|觀塘綫",
-     "to": {
-      "station": "Diamond Hill",
-      "line": "Kwun Tong Line|觀塘綫"
-     }
-    },
     {
      "mode": "walk",
      "router": "foot"

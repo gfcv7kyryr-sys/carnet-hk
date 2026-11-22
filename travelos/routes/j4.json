@@ -14,6 +14,7 @@
    "stops": [
     "outer-harbour",
     "senado",
+    "st-paul",
     "a-ma",
     "taipa",
     "cotai",
@@ -104,6 +105,25 @@
     ],
     "entrance": false,
     "R": 600
+   }
+  },
+  {
+   "id": "st-paul",
+   "short": "Ruines de Saint-Paul",
+   "zh": "大三巴牌坊",
+   "point": {
+    "osm": [
+     "Ruins of St. Paul's",
+     "大三巴牌坊",
+     "Ruínas de São Paulo",
+     "大三巴牌坊 Ruínas de São Paulo"
+    ],
+    "near": [
+     22.1975,
+     113.5409
+    ],
+    "entrance": false,
+    "R": 400
    }
   },
   {
@@ -289,9 +309,38 @@
   },
   {
    "from": "senado",
+   "to": "st-paul",
+   "mode": "walk",
+   "label": "À pied par l'église Saint-Dominique · 10 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "osm": [
+       "St. Dominic's Church",
+       "玫瑰堂",
+       "Igreja de São Domingos"
+      ],
+      "near": [
+       22.195,
+       113.5411
+      ],
+      "R": 300,
+      "entrance": false
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "st-paul",
    "to": "a-ma",
    "mode": "taxi",
-   "label": "Taxi (option)",
+   "label": "Taxi jusqu'au temple A-Ma (option)",
    "segments": [
     {
      "mode": "taxi",
@@ -327,8 +376,26 @@
    "from": "cotai",
    "to": "terminal-taipa",
    "mode": "taxi",
-   "label": "Taxi · 10 min",
+   "label": "À pied le long du Strip jusqu'au Londoner, puis taxi · 10 min",
    "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "osm": [
+       "The Londoner Macao",
+       "澳門倫敦人",
+       "Londoner Macao",
+       "倫敦人"
+      ],
+      "near": [
+       22.1462,
+       113.5638
+      ],
+      "R": 600,
+      "entrance": false
+     }
+    },
     {
      "mode": "taxi",
      "router": "car"

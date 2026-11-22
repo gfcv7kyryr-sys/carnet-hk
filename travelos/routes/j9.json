@@ -148,15 +148,16 @@
    "zh": "兴坪码头",
    "point": {
     "osm": [
+     "兴坪 (pedestrians only)",
      "兴坪码头",
      "Xingping Pier"
     ],
     "near": [
-     24.9283,
-     110.5168
+     24.9191,
+     110.5215
     ],
     "entrance": false,
-    "R": 900
+    "R": 200
    }
   },
   {

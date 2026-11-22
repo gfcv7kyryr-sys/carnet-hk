@@ -125,7 +125,7 @@ DAYS["j3"] = {
   "legs": [
     leg("hotel-matin", "wong-tai-sin", "metro", "Métro par Prince Edward (proposé)", *metro_trip("Jordan", TW, "Wong Tai Sin", KTL, via="Prince Edward"), walk()),
     leg("wong-tai-sin", "choi-hung", "metro", "Métro, deux stations", *metro_trip("Wong Tai Sin", KTL, "Choi Hung"), walk()),
-    leg("choi-hung", "nan-lian", "metro", "Métro jusqu'à Diamond Hill", *metro_trip("Choi Hung", KTL, "Diamond Hill"), walk()),
+    leg("choi-hung", "nan-lian", "walk", "À pied jusqu'au jardin Nan Lian · 20 min", walk()),
     leg("nan-lian", "hotel-sieste", "metro", "Métro jusqu'à Yau Ma Tei, puis à pied (proposé)", *metro_trip("Diamond Hill", KTL, "Yau Ma Tei"), walk()),
     leg("hotel-sieste", "ten-thousand", "train", "Métro, puis East Rail jusqu'à Sha Tin", *metro_trip("Yau Ma Tei", KTL, "Kowloon Tong"),
         train(EAL, st("Sha Tin", EAL), st("Kowloon Tong", EAL)), walk()),
@@ -144,12 +144,13 @@ OUTER = osm(["Outer Harbour Ferry Terminal", "外港客運碼頭", "Macau Outer 
 TAIPAF = osm(["Taipa Ferry Terminal", "氹仔客運碼頭"], [22.1640, 113.5730], entrance=False, R=1500)
 DAYS["j4"] = {
   "zones": [{"name": "Hong Kong", "stops": ["hotel-matin", "terminal-hk", "macau-ferry", "hotel-soir"]},
-            {"name": "Macao", "stops": ["outer-harbour", "senado", "a-ma", "taipa", "cotai", "terminal-taipa"]}],
+            {"name": "Macao", "stops": ["outer-harbour", "senado", "st-paul", "a-ma", "taipa", "cotai", "terminal-taipa"]}],
   "stops": [
     hotel("hotel-matin", "nathan", step="j4:0", label="Départ du Nathan Hotel"),
     minor("terminal-hk", "pier", "Terminal des ferries de Macao, Sheung Wan", "港澳碼頭", SHUNTAK, step="j4:0", short="Ferry, Sheung Wan"),
     minor("outer-harbour", "pier", "Terminal de l'Outer Harbour, Macao", "外港客运码头", OUTER, step="j4:1", short="Outer Harbour"),
     stop("senado", "Place du Sénat", point=place("senado", ["Largo do Senado", "議事亭前地", "議事亭前地 Largo do Senado"], entrance=False)),
+    stop("st-paul", "Ruines de Saint-Paul", point=osm(["Ruins of St. Paul's", "大三巴牌坊", "Ruínas de São Paulo", "大三巴牌坊 Ruínas de São Paulo"], [22.1975, 113.5409], entrance=False, R=400)),
     stop("a-ma", "Temple A-Ma"),
     stop("taipa", "Village de Taipa", point=place("taipa", ["Rua do Cunha", "官也街", "官也街 Rua do Cunha"], entrance=False, R=900)),
     stop("cotai", "Cotai Strip", point=place("cotai", ["The Parisian Macao", "澳門巴黎人", "Parisian Macao", "巴黎人"], R=1200)),
@@ -161,10 +162,12 @@ DAYS["j4"] = {
     leg("hotel-matin", "terminal-hk", "metro", "Métro jusqu'à Sheung Wan, changement à Admiralty", *metro_trip("Jordan", TW, "Sheung Wan", ISL, via="Admiralty"), walk()),
     leg("terminal-hk", "outer-harbour", "ferry", "Ferry pour Macao · 1 h", ferry()),
     leg("outer-harbour", "senado", "taxi", "Taxi · 10 min", taxi()),
-    leg("senado", "a-ma", "taxi", "Taxi (option)", taxi()),
+    leg("senado", "st-paul", "walk", "À pied par l'église Saint-Dominique · 10 min", walk(to={"osm": ["St. Dominic's Church", "玫瑰堂", "Igreja de São Domingos"], "near": [22.1950, 113.5411], "R": 300, "entrance": False}), walk()),
+    leg("st-paul", "a-ma", "taxi", "Taxi jusqu'au temple A-Ma (option)", taxi()),
     leg("a-ma", "taipa", "taxi", "Taxi jusqu'au village de Taipa", taxi()),
     leg("taipa", "cotai", "walk", "À pied jusqu'au Cotai Strip", walk()),
-    leg("cotai", "terminal-taipa", "taxi", "Taxi · 10 min", taxi()),
+    leg("cotai", "terminal-taipa", "taxi", "À pied le long du Strip jusqu'au Londoner, puis taxi · 10 min",
+        walk(to={"osm": ["The Londoner Macao", "澳門倫敦人", "Londoner Macao", "倫敦人"], "near": [22.1462, 113.5638], "R": 600, "entrance": False}), taxi()),
     leg("terminal-taipa", "macau-ferry", "ferry", "Cotai Water Jet jusqu'à Tsim Sha Tsui", ferry()),
     leg("macau-ferry", "hotel-soir", "taxi", "Dîner chez One Dim Sum, puis taxi (proposé)", walk(to={"ll": [22.29845, 114.16905]}), taxi()),
   ],
@@ -289,7 +292,7 @@ DAYS["j9"] = {
     hotel("hotel-xp", "lijiang", step="j9:2", label="Lijiang Island Riverside Resort"),
     stop("xingping", "Vieux Xingping", point=place("xingping", ["兴坪古镇", "Xingping Ancient Town", "兴坪老街"], entrance=False, R=900)),
     stop("vingt-yuans", "Billet de 20 yuans", point=place("vingt-yuans", ["二十元人民币背景", "黄布倒影", "20元人民币背景图"], entrance=False, R=900)),
-    stop("cormorans", "Ponton", point=place("cormorans", ["兴坪码头", "Xingping Pier"], entrance=False, R=900)),
+    stop("cormorans", "Ponton", point=osm(["兴坪 (pedestrians only)", "兴坪码头", "Xingping Pier"], [24.9191, 110.5215], entrance=False, R=200)),
     hotel("hotel-soir", "lijiang", step="j9:7", label="Dîner dans la vieille ville, puis l'hôtel"),
   ],
   "legs": [
@@ -330,6 +333,8 @@ DAYS["j10"] = {
 }
 
 # ===== Jour 11 · Xingping → Hong Kong (Disneyland) =====
+XP_BAC = {"ll": [24.919619, 110.519652], "src": "embarcadère du bac de Xingping (OSM)"}
+XG_PARK = {"ll": [24.9238, 110.4836], "src": "pied des marches de Xianggong (approché)"}
 DAYS["j11"] = {
   "zones": [{"name": "Xingping", "stops": ["hotel-matin", "xianggong", "hotel-valises", "yangshuo-station"]},
             {"name": "Hong Kong", "stops": ["west-kowloon", "hotel-disney"]}],
@@ -342,8 +347,10 @@ DAYS["j11"] = {
     hotel("hotel-disney", "hollywood", step="j11:5", label="Disney's Hollywood Hotel"),
   ],
   "legs": [
-    leg("hotel-matin", "xianggong", "car", "Bac (5 min), transfert (25 min), puis les marches", confirm("car", "bac et transfert vers Xianggong à confirmer sur place")),
-    leg("xianggong", "hotel-valises", "car", "Retour à l'hôtel", confirm("car", "bac et transfert vers Xianggong à confirmer sur place")),
+    leg("hotel-matin", "xianggong", "car", "Bac (5 min), transfert (25 min), puis les marches",
+        walk(to=XP_BAC), car(to=XG_PARK), walk()),
+    leg("xianggong", "hotel-valises", "car", "Les marches, transfert, puis le bac pour rentrer",
+        walk(to=XG_PARK), car(to=XP_BAC), walk()),
     leg("hotel-valises", "yangshuo-station", "car", "Chauffeur ou navette · 20 min", car()),
     leg("yangshuo-station", "west-kowloon", "train", "TGV jusqu'à Hong Kong (par Shenzhen Nord) · environ 3 h", tgv()),
     leg("west-kowloon", "hotel-disney", "metro", "Métro jusqu'à Sunny Bay, puis le train Disneyland Resort",
