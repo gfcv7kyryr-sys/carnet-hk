@@ -660,3 +660,29 @@ body.mapmode .stale{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 140px
 .trk small{display:block;font-weight:400;color:var(--muted);font-size:.85rem}
 .trk em{font-style:normal;color:var(--muted);font-size:.9rem}
 .trk.on{outline:2px solid var(--red)}
+/* Page Musique : jaquettes */
+.alb-hero{display:flex;gap:28px;align-items:center;max-width:980px;margin:8px auto 18px}
+.alb-jk{width:min(38vw,260px);aspect-ratio:1;border-radius:22px;object-fit:cover;box-shadow:0 14px 34px rgba(0,0,0,.22);flex:none}
+.alb-hero .display{margin:4px 0}
+.alb-disc{display:grid;grid-template-columns:clamp(110px,18vw,180px) 1fr;gap:22px;align-items:start;max-width:980px;margin-inline:auto}
+.alb-djk{width:100%;aspect-ratio:1;border-radius:16px;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,.16)}
+.alb-disc h2{margin-top:0}
+@media (max-width:560px){.alb-hero{flex-direction:column;text-align:center}.alb-hero .acts{justify-content:center}}
+.alb-disc{width:100%;justify-items:stretch;grid-template-columns:clamp(110px,18vw,180px) minmax(0,1fr);margin-top:26px}
+.alb-disc>div{min-width:0;width:100%}
+.alb-disc .trk{width:100%}
+.alb-hero .display{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05}
+.alb-hero{margin-bottom:6px}
+/* Lecteur : jaquette, piste précédente / suivante, barre de position */
+.alb{max-width:980px;margin:0 auto}
+.alb-hero{max-width:none}
+.alb-disc{max-width:none}
+#mpJacket{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none}
+.mp-ctl{display:flex;align-items:center;gap:4px;flex:none}
+.mp-ctl .round.small{width:40px;height:40px;display:grid;place-items:center}
+.mp-ctl [hidden]{display:none}
+.mp-seek{display:flex;align-items:center;gap:10px}
+.mp-seek span{font-size:.8rem;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums;min-width:2.6em}
+.mp-seek span:last-child{text-align:right}
+#mpSeek{flex:1;min-width:0;accent-color:var(--red);height:28px}
+.mini-player{width:min(calc(100% - 2*var(--gut)),760px);border-radius:26px}

@@ -74,10 +74,15 @@
   <div id="toast" class="toast" hidden></div>
   <audio id="player" preload="none"></audio>
   <div id="miniPlayer" class="mini-player glass" hidden>
-    <button id="mpToggle" class="round">❚❚</button>
-    <div class="mp-info"><b id="mpTitle"></b><span class="mp-bar"><i id="mpProgress"></i></span></div>
-    <span id="mpTime">0:00</span>
-    <button id="mpClose" class="round small">×</button>
+    <img id="mpJacket" alt="" hidden>
+    <div class="mp-ctl">
+      <button id="mpPrev" class="round small" aria-label="Piste précédente"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+      <button id="mpToggle" class="round" aria-label="Lecture ou pause">❚❚</button>
+      <button id="mpNext" class="round small" aria-label="Piste suivante"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M16 5h2v14h-2zM4 5l11 7-11 7z"/></svg></button>
+    </div>
+    <div class="mp-info"><b id="mpTitle"></b>
+      <div class="mp-seek"><span id="mpTime">0:00</span><input id="mpSeek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position dans le morceau"><span id="mpDur">0:00</span></div></div>
+    <button id="mpClose" class="round small" aria-label="Fermer le lecteur">×</button>
   </div>
 
   <script src="../vendor/maplibre/maplibre-gl.js"></script>

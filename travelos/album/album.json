@@ -10,7 +10,8 @@
      "src": "travelos/album/petite-lanterne.mp3",
      "seconds": 224
     }
-   ]
+   ],
+   "jacket": "album/disque-0.webp"
   },
   {
    "title": "Disque 1 · Dragons et lanternes",
@@ -30,7 +31,8 @@
      "src": "travelos/album/lanterns-in-the-dark.mp3",
      "seconds": 163
     }
-   ]
+   ],
+   "jacket": "album/disque-1.webp"
   },
   {
    "title": "Disque 2 · Hong Kong",
@@ -50,7 +52,8 @@
      "src": "travelos/album/harbour-home.mp3",
      "seconds": 212
     }
-   ]
+   ],
+   "jacket": "album/disque-2.webp"
   },
   {
    "title": "Disque 3 · Macao",
@@ -70,7 +73,8 @@
      "src": "travelos/album/saudade-a-trois.mp3",
      "seconds": 247
     }
-   ]
+   ],
+   "jacket": "album/disque-3.webp"
   },
   {
    "title": "Disque 4 · Canton",
@@ -90,7 +94,8 @@
      "src": "travelos/album/table-pour-trois.mp3",
      "seconds": 145
     }
-   ]
+   ],
+   "jacket": "album/disque-4.webp"
   },
   {
    "title": "Disque 5 · Shenzhen",
@@ -110,7 +115,8 @@
      "src": "travelos/album/home-signal.mp3",
      "seconds": 177
     }
-   ]
+   ],
+   "jacket": "album/disque-5.webp"
   },
   {
    "title": "Disque 6 · La rivière Li",
@@ -130,7 +136,8 @@
      "src": "travelos/album/trois-voix-sur-la-riviere.mp3",
      "seconds": 197
     }
-   ]
+   ],
+   "jacket": "album/disque-6.webp"
   },
   {
    "title": "Disque 7 · Huangyao",
@@ -150,7 +157,8 @@
      "src": "travelos/album/la-lanterne-de-la-maison.mp3",
      "seconds": 225
     }
-   ]
+   ],
+   "jacket": "album/disque-7.webp"
   },
   {
    "title": "Disque 8 · Xiao Long",
@@ -170,7 +178,9 @@
      "src": "travelos/album/bonne-nuit-xiao-long.mp3",
      "seconds": 207
     }
-   ]
+   ],
+   "jacket": "album/disque-8.webp"
   }
- ]
+ ],
+ "jacket": "album/disque-1.webp"
 }

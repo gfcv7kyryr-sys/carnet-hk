@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
                 textZoom = 100
             }
             addJavascriptInterface(NativeBridge(this@MainActivity, container), "TravelOSNative")
-            webViewClient = LocalContent.Client(loader) { url ->
+            webViewClient = LocalContent.Client(loader, container.packSync.dir) { url ->
                 try {
                     startActivity(Intent(Intent.ACTION_VIEW, url).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 } catch (e: ActivityNotFoundException) {

@@ -26,7 +26,7 @@ class TravelDream : DreamService() {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             settings.allowFileAccess = false
-            webViewClient = LocalContent.Client(loader) { /* aucun lien externe dans l'économiseur */ }
+            webViewClient = LocalContent.Client(loader, container.packSync.dir) { /* aucun lien externe dans l'économiseur */ }
             loadUrl(LocalContent.UI + "dream.html")
         }
         setContentView(webView)

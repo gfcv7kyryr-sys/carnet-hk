@@ -1531,39 +1531,66 @@ function closeShow() { if ($("#show").hidden) return; $("#show").hidden = true; 
 
 /* ================= album du voyage ================= */
 
-function albumTracks() { return (P.album?.chapters || []).flatMap((c) => c.tracks.map((t) => ({ ...t, chapter: c.title }))); }
+function albumTracks() { return (P.album?.chapters || []).flatMap((c) => c.tracks.map((t) => ({ ...t, chapter: c.title, jacket: c.jacket }))); }
 let albumQueue = null; // index de la piste en cours quand on écoute l'album
 function viewMusic() {
   const a = P.album, list = albumTracks();
   if (!a || !list.length) return `<header class="hero-t small"><h1 class="display">${esc(a?.title || "L'album du voyage")}</h1></header>
     <div class="tile" style="max-width:640px;margin:0 auto;text-align:center"><p class="big" style="font-size:3rem">樂</p>
     <h3>Les chansons arrivent bientôt</h3><p>Dès qu'elles seront déposées dans le carnet, une synchronisation (Plus › Contenu) les télécharge sur la tablette pour les écouter hors ligne.</p></div>`;
+  // Jaquettes embarquées dans l'APK (assets/ui/album) : visibles même avant la synchronisation des chansons.
+  const jk = (src, cls) => src ? `<img class="${cls}" src="${esc(src)}" alt="" loading="lazy" onerror="this.remove()">` : "";
+  const total = list.reduce((n, t) => n + (t.seconds || 0), 0);
   let i = 0;
-  return `<header class="hero-t small"><h1 class="display">${esc(a.title || "L'album du voyage")}</h1>${a.subtitle ? `<p class="muted">${esc(a.subtitle)}</p>` : ""}</header>
-    <div class="acts" style="justify-content:center"><button class="pill red" data-track="0">▶ Écouter l'album</button></div>
-    ${a.chapters.filter((c) => c.tracks.length).map((c) => `<section class="sec"><h2 class="h3">${esc(c.title)}</h2>
-      <div class="tracks">${c.tracks.map((t) => { const k = i++; return `<button class="trk" data-track="${k}"><i>▶</i><span>${esc(t.title)}${t.style ? `<small>${esc(t.style)}</small>` : ""}</span>${t.seconds ? `<em>${dur(t.seconds)}</em>` : ""}</button>`; }).join("")}</div></section>`).join("")}`;
+  return `<div class="alb"><header class="alb-hero">${jk(a.jacket, "alb-jk")}<div><p class="eyebrow">${esc(a.subtitle || "L'album du voyage")}</p><h1 class="display">${esc(a.title)}</h1>
+      <p class="muted">${list.length} chansons · ${Math.round(total / 60)} min</p>
+      <div class="acts"><button class="pill red" data-track="0">▶ Écouter l'album</button></div></div></header>
+    ${a.chapters.filter((c) => c.tracks.length).map((c) => `<section class="sec alb-disc">${jk(c.jacket, "alb-djk")}<div><h2 class="h3">${esc(c.title)}</h2>
+      <div class="tracks">${c.tracks.map((t) => { const k = i++; return `<button class="trk ${k === albumQueue ? "on" : ""}" data-track="${k}"><i>▶</i><span>${esc(t.title)}</span>${t.seconds ? `<em>${dur(t.seconds)}</em>` : ""}</button>`; }).join("")}</div></div></section>`).join("")}</div>`;
 }
 function playAlbum(k) {
-  const list = albumTracks(); if (!list[k]) return;
+  const list = albumTracks(); if (!list[k]) { if (k >= list.length) albumQueue = null; return; }
   albumQueue = k;
-  playAudio(list[k].src, `${list[k].title} · ${list[k].chapter}`, true);
+  playAudio(list[k].src, `${list[k].title} · ${list[k].chapter.replace(/^Disque \d+ · /, "")}`, true);
+  const jk = $("#mpJacket"); if (list[k].jacket) { jk.src = list[k].jacket; jk.hidden = false; } else jk.hidden = true;
   $$(".trk").forEach((b) => b.classList.toggle("on", +b.dataset.track === k));
+  if ("mediaSession" in navigator) try {
+    navigator.mediaSession.metadata = new MediaMetadata({ title: list[k].title, artist: "Dragons et lanternes", album: list[k].chapter, artwork: list[k].jacket ? [{ src: list[k].jacket, sizes: "800x800", type: "image/webp" }] : [] });
+  } catch {}
 }
+/* Commandes du lecteur : piste précédente (ou retour au début après 3 s), suivante, position. */
+function mpPrev() {
+  if (player.currentTime > 3 || albumQueue == null || albumQueue === 0) { player.currentTime = 0; return; }
+  playAlbum(albumQueue - 1);
+}
+function mpNext() { if (albumQueue != null) playAlbum(albumQueue + 1); else player.currentTime = player.duration || 0; }
+function mpShowControls() { const alb = albumQueue != null; $("#mpPrev").hidden = false; $("#mpNext").hidden = !alb; $("#miniPlayer").classList.toggle("alb", alb); }
 
 const player = $("#player");
 player.addEventListener("ended", () => { if (albumQueue != null) playAlbum(albumQueue + 1); });
 function playAudio(src, title, fromAlbum = false) {
-  if (!fromAlbum) albumQueue = null;
+  if (!fromAlbum) { albumQueue = null; $("#mpJacket").hidden = true; }
   player.src = `/pack/${src}`;
   $("#mpTitle").textContent = title || "Audio";
-  $("#miniPlayer").hidden = false;
+  $("#miniPlayer").hidden = false; mpShowControls();
   player.play().catch(() => {});
 }
+let mpSeeking = false;
 player.addEventListener("timeupdate", () => {
-  $("#mpProgress").style.width = player.duration ? `${(100 * player.currentTime) / player.duration}%` : "0";
+  if (mpSeeking) return;
+  $("#mpSeek").value = player.duration ? Math.round((1000 * player.currentTime) / player.duration) : 0;
   $("#mpTime").textContent = dur(player.currentTime || 0);
 });
+player.addEventListener("loadedmetadata", () => { $("#mpDur").textContent = dur(player.duration || 0); });
+$("#mpSeek").addEventListener("input", (e) => { mpSeeking = true; if (player.duration) $("#mpTime").textContent = dur((e.target.value / 1000) * player.duration); });
+$("#mpSeek").addEventListener("change", (e) => { if (player.duration) player.currentTime = (e.target.value / 1000) * player.duration; mpSeeking = false; });
+$("#mpPrev").addEventListener("click", mpPrev);
+$("#mpNext").addEventListener("click", mpNext);
+if ("mediaSession" in navigator) try {
+  navigator.mediaSession.setActionHandler("previoustrack", mpPrev);
+  navigator.mediaSession.setActionHandler("nexttrack", mpNext);
+  navigator.mediaSession.setActionHandler("seekto", (d) => { player.currentTime = d.seekTime; });
+} catch {}
 player.addEventListener("play", () => { $("#mpToggle").textContent = "❚❚"; });
 player.addEventListener("pause", () => { $("#mpToggle").textContent = "▶"; });
 player.addEventListener("error", () => { $("#miniPlayer").hidden = true; toast("Audio pas encore téléchargé : Plus › Contenu › Synchroniser."); });
