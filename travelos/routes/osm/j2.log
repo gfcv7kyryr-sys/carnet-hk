@@ -33,6 +33,7 @@ man-mo>dejeuner
   walk          783 m  OSRM à pied sur OpenStreetMap (10 min estimées)
 
 dejeuner>hotel
+  overpass https://overpass-api.de/api/interpreter https://overpass-api.de/api/interpreter : HTTP Error 502: Bad Gateway
   walk          264 m  OSRM à pied sur OpenStreetMap (1 min estimées, entrée E3 de la station)
   metro        1713 m  voies de la ligne Island (OSM), de la station précédente à Admiralty / 金鐘 Admiralty (OSM nœud 2564545111, ligne Island)
   metro        3524 m  voies de la ligne Tsuen Wan (OSM), de Admiralty / 金鐘 Admiralty (OSM nœud 2556738383, ligne Tsuen Wan) à Jordan / 佐敦 Jordan (OSM nœud 2554379407, ligne Tsuen Wan)
