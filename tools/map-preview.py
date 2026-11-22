@@ -49,44 +49,73 @@ class H(http.server.SimpleHTTPRequestHandler):
         return "/nonexistent"
     def log_message(self, *a): pass
 
+async def open_map(b, w, h, day, when):
+    ctx = await b.new_context(viewport={"width": w, "height": h}, device_scale_factor=1.25)
+    pg = await ctx.new_page(); errs = []
+    pg.on("pageerror", lambda e: errs.append(str(e)))
+    await pg.goto("http://127.0.0.1:8799/assets/ui/index.html"); await pg.wait_for_timeout(400)
+    await pg.evaluate(f"localStorage.setItem('tos.simDate', JSON.stringify('{when}'))")
+    await pg.click('[data-profile="pilote"]'); await pg.wait_for_timeout(1000)
+    await pg.evaluate(f"go('programme','map','{day}')")
+    await pg.wait_for_function("typeof glMap !== 'undefined' && glMap && glMap.loaded()", timeout=60000)
+    await pg.wait_for_timeout(700)
+    return ctx, pg, errs
+
+async def settle(pg):
+    await pg.evaluate("new Promise(r => { const t = setTimeout(r, 25000); glMap.once('idle', () => { clearTimeout(t); r(); }); glMap.triggerRepaint(); })")
+    await pg.wait_for_timeout(900)
+
 async def shoot():
     os.makedirs(OUT, exist_ok=True)
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 8799), H)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
-    bad = 0
+    pack = json.load(open(os.path.join(ROOT, "travelos/pack/pack.json"), encoding="utf8"))
+    summary, bad = [], 0
     async with async_playwright() as p:
         b = await p.chromium.launch(args=["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
-        for name, w, h, extra in [("paysage", 1280, 800, None), ("portrait", 800, 1280, None), ("portrait-etapes", 800, 1280, "list"),
-                                  ("matin-zoom", 1280, 800, "am"), ("apres-midi", 1280, 800, "pm"),
-                                  ("onglet-plan-portrait", 800, 1280, "embed"), ("onglet-plan-paysage", 1280, 800, "embed")]:
-            ctx = await b.new_context(viewport={"width": w, "height": h}, device_scale_factor=1.5)
-            pg = await ctx.new_page(); errs = []
-            pg.on("pageerror", lambda e: errs.append(str(e)))
-            await pg.goto("http://127.0.0.1:8799/assets/ui/index.html"); await pg.wait_for_timeout(400)
-            await pg.evaluate("localStorage.setItem('tos.simDate', JSON.stringify('2027-02-22T09:50'))")
-            await pg.click('[data-profile="pilote"]'); await pg.wait_for_timeout(1200)
-            if extra == "embed":
-                await pg.evaluate("store.set('daySec','plan'); go('programme','day','j2')")
-            else:
-                await pg.click("[data-daymap]")
-            await pg.wait_for_function("typeof glMap !== 'undefined' && glMap && glMap.loaded()", timeout=60000)
-            await pg.wait_for_timeout(600)
-            if extra == "list": await pg.click(".dm-card [data-maplist]"); await pg.wait_for_timeout(900)
-            chk = await pg.evaluate("__mapCheck()")
-            if extra == "am": await pg.evaluate("glMap.jumpTo({center:[114.1535,22.2842],zoom:15.4})")
-            if extra == "pm": await pg.evaluate("glMap.jumpTo({center:[114.196,22.2835],zoom:14.6})")
-            await pg.evaluate("new Promise(r => { const t = setTimeout(r, 25000); glMap.once('idle', () => { clearTimeout(t); r(); }); glMap.triggerRepaint(); })")
-            await pg.wait_for_timeout(900)
-            await pg.screenshot(path=os.path.join(OUT, f"carte-j2-{name}.png"))
-            ko = [c for c in chk if not c["inView"] or c["hidden"] or c["overlap"] or c["off"] > 2]
-            mm = next((c for c in chk if c["id"] == "man-mo"), None)
-            if not extra or extra in ("list", "embed"):
-                bad += len(ko) + (0 if mm and mm["label"] else 1)
-            print(f"{name} : zoom {await pg.evaluate('glMap.getZoom().toFixed(2)')}, repères OK {len(chk) - len(ko)}/{len(chk)}, Man Mo libellé : {mm and mm['label']}",
-                  *(f"\n  ✗ {c}" for c in ko), *(f"\n  erreur page : {e}" for e in errs[:3]))
-            await ctx.close()
+        for d in pack["days"]:
+            m = d.get("map") or {}
+            zones = m.get("zones") or []
+            for zi in (range(len(zones)) if len(zones) > 1 else [None]):
+                ctx, pg, errs = await open_map(b, 1280, 800, d["id"], f"{d['date']}T07:30")
+                if zi is not None:
+                    await pg.evaluate(f"mapFit(false, {zi})"); await pg.wait_for_timeout(500)
+                chk = await pg.evaluate("__mapCheck()") or []
+                await settle(pg)
+                tag = f"j{d['number']:02d}" + (f"-{zi + 1}" if zi is not None else "")
+                await pg.screenshot(path=os.path.join(OUT, f"plan-{tag}.png"))
+                inzone = [c for c in chk if zi is None or c["id"] in zones[zi]["stops"]]
+                ko = [c for c in inzone if not c["inView"] or c["hidden"] or c["overlap"] or c["off"] > 2]
+                bad += len(ko)
+                print(f"Jour {d['number']}{'' if zi is None else ' · ' + zones[zi]['name']} : repères OK {len(inzone) - len(ko)}/{len(inzone)}",
+                      *(f"\n  ✗ {c}" for c in ko), *(f"\n  erreur page : {e}" for e in errs[:3]))
+                await ctx.close()
+            legs = m.get("legs") or []
+            summary.append({"jour": d["number"], "id": d["id"], "ville": d["city"], "arrets": len(m.get("stops") or []),
+                            "troncons": len(legs), "traces": sum(1 for l in legs if l["segments"] and all(s.get("path") for s in l["segments"])),
+                            "a_confirmer": [f"{l['from']} → {l['to']} : " + "; ".join(s.get("confirm", "") for s in l["segments"] if not s.get("path")) for l in legs if l.get("confirm")],
+                            "points_a_confirmer": [s["id"] for s in m.get("stops") or [] if s.get("confirm")]})
+        # Disneyland : le parc de près, plan illustré et fond standard.
+        for name, illu in (("j12-parc-illustre", True), ("j12-parc-standard", False)):
+            ctx, pg, errs = await open_map(b, 1280, 800, "j12", "2027-03-04T07:30")
+            if not illu: await pg.click("[data-mapillu]")
+            await pg.evaluate("glMap.jumpTo({center:[114.0405,22.3122],zoom:16.2})")
+            await settle(pg)
+            await pg.screenshot(path=os.path.join(OUT, f"plan-{name}.png")); await ctx.close()
+        # Onglet Plan intégré (jour 2), portrait.
+        ctx = await b.new_context(viewport={"width": 800, "height": 1280}, device_scale_factor=1.25); pg = await ctx.new_page()
+        await pg.goto("http://127.0.0.1:8799/assets/ui/index.html"); await pg.wait_for_timeout(400)
+        await pg.evaluate("localStorage.setItem('tos.simDate', JSON.stringify('2027-02-22T09:50'))")
+        await pg.click('[data-profile="pilote"]'); await pg.wait_for_timeout(1000)
+        await pg.evaluate("store.set('daySec','plan'); go('programme','day','j2')")
+        await pg.wait_for_function("typeof glMap !== 'undefined' && glMap && glMap.loaded()", timeout=60000); await settle(pg)
+        await pg.screenshot(path=os.path.join(OUT, "plan-j02-onglet-portrait.png")); await ctx.close()
         await b.close()
     srv.shutdown()
-    if bad: sys.exit(f"{bad} problème(s) de repères au cadrage initial")
+    json.dump(summary, open(os.path.join(OUT, "plans.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
+    for x in summary:
+        print(f"Jour {x['jour']} ({x['ville']}) : {x['traces']}/{x['troncons']} tronçons tracés ; à confirmer : {len(x['a_confirmer'])} ; points à confirmer : {x['points_a_confirmer']}")
+        for c in x["a_confirmer"]: print("    -", c)
+    if bad: sys.exit(f"{bad} repère(s) masqué(s) ou chevauchés au cadrage initial")
 
 asyncio.run(shoot())

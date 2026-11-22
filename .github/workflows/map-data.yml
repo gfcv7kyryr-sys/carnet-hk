@@ -45,12 +45,13 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: .osm/*.osm.pbf
-          key: osm-${{ steps.semaine.outputs.w }}-v1
+          key: osm-${{ steps.semaine.outputs.w }}-v2
       - name: Préparer OpenStreetMap en local
         run: |
-          sudo apt-get install -y -qq osmium-tool >/dev/null
-          pip install -q osmium numpy scipy pillow
-          bash tools/osm-prepare.sh
+          set -o pipefail
+          mkdir -p travelos/routes/osm
+          { sudo apt-get update -qq && sudo apt-get install -y -qq osmium-tool && pip install -q osmium numpy scipy pillow && bash tools/osm-prepare.sh; } 2>&1 | tee travelos/routes/osm/prepare.log \
+            || { tail -8 travelos/routes/osm/prepare.log | while IFS= read -r l; do echo "::error::$l"; done; exit 1; }
 
       - name: Inventaire OpenStreetMap
         run: python3 -u tools/osm-discover.py 2>&1 | tail -5
