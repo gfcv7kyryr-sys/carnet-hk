@@ -278,7 +278,7 @@ DAYS["j8"] = {
 
 # ===== Jour 9 · Canton → Xingping =====
 # Gare TGV « Yangshuo » : dans les collines à environ 6 km à l'est du bourg de Xingping (饭甑山村)
-YANGSHUO = {**osm(["阳朔站", "桂林阳朔", "阳朔", "Yangshuo"], [24.8930, 110.5410], entrance=False, R=7000), "tag": {"railway": "station"}}
+YANGSHUO = {**osm(["阳朔", "阳朔站", "Yangshuo"], [24.9636, 110.5634], entrance=False, R=800), "tag": {"railway": "station"}}
 DAYS["j9"] = {
   "zones": [{"name": "Canton", "stops": ["hotel-gz", "gz-south"]},
             {"name": "Xingping", "stops": ["yangshuo-station", "hotel-xp", "xingping", "vingt-yuans", "cormorans", "hotel-soir"]}],
@@ -335,7 +335,7 @@ DAYS["j11"] = {
             {"name": "Hong Kong", "stops": ["west-kowloon", "hotel-disney"]}],
   "stops": [
     hotel("hotel-matin", "lijiang", step="j11:0", label="Départ de l'hôtel"),
-    stop("xianggong", "Colline Xianggong", point=place("xianggong", ["相公山", "Xianggong Hill", "Xianggong Mountain"], R=1500)),
+    stop("xianggong", "Colline Xianggong", point=osm(["相公山", "Xianggong Hill"], [24.9258, 110.4790], entrance=False, R=600)),
     hotel("hotel-valises", "lijiang", step="j11:2", label="Retour à l'hôtel, valises"),
     stop("yangshuo-station", "Gare de Yangshuo", point=YANGSHUO, step="j11:3"),
     stop("west-kowloon", "West Kowloon", point=WK, step="j11:5"),

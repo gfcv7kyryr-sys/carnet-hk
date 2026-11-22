@@ -48,15 +48,14 @@
    "point": {
     "osm": [
      "相公山",
-     "Xianggong Hill",
-     "Xianggong Mountain"
+     "Xianggong Hill"
     ],
     "near": [
-     24.956,
-     110.461
+     24.9258,
+     110.479
     ],
-    "entrance": true,
-    "R": 1500
+    "entrance": false,
+    "R": 600
    }
   },
   {
@@ -88,17 +87,16 @@
    "zh": "阳朔站",
    "point": {
     "osm": [
-     "阳朔站",
-     "桂林阳朔",
      "阳朔",
+     "阳朔站",
      "Yangshuo"
     ],
     "near": [
-     24.893,
-     110.541
+     24.9636,
+     110.5634
     ],
     "entrance": false,
-    "R": 7000,
+    "R": 800,
     "tag": {
      "railway": "station"
     }

@@ -3,6 +3,35 @@
   "name": "Plan du parc",
   "calage": "travelos/routes/osm/hkdl-calage.json"
  },
+ "zones": [
+  {
+   "name": "Le parc",
+   "stops": [
+    "dl-main",
+    "dl-frozen",
+    "dl-castle",
+    "dl-fantasy",
+    "fairy-tale",
+    "philharmagic",
+    "plaza-inn",
+    "dl-adventure",
+    "dl-toy",
+    "dl-mystic",
+    "cinema",
+    "jungle",
+    "dl-tomorrow"
+   ]
+  },
+  {
+   "name": "Accès",
+   "stops": [
+    "hotel-matin",
+    "disney",
+    "dl-main",
+    "hotel-soir"
+   ]
+  }
+ ],
  "stops": [
   {
    "id": "hotel-matin",
