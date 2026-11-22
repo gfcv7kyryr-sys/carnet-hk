@@ -1551,7 +1551,7 @@ function viewMusic() {
 function playAlbum(k) {
   const list = albumTracks(); if (!list[k]) { if (k >= list.length) albumQueue = null; return; }
   albumQueue = k;
-  playAudio(list[k].src, `${list[k].title} · ${list[k].chapter.replace(/^Disque \d+ · /, "")}`, true);
+  playAudio(list[k].src, list[k].title, true, list[k].chapter.replace(/^Disque \d+ · /, ""));
   const jk = $("#mpJacket"); if (list[k].jacket) { jk.src = list[k].jacket; jk.hidden = false; } else jk.hidden = true;
   $$(".trk").forEach((b) => b.classList.toggle("on", +b.dataset.track === k));
   if ("mediaSession" in navigator) try {
@@ -1563,39 +1563,50 @@ function mpPrev() {
   if (player.currentTime > 3 || albumQueue == null || albumQueue === 0) { player.currentTime = 0; return; }
   playAlbum(albumQueue - 1);
 }
-function mpNext() { if (albumQueue != null) playAlbum(albumQueue + 1); else player.currentTime = player.duration || 0; }
-function mpShowControls() { const alb = albumQueue != null; $("#mpPrev").hidden = false; $("#mpNext").hidden = !alb; $("#miniPlayer").classList.toggle("alb", alb); }
+let mpShuffle = false, mpRepeat = false;
+function mpNextIndex(k) {
+  const n = albumTracks().length;
+  if (mpShuffle && n > 1) { let r; do r = Math.floor(Math.random() * n); while (r === k); return r; }
+  return k + 1 < n ? k + 1 : (mpRepeat ? 0 : null);
+}
+function mpNext() { if (albumQueue != null) { const k = mpNextIndex(albumQueue); if (k != null) playAlbum(k); } else player.currentTime = player.duration || 0; }
+function mpShowControls() { const alb = albumQueue != null; ["#mpNext", "#mpShuffle", "#mpRepeat", "#mpList"].forEach((q) => { $(q).hidden = !alb; }); $("#miniPlayer").classList.toggle("alb", alb); }
 
 const player = $("#player");
-player.addEventListener("ended", () => { if (albumQueue != null) playAlbum(albumQueue + 1); });
-function playAudio(src, title, fromAlbum = false) {
+player.addEventListener("ended", () => { if (albumQueue != null) { const k = mpNextIndex(albumQueue); if (k != null) playAlbum(k); else albumQueue = null; } });
+function playAudio(src, title, fromAlbum = false, sub = "") {
   if (!fromAlbum) { albumQueue = null; $("#mpJacket").hidden = true; }
+  $("#mpSub").textContent = sub;
   player.src = `/pack/${src}`;
   $("#mpTitle").textContent = title || "Audio";
-  $("#miniPlayer").hidden = false; mpShowControls();
+  $("#miniPlayer").hidden = false; document.body.classList.add("mp-on"); mpShowControls();
   player.play().catch(() => {});
 }
 let mpSeeking = false;
 player.addEventListener("timeupdate", () => {
   if (mpSeeking) return;
-  $("#mpSeek").value = player.duration ? Math.round((1000 * player.currentTime) / player.duration) : 0;
+  const v = player.duration ? Math.round((1000 * player.currentTime) / player.duration) : 0;
+  $("#mpSeek").value = v; $("#mpSeek").style.setProperty("--p", `${v / 10}%`);
   $("#mpTime").textContent = dur(player.currentTime || 0);
 });
 player.addEventListener("loadedmetadata", () => { $("#mpDur").textContent = dur(player.duration || 0); });
-$("#mpSeek").addEventListener("input", (e) => { mpSeeking = true; if (player.duration) $("#mpTime").textContent = dur((e.target.value / 1000) * player.duration); });
+$("#mpSeek").addEventListener("input", (e) => { mpSeeking = true; e.target.style.setProperty("--p", `${e.target.value / 10}%`); if (player.duration) $("#mpTime").textContent = dur((e.target.value / 1000) * player.duration); });
 $("#mpSeek").addEventListener("change", (e) => { if (player.duration) player.currentTime = (e.target.value / 1000) * player.duration; mpSeeking = false; });
 $("#mpPrev").addEventListener("click", mpPrev);
+$("#mpShuffle").addEventListener("click", (e) => { mpShuffle = !mpShuffle; e.currentTarget.classList.toggle("dim", !mpShuffle); e.currentTarget.setAttribute("aria-pressed", mpShuffle); });
+$("#mpRepeat").addEventListener("click", (e) => { mpRepeat = !mpRepeat; e.currentTarget.classList.toggle("dim", !mpRepeat); e.currentTarget.setAttribute("aria-pressed", mpRepeat); });
+$("#mpList").addEventListener("click", () => go("music"));
 $("#mpNext").addEventListener("click", mpNext);
 if ("mediaSession" in navigator) try {
   navigator.mediaSession.setActionHandler("previoustrack", mpPrev);
   navigator.mediaSession.setActionHandler("nexttrack", mpNext);
   navigator.mediaSession.setActionHandler("seekto", (d) => { player.currentTime = d.seekTime; });
 } catch {}
-player.addEventListener("play", () => { $("#mpToggle").textContent = "❚❚"; });
-player.addEventListener("pause", () => { $("#mpToggle").textContent = "▶"; });
+player.addEventListener("play", () => $("#miniPlayer").classList.remove("paused"));
+player.addEventListener("pause", () => $("#miniPlayer").classList.add("paused"));
 player.addEventListener("error", () => { $("#miniPlayer").hidden = true; toast("Audio pas encore téléchargé : Plus › Contenu › Synchroniser."); });
 $("#mpToggle").addEventListener("click", () => (player.paused ? player.play() : player.pause()));
-$("#mpClose").addEventListener("click", () => { player.pause(); $("#miniPlayer").hidden = true; });
+$("#mpClose").addEventListener("click", () => { player.pause(); albumQueue = null; $("#miniPlayer").hidden = true; document.body.classList.remove("mp-on"); });
 
 /* ================= clics ================= */
 
