@@ -91,6 +91,10 @@ class OsmTiles private constructor(ctx: Context) : WebViewAssetLoader.PathHandle
         val list = try { JSONArray(regions) } catch (_: Exception) { return@Thread }
         for (stack in listOf("Noto Sans Regular", "Noto Sans Bold", "Noto Sans Italic"))
             for (range in listOf("0-255", "256-511", "8192-8447")) font("${stack.replace(" ", "%20")}/$range.pbf")
+        // Vue d'ensemble de la Chine du Sud (Hong Kong → Guilin), pour les journées sur plusieurs villes.
+        for (z in 5..9) {
+            for (x in lon2x(110.0, z)..lon2x(114.6, z)) for (y in lat2y(25.4, z)..lat2y(21.8, z)) tile("$z/$x/$y")
+        }
         for (i in 0 until list.length()) {
             val o = list.getJSONObject(i)
             val name = o.optString("name")

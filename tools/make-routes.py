@@ -357,6 +357,10 @@ def dl(names, near=HKDL, entrance=True, R=900): return osm(names, near, entrance
 INTERCHANGE = dl(["Disneyland Bus Terminus", "迪士尼樂園巴士總站"], [22.3165, 114.0457], entrance=False, R=400)
 DAYS["j12"] = {
   "illustration": {"name": "Plan du parc", "calage": "travelos/routes/osm/hkdl-calage.json"},
+  # Le parc d'abord (le plan illustré), l'accès depuis l'hôtel ensuite.
+  "zones": [{"name": "Le parc", "stops": ["dl-main", "dl-frozen", "dl-castle", "dl-fantasy", "fairy-tale", "philharmagic", "plaza-inn", "dl-adventure",
+                                           "dl-toy", "dl-mystic", "cinema", "jungle", "dl-tomorrow"]},
+            {"name": "Accès", "stops": ["hotel-matin", "disney", "dl-main", "hotel-soir"]}],
   "stops": [
     hotel("hotel-matin", "hollywood", step="j12:0", label="Départ du Disney's Hollywood Hotel"),
     stop("disney", "Interchange", point=INTERCHANGE, name="Interchange de Disneyland (navette)"),

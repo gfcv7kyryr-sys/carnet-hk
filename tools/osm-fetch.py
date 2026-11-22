@@ -18,8 +18,9 @@ ZONES = {
     "mo": ((22.10, 113.52, 22.22, 113.61), POI),
     "gz": ((22.95, 113.15, 23.20, 113.45), POI),
     "sz": ((22.48, 113.85, 22.60, 114.12), POI),
-    "xp2": ((24.85, 110.40, 25.00, 110.62), POI + 'node["natural"="peak"]["name"]{b};'),
+    "xp3": ((24.85, 110.40, 25.02, 110.65), POI + 'node["natural"="peak"]["name"]{b};'),
     "hy": ((24.20, 111.15, 24.30, 111.25), POI),
+    "gares": ((22.25, 110.35, 25.05, 114.25), 'nwr["railway"~"^(station|halt)$"]["name"]{b};'),
     "rail": ((22.25, 110.35, 25.05, 114.25), 'way["railway"="rail"]["usage"!="industrial"]["service"!~"."]{b};'),
 }
 def fetch(name, bbox, body):

@@ -513,8 +513,8 @@ body.mapmode main#view{padding:0;max-width:none;min-height:0}
 .m-ferry i{border-color:#1E88E5;border-top-style:dashed}
 .m-walk i{border-color:#2E9D4F;border-top-style:dotted;border-top-width:5px}
 .m-peaktram i{border-color:#F07C00}.m-metro i{border-color:#C8102E}.m-dingding i{border-color:#0B6E4F}
-.m-taxi i{border-color:#6E6E73;border-top-style:dashed;border-top-width:3px}
-.m-train i{border-color:#6A3FB5}.m-bus i{border-color:#C27C0E}.m-cablecar i{border-color:#D81B60;border-top-style:dashed}.m-car i{border-color:#455A64}
+.m-taxi i{border-color:#E09A00;border-top-style:dashed;border-top-width:3px}
+.m-train i{border-color:#6A3FB5}.m-bus i{border-color:#00838F}.m-cablecar i{border-color:#D81B60;border-top-style:dashed}.m-car i{border-color:#455A64}
 /* Fiche compacte (à droite en paysage, en bas en portrait) et liste des étapes à la demande. */
 .dm-side{position:absolute;z-index:4;right:calc(env(safe-area-inset-right,0px) + var(--gut));bottom:calc(env(safe-area-inset-bottom,0px) + 18px);width:var(--side);display:flex;flex-direction:column;gap:10px;max-height:calc(100dvh - env(safe-area-inset-top,0px) - 110px)}
 .dm-card{display:grid;grid-template-columns:76px minmax(0,1fr);gap:4px 14px;align-items:center;padding:12px;border-radius:var(--r-m);background:var(--gl-strong)}
@@ -542,8 +542,8 @@ body.mapmode main#view{padding:0;max-width:none;min-height:0}
 .dm-leg{display:flex;align-items:center;gap:12px;padding:0 6px 0 19px;color:var(--soft);font-size:.78rem;min-height:22px}
 .dm-leg i{width:0;height:18px;border-left:3px solid #ccc;border-top:0}
 .dm-leg.m-ferry i{border-left:3px dashed #1E88E5}.dm-leg.m-walk i{border-left:4px dotted #2E9D4F}
-.dm-leg.m-peaktram i{border-left-color:#F07C00}.dm-leg.m-metro i{border-left-color:#C8102E}.dm-leg.m-dingding i{border-left-color:#0B6E4F}.dm-leg.m-taxi i{border-left:3px dashed #6E6E73}
-.dm-leg.m-train i{border-left-color:#6A3FB5}.dm-leg.m-bus i{border-left-color:#C27C0E}.dm-leg.m-cablecar i{border-left:3px dashed #D81B60}.dm-leg.m-car i{border-left-color:#455A64}
+.dm-leg.m-peaktram i{border-left-color:#F07C00}.dm-leg.m-metro i{border-left-color:#C8102E}.dm-leg.m-dingding i{border-left-color:#0B6E4F}.dm-leg.m-taxi i{border-left:3px dashed #E09A00}
+.dm-leg.m-train i{border-left-color:#6A3FB5}.dm-leg.m-bus i{border-left-color:#00838F}.dm-leg.m-cablecar i{border-left:3px dashed #D81B60}.dm-leg.m-car i{border-left-color:#455A64}
 .dm-leg.confirm i{border-left:3px dotted #8A8A8E !important}.dm-leg.confirm b{color:var(--red-ink);font-weight:650}
 .dm-zone.on,.dm-illu.on{color:var(--red-ink);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--red) 40%,transparent),var(--gl-shadow)}
 .dm-etools,.dm-tools{flex-wrap:wrap}
@@ -570,7 +570,7 @@ body.mapmode main#view{padding:0;max-width:none;min-height:0}
 .plan{position:absolute;inset:0;width:100%;height:100%}
 .plan .pl{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:6}
 .plan .m-ferry{stroke:#1E88E5;stroke-dasharray:16 10}.plan .m-walk{stroke:#2E9D4F;stroke-width:7;stroke-dasharray:.1 12}
-.plan .m-peaktram{stroke:#F07C00}.plan .m-metro{stroke:#C8102E}.plan .m-dingding{stroke:#0B6E4F}.plan .m-taxi{stroke:#6E6E73;stroke-dasharray:10 8}
+.plan .m-peaktram{stroke:#F07C00}.plan .m-metro{stroke:#C8102E}.plan .m-dingding{stroke:#0B6E4F}.plan .m-taxi{stroke:#E09A00;stroke-dasharray:10 8}
 .plan .pin{cursor:pointer}.plan .pin circle{stroke:#fff;stroke-width:4}.plan .pin.done circle{fill:#9A9AA0 !important}
 .plan .pin text{fill:#fff;font-weight:750;font-size:18px;text-anchor:middle}
 .plan .acc{fill:rgba(10,132,255,.18);stroke:rgba(10,132,255,.4)}.plan .me{fill:#0A84FF;stroke:#fff;stroke-width:4}
@@ -617,3 +617,23 @@ body.mapmode .stale{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 140px
   .dm-attrib{left:var(--gut);right:auto;bottom:1px}
 }
 .view:has(.dmap){animation:none}
+
+/* Pastilles de mode sur les tracés */
+.mb{pointer-events:none}
+.mb span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#fff;border:2.5px solid var(--c);
+  font-size:14px;line-height:1;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.mb[hidden]{display:none}
+.dm-legend em,.dm-legline em{font-style:normal;font-size:1rem;width:1.2em;text-align:center}
+.dm-legend .m-train i,.dm-legline .m-train i{position:relative;border-top-width:7px}
+.dm-legend .m-train i::after,.dm-legline .m-train i::after{content:"";position:absolute;left:0;right:0;top:-4.5px;border-top:2px dashed #fff}
+/* Choix du jour dans le plan plein écran : ‹ Jour 12 · Disneyland ▾ › */
+.dm-pick{display:flex;align-items:center;gap:2px;min-width:0}
+.dm-pa{width:40px;height:44px;border-radius:14px;font-size:1.5rem;line-height:1;color:var(--ink)}
+.dm-pa:disabled{opacity:.25}
+.dm-pick .dm-day{position:relative;display:flex;align-items:center;min-width:0}
+.dm-pick select{appearance:none;-webkit-appearance:none;border:0;background:rgba(255,255,255,.55);font:inherit;font-weight:650;color:var(--ink);
+  height:44px;padding:0 34px 0 14px;border-radius:14px;max-width:min(52vw,320px);text-overflow:ellipsis}
+.dm-caret{position:absolute;right:12px;pointer-events:none;font-size:.8rem;color:var(--muted)}
+.dm-pick .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.dm-acts .dm-amap{margin-left:auto}
+.dm-leg em{font-style:normal;font-size:.95rem;margin-right:2px}
