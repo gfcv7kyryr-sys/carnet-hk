@@ -1,6 +1,6 @@
 {
  "day": "j11",
- "generated": "2026-11-22T12:34:14+00:00",
+ "generated": "2026-11-22T12:44:55+00:00",
  "license": "© les contributeurs d'OpenStreetMap (ODbL)",
  "anchors": {
   "hotel-matin": {
@@ -702,10 +702,6 @@
       [
        24.963606,
        110.563362
-      ],
-      [
-       24.965129,
-       110.562895
       ],
       [
        24.962048,
@@ -19780,8 +19776,8 @@
        114.164191
       ]
      ],
-     "source": "voies OSM (highspeed), recollées à 176 m / 15 m des points",
-     "m": 687242
+     "source": "voies OSM (highspeed), recollées à 240 m / 15 m des points",
+     "m": 686902
     }
    ]
   },

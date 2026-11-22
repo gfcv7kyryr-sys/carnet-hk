@@ -42664,14 +42664,173 @@
 },
 "yangshuo-station": {
 "carnet": [
-24.893,
-110.541
+24.9636,
+110.5634
 ],
 "name": "Gare de Yangshuo",
 "zh": "阳朔站",
-"named": [],
+"named": [
+{
+"t": "n5189859021",
+"name": "阳朔高铁站",
+"en": "Yangshuo HSR Station",
+"zh": "阳朔高铁站",
+"k": {
+"amenity": "bus_station",
+"public_transport": "station"
+},
+"p": [
+24.963314,
+110.562748
+],
+"d": 73,
+"score": 4
+},
+{
+"t": "n3676370264",
+"name": "阳朔",
+"en": "Yangshuo",
+"zh": "阳朔",
+"k": {
+"public_transport": "station",
+"railway": "station"
+},
+"p": [
+24.963606,
+110.563362
+],
+"d": 4,
+"score": 3
+},
+{
+"t": "w1486767246",
+"name": "阳朔站派出所",
+"en": null,
+"zh": null,
+"k": {
+"amenity": "police",
+"building": "yes"
+},
+"p": [
+24.964961,
+110.562277
+],
+"d": 189,
+"score": 3
+},
+{
+"t": "w1486767253",
+"name": "阳朔县公安局高速动车阳朔站警务室",
+"en": null,
+"zh": null,
+"k": {
+"building": "yes"
+},
+"p": [
+24.962066,
+110.564569
+],
+"d": 208,
+"score": 3
+},
+{
+"t": "w1486767252",
+"name": "阳朔专线车售票处",
+"en": null,
+"zh": null,
+"k": {
+"building": "yes"
+},
+"p": [
+24.962604,
+110.563979
+],
+"d": 125,
+"score": 2
+},
+{
+"t": "w631438761",
+"name": "贵广客专线",
+"en": "Guiguang Passenger Line",
+"zh": "贵广客专线",
+"k": {
+"operator": "中国铁路南宁局集团有限公司",
+"railway": "rail",
+"ref": "3044"
+},
+"p": [
+24.966156,
+110.562182
+],
+"d": 310,
+"score": 0
+},
+{
+"t": "n14244848721",
+"name": "时途·暖居",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "guest_house"
+},
+"p": [
+24.965842,
+110.561376
+],
+"d": 322,
+"score": 0
+},
+{
+"t": "w382209999",
+"name": "贵广客专线",
+"en": "Guiguang Passenger Line",
+"zh": "贵广客专线",
+"k": {
+"operator": "中国铁路南宁局集团有限公司",
+"railway": "rail",
+"ref": "3044"
+},
+"p": [
+24.966725,
+110.56188
+],
+"d": 380,
+"score": 0
+}
+],
 "entrances": [],
-"transit": []
+"transit": [
+{
+"t": "n3676370264",
+"name": "阳朔",
+"en": "Yangshuo",
+"zh": "阳朔",
+"k": {
+"public_transport": "station",
+"railway": "station"
+},
+"p": [
+24.963606,
+110.563362
+],
+"d": 4
+},
+{
+"t": "n5189859021",
+"name": "阳朔高铁站",
+"en": "Yangshuo HSR Station",
+"zh": "阳朔高铁站",
+"k": {
+"amenity": "bus_station",
+"public_transport": "station"
+},
+"p": [
+24.963314,
+110.562748
+],
+"d": 73
+}
+]
 },
 "xingping": {
 "carnet": [
@@ -43249,12 +43408,118 @@
 },
 "xianggong": {
 "carnet": [
-24.956,
-110.461
+24.9258,
+110.479
 ],
 "name": "Colline Xianggong",
 "zh": "相公山",
-"named": [],
+"named": [
+{
+"t": "n6487071285",
+"name": "Xianggong Hill",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "viewpoint"
+},
+"p": [
+24.925807,
+110.479001
+],
+"d": 1,
+"score": 1
+},
+{
+"t": "n13722839209",
+"name": "Platform 1",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "viewpoint"
+},
+"p": [
+24.925814,
+110.479077
+],
+"d": 8,
+"score": 0
+},
+{
+"t": "n13722861116",
+"name": "Platform 2",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "viewpoint"
+},
+"p": [
+24.925799,
+110.479116
+],
+"d": 12,
+"score": 0
+},
+{
+"t": "n13722848011",
+"name": "Platform 4",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "viewpoint"
+},
+"p": [
+24.925753,
+110.479142
+],
+"d": 15,
+"score": 0
+},
+{
+"t": "n13722860528",
+"name": "Platform 5",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "viewpoint"
+},
+"p": [
+24.925713,
+110.479163
+],
+"d": 19,
+"score": 0
+},
+{
+"t": "n14351707873",
+"name": "立省60元",
+"en": "Save 60 Yuan",
+"zh": null,
+"k": {
+"tourism": "viewpoint"
+},
+"p": [
+24.925432,
+110.479576
+],
+"d": 71,
+"score": 0
+},
+{
+"t": "n4781028251",
+"name": "仙人台",
+"en": "Fairy Terrace",
+"zh": null,
+"k": {
+"tourism": "viewpoint"
+},
+"p": [
+24.9243,
+110.482411
+],
+"d": 383,
+"score": 0
+}
+],
 "entrances": [],
 "transit": []
 },

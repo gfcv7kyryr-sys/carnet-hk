@@ -101,7 +101,7 @@ hotel-valises>yangshuo-station
   car           8932 m  OSRM en voiture sur OpenStreetMap (13 min estimées)
 
 yangshuo-station>west-kowloon
-  train       687242 m  voies OSM (highspeed), recollées à 176 m / 15 m des points
+  train       686902 m  voies OSM (highspeed), recollées à 240 m / 15 m des points
 
 west-kowloon>hotel-disney
   walk           621 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée L de la station)
@@ -244,17 +244,17 @@ man-mo>dejeuner
 dejeuner>hotel
   walk           260 m  OSRM à pied sur OpenStreetMap (1 min estimées, entrée E3 de la station)
   metro         1713 m  voies de la ligne Island (relation 6827211 (South Island Line (Admiralty → South Horizons))) jusqu'à Admiralty / 金鐘 Admiralty / 金鐘 (OSM nœud 1295654882, relation 6827211 (South Island Line (Admiralty → South Horizons)))
-  metro         3524 m  voies de la ligne Tsuen Wan (relation 269669 (MTR Tsuen Wan Line (Southbound))) jusqu'à Jordan / 佐敦 Jordan / 佐敦 (OSM nœud 2554379407, relation 269669 (MTR Tsuen Wan Line (Southbound)))
+  metro         3343 m  voies de la ligne Tsuen Wan (relation 269669 (MTR Tsuen Wan Line (Southbound))) jusqu'à Jordan / 佐敦 Jordan / 佐敦 (OSM nœud 2554379407, relation 269669 (MTR Tsuen Wan Line (Southbound)))
   walk           429 m  OSRM à pied sur OpenStreetMap (4 min estimées, sortie B2 de la station)
 
 hotel>monster
   walk           429 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée B2 de la station)
-  metro         3460 m  voies de la ligne Tsuen Wan (relation 269669 (MTR Tsuen Wan Line (Southbound))) jusqu'à Admiralty / 金鐘 Admiralty / 金鐘 (OSM nœud 2556738383, relation 269669 (MTR Tsuen Wan Line (Southbound)))
-  metro         5578 m  voies de la ligne Island (relation 6827211 (South Island Line (Admiralty → South Horizons))) jusqu'à Quarry Bay / 鰂魚涌 Quarry Bay / 鰂魚涌 (OSM nœud 984741558, relation 6827211 (South Island Line (Admiralty → South Horizons)))
+  metro         3279 m  voies de la ligne Tsuen Wan (relation 269669 (MTR Tsuen Wan Line (Southbound))) jusqu'à Admiralty / 金鐘 Admiralty / 金鐘 (OSM nœud 2556738383, relation 269669 (MTR Tsuen Wan Line (Southbound)))
+  metro         5294 m  voies de la ligne Island (relation 6827211 (South Island Line (Admiralty → South Horizons))) jusqu'à Quarry Bay / 鰂魚涌 Quarry Bay / 鰂魚涌 (OSM nœud 984741558, relation 6827211 (South Island Line (Admiralty → South Horizons)))
   walk           724 m  OSRM à pied sur OpenStreetMap (7 min estimées, sortie A de la station)
 
 monster>tram
-  dingding      4359 m  voies OSM (tram), recollées à 2 m / 64 m des points
+  dingding      4231 m  voies OSM (tram), recollées à 2 m / 79 m des points
 
 tram>victoria-park
   walk           681 m  OSRM à pied sur OpenStreetMap (8 min estimées)
@@ -284,18 +284,18 @@ hopewell>hotel-soir : 1 segment(s) tracé(s)
 
 hotel-matin>wong-tai-sin
   walk           429 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée B2 de la station)
-  metro         8912 m  voies de la ligne Tsuen Wan Line|荃灣綫 (relation 269669 (MTR Tsuen Wan Line (Southbound))) jusqu'à Prince Edward / 太子 Prince Edward / 太子 (OSM nœud 288379264, relation 269669 (MTR Tsuen Wan Line (Southbound)))
+  metro         2186 m  voies de la ligne Tsuen Wan Line|荃灣綫 (relation 269669 (MTR Tsuen Wan Line (Southbound))) jusqu'à Prince Edward / 太子 Prince Edward / 太子 (OSM nœud 288379264, relation 269669 (MTR Tsuen Wan Line (Southbound)))
   metro         4125 m  voies de la ligne Kwun Tong Line|觀塘綫 (relation 272125 (MTR Kwun Tong Line)) jusqu'à Wong Tai Sin / 黃大仙 Wong Tai Sin / 黃大仙 (OSM nœud 4331931871, relation 272125 (MTR Kwun Tong Line))
   walk           170 m  OSRM à pied sur OpenStreetMap (1 min estimées, sortie A de la station)
 
 wong-tai-sin>choi-hung
   walk           170 m  OSRM à pied sur OpenStreetMap (1 min estimées, entrée A de la station)
-  metro        16541 m  voies de la ligne Kwun Tong Line|觀塘綫 (relation 272125 (MTR Kwun Tong Line)) jusqu'à Choi Hung / 彩虹 Choi Hung / 彩虹 (OSM nœud 4331931864, relation 272125 (MTR Kwun Tong Line))
+  metro         1611 m  voies de la ligne Kwun Tong Line|觀塘綫 (relation 272125 (MTR Kwun Tong Line)) jusqu'à Choi Hung / 彩虹 Choi Hung / 彩虹 (OSM nœud 4331931864, relation 272125 (MTR Kwun Tong Line))
   walk           659 m  OSRM à pied sur OpenStreetMap (8 min estimées, sortie C2 de la station)
 
 choi-hung>nan-lian
   walk           659 m  OSRM à pied sur OpenStreetMap (8 min estimées, entrée C2 de la station)
-  metro        17262 m  voies de la ligne Kwun Tong Line|觀塘綫 (relation 272125 (MTR Kwun Tong Line)) jusqu'à Diamond Hill / 鑽石山 Diamond Hill / 鑽石山 (OSM nœud 4331887005, relation 272125 (MTR Kwun Tong Line))
+  metro          903 m  voies de la ligne Kwun Tong Line|觀塘綫 (relation 272125 (MTR Kwun Tong Line)) jusqu'à Diamond Hill / 鑽石山 Diamond Hill / 鑽石山 (OSM nœud 4331887005, relation 272125 (MTR Kwun Tong Line))
   walk           341 m  OSRM à pied sur OpenStreetMap (3 min estimées, sortie C2 de la station)
 
 nan-lian>hotel-sieste
@@ -306,12 +306,12 @@ nan-lian>hotel-sieste
 hotel-sieste>ten-thousand
   walk           665 m  OSRM à pied sur OpenStreetMap (7 min estimées, entrée C de la station)
   metro         3390 m  voies de la ligne Kwun Tong Line|觀塘綫 (relation 272125 (MTR Kwun Tong Line)) jusqu'à Kowloon Tong / 九龍塘 Kowloon Tong / 九龍塘 (OSM nœud 4331931865, relation 272125 (MTR Kwun Tong Line))
-  train         8930 m  voies de la ligne East Rail Line|東鐵綫 (relation 4248589 (MTR East Rail Line)) jusqu'à Sha Tin / 沙田 Sha Tin / 沙田 (OSM nœud 2185507473, relation 4248589 (MTR East Rail Line))
+  train         6035 m  voies de la ligne East Rail Line|東鐵綫 (relation 4248589 (MTR East Rail Line)) jusqu'à Sha Tin / 沙田 Sha Tin / 沙田 (OSM nœud 2185507473, relation 4248589 (MTR East Rail Line))
   walk           900 m  OSRM à pied sur OpenStreetMap (12 min estimées, sortie B de la station)
 
 ten-thousand>goldfish
   walk           900 m  OSRM à pied sur OpenStreetMap (12 min estimées, entrée B de la station)
-  train        10562 m  voies de la ligne East Rail Line|東鐵綫 (relation 4248589 (MTR East Rail Line)) jusqu'à Mong Kok East / 旺角東 Mong Kok East / 旺角東 (OSM nœud 243845056, relation 4248589 (MTR East Rail Line))
+  train         7668 m  voies de la ligne East Rail Line|東鐵綫 (relation 4248589 (MTR East Rail Line)) jusqu'à Mong Kok East / 旺角東 Mong Kok East / 旺角東 (OSM nœud 243845056, relation 4248589 (MTR East Rail Line))
   walk           654 m  OSRM à pied sur OpenStreetMap (4 min estimées, sortie B3 de la station)
 
 goldfish>temple-street
@@ -351,12 +351,12 @@ changsha>hotel-nuit : 1 segment(s) tracé(s)
 
 hotel-matin>terminal-hk
   walk           429 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée B2 de la station)
-  metro         3460 m  voies de la ligne Tsuen Wan Line|荃灣綫 (relation 269669 (MTR Tsuen Wan Line (Southbound))) jusqu'à Admiralty / 金鐘 Admiralty / 金鐘 (OSM nœud 2556738383, relation 269669 (MTR Tsuen Wan Line (Southbound)))
+  metro         3279 m  voies de la ligne Tsuen Wan Line|荃灣綫 (relation 269669 (MTR Tsuen Wan Line (Southbound))) jusqu'à Admiralty / 金鐘 Admiralty / 金鐘 (OSM nœud 2556738383, relation 269669 (MTR Tsuen Wan Line (Southbound)))
   metro         1776 m  voies de la ligne Island Line|港島綫 (relation 6827211 (South Island Line (Admiralty → South Horizons))) jusqu'à Sheung Wan / 上環 Sheung Wan / 上環 (OSM nœud 2561063241, relation 6827211 (South Island Line (Admiralty → South Horizons)))
   walk           418 m  OSRM à pied sur OpenStreetMap (5 min estimées, sortie C de la station)
 
 terminal-hk>outer-harbour
-  ferry       185564 m  voies OSM (ferry), recollées à 294 m / 153 m des points
+  ferry        66185 m  voies OSM (ferry), recollées à 571 m / 153 m des points
 
 outer-harbour>senado
   taxi          3433 m  OSRM en voiture sur OpenStreetMap (4 min estimées)
@@ -374,10 +374,11 @@ cotai>terminal-taipa
   taxi          3957 m  OSRM en voiture sur OpenStreetMap (7 min estimées)
 
 terminal-taipa>macau-ferry
-  ferry       120946 m  voies OSM (ferry), recollées à 259 m / 23 m des points
+  ferry        65371 m  voies OSM (ferry), recollées à 259 m / 144 m des points
 
 macau-ferry>hotel-soir
-  taxi        163512 m  OSRM en voiture sur OpenStreetMap (181 min estimées)
+  walk           589 m  OSRM à pied sur OpenStreetMap (8 min estimées)
+  taxi          2700 m  OSRM en voiture sur OpenStreetMap (3 min estimées)
 
 hotel-matin>terminal-hk : 4 segment(s) tracé(s)
 terminal-hk>outer-harbour : 1 segment(s) tracé(s)
@@ -387,7 +388,7 @@ a-ma>taipa : 1 segment(s) tracé(s)
 taipa>cotai : 1 segment(s) tracé(s)
 cotai>terminal-taipa : 1 segment(s) tracé(s)
 terminal-taipa>macau-ferry : 1 segment(s) tracé(s)
-macau-ferry>hotel-soir : 1 segment(s) tracé(s)
+macau-ferry>hotel-soir : 2 segment(s) tracé(s)
 → /home/runner/work/carnet-hk/carnet-hk/travelos/routes/osm/j4.json
 
 ================ j5 ================
@@ -400,12 +401,12 @@ hotel-matin>gz-south
   taxi         20039 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
 
 gz-south>futian
-  train       111638 m  voies OSM (highspeed), recollées à 242 m / 34 m des points
+  train       111317 m  voies OSM (highspeed), recollées à 249 m / 45 m des points
 
 futian>talent-park
   walk           623 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée 7 de la station)
   metro        12065 m  voies de la ligne ^(?=.*(深圳|Shenzhen))(?=.*(?<!\d)11(?!\d)) (relation 6450277 (Subway Line 11: Hongling South → Bitou)) jusqu'à Houhai / 后海 / 后海 (OSM nœud 4136048004, relation 6450277 (Subway Line 11: Hongling South → Bitou))
-  metro         3153 m  voies de la ligne ^(?=.*(深圳|Shenzhen))(?=.*(?<!\d)13(?!\d)) (relation 18470804 (Subway Line 13: Shenzhen Bay Checkpoint → Lisonglang)) jusqu'à sortie B1 (OSM nœud 12558430569)
+  metro          741 m  voies de la ligne ^(?=.*(深圳|Shenzhen))(?=.*(?<!\d)13(?!\d)) (relation 18470804 (Subway Line 13: Shenzhen Bay Checkpoint → Lisonglang)) jusqu'à sortie B1 (OSM nœud 12558430569)
   walk          1058 m  OSRM à pied sur OpenStreetMap (11 min estimées, sortie B1 de la station)
 
 talent-park>inno100
@@ -438,7 +439,7 @@ civic-center>futian-retour
   walk          1008 m  OSRM à pied sur OpenStreetMap (13 min estimées)
 
 futian-retour>gz-south-retour
-  train       111638 m  voies OSM (highspeed), recollées à 34 m / 242 m des points
+  train       111317 m  voies OSM (highspeed), recollées à 45 m / 249 m des points
 
 gz-south-retour>hotel-soir
   taxi         20510 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
@@ -467,7 +468,7 @@ hotel-hk>west-kowloon
   taxi          1297 m  OSRM en voiture sur OpenStreetMap (2 min estimées)
 
 west-kowloon>gz-south
-  train       141418 m  voies OSM (highspeed), recollées à 15 m / 242 m des points
+  train       141129 m  voies OSM (highspeed), recollées à 15 m / 249 m des points
 
 gz-south>hotel-gz
   taxi         20510 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
@@ -557,7 +558,7 @@ hotel-gz>gz-south
   taxi         20039 m  OSRM en voiture sur OpenStreetMap (18 min estimées)
 
 gz-south>yangshuo-station
-  train       450082 m  voies OSM (highspeed), recollées à 141 m / 176 m des points
+  train       380236 m  voies OSM (highspeed), recollées à 360 m / 245 m des points
 
 yangshuo-station>hotel-xp
   car           8950 m  OSRM en voiture sur OpenStreetMap (13 min estimées)
