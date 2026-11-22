@@ -20,13 +20,13 @@ AMENITY_OK = {"place_of_worship", "ferry_terminal", "bus_station", "taxi", "thea
 
 def overpass(q):
     body = urllib.parse.urlencode({"data": q}).encode()
-    for k in range(3):
+    for k in range(2):
         for u in OVERPASS:
             try:
                 req = urllib.request.Request(u, data=body, headers={"User-Agent": UA})
-                with urllib.request.urlopen(req, timeout=200) as r: return json.loads(r.read())
+                with urllib.request.urlopen(req, timeout=90) as r: return json.loads(r.read())
             except Exception as e:
-                print("   overpass", u, e); time.sleep(5 + 10 * k)
+                print("   overpass", u, e, flush=True); time.sleep(3 + 6 * k)
     return {"elements": []}
 
 def metres(a, b):
@@ -49,9 +49,14 @@ def tokens(*names):
     return out - {"the", "and", "road", "street", "station", "park", "temple", "hong", "kong", "de", "des", "la", "le", "du"}
 
 def around(lat, lng, R, names):
-    q = (f'[out:json][timeout:120];(nwr(around:{R},{lat},{lng})["name"];node(around:{R},{lat},{lng})["entrance"];'
-         f'node(around:{R + 150},{lat},{lng})["railway"="subway_entrance"];nwr(around:{R + 300},{lat},{lng})["amenity"="ferry_terminal"];'
-         f'nwr(around:{R + 300},{lat},{lng})["railway"="station"];);out center tags qt;')
+    # Requêtes ciblées (clés précises) : bien plus rapides que tous les éléments nommés dans un quartier dense.
+    A = f"(around:{R},{lat},{lng})"; B = f"(around:{R + 200},{lat},{lng})"
+    q = (f'[out:json][timeout:60];('
+         f'nwr{A}["tourism"]["name"];nwr{A}["historic"]["name"];nwr{A}["leisure"~"park|garden"]["name"];'
+         f'nwr{A}["amenity"~"place_of_worship|ferry_terminal|bus_station|theatre|arts_centre|library|marketplace"]["name"];'
+         f'nwr{A}["man_made"]["name"];nwr{A}["aerialway"];nwr{A}["building"]["name"]["building"!="yes"];'
+         f'node{A}["entrance"];node{B}["railway"="subway_entrance"];nwr{B}["railway"~"^(station|halt)$"];nwr{B}["public_transport"="station"];'
+         f'nwr{B}["amenity"="ferry_terminal"];nwr{B}["man_made"="pier"]["name"];);out center tags qt;')
     els = [e for e in overpass(q)["elements"] if pt(e)]
     at = [lat, lng]; tk = tokens(*names)
     named, ent, trans = [], [], []
@@ -81,7 +86,7 @@ def main():
     out = {"places": {}, "hotels": {}, "hkdl": []}
     for i in ids:
         x = pl[i]
-        print(i, x["name"])
+        print(i, x["name"], flush=True)
         out["places"][i] = {"carnet": [x["lat"], x["lng"]], "name": x["name"], "zh": x.get("nameZh"), **around(x["lat"], x["lng"], 450, [x["name"], x.get("nameZh")])}
         time.sleep(1)
     hotels = {"nathan": ("Nathan Hotel|彌敦酒店", 22.3047, 114.1715), "voco": ("voco|Shifu|十甫", 23.1225, 113.2500),
@@ -93,7 +98,7 @@ def main():
         d = overpass(f'[out:json][timeout:90];nwr(around:2500,{la},{ln})["tourism"~"hotel|guest_house|resort"];out center tags qt;')
         out["hotels"][k + "-tous"] = sorted([slim(e, [la, ln]) for e in d["elements"] if pt(e)], key=lambda s: s["d"])[:25]
     print("Hong Kong Disneyland…")
-    d = overpass('[out:json][timeout:180];nwr(22.3040,114.0320,22.3200,114.0530)["name"];out center tags qt;')
+    d = overpass('[out:json][timeout:120];nwr(22.3040,114.0320,22.3200,114.0530)["name"];out center tags qt;')
     out["hkdl"] = [slim(e, [22.3125, 114.0415]) for e in d["elements"] if pt(e)]
     dst = os.path.join(ROOT, "travelos/routes/osm/discover.json")
     os.makedirs(os.path.dirname(dst), exist_ok=True)
