@@ -637,3 +637,9 @@ body.mapmode .stale{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 140px
 .dm-pick .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .dm-acts .dm-amap{margin-left:auto}
 .dm-leg em{font-style:normal;font-size:.95rem;margin-right:2px}
+/* Suivi de position */
+[data-maplocate].on{background:#0A84FF;color:#fff}
+.dm-gpsnote{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:6;max-width:calc(100% - 24px);
+  background:rgba(60,60,67,.88);color:#fff;font-size:.86rem;font-weight:600;padding:8px 14px;border-radius:14px;
+  box-shadow:0 2px 10px rgba(0,0,0,.2);text-align:center;pointer-events:none}
+.dm-full .dm-gpsnote{top:auto;bottom:calc(env(safe-area-inset-bottom) + 76px)}

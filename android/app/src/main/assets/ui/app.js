@@ -156,6 +156,7 @@ function go(tab, view = null, arg = null, push = true) {
   window.scrollTo(0, 0);
   mapShownSig = "";
   after[tab]?.(view, arg);
+  if (!$("#dmMap")) mapStopGps(); // on a quitté le plan : fin du suivi
   requestAnimationFrame(fitDayTabs);
 }
 const after = {};
@@ -764,6 +765,7 @@ function mapMount() {
     }
     m.addLayer({ id: "acc", type: "fill", source: "acc", paint: { "fill-color": "rgba(10,132,255,.16)", "fill-outline-color": "rgba(10,132,255,.45)" } });
     m.addLayer({ id: "me", type: "circle", source: "me", paint: { "circle-radius": 8, "circle-color": "#0A84FF", "circle-stroke-color": "#FFFFFF", "circle-stroke-width": 3 } });
+    mapTrackRender(); // suivi déjà actif (passage petite carte ↔ plein écran, autre jour) : le point réapparaît tout de suite
     if (mapMe) mapShowMe(mapMe);
   });
   mapPlaceMarkers(d, stops);
@@ -788,7 +790,6 @@ function mapUpdate() {
 function mapTeardown() {
   mapMarkers = []; mapBadges = [];
   if (glMap) { try { glMap.remove(); } catch {} glMap = null; glDay = null; }
-  mapStopGps();
 }
 /* La fiche ou la liste change de taille (orientation, ouverture) : on recadre si l'utilisateur n'a pas bougé la carte. */
 function mapRelayout() {
@@ -811,23 +812,68 @@ function mapShowMe(g) {
   m.getSource("me").setData({ type: "FeatureCollection", features: [{ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: [g.lng, g.lat] } }] });
   m.getSource("acc").setData({ type: "FeatureCollection", features: [mapCircle(g.lat, g.lng, Math.max(5, g.accuracy || 20))] });
 }
+/* Suivi de position : une fois activé avec « Ma position », il dure tant qu'un plan est affiché
+   (petite carte ou plein écran, d'un jour à l'autre) et s'arrête dès qu'on quitte le plan.
+   La carte n'est jamais recentrée d'office : seulement à la première position et quand on touche « Ma position ». */
+let mapTrack = false, mapCenterNext = false, mapStale = false;
+const MAP_STALE_MS = 15000;
 function mapLocate() {
   if (!glMap) return planLocate();
   if (!N.hasLocationPermission()) { mapLocateAsked = true; N.requestLocationPermission(); return; }
-  N.gpsStart();
-  if (!mapMe) toast("Recherche de ta position…");
+  if (!mapTrack) {
+    mapTrack = true; N.gpsStart(); mapTrackLoop();
+    if (!mapMe) toast("Recherche de ta position…");
+  }
+  if (mapMe && !mapStale) mapCenterOnMe();
+  else { mapCenterNext = true; if (mapMe) { mapCenterOnMe(); toast("Signal perdu : la carte montre ta dernière position connue."); } }
+  mapTrackRender();
+}
+function mapCenterOnMe() {
+  if (!glMap || !mapMe) return;
+  glMap.easeTo({ center: [mapMe.lng, mapMe.lat], zoom: Math.max(glMap.getZoom(), 15.5), duration: 600 });
+  mapUserMoved = true;
+}
+function mapTrackLoop() {
   clearInterval(mapGpsTimer);
-  const t0 = Date.now(); let first = !mapMe, warned = false;
+  const t0 = Date.now(); let warned = false;
   mapGpsTimer = setInterval(() => {
+    if (!mapTrack) return;
     const g = json(N.gpsState(), {});
-    if (g.lat != null) {
-      mapMe = g; mapShowMe(g);
-      if (first) { first = false; glMap?.easeTo({ center: [g.lng, g.lat], zoom: Math.max(glMap.getZoom(), 15), duration: 600 }); mapUserMoved = true; }
-    } else if (!warned && Date.now() - t0 > 25000) { warned = true; toast("Pas encore de position : réessaie à l'extérieur."); }
-    if (Date.now() - t0 > 120000) mapStopGps(); // économie de batterie
+    const fresh = g.lat != null && (g.fixAgeMs == null || g.fixAgeMs < MAP_STALE_MS);
+    if (fresh) {
+      mapMe = { lat: g.lat, lng: g.lng, accuracy: g.accuracy, at: Date.now() - (g.fixAgeMs || 0) };
+      mapStale = false;
+      if (mapCenterNext) { mapCenterNext = false; mapCenterOnMe(); }
+    } else {
+      mapStale = !!mapMe;
+      if (!mapMe && !warned && Date.now() - t0 > 25000) { warned = true; toast(g.error || "Pas encore de position : le GPS capte mieux à l'extérieur."); }
+    }
+    mapTrackRender();
   }, 1000);
 }
-function mapStopGps() { if (mapGpsTimer) { clearInterval(mapGpsTimer); mapGpsTimer = null; N.gpsStop && N.gpsStop(); } }
+/* Point bleu (à jour) ou gris (dernière position connue), cercle de précision, bandeau et état du bouton. */
+function mapTrackRender() {
+  $$("[data-maplocate]").forEach((b) => { b.classList.toggle("on", mapTrack); b.setAttribute("aria-pressed", mapTrack ? "true" : "false"); });
+  const box = $("#dmMap")?.parentElement;
+  let note = $("#dmGpsNote");
+  if (mapTrack && mapStale && mapMe && box) {
+    if (!note) { note = document.createElement("div"); note.id = "dmGpsNote"; note.className = "dm-gpsnote"; note.setAttribute("role", "status"); box.appendChild(note); }
+    const min = Math.round((Date.now() - mapMe.at) / 60000);
+    note.textContent = `Signal GPS perdu · dernière position connue, ${min < 1 ? "il y a moins d'une minute" : `il y a ${min} min`}`;
+  } else note?.remove();
+  const m = glMap; if (!m || !m.getLayer("me")) return;
+  if (!mapTrack || !mapMe) { m.getSource("me").setData({ type: "FeatureCollection", features: [] }); m.getSource("acc").setData({ type: "FeatureCollection", features: [] }); return; }
+  mapShowMe(mapMe);
+  m.setPaintProperty("me", "circle-color", mapStale ? "#8E8E93" : "#0A84FF");
+  m.setPaintProperty("acc", "fill-color", mapStale ? "rgba(142,142,147,.14)" : "rgba(10,132,255,.16)");
+  m.setPaintProperty("acc", "fill-outline-color", mapStale ? "rgba(142,142,147,.45)" : "rgba(10,132,255,.45)");
+}
+function mapStopGps() {
+  if (mapGpsTimer) { clearInterval(mapGpsTimer); mapGpsTimer = null; }
+  if (mapTrack) { mapTrack = false; N.gpsStop && N.gpsStop(); }
+  mapMe = null; mapStale = false; mapCenterNext = false;
+  $("#dmGpsNote")?.remove();
+}
 
 /* Plan de secours (sans WebGL) : projection simple des coordonnées, sans fond de carte. */
 function planSvg(d, stops) {

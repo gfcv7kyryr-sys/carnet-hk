@@ -86,6 +86,8 @@ class GpsProbe(private val context: Context) {
             .put("lat", loc?.latitude ?: JSONObject.NULL)
             .put("lng", loc?.longitude ?: JSONObject.NULL)
             .put("accuracy", if (loc != null && loc.hasAccuracy()) loc.accuracy.toDouble() else JSONObject.NULL)
+            // Âge de la dernière position reçue : au-delà de quelques secondes, le signal est perdu.
+            .put("fixAgeMs", if (loc != null) (SystemClock.elapsedRealtimeNanos() - loc.elapsedRealtimeNanos) / 1_000_000 else JSONObject.NULL)
             .put("error", error ?: JSONObject.NULL)
             .toString()
     }
