@@ -74,7 +74,6 @@
   <div id="toast" class="toast" hidden></div>
   <audio id="player" preload="none"></audio>
   <div id="miniPlayer" class="mini-player" hidden>
-    <input id="mpSeek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position dans le morceau">
     <div class="mp-ctl">
       <button id="mpShuffle" class="mp-b dim" aria-label="Lecture aléatoire" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M17 3l4 4-4 4V8h-2.6l-7 8H3v-2h3.6l7-8H17zM3 6h4.4l2.1 2.4-1.3 1.5L6.6 8H3zm11.4 8.1 1.3-1.5L17 14v-3l4 4-4 4v-3h-2.6z"/></svg></button>
       <button id="mpPrev" class="mp-b" aria-label="Piste précédente"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M11.5 12 21 5.5v13zM2.5 12 12 5.5v13z"/></svg></button>
@@ -82,7 +81,7 @@
       <button id="mpNext" class="mp-b" aria-label="Piste suivante"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M12.5 12 3 5.5v13zM21.5 12 12 5.5v13z"/></svg></button>
       <button id="mpRepeat" class="mp-b dim" aria-label="Répéter l'album" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M7 7h10v3l4-4-4-4v3H5v6h2zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2z"/></svg></button>
     </div>
-    <div class="mp-now"><img id="mpJacket" alt="" hidden><div class="mp-info"><b id="mpTitle"></b><span id="mpSub"></span></div><span class="mp-t"><span id="mpTime">0:00</span> / <span id="mpDur">0:00</span></span></div>
+    <div class="mp-now"><img id="mpJacket" alt="" hidden><div class="mp-info"><b id="mpTitle"></b><span id="mpSub"></span></div><span class="mp-t"><span id="mpTime">0:00</span> / <span id="mpDur">0:00</span></span><input id="mpSeek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position dans le morceau"></div>
     <div class="mp-right">
       <button id="mpList" class="mp-b" aria-label="Ouvrir l'album"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M3 6h2v2H3zm4 0h14v2H7zM3 11h2v2H3zm4 0h14v2H7zm-4 5h2v2H3zm4 0h14v2H7z"/></svg></button>
       <button id="mpClose" class="mp-b" aria-label="Fermer le lecteur"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/></svg></button>
