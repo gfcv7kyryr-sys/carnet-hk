@@ -17,11 +17,11 @@
      "迪士尼好萊塢酒店"
     ],
     "near": [
-     22.3095,
-     114.048
+     22.309,
+     114.0369
     ],
     "entrance": true,
-    "R": 1200
+    "R": 800
    },
    "step": "j12:0"
   },
@@ -31,17 +31,15 @@
    "zh": "香港迪士尼樂園",
    "point": {
     "osm": [
-     "Disneyland Resort Public Transport Interchange",
-     "迪士尼樂園公共運輸交匯處",
-     "Disneyland Resort Station",
-     "迪士尼站"
+     "Disneyland Bus Terminus",
+     "迪士尼樂園巴士總站"
     ],
     "near": [
-     22.3155,
-     114.045
+     22.3165,
+     114.0457
     ],
     "entrance": false,
-    "R": 1200
+    "R": 400
    },
    "name": "Interchange de Disneyland (navette)"
   },
@@ -51,17 +49,16 @@
    "zh": "美國小鎮大街",
    "point": {
     "osm": [
-     "Hong Kong Disneyland",
-     "香港迪士尼樂園",
-     "Main Entrance"
+     "Main Street, USA"
     ],
     "near": [
-     22.3128,
-     114.0447
+     22.3131,
+     114.0441
     ],
-    "entrance": true,
-    "R": 900
-   }
+    "entrance": false,
+    "R": 300
+   },
+   "name": "Entrée du parc, sous la gare de Main Street"
   },
   {
    "id": "dl-frozen",
@@ -70,14 +67,14 @@
    "point": {
     "osm": [
      "Frozen Ever After",
-     "魔雪奇緣夢幻之旅"
+     "魔雪奇幻之旅"
     ],
     "near": [
-     22.3135,
-     114.037
+     22.3121,
+     114.0385
     ],
     "entrance": true,
-    "R": 900
+    "R": 400
    }
   },
   {
@@ -183,16 +180,17 @@
    "zh": "探險世界",
    "point": {
     "osm": [
-     "Adventureland",
-     "探險世界"
+     "Jungle Junction",
+     "樂韻叢林"
     ],
     "near": [
-     22.3115,
-     114.0405
+     22.3118,
+     114.0416
     ],
     "entrance": false,
-    "R": 900
-   }
+    "R": 400
+   },
+   "name": "Adventureland, allées ombragées (Jungle Junction)"
   },
   {
    "id": "dl-toy",
@@ -238,15 +236,15 @@
    "zh": "大街電影院",
    "point": {
     "osm": [
-     "Main Street Cinema",
-     "大街電影院"
+     "Emporium",
+     "百貨店"
     ],
     "near": [
-     22.3127,
-     114.043
+     22.3128,
+     114.0432
     ],
     "entrance": true,
-    "R": 900
+    "R": 300
    },
    "step": "j12:11"
   },
@@ -277,17 +275,17 @@
    "zh": "明日世界",
    "point": {
     "osm": [
-     "Orbitron",
-     "太空飛碟",
-     "Tomorrowland"
+     "Tomorrowland Stage",
+     "明日世界舞台"
     ],
     "near": [
-     22.314,
-     114.0412
+     22.3141,
+     114.0418
     ],
-    "entrance": true,
-    "R": 900
-   }
+    "entrance": false,
+    "R": 300
+   },
+   "name": "Tomorrowland : l'Orbitron, puis Ant-Man"
   },
   {
    "id": "hotel-soir",
@@ -302,11 +300,11 @@
      "迪士尼好萊塢酒店"
     ],
     "near": [
-     22.3095,
-     114.048
+     22.309,
+     114.0369
     ],
     "entrance": true,
-    "R": 1200
+    "R": 800
    },
    "step": "j12:17"
   }
@@ -491,17 +489,15 @@
      "router": "foot",
      "to": {
       "osm": [
-       "Disneyland Resort Public Transport Interchange",
-       "迪士尼樂園公共運輸交匯處",
-       "Disneyland Resort Station",
-       "迪士尼站"
+       "Disneyland Bus Terminus",
+       "迪士尼樂園巴士總站"
       ],
       "near": [
-       22.3155,
-       114.045
+       22.3165,
+       114.0457
       ],
       "entrance": false,
-      "R": 1200
+      "R": 400
      }
     },
     {

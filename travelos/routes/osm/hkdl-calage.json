@@ -1,0 +1,184 @@
+{
+ "image": "/assets/map/hkdl-plan.webp",
+ "coordinates": [
+  [
+   114.03780810081328,
+   22.31504355047944
+  ],
+  [
+   114.04552396658907,
+   22.31504355047944
+  ],
+  [
+   114.04552396658907,
+   22.308524370144188
+  ],
+  [
+   114.03780810081328,
+   22.308524370144188
+  ]
+ ],
+ "size": [
+  1600,
+  1461
+ ],
+ "points_calage": 19,
+ "points_controle": 7,
+ "controle_median_m": 11.1,
+ "controle_max_m": 34.1,
+ "validation_croisee_median_m": 18.7,
+ "validation_croisee_max_m": 78.6,
+ "calage": [
+  {
+   "nom": "Château (base)",
+   "ecart_m": 0.0,
+   "sans_lui_m": 9.4,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Hyperspace Mountain",
+   "ecart_m": 0.0,
+   "sans_lui_m": 15.5,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "It's a Small World",
+   "ecart_m": 0.0,
+   "sans_lui_m": 18.2,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Storybook Theater",
+   "ecart_m": 0.0,
+   "sans_lui_m": 35.9,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Winnie l'Ourson",
+   "ecart_m": 0.0,
+   "sans_lui_m": 11.3,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Carrousel de Cendrillon",
+   "ecart_m": 0.0,
+   "sans_lui_m": 2.0,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Wandering Oaken",
+   "ecart_m": 0.0,
+   "sans_lui_m": 49.2,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Iron Man Experience",
+   "ecart_m": 0.0,
+   "sans_lui_m": 26.6,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Starliner Diner",
+   "ecart_m": 0.0,
+   "sans_lui_m": 12.5,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Gare Main Street",
+   "ecart_m": 0.0,
+   "sans_lui_m": 20.7,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "City Hall",
+   "ecart_m": 0.0,
+   "sans_lui_m": 12.9,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Plaza Inn",
+   "ecart_m": 0.0,
+   "sans_lui_m": 12.9,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Theater in the Wild",
+   "ecart_m": 0.0,
+   "sans_lui_m": 18.7,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Jungle River Cruise",
+   "ecart_m": 0.0,
+   "sans_lui_m": 5.1,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "RC Racer",
+   "ecart_m": 0.0,
+   "sans_lui_m": 20.9,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Explorer's Club",
+   "ecart_m": 0.0,
+   "sans_lui_m": 18.7,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Entrée (Guest Relations)",
+   "ecart_m": 0.0,
+   "sans_lui_m": 40.6,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Frozen Ever After (Arendelle)",
+   "ecart_m": 0.0,
+   "sans_lui_m": 78.6,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Mystic Manor",
+   "ecart_m": 0.0,
+   "sans_lui_m": 25.0,
+   "osm": "coordonnées fixées"
+  }
+ ],
+ "controle": [
+  {
+   "nom": "Royal Banquet Hall",
+   "ecart_m": 27.8,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Gare Fantasyland",
+   "ecart_m": 34.1,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Ant-Man",
+   "ecart_m": 4.6,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Emporium",
+   "ecart_m": 13.6,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Tarzan's Treehouse",
+   "ecart_m": 4.6,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Slinky Dog",
+   "ecart_m": 5.4,
+   "osm": "coordonnées fixées"
+  },
+  {
+   "nom": "Comet Café",
+   "ecart_m": 11.1,
+   "osm": "coordonnées fixées"
+  }
+ ]
+}

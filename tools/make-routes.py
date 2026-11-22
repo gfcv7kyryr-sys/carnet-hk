@@ -19,7 +19,8 @@ PL = {p["id"]: p for p in pack["places"]}
 TW, ISL, KTL, EAL = "Tsuen Wan Line|荃灣綫", "Island Line|港島綫", "Kwun Tong Line|觀塘綫", "East Rail Line|東鐵綫"
 TCL, AEL, DRL = "Tung Chung Line|東涌綫", "Airport Express|機場快綫", "Disneyland Resort Line|迪士尼綫"
 APM = "APM|旅客自动输送"
-SZ1, SZ5, SZ11, SZ13 = r"深圳地铁1号线|Shenzhen Metro Line 1\b", r"深圳地铁5号线|Shenzhen Metro Line 5\b", r"深圳地铁11号线|Shenzhen Metro Line 11\b", r"深圳地铁13号线|Shenzhen Metro Line 13\b"
+def szl(n): return rf"^(?=.*(深圳|Shenzhen))(?=.*(?<!\d){n}(?!\d))"
+SZ1, SZ5, SZ11, SZ13 = szl(1), szl(5), szl(11), szl(13)
 
 def st(name, line): return {"station": name, "line": line}
 def ex(name, line, ref): return {"exit": ref, "station": name, "line": line}
@@ -29,9 +30,9 @@ def place(pid, names=None, entrance=True, R=600):
 
 HOTELS = {
     "nathan": ("Nathan Hotel", "弥敦酒店", osm(["Nathan Hotel", "彌敦酒店"], [22.3047, 114.1715])),
-    "voco": ("voco Guangzhou Shifu", "广州十甫voco酒店", osm(["voco Guangzhou Shifu", "广州十甫voco酒店", "voco酒店"], [23.1225, 113.2500], R=1500)),
-    "lijiang": ("Lijiang Island Riverside Resort", "漓江岛江畔度假酒店", osm(["Lijiang Island Riverside Resort", "漓江岛江畔度假酒店"], [24.9200, 110.5200], R=2500)),
-    "hollywood": ("Disney's Hollywood Hotel", "迪士尼好萊塢酒店", osm(["Disney's Hollywood Hotel", "迪士尼好萊塢酒店"], [22.3095, 114.0480], R=1200)),
+    "voco": ("voco Guangzhou Shifu", "广州十甫voco酒店", {**osm(["voco Guangzhou Shifu", "广州十甫voco酒店", "voco酒店"], [23.1225, 113.2500], R=2500), "q": "广州市荔湾区第十甫路188号", "expect": "第十甫"}),
+    "lijiang": ("Lijiang Island Riverside Resort", "漓江岛江畔度假酒店", {**osm(["Lijiang Island Riverside Resort", "漓江岛江畔度假酒店"], [24.9200, 110.5200], R=4000), "q": "阳朔县兴坪镇莲岛湾", "expect": "兴坪"}),
+    "hollywood": ("Disney's Hollywood Hotel", "迪士尼好萊塢酒店", osm(["Disney's Hollywood Hotel", "迪士尼好萊塢酒店"], [22.3090, 114.0369], R=800)),
 }
 def hotel(sid, key, step=None, label=None):
     n, zh, pt = HOTELS[key]
@@ -77,7 +78,7 @@ DAYS["j1"] = {
     hotel("hotel-a", "nathan", step="j1:1"),
     stop("kowloon-park", "Parc de Kowloon"),
     hotel("hotel-b", "nathan", step="j1:3", label="Déjeuner, puis sieste à l'hôtel"),
-    stop("pier1", "Pier 1 · Aqua Luna"),
+    stop("pier1", "Pier 1 · Aqua Luna", point=place("pier1", ["Tsim Sha Tsui Public Pier No. 1", "尖沙咀1號公眾碼頭", "Tsim Sha Tsui Pier 1", "Public Pier No. 1"], entrance=False)),
     stop("avenue-stars", "Avenue des Stars"),
     stop("k11", "K11 Musea"),
     hotel("hotel-c", "nathan", step="j1:8", label="Retour à l'hôtel"),
@@ -148,10 +149,10 @@ DAYS["j4"] = {
     hotel("hotel-matin", "nathan", step="j4:0", label="Départ du Nathan Hotel"),
     minor("terminal-hk", "pier", "Terminal des ferries de Macao, Sheung Wan", "港澳碼頭", SHUNTAK, step="j4:0", short="Ferry, Sheung Wan"),
     minor("outer-harbour", "pier", "Terminal de l'Outer Harbour, Macao", "外港客运码头", OUTER, step="j4:1", short="Outer Harbour"),
-    stop("senado", "Place du Sénat"),
+    stop("senado", "Place du Sénat", point=place("senado", ["Largo do Senado", "議事亭前地", "議事亭前地 Largo do Senado"], entrance=False)),
     stop("a-ma", "Temple A-Ma"),
-    stop("taipa", "Village de Taipa"),
-    stop("cotai", "Cotai Strip", point=place("cotai", entrance=False)),
+    stop("taipa", "Village de Taipa", point=place("taipa", ["Rua do Cunha", "官也街", "官也街 Rua do Cunha"], entrance=False, R=900)),
+    stop("cotai", "Cotai Strip", point=place("cotai", ["The Parisian Macao", "澳門巴黎人", "Parisian Macao", "巴黎人"], R=1200)),
     minor("terminal-taipa", "pier", "Terminal des ferries de Taipa", "氹仔客运码头", TAIPAF, step="j4:6", short="Ferry, Taipa"),
     stop("macau-ferry", "Ferry, Tsim Sha Tsui", step="j4:7", point=osm(["China Ferry Terminal", "中港碼頭"], [22.2990, 114.1665], entrance=False, R=800)),
     hotel("hotel-soir", "nathan", step="j4:8", label="Dîner à Tsim Sha Tsui, puis l'hôtel"),
@@ -182,7 +183,7 @@ DAYS["j6"] = {
     hotel("hotel-gz", "voco", step="j6:2", label="voco Guangzhou Shifu : valises et sieste"),
     stop("huacheng", "Place Huacheng", point=place("huacheng", ["花城广场", "Huacheng Square"], entrance=False)),
     stop("canton-tower", "Tour de Canton", point=place("canton-tower", ["广州塔", "Canton Tower"])),
-    stop("croisiere", "Croisière", point=place("croisiere", ["广州塔码头", "Canton Tower Pier"], entrance=False)),
+    stop("croisiere", "Croisière", point=place("croisiere", ["广州塔财富码头", "广州塔码头", "Canton Tower Pier"], entrance=False)),
     hotel("hotel-soir", "voco", step="j6:9", label="Retour à l'hôtel"),
   ],
   "legs": [
@@ -210,7 +211,7 @@ DAYS["j7"] = {
 }
 
 # ===== Jour 7 · Shenzhen =====
-FUTIAN = osm(["福田站", "Futian Railway Station", "Futian Station"], [22.5383, 114.0567], R=900)
+FUTIAN = {**osm(["福田站", "福田", "Futian Railway Station", "Futian Station", "Futian"], [22.5383, 114.0567], R=700), "tag": {"railway": "station"}}
 DAYS["j5"] = {
   "zones": [{"name": "Canton", "stops": ["hotel-matin", "gz-south", "gz-south-retour", "hotel-soir"]},
             {"name": "Shenzhen", "stops": ["futian", "talent-park", "inno100", "zhongshuge", "gangxia-north", "mocaup", "children-palace", "one-avenue", "orbit-one", "civic-center", "futian-retour"]}],
@@ -219,14 +220,14 @@ DAYS["j5"] = {
     stop("gz-south", "Guangzhou South", point=GZS),
     stop("futian", "Gare de Futian", point=FUTIAN),
     stop("talent-park", "Talent Park"),
-    stop("inno100", "INNO100"),
-    stop("zhongshuge", "Zhongshuge"),
-    stop("gangxia-north", "Gangxia North", point=st("岗厦北|Gangxia North", SZ11)),
-    stop("mocaup", "MOCAUP"),
-    stop("children-palace", "Palais des enfants"),
-    stop("one-avenue", "One Avenue"),
+    stop("inno100", "INNO100", point=place("inno100", ["深圳湾文化广场", "Shenzhen Bay Cultural Plaza", "Shenzhen Bay Culture Square"])),
+    stop("zhongshuge", "Zhongshuge", point=place("zhongshuge", ["欢乐港湾", "Happiness Harbor"], entrance=False)),
+    stop("gangxia-north", "Gangxia North", point={**place("gangxia-north", ["岗厦北", "Gangxia North"], entrance=False), "tag": {"railway": "station"}}),
+    stop("mocaup", "MOCAUP", point=place("mocaup", ["深圳市当代艺术与城市规划馆", "The Museum of Contemporary Art & Planning Exhibition (MOCAPE)"])),
+    stop("children-palace", "Palais des enfants", point=place("children-palace", ["深圳市少年宫", "Shenzhen Children's Palace"])),
+    stop("one-avenue", "One Avenue", point=place("one-avenue", ["卓悦中心西区", "One Avenue West", "卓悦中心"])),
     stop("orbit-one", "Orbit One"),
-    stop("civic-center", "Centre civique"),
+    stop("civic-center", "Centre civique", point=place("civic-center", ["深圳市民中心", "市民中心广场", "市民中心"], entrance=False)),
     stop("futian-retour", "Gare de Futian", point=FUTIAN, step="j5:14", place_id="futian"),
     stop("gz-south-retour", "Guangzhou South", point=GZS, step="j5:15", place_id="gz-south"),
     hotel("hotel-soir", "voco", step="j5:15", label="Retour à l'hôtel vers 22 h"),
@@ -257,8 +258,8 @@ DAYS["j8"] = {
     stop("yuexiu", "Parc Yuexiu", point=place("yuexiu", ["越秀公园", "Yuexiu Park"])),
     stop("chen", "Chen Clan Academy", point=place("chen", ["陈家祠", "Chen Clan Academy", "陈氏书院"])),
     stop("yongqingfang", "Yongqingfang", point=place("yongqingfang", ["永庆坊", "Yongqingfang"], entrance=False)),
-    stop("shamian", "Shamian", point=place("shamian", ["沙面岛", "沙面", "Shamian Island"], entrance=False, R=900)),
-    minor("nanxin", "meal", "Goûter chez Nanxin, 47 Dishifu Lu", "南信牛奶甜品专家", osm(["南信牛奶甜品专家", "南信", "Nanxin"], [23.1220, 113.2510], entrance=False, R=800), step="j8:6", short="Nanxin"),
+    stop("shamian", "Shamian", point=place("shamian", ["沙面公园", "Shamian Park", "沙面岛"], entrance=False, R=900)),
+    minor("nanxin", "meal", "Goûter chez Nanxin, 47 Dishifu Lu", "南信牛奶甜品专家", {**osm(["南信牛奶甜品专家", "南信", "Nanxin"], [23.1220, 113.2510], entrance=False, R=2500), "q": "南信牛奶甜品专家 第十甫路", "expect": "南信"}, step="j8:6", short="Nanxin"),
     stop("dafo", "Temple Dafo", point=place("dafo", ["大佛寺", "Dafo Temple"])),
     stop("beijing-road", "Beijing Road", point=place("beijing-road", ["北京路步行街", "北京路"], entrance=False)),
     hotel("hotel-soir", "voco", step="j8:10", label="Retour à l'hôtel"),
@@ -309,7 +310,7 @@ DAYS["j10"] = {
   "stops": [
     hotel("hotel-matin", "lijiang", step="j10:0", label="Départ avec le chauffeur"),
     stop("huangyao", "Parking du bourg", point=HYPARK, name="Huangyao, parking et accueil"),
-    stop("hy-theatre", "Théâtre ancien", point=place("hy-theatre", ["黄姚古戏台", "宝珠观"], R=500)),
+    stop("hy-theatre", "Théâtre ancien", point=place("hy-theatre", ["黄姚戏台", "Huangyao Theatre", "黄姚古戏台", "宝珠观"], R=700)),
     stop("hy-banian", "Banian", point=place("hy-banian", ["龙爪榕"], entrance=False, R=500)),
     stop("hy-dailong", "Pont Dailong", point=place("hy-dailong", ["带龙桥"], entrance=False, R=500)),
     stop("hy-anle", "Rue Anle", point=place("hy-anle", ["安乐街"], entrance=False, R=500)),
@@ -352,25 +353,25 @@ DAYS["j11"] = {
 # ===== Jour 12 · Hong Kong Disneyland (points dans le parc : voir hkdl-points ci-dessous) =====
 HKDL = [22.3125, 114.0415]
 def dl(names, near=HKDL, entrance=True, R=900): return osm(names, near, entrance, R)
-INTERCHANGE = dl(["Disneyland Resort Public Transport Interchange", "迪士尼樂園公共運輸交匯處", "Disneyland Resort Station", "迪士尼站"], [22.3155, 114.0450], entrance=False, R=1200)
+INTERCHANGE = dl(["Disneyland Bus Terminus", "迪士尼樂園巴士總站"], [22.3165, 114.0457], entrance=False, R=400)
 DAYS["j12"] = {
   "illustration": {"name": "Plan du parc", "calage": "travelos/routes/osm/hkdl-calage.json"},
   "stops": [
     hotel("hotel-matin", "hollywood", step="j12:0", label="Départ du Disney's Hollywood Hotel"),
     stop("disney", "Interchange", point=INTERCHANGE, name="Interchange de Disneyland (navette)"),
-    stop("dl-main", "Entrée du parc", point=dl(["Hong Kong Disneyland", "香港迪士尼樂園", "Main Entrance"], [22.3128, 114.0447])),
-    stop("dl-frozen", "Frozen Ever After", point=dl(["Frozen Ever After", "魔雪奇緣夢幻之旅"], [22.3135, 114.0370])),
+    stop("dl-main", "Entrée du parc", point=dl(["Main Street, USA"], [22.3131, 114.0441], entrance=False, R=300), name="Entrée du parc, sous la gare de Main Street"),
+    stop("dl-frozen", "Frozen Ever After", point=dl(["Frozen Ever After", "魔雪奇幻之旅"], [22.3121, 114.0385], R=400)),
     stop("dl-castle", "Château", point=dl(["Castle of Magical Dreams", "奇妙夢想城堡"], [22.3128, 114.0406], entrance=False)),
     stop("dl-fantasy", "Winnie l'ourson", point=dl(["The Many Adventures of Winnie the Pooh", "小熊維尼歷險之旅"], [22.3133, 114.0393])),
     minor("fairy-tale", "attraction", "Fairy Tale Forest", "童話森林", dl(["Fairy Tale Forest", "童話森林"], [22.3125, 114.0385], entrance=False), step="j12:5"),
     minor("philharmagic", "attraction", "Mickey's PhilharMagic", "米奇幻想曲", dl(["Mickey's PhilharMagic", "米奇幻想曲"], [22.3127, 114.0395]), step="j12:6"),
     minor("plaza-inn", "meal", "Déjeuner au Plaza Inn", "美國小鎮大街 Plaza Inn", dl(["Plaza Inn", "廣場飯店"], [22.3122, 114.0418]), step="j12:7", short="Plaza Inn"),
-    stop("dl-adventure", "Adventureland", point=dl(["Adventureland", "探險世界"], [22.3115, 114.0405], entrance=False)),
+    stop("dl-adventure", "Adventureland", point=dl(["Jungle Junction", "樂韻叢林"], [22.3118, 114.0416], entrance=False, R=400), name="Adventureland, allées ombragées (Jungle Junction)"),
     stop("dl-toy", "Toy Story Land", point=dl(["Slinky Dog Spin", "胡迪轉轉轉", "Toy Story Land"], [22.3108, 114.0378])),
     stop("dl-mystic", "Mystic Manor", point=dl(["Mystic Manor", "迷離莊園"], [22.3100, 114.0395])),
-    minor("cinema", "attraction", "Main Street Cinema : Mickey, puis la parade", "大街電影院", dl(["Main Street Cinema", "大街電影院"], [22.3127, 114.0430]), step="j12:11", short="Mickey"),
+    minor("cinema", "attraction", "Main Street Cinema : Mickey, puis la parade", "大街電影院", dl(["Emporium", "百貨店"], [22.3128, 114.0432], R=300), step="j12:11", short="Mickey"),
     minor("jungle", "attraction", "Jungle River Cruise", "森林河流之旅", dl(["Jungle River Cruise", "森林河流之旅"], [22.3112, 114.0400]), step="j12:12", short="Jungle Cruise"),
-    stop("dl-tomorrow", "Tomorrowland", point=dl(["Orbitron", "太空飛碟", "Tomorrowland"], [22.3140, 114.0412])),
+    stop("dl-tomorrow", "Tomorrowland", point=dl(["Tomorrowland Stage", "明日世界舞台"], [22.3141, 114.0418], entrance=False, R=300), name="Tomorrowland : l'Orbitron, puis Ant-Man"),
     hotel("hotel-soir", "hollywood", step="j12:17", label="Retour à l'hôtel"),
   ],
   "legs": [
@@ -395,7 +396,7 @@ DAYS["j12"] = {
 # ===== Jour 13 · Lantau, puis le vol de nuit =====
 NP_TC = osm(["Ngong Ping 360 Tung Chung Terminal", "昂坪360東涌纜車站", "Tung Chung Cable Car Terminal", "東涌纜車站"], [22.2890, 113.9420], entrance=False, R=700)
 NP_NP = osm(["Ngong Ping 360 Ngong Ping Terminal", "昂坪纜車站", "Ngong Ping Cable Car Terminal", "昂坪纜車站"], [22.2565, 113.9015], entrance=False, R=900)
-AIRPORT = osm(["Hong Kong International Airport Terminal 1", "香港國際機場一號客運大樓", "Terminal 1"], [22.3080, 113.9185], entrance=False, R=1200)
+AIRPORT = st("Airport", AEL)  # gare Airport Express, au pied du terminal 1 (consigne)
 DAYS["j13"] = {
   "stops": [
     hotel("hotel", "hollywood", step="j13:0", label="Check-out du Disney's Hollywood Hotel"),

@@ -1,0 +1,320 @@
+{
+ "image": "img/31ca22456d75be771feb8862b800dd87.webp",
+ "points": [
+  {
+   "name": "Château (base)",
+   "ll": [
+    22.312639,
+    114.041095
+   ],
+   "px": [
+    625,
+    470
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Hyperspace Mountain",
+   "ll": [
+    22.314006,
+    114.041249
+   ],
+   "px": [
+    635,
+    215
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "It's a Small World",
+   "ll": [
+    22.313641,
+    114.039046
+   ],
+   "px": [
+    250,
+    285
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Storybook Theater",
+   "ll": [
+    22.313906,
+    114.039957
+   ],
+   "px": [
+    355,
+    205
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Winnie l'Ourson",
+   "ll": [
+    22.312928,
+    114.040666
+   ],
+   "px": [
+    535,
+    430
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Carrousel de Cendrillon",
+   "ll": [
+    22.312525,
+    114.040519
+   ],
+   "px": [
+    530,
+    507
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Royal Banquet Hall",
+   "ll": [
+    22.312074,
+    114.040916
+   ],
+   "px": [
+    565,
+    560
+   ],
+   "role": "controle"
+  },
+  {
+   "name": "Gare Fantasyland",
+   "ll": [
+    22.312376,
+    114.039673
+   ],
+   "px": [
+    375,
+    510
+   ],
+   "role": "controle"
+  },
+  {
+   "name": "Wandering Oaken",
+   "ll": [
+    22.312969,
+    114.038712
+   ],
+   "px": [
+    265,
+    430
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Iron Man Experience",
+   "ll": [
+    22.314395,
+    114.042596
+   ],
+   "px": [
+    910,
+    140
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Starliner Diner",
+   "ll": [
+    22.313386,
+    114.042208
+   ],
+   "px": [
+    820,
+    325
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Gare Main Street",
+   "ll": [
+    22.313078,
+    114.044072
+   ],
+   "px": [
+    1140,
+    390
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "City Hall",
+   "ll": [
+    22.312586,
+    114.043738
+   ],
+   "px": [
+    1105,
+    485
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Plaza Inn",
+   "ll": [
+    22.312449,
+    114.042514
+   ],
+   "px": [
+    860,
+    520
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Theater in the Wild",
+   "ll": [
+    22.311777,
+    114.043114
+   ],
+   "px": [
+    990,
+    655
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Jungle River Cruise",
+   "ll": [
+    22.311016,
+    114.040847
+   ],
+   "px": [
+    580,
+    780
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "RC Racer",
+   "ll": [
+    22.310459,
+    114.039208
+   ],
+   "px": [
+    270,
+    900
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Explorer's Club",
+   "ll": [
+    22.309912,
+    114.040472
+   ],
+   "px": [
+    495,
+    1000
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Entrée (Guest Relations)",
+   "ll": [
+    22.312699,
+    114.044547
+   ],
+   "px": [
+    1225,
+    395
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Frozen Ever After (Arendelle)",
+   "ll": [
+    22.312092,
+    114.038454
+   ],
+   "px": [
+    170,
+    480
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Mystic Manor",
+   "ll": [
+    22.309752,
+    114.041023
+   ],
+   "px": [
+    585,
+    985
+   ],
+   "role": "calage"
+  },
+  {
+   "name": "Ant-Man",
+   "ll": [
+    22.313904,
+    114.042627
+   ],
+   "px": [
+    905,
+    245
+   ],
+   "role": "controle"
+  },
+  {
+   "name": "Emporium",
+   "ll": [
+    22.312825,
+    114.043256
+   ],
+   "px": [
+    1027,
+    445
+   ],
+   "role": "controle"
+  },
+  {
+   "name": "Tarzan's Treehouse",
+   "ll": [
+    22.311258,
+    114.041726
+   ],
+   "px": [
+    725,
+    725
+   ],
+   "role": "controle"
+  },
+  {
+   "name": "Slinky Dog",
+   "ll": [
+    22.310498,
+    114.039637
+   ],
+   "px": [
+    360,
+    895
+   ],
+   "role": "controle"
+  },
+  {
+   "name": "Comet Café",
+   "ll": [
+    22.313483,
+    114.041536
+   ],
+   "px": [
+    705,
+    325
+   ],
+   "role": "controle"
+  }
+ ],
+ "smoothing": 2.0,
+ "width": 1600,
+ "tolerance_m": 35
+}

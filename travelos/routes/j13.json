@@ -13,11 +13,11 @@
      "迪士尼好萊塢酒店"
     ],
     "near": [
-     22.3095,
-     114.048
+     22.309,
+     114.0369
     ],
     "entrance": true,
-    "R": 1200
+    "R": 800
    },
    "step": "j13:0"
   },
@@ -26,17 +26,8 @@
    "short": "Aéroport, consigne",
    "zh": "香港國際機場",
    "point": {
-    "osm": [
-     "Hong Kong International Airport Terminal 1",
-     "香港國際機場一號客運大樓",
-     "Terminal 1"
-    ],
-    "near": [
-     22.308,
-     113.9185
-    ],
-    "entrance": false,
-    "R": 1200
+    "station": "Airport",
+    "line": "Airport Express|機場快綫"
    }
   },
   {
@@ -133,17 +124,8 @@
    "short": "Aéroport",
    "zh": "香港國際機場",
    "point": {
-    "osm": [
-     "Hong Kong International Airport Terminal 1",
-     "香港國際機場一號客運大樓",
-     "Terminal 1"
-    ],
-    "near": [
-     22.308,
-     113.9185
-    ],
-    "entrance": false,
-    "R": 1200
+    "station": "Airport",
+    "line": "Airport Express|機場快綫"
    },
    "place": "airport",
    "step": "j13:7"

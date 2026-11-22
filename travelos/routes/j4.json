@@ -94,14 +94,15 @@
    "zh": "議事亭前地",
    "point": {
     "osm": [
-     "Place du Sénat",
-     "議事亭前地"
+     "Largo do Senado",
+     "議事亭前地",
+     "議事亭前地 Largo do Senado"
     ],
     "near": [
      22.1937,
      113.5401
     ],
-    "entrance": true,
+    "entrance": false,
     "R": 600
    }
   },
@@ -128,15 +129,16 @@
    "zh": "氹仔舊城區",
    "point": {
     "osm": [
-     "Village de Taipa",
-     "氹仔舊城區"
+     "Rua do Cunha",
+     "官也街",
+     "官也街 Rua do Cunha"
     ],
     "near": [
      22.1534,
      113.556
     ],
-    "entrance": true,
-    "R": 600
+    "entrance": false,
+    "R": 900
    }
   },
   {
@@ -145,15 +147,17 @@
    "zh": "路氹金光大道",
    "point": {
     "osm": [
-     "Cotai Strip : Venetian, Parisian, Londoner",
-     "路氹金光大道"
+     "The Parisian Macao",
+     "澳門巴黎人",
+     "Parisian Macao",
+     "巴黎人"
     ],
     "near": [
      22.1473,
      113.5606
     ],
-    "entrance": false,
-    "R": 600
+    "entrance": true,
+    "R": 1200
    }
   },
   {

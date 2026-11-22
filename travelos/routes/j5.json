@@ -45,7 +45,9 @@
      113.25
     ],
     "entrance": true,
-    "R": 1500
+    "R": 2500,
+    "q": "广州市荔湾区第十甫路188号",
+    "expect": "第十甫"
    },
    "step": "j5:0"
   },
@@ -74,15 +76,20 @@
    "point": {
     "osm": [
      "福田站",
+     "福田",
      "Futian Railway Station",
-     "Futian Station"
+     "Futian Station",
+     "Futian"
     ],
     "near": [
      22.5383,
      114.0567
     ],
     "entrance": true,
-    "R": 900
+    "R": 700,
+    "tag": {
+     "railway": "station"
+    }
    }
   },
   {
@@ -108,8 +115,9 @@
    "zh": "INNO100",
    "point": {
     "osm": [
-     "INNO100, boutique de robots",
-     "INNO100 深圳湾文化广场"
+     "深圳湾文化广场",
+     "Shenzhen Bay Cultural Plaza",
+     "Shenzhen Bay Culture Square"
     ],
     "near": [
      22.5163,
@@ -125,14 +133,14 @@
    "zh": "钟书阁",
    "point": {
     "osm": [
-     "Librairie Zhongshuge, Happy Harbour",
-     "钟书阁 欢乐港湾"
+     "欢乐港湾",
+     "Happiness Harbor"
     ],
     "near": [
      22.5446,
      113.8836
     ],
-    "entrance": true,
+    "entrance": false,
     "R": 600
    }
   },
@@ -141,8 +149,19 @@
    "short": "Gangxia North",
    "zh": "岗厦北站",
    "point": {
-    "station": "岗厦北|Gangxia North",
-    "line": "深圳地铁11号线|Shenzhen Metro Line 11\\b"
+    "osm": [
+     "岗厦北",
+     "Gangxia North"
+    ],
+    "near": [
+     22.5428,
+     114.0628
+    ],
+    "entrance": false,
+    "R": 600,
+    "tag": {
+     "railway": "station"
+    }
    }
   },
   {
@@ -151,8 +170,8 @@
    "zh": "深圳当代艺术与城市规划馆",
    "point": {
     "osm": [
-     "MOCAUP, musée d'art et d'urbanisme",
-     "深圳当代艺术与城市规划馆"
+     "深圳市当代艺术与城市规划馆",
+     "The Museum of Contemporary Art & Planning Exhibition (MOCAPE)"
     ],
     "near": [
      22.5486,
@@ -168,8 +187,8 @@
    "zh": "深圳少年宫",
    "point": {
     "osm": [
-     "Palais des enfants de Shenzhen",
-     "深圳少年宫"
+     "深圳市少年宫",
+     "Shenzhen Children's Palace"
     ],
     "near": [
      22.55,
@@ -185,7 +204,8 @@
    "zh": "卓悦中心",
    "point": {
     "osm": [
-     "One Avenue, Futian",
+     "卓悦中心西区",
+     "One Avenue West",
      "卓悦中心"
     ],
     "near": [
@@ -219,14 +239,15 @@
    "zh": "深圳市民中心",
    "point": {
     "osm": [
-     "Centre civique de Shenzhen",
-     "深圳市民中心"
+     "深圳市民中心",
+     "市民中心广场",
+     "市民中心"
     ],
     "near": [
      22.5464,
      114.0545
     ],
-    "entrance": true,
+    "entrance": false,
     "R": 600
    }
   },
@@ -237,15 +258,20 @@
    "point": {
     "osm": [
      "福田站",
+     "福田",
      "Futian Railway Station",
-     "Futian Station"
+     "Futian Station",
+     "Futian"
     ],
     "near": [
      22.5383,
      114.0567
     ],
     "entrance": true,
-    "R": 900
+    "R": 700,
+    "tag": {
+     "railway": "station"
+    }
    },
    "place": "futian",
    "step": "j5:14"
@@ -288,7 +314,9 @@
      113.25
     ],
     "entrance": true,
-    "R": 1500
+    "R": 2500,
+    "q": "广州市荔湾区第十甫路188号",
+    "expect": "第十甫"
    },
    "step": "j5:15"
   }
@@ -330,28 +358,28 @@
      "router": "foot",
      "to": {
       "station": "福田|Futian",
-      "line": "深圳地铁11号线|Shenzhen Metro Line 11\\b"
+      "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)11(?!\\d))"
      }
     },
     {
      "mode": "metro",
-     "line": "深圳地铁11号线|Shenzhen Metro Line 11\\b",
+     "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)11(?!\\d))",
      "to": {
       "station": "后海|Houhai",
-      "line": "深圳地铁11号线|Shenzhen Metro Line 11\\b"
+      "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)11(?!\\d))"
      }
     },
     {
      "mode": "metro",
-     "line": "深圳地铁13号线|Shenzhen Metro Line 13\\b",
+     "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)13(?!\\d))",
      "to": {
       "exit": "B1",
       "station": "人才公园|Talent Park",
-      "line": "深圳地铁13号线|Shenzhen Metro Line 13\\b"
+      "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)13(?!\\d))"
      },
      "from": {
       "station": "后海|Houhai",
-      "line": "深圳地铁13号线|Shenzhen Metro Line 13\\b"
+      "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)13(?!\\d))"
      }
     },
     {
@@ -443,15 +471,15 @@
      "router": "foot",
      "to": {
       "station": "岗厦|Gangxia",
-      "line": "深圳地铁1号线|Shenzhen Metro Line 1\\b"
+      "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)1(?!\\d))"
      }
     },
     {
      "mode": "metro",
-     "line": "深圳地铁1号线|Shenzhen Metro Line 1\\b",
+     "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)1(?!\\d))",
      "to": {
       "station": "科学馆|Science Museum",
-      "line": "深圳地铁1号线|Shenzhen Metro Line 1\\b"
+      "line": "^(?=.*(深圳|Shenzhen))(?=.*(?<!\\d)1(?!\\d))"
      }
     },
     {

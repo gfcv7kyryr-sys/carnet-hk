@@ -83,6 +83,41 @@ class Graph:
         return self._main
     def nearest(self, p):
         return min(self.main_part(), key=lambda n: metres(n, p))
+    def comp(self):
+        if getattr(self, "_comp", None) is None:
+            self._comp = {}; c = 0
+            for n0 in self.adj:
+                if n0 in self._comp: continue
+                c += 1; stack = [n0]; self._comp[n0] = c
+                while stack:
+                    u = stack.pop()
+                    for v, _ in self.adj[u]:
+                        if v not in self._comp: self._comp[v] = c; stack.append(v)
+        return self._comp
+    def path_any(self, a, b, radius=1500):
+        """Comme path, mais en cherchant, parmi les nœuds proches des deux points, une paire reliée par la voie."""
+        comp = self.comp()
+        ca = sorted((metres(n, a), n) for n in self.adj if abs(n[0] - a[0]) < 0.02 and abs(n[1] - a[1]) < 0.02)
+        cb = sorted((metres(n, b), n) for n in self.adj if abs(n[0] - b[0]) < 0.02 and abs(n[1] - b[1]) < 0.02)
+        ca = [x for x in ca if x[0] <= radius][:400]; cb = [x for x in cb if x[0] <= radius][:400]
+        best = None
+        for da, na in ca:
+            for db, nb in cb:
+                if comp[na] == comp[nb] and (best is None or da + db < best[0]): best = (da + db, na, nb, da, db)
+            if best and da > best[0]: break
+        if not best: raise Fail("aucune voie continue entre les deux points")
+        _, na, nb, da, db = best
+        dist = {na: 0}; prev = {}; pq = [(0, na)]
+        while pq:
+            d, u = heapq.heappop(pq)
+            if u == nb: break
+            if d > dist[u]: continue
+            for v, w in self.adj[u]:
+                nd = d + w
+                if nd < dist.get(v, 1e18): dist[v] = nd; prev[v] = u; heapq.heappush(pq, (nd, v))
+        out = [nb]
+        while out[-1] != na: out.append(prev[out[-1]])
+        return [list(x) for x in reversed(out)], da, db
     def path(self, a, b):
         s, t = self.nearest(a), self.nearest(b)
         dist = {s: 0}; prev = {}; pq = [(0, s)]
@@ -117,6 +152,7 @@ def geocode(g):
     names = g.get("osm") or []
     names = names if isinstance(names, list) else [names]
     found = L().named(names, near, R) if names and near else []
+    if g.get("tag"): found = [e for e in found if all(e["tags"].get(k) == v for k, v in g["tag"].items())]
     if found and g.get("facade"):
         st = g["facade"]
         road = [p for w in L().named_ways(st, near, R) for p in w["geom"]]
@@ -224,7 +260,8 @@ def osrm(profile, a, b):
     r = d["routes"][0]; co = r["geometry"]["coordinates"]
     path = [[c[1], c[0]] for c in co]
     # OSRM accroche départ et arrivée à la route la plus proche : si c'est loin, l'itinéraire n'est pas fiable.
-    if metres(path[0], a) > 250 or metres(path[-1], b) > 250: raise Fail(f"OSRM {profile} : départ ou arrivée à plus de 250 m d'une voie")
+    lim = 250 if profile == "foot" else 400
+    if metres(path[0], a) > lim or metres(path[-1], b) > lim: raise Fail(f"OSRM {profile} : départ ou arrivée à plus de {lim} m d'une voie")
     return path, r["duration"]
 
 # ---------------- tronçons ----------------
@@ -282,8 +319,9 @@ def main(day):
                 pts[s["id"]] = [places[s["id"]]["lat"], places[s["id"]]["lng"]]
                 anchors[s["id"]] = {"p": r6(pts[s["id"]]), "source": f"point du carnet ({e})", "confirm": True}
                 print(f"  ⚠ arrêt {s['id']} : {e} → point du carnet, à confirmer")
-            elif s.get("near"):
-                pts[s["id"]] = list(s["near"]); anchors[s["id"]] = {"p": r6(s["near"]), "source": f"point approché ({e})", "confirm": True}
+            elif s.get("near") or (isinstance(ref, dict) and ref.get("near")):
+                nr = list(s.get("near") or ref["near"])
+                pts[s["id"]] = nr; anchors[s["id"]] = {"p": r6(nr), "source": f"point approché ({e})", "confirm": True}
                 print(f"  ⚠ arrêt {s['id']} : {e} → point approché, à confirmer")
             else:
                 print(f"  ✗ arrêt {s['id']} : {e}"); flags[s["id"]] = str(e)
@@ -320,10 +358,10 @@ def main(day):
                     if b is not end: path.append(list(b))
                     src = f"OSRM {'à pied' if sg['router'] == 'foot' else 'en voiture'} sur OpenStreetMap ({round(dur / 60)} min estimées{via})"
                 elif sg.get("rail"):
-                    try: path, ga, gb = rail_graph(sg["rail"], start, end).path(start, end)
+                    try: path, ga, gb = rail_graph(sg["rail"], start, end).path_any(start, end, sg.get("snap", 400))
                     except (Fail, RuntimeError):
                         if sg["rail"] != "highspeed": raise
-                        path, ga, gb = rail_graph("rail", start, end).path(start, end)  # voie non marquée « grande vitesse »
+                        path, ga, gb = rail_graph("rail", start, end).path_any(start, end, sg.get("snap", 400))  # voie non marquée « grande vitesse »
                     if ga > sg.get("snap", 400) or gb > sg.get("snap", 400): raise Fail(f"voie {sg['rail']} à {ga:.0f} m / {gb:.0f} m des points")
                     src = f"voies OSM ({sg['rail']}), recollées à {ga:.0f} m / {gb:.0f} m des points"
                 elif sg.get("line"):

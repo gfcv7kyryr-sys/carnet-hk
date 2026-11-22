@@ -88,14 +88,16 @@
    "zh": "尖沙咀1號公眾碼頭",
    "point": {
     "osm": [
-     "Pier 1, Tsim Sha Tsui · Aqua Luna",
-     "尖沙咀1號公眾碼頭"
+     "Tsim Sha Tsui Public Pier No. 1",
+     "尖沙咀1號公眾碼頭",
+     "Tsim Sha Tsui Pier 1",
+     "Public Pier No. 1"
     ],
     "near": [
      22.2932,
      114.1686
     ],
-    "entrance": true,
+    "entrance": false,
     "R": 600
    }
   },
