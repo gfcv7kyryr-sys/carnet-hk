@@ -47,7 +47,7 @@ jobs:
         id: osmcache
         with:
           path: .osm
-          key: osm-${{ steps.semaine.outputs.w }}-v3
+          key: osm-${{ steps.semaine.outputs.w }}-v4
       - name: Préparer OpenStreetMap en local
         timeout-minutes: 90
         run: |
@@ -61,7 +61,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: .osm
-          key: osm-${{ steps.semaine.outputs.w }}-v3
+          key: osm-${{ steps.semaine.outputs.w }}-v4
 
       - name: Inventaire OpenStreetMap
         run: python3 -u tools/osm-discover.py 2>&1 | tail -5
