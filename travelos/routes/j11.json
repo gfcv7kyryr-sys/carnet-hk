@@ -1,0 +1,235 @@
+{
+ "zones": [
+  {
+   "name": "Xingping",
+   "stops": [
+    "hotel-matin",
+    "xianggong",
+    "hotel-valises",
+    "yangshuo-station"
+   ]
+  },
+  {
+   "name": "Hong Kong",
+   "stops": [
+    "west-kowloon",
+    "hotel-disney"
+   ]
+  }
+ ],
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ de l'hôtel",
+   "short": "Hôtel",
+   "zh": "漓江岛江畔度假酒店",
+   "point": {
+    "osm": [
+     "Lijiang Island Riverside Resort",
+     "漓江岛江畔度假酒店"
+    ],
+    "near": [
+     24.92,
+     110.52
+    ],
+    "entrance": true,
+    "R": 2500
+   },
+   "step": "j11:0"
+  },
+  {
+   "id": "xianggong",
+   "short": "Colline Xianggong",
+   "zh": "相公山",
+   "point": {
+    "osm": [
+     "相公山",
+     "Xianggong Hill",
+     "Xianggong Mountain"
+    ],
+    "near": [
+     24.956,
+     110.461
+    ],
+    "entrance": true,
+    "R": 1500
+   }
+  },
+  {
+   "id": "hotel-valises",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel, valises",
+   "short": "Hôtel",
+   "zh": "漓江岛江畔度假酒店",
+   "point": {
+    "osm": [
+     "Lijiang Island Riverside Resort",
+     "漓江岛江畔度假酒店"
+    ],
+    "near": [
+     24.92,
+     110.52
+    ],
+    "entrance": true,
+    "R": 2500
+   },
+   "step": "j11:2"
+  },
+  {
+   "id": "yangshuo-station",
+   "short": "Gare de Yangshuo",
+   "zh": "阳朔站",
+   "point": {
+    "osm": [
+     "阳朔站",
+     "Yangshuo Railway Station",
+     "Yangshuo Station"
+    ],
+    "near": [
+     24.893,
+     110.541
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j11:3"
+  },
+  {
+   "id": "west-kowloon",
+   "short": "West Kowloon",
+   "zh": "香港西九龍站",
+   "point": {
+    "osm": [
+     "Hong Kong West Kowloon Station",
+     "香港西九龍站",
+     "West Kowloon Station",
+     "香港西九龙站"
+    ],
+    "near": [
+     22.304,
+     114.165
+    ],
+    "entrance": true,
+    "R": 900
+   },
+   "step": "j11:5"
+  },
+  {
+   "id": "hotel-disney",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Disney's Hollywood Hotel",
+   "short": "Hôtel",
+   "zh": "迪士尼好萊塢酒店",
+   "point": {
+    "osm": [
+     "Disney's Hollywood Hotel",
+     "迪士尼好萊塢酒店"
+    ],
+    "near": [
+     22.3095,
+     114.048
+    ],
+    "entrance": true,
+    "R": 1200
+   },
+   "step": "j11:5"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "xianggong",
+   "mode": "car",
+   "label": "Bac (5 min), transfert (25 min), puis les marches",
+   "segments": [
+    {
+     "mode": "car",
+     "confirm": "bac et transfert vers Xianggong à confirmer sur place"
+    }
+   ]
+  },
+  {
+   "from": "xianggong",
+   "to": "hotel-valises",
+   "mode": "car",
+   "label": "Retour à l'hôtel",
+   "segments": [
+    {
+     "mode": "car",
+     "confirm": "bac et transfert vers Xianggong à confirmer sur place"
+    }
+   ]
+  },
+  {
+   "from": "hotel-valises",
+   "to": "yangshuo-station",
+   "mode": "car",
+   "label": "Chauffeur ou navette · 20 min",
+   "segments": [
+    {
+     "mode": "car",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "yangshuo-station",
+   "to": "west-kowloon",
+   "mode": "train",
+   "label": "TGV jusqu'à Hong Kong (par Shenzhen Nord) · environ 3 h",
+   "segments": [
+    {
+     "mode": "train",
+     "rail": "highspeed",
+     "snap": 600
+    }
+   ]
+  },
+  {
+   "from": "west-kowloon",
+   "to": "hotel-disney",
+   "mode": "metro",
+   "label": "Métro jusqu'à Sunny Bay, puis le train Disneyland Resort",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Kowloon",
+      "line": "Tung Chung Line|東涌綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Tung Chung Line|東涌綫",
+     "to": {
+      "station": "Sunny Bay",
+      "line": "Tung Chung Line|東涌綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Disneyland Resort Line|迪士尼綫",
+     "to": {
+      "station": "Disneyland Resort",
+      "line": "Disneyland Resort Line|迪士尼綫"
+     },
+     "from": {
+      "station": "Sunny Bay",
+      "line": "Disneyland Resort Line|迪士尼綫"
+     }
+    },
+    {
+     "mode": "bus",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j11",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

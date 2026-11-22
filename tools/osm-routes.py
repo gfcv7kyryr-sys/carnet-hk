@@ -62,7 +62,7 @@ def r6(p): return [round(p[0], 6), round(p[1], 6)]
 class Graph:
     def __init__(self): self.adj = {}
     def add_way(self, geom):
-        pts = [(round(g["lat"], 7), round(g["lon"], 7)) for g in geom]
+        pts = [(round(g["lat"], 7), round(g["lon"], 7)) if isinstance(g, dict) else (round(g[0], 7), round(g[1], 7)) for g in geom]
         for a, b in zip(pts, pts[1:]):
             w = metres(a, b)
             self.adj.setdefault(a, []).append((b, w)); self.adj.setdefault(b, []).append((a, w))
@@ -98,69 +98,59 @@ class Graph:
         while out[-1] != s: out.append(prev[out[-1]])
         return [list(x) for x in reversed(out)], metres(s, a), metres(t, b)
 
+_L = None
+def L():
+    global _L
+    if _L is None:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from osmlocal import OSM
+        _L = OSM()
+    return _L
+
+def tag_name(e):
+    t = e["tags"]; return t.get("name:en") or t.get("name") or t.get("name:zh") or f"{e['t']}{e['id']}"
+
 def geocode(g):
-    """Point d'une étape sans fiche, cherché autour de « near » (1,5 km) : nom exact dans OSM, puis adresse,
-    puis les géocodeurs Photon et Nominatim. Le premier résultat à moins de 1,5 km de « near » est retenu."""
+    """Point d'un lieu dans OSM (extraits locaux), cherché autour de « near » : entrée d'un bâtiment sur une rue
+    (facade), nœud entrance du lieu (entrance), ou le lieu lui-même ; à défaut, géocodeurs Photon puis Nominatim."""
     near = g.get("near"); R = g.get("R", 1500)
-    def center(el): return [el["center"]["lat"], el["center"]["lon"]] if "center" in el else [el["lat"], el["lon"]]
-    def close(p): return near is None or metres(p, near) <= R
-    tries = []
-    if g.get("osm") and g.get("facade"):
-        # Entrée d'un bâtiment sur une rue : nœud « entrance » du bâtiment le plus proche de la rue,
-        # sinon milieu du côté du bâtiment qui fait face à la rue.
-        names = g["osm"]; st = g["facade"]
-        q = "".join(f'way["{k}"="{v}"](around:{R},{near[0]},{near[1]});' for v in names for k in ("name", "name:en", "name:zh"))
-        d = overpass(f'[out:json][timeout:60];({q})->.b;.b out geom tags;node(w.b)["entrance"];out body;'
-                     f'(way["name:en"="{st}"](around:{R},{near[0]},{near[1]});way["name"="{st}"](around:{R},{near[0]},{near[1]}););out geom;')
-        bld = [x for x in d["elements"] if x["type"] == "way" and x.get("tags", {}).get("building") or (x["type"] == "way" and x.get("tags", {}).get("amenity") == "place_of_worship")]
-        road = [(g2["lat"], g2["lon"]) for x in d["elements"] if x["type"] == "way" and st in {x.get("tags", {}).get("name:en"), x.get("tags", {}).get("name")} for g2 in x["geometry"]]
-        if bld and road:
-            b = bld[0]; ring = [(p["lat"], p["lon"]) for p in b["geometry"]]
+    names = g.get("osm") or []
+    names = names if isinstance(names, list) else [names]
+    found = L().named(names, near, R) if names and near else []
+    if found and g.get("facade"):
+        st = g["facade"]
+        road = [p for w in L().named_ways(st, near, R) for p in w["geom"]]
+        b = next((e for e in found if e["t"] == "w"), None)
+        if b and road:
             to_road = lambda p: min(metres(p, r) for r in road)
-            ents = [x for x in d["elements"] if x["type"] == "node" and "entrance" in x.get("tags", {})]
+            ents = L().entrances_of(b)
             if ents:
-                e = min(ents, key=lambda x: to_road((x["lat"], x["lon"])))
-                return [e["lat"], e["lon"]], f"OSM : entrée (nœud {e['id']}, entrance={e['tags']['entrance']}) de « {b['tags'].get('name')} » sur {st}"
-            mids = [((a[0] + c[0]) / 2, (a[1] + c[1]) / 2) for a, c in zip(ring, ring[1:])]
+                e = min(ents, key=lambda x: to_road(x["p"]))
+                return e["p"], f"OSM : entrée (nœud {e['id']}) de « {tag_name(b)} » sur {st}"
+            ring = b["geom"]; mids = [((p[0] + q[0]) / 2, (p[1] + q[1]) / 2) for p, q in zip(ring, ring[1:])]
             m = min(mids, key=to_road)
-            return list(m), f"OSM : façade de « {b['tags'].get('name')} » (way {b['id']}) côté {st}, à {to_road(m):.0f} m de la rue"
-        print("   façade introuvable, repli sur le nom")
-    if g.get("osm") and g.get("entrance"):
-        names = g["osm"] if isinstance(g["osm"], list) else [g["osm"]]
-        q = "".join(f'nwr["{k}"="{v}"](around:{R},{near[0]},{near[1]});' for v in names for k in ("name", "name:en", "name:zh"))
-        d = overpass(f'[out:json][timeout:60];({q})->.b;.b out center tags;node(w.b)["entrance"];out body;node(r.b)["entrance"];out body;')
-        ents = [x for x in d["elements"] if x["type"] == "node" and "entrance" in x.get("tags", {})]
-        if ents:
-            main = [x for x in ents if x["tags"]["entrance"] in ("main", "yes")] or ents
-            e = min(main, key=lambda x: metres((x["lat"], x["lon"]), near))
-            return [e["lat"], e["lon"]], f"OSM : entrée {e['tags'].get('ref') or e['tags']['entrance']} (nœud {e['id']})"
-    if g.get("osm"):
-        names = g["osm"] if isinstance(g["osm"], list) else [g["osm"]]
-        q = "".join(f'nwr["{k}"="{v}"](around:{R},{near[0]},{near[1]});' for v in names for k in ("name", "name:en", "name:zh"))
-        tries.append(("OSM (nom)", lambda: overpass(f"[out:json][timeout:60];({q});out center tags;")["elements"]))
-    if g.get("addr"):
-        st, no = g["addr"]
-        tries.append(("OSM (adresse)", lambda: overpass(f'[out:json][timeout:60];nwr["addr:street"="{st}"]["addr:housenumber"="{no}"](around:{R},{near[0]},{near[1]});out center tags;')["elements"]))
-    for label, fn in tries:
-        try:
-            els = [x for x in fn() if ("center" in x or "lat" in x) and close(center(x))]
-            els.sort(key=lambda x: (x["type"] == "node", -len(x.get("tags", {}))))
-            if els:
-                x = els[0]; t = x.get("tags", {})
-                return center(x), f"{label} : {x['type']} {x['id']} « {t.get('name') or t.get('addr:housenumber', '') + ' ' + t.get('addr:street', '')} »"
-        except Exception as e: print("  ", label, e)
+            return list(m), f"OSM : façade de « {tag_name(b)} » (way {b['id']}) côté {st}, à {to_road(m):.0f} m de la rue"
+    if found and g.get("entrance"):
+        for e in found[:3]:
+            ents = L().entrances_of(e)
+            if ents:
+                main = [x for x in ents if x["tags"].get("entrance") in ("main", "yes")] or ents
+                x = min(main, key=lambda x: metres(x["p"], near))
+                return x["p"], f"OSM : entrée {x['tags'].get('ref') or x['tags'].get('name') or x['tags']['entrance']} (nœud {x['id']}) de « {tag_name(e)} »"
+    if found:
+        e = found[0]; c = L().center(e)
+        return c, f"OSM : {e['t']}{e['id']} « {tag_name(e)} »{' (sans entrée cartographiée)' if g.get('entrance') else ''}"
     if g.get("q"):
         for label, url in (("Photon", "https://photon.komoot.io/api/?" + urllib.parse.urlencode({"q": g["q"], "lat": near[0], "lon": near[1], "limit": 5})),
                            ("Nominatim", "https://nominatim.openstreetmap.org/search?" + urllib.parse.urlencode({"q": g["q"], "format": "geocodejson", "limit": 5}))):
             try:
                 for f in json.loads(http(url, tries=2)).get("features", []):
                     lng, lat = f["geometry"]["coordinates"][:2]; pr = f.get("properties", {})
-                    txt = json.dumps(pr, ensure_ascii=False)
-                    if close([lat, lng]) and g.get("expect", "").lower() in txt.lower():
+                    if metres([lat, lng], near) <= R and g.get("expect", "").lower() in json.dumps(pr, ensure_ascii=False).lower():
                         return [lat, lng], f"{label} : {pr.get('name') or pr.get('geocoding', {}).get('label', '')}"
             except Exception as e: print("  ", label, e)
             time.sleep(1.2)
-    raise Fail(f"point introuvable ({g.get('osm') or g.get('q')})")
+    raise Fail(f"« {' / '.join(names) or g.get('q')} » introuvable dans OSM")
 
 # ---------------- voies et lignes par journée ----------------
 
@@ -174,44 +164,37 @@ def bbox_of(pts, margin):
     la = [p[0] for p in pts]; ln = [p[1] for p in pts]
     return (min(la) - margin, min(ln) - margin, max(la) + margin, max(ln) + margin)
 
+RAIL_P = {
+    "funicular": lambda t: t.get("railway") == "funicular", "tram": lambda t: t.get("railway") == "tram",
+    "highspeed": lambda t: t.get("railway") == "rail" and t.get("highspeed") == "yes", "rail": lambda t: t.get("railway") in ("rail", "light_rail", "subway"),
+    "aerialway": lambda t: t.get("aerialway") in ("cable_car", "gondola", "mixed_lift"), "ferry": lambda t: t.get("route") == "ferry",
+}
 def rail_graph(kind, a, b):
-    m = 0.02 if metres(a, b) < 20000 else 0.15
-    s, w, n, e = bbox_of([a, b], m)
-    k = (kind, round(s, 2), round(w, 2), round(n, 2), round(e, 2))
+    m = 0.02 if metres(a, b) < 20000 else 0.25
+    bb = bbox_of([a, b], m)
+    k = (kind,) + tuple(round(x, 2) for x in bb)
     if k not in _rails:
-        print(f"  Overpass : voies {kind}…")
-        d = overpass(f'[out:json][timeout:240];{RAIL_Q[kind]}({s},{w},{n},{e});out geom;')
         g = Graph()
-        for el in d["elements"]:
-            if el.get("geometry"): g.add_way(el["geometry"])
+        for w in L().ways_where(RAIL_P[kind], bb): g.add_way(w["geom"])
         _rails[k] = g
     if not _rails[k].adj: raise Fail(f"aucune voie {kind} dans OSM")
     return _rails[k]
 
 def line_data(rx, bb):
-    """Lignes (métro, train, tram léger) dont le nom, la référence ou le réseau correspond à rx, dans la zone du jour."""
-    s, w, n, e = bb
-    key = (round(s, 1), round(w, 1), round(n, 1), round(e, 1))
-    if key not in _lines:
-        print("  Overpass : lignes de transport du jour…")
-        d = overpass(f'[out:json][timeout:240];relation["route"~"^(subway|train|light_rail|monorail)$"]({s},{w},{n},{e})->.r;.r out body;way(r.r);out geom;node(r.r);out body;')
-        _lines[key] = d
-    d = _lines[key]
-    ways = {el["id"]: el for el in d["elements"] if el["type"] == "way"}
-    nodes = {el["id"]: el for el in d["elements"] if el["type"] == "node"}
+    """Lignes (métro, train, tram léger) dont le nom, la référence ou le réseau correspond à rx, près de la zone du jour."""
+    k = (rx,) + tuple(round(x, 1) for x in bb)
+    if k in _lines: return _lines[k]
     g, stops, rels = Graph(), [], []
-    for rel in (el for el in d["elements"] if el["type"] == "relation"):
-        t = rel["tags"]; txt = " ".join(filter(None, [t.get("name"), t.get("name:en"), t.get("name:zh"), t.get("ref"), t.get("network"), t.get("network:en")]))
-        if not re.search(rx, txt, re.I): continue
-        rels.append(f"relation {rel['id']} ({t.get('name:en') or t.get('name')})")
-        for m in rel["members"]:
-            if m["type"] == "way" and m["role"] in ("", "route", "forward", "backward") and m["ref"] in ways and ways[m["ref"]].get("geometry"):
-                g.add_way(ways[m["ref"]]["geometry"])
-            if m["type"] == "node" and m["role"].startswith("stop") and m["ref"] in nodes:
-                nd = nodes[m["ref"]]; tg = nd.get("tags", {})
-                stops.append({"name": " / ".join(filter(None, [tg.get("name:en"), tg.get("name"), tg.get("name:zh")])), "p": [nd["lat"], nd["lon"]], "id": nd["id"]})
+    for rel in L().route_relations(rx, bb):
+        rels.append(f"relation {rel['id']} ({rel['tags'].get('name:en') or rel['tags'].get('name')})")
+        for (ty, ref, role) in rel["members"]:
+            if ty == "w" and role in ("", "route", "forward", "backward") and ref in L().ways: g.add_way(L().ways[ref]["geom"])
+            if ty == "n" and role.startswith("stop") and ref in L().nodes:
+                nd = L().nodes[ref]; tg = nd["tags"]
+                stops.append({"name": " / ".join(filter(None, [tg.get("name:en"), tg.get("name"), tg.get("name:zh")])), "p": nd["p"], "id": nd["id"]})
     if not g.adj: raise Fail(f"ligne « {rx} » introuvable dans OSM")
-    return g, stops, rels
+    _lines[k] = (g, stops, rels)
+    return _lines[k]
 
 def station(rx_station, rx_line, bb):
     g, stops, rels = line_data(rx_line, bb)
@@ -221,22 +204,17 @@ def station(rx_station, rx_line, bb):
     return list(g.nearest((lat, lng))), f"{c[0]['name']} (OSM nœud {c[0]['id']}, {rels[0]})"
 
 def exit_of(station_pt, ref):
-    d = overpass(f'[out:json][timeout:60];node["railway"="subway_entrance"](around:400,{station_pt[0]},{station_pt[1]});out body;')
-    c = [e for e in d["elements"] if (e.get("tags", {}).get("ref") or "").replace(" ", "").lower() == ref.replace(" ", "").lower()]
+    c = [e for e in L().subway_entrances(station_pt, 400) if (e["tags"].get("ref") or "").replace(" ", "").lower() == ref.replace(" ", "").lower()]
     if not c: raise Fail(f"sortie {ref} introuvable dans OSM")
-    e = min(c, key=lambda x: metres((x["lat"], x["lon"]), station_pt))
-    return [e["lat"], e["lon"]], f"sortie {ref} (OSM nœud {e['id']})"
+    e = min(c, key=lambda x: metres(x["p"], station_pt))
+    return e["p"], f"sortie {ref} (OSM nœud {e['id']})"
 
-_entr = {}
 def entrance(st, toward):
     """Sortie de métro (railway=subway_entrance) à moins de 350 m de la station, la plus proche de « toward »."""
-    k = (round(st[0], 5), round(st[1], 5))
-    if k not in _entr:
-        d = overpass(f'[out:json][timeout:60];node["railway"="subway_entrance"](around:350,{st[0]},{st[1]});out body;')
-        _entr[k] = [([e["lat"], e["lon"]], e.get("tags", {}).get("ref") or e.get("tags", {}).get("name:en") or "") for e in d["elements"]]
-    if not _entr[k]: return None, None
-    p, ref = min(_entr[k], key=lambda x: metres(x[0], toward))
-    return p, ref
+    c = L().subway_entrances(st, 350)
+    if not c: return None, None
+    e = min(c, key=lambda x: metres(x["p"], toward))
+    return e["p"], e["tags"].get("ref") or e["tags"].get("name:en") or ""
 
 def osrm(profile, a, b):
     base = {"foot": "https://routing.openstreetmap.de/routed-foot", "car": "https://routing.openstreetmap.de/routed-car"}[profile]
@@ -342,9 +320,12 @@ def main(day):
                     if b is not end: path.append(list(b))
                     src = f"OSRM {'à pied' if sg['router'] == 'foot' else 'en voiture'} sur OpenStreetMap ({round(dur / 60)} min estimées{via})"
                 elif sg.get("rail"):
-                    path, ga, gb = rail_graph(sg["rail"], start, end).path(start, end)
+                    try: path, ga, gb = rail_graph(sg["rail"], start, end).path(start, end)
+                    except (Fail, RuntimeError):
+                        if sg["rail"] != "highspeed": raise
+                        path, ga, gb = rail_graph("rail", start, end).path(start, end)  # voie non marquée « grande vitesse »
                     if ga > sg.get("snap", 400) or gb > sg.get("snap", 400): raise Fail(f"voie {sg['rail']} à {ga:.0f} m / {gb:.0f} m des points")
-                    src = f"voie OSM {RAIL_Q[sg['rail']].split('[', 1)[1].split(']')[0]} (recollée à {ga:.0f} m / {gb:.0f} m des points)"
+                    src = f"voies OSM ({sg['rail']}), recollées à {ga:.0f} m / {gb:.0f} m des points"
                 elif sg.get("line"):
                     g, _, rels = line_data(sg["line"], bb)
                     path, ga, gb = g.path(start, end)
@@ -378,12 +359,9 @@ def main(day):
     print("\n" + "\n".join(report) + f"\n→ {dst}")
 
 def junction(a, b):
-    s, w, n, e = BBOX_J
-    d = overpass(f'[out:json][timeout:120];(way["name:en"="{a}"]({s},{w},{n},{e});way["name"="{a}"]({s},{w},{n},{e});'
-                 f'way["name:en"="{b}"]({s},{w},{n},{e});way["name"="{b}"]({s},{w},{n},{e}););out geom tags;')
-    def nm(el): return {el["tags"].get("name:en"), el["tags"].get("name")}
-    A = {(round(g["lat"], 7), round(g["lon"], 7)) for el in d["elements"] if a in nm(el) for g in el["geometry"]}
-    B = {(round(g["lat"], 7), round(g["lon"], 7)) for el in d["elements"] if b in nm(el) for g in el["geometry"]}
+    near = [22.2840, 114.1520]
+    A = {(round(p[0], 7), round(p[1], 7)) for w in L().named_ways(a, near, 3000) for p in w["geom"]}
+    B = {(round(p[0], 7), round(p[1], 7)) for w in L().named_ways(b, near, 3000) for p in w["geom"]}
     common = A & B
     if common: return list(sorted(common)[0]), f"carrefour {a} × {b} (OSM)"
     if A and B:

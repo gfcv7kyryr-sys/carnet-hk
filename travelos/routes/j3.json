@@ -1,0 +1,512 @@
+{
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ du Nathan Hotel",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j3:0"
+  },
+  {
+   "id": "wong-tai-sin",
+   "short": "Wong Tai Sin",
+   "zh": "黃大仙祠",
+   "point": {
+    "osm": [
+     "Temple Wong Tai Sin",
+     "黃大仙祠"
+    ],
+    "near": [
+     22.342,
+     114.1937
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "choi-hung",
+   "short": "Choi Hung",
+   "zh": "彩虹邨",
+   "point": {
+    "osm": [
+     "Choi Hung Estate",
+     "彩虹邨"
+    ],
+    "near": [
+     22.335,
+     114.2086
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "nan-lian",
+   "short": "Nan Lian",
+   "zh": "南蓮園池",
+   "point": {
+    "osm": [
+     "Jardin Nan Lian, Chi Lin",
+     "南蓮園池"
+    ],
+    "near": [
+     22.34,
+     114.204
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "hotel-sieste",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Sieste à l'hôtel",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j3:4"
+  },
+  {
+   "id": "ten-thousand",
+   "short": "Dix Mille Bouddhas",
+   "zh": "萬佛寺",
+   "point": {
+    "osm": [
+     "Dix Mille Bouddhas, Sha Tin",
+     "萬佛寺"
+    ],
+    "near": [
+     22.3874,
+     114.1847
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "goldfish",
+   "short": "Poissons rouges",
+   "zh": "金魚街",
+   "point": {
+    "osm": [
+     "Marché aux poissons rouges, Mong Kok",
+     "金魚街"
+    ],
+    "near": [
+     22.322,
+     114.171
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "temple-street",
+   "short": "Temple Street",
+   "zh": "廟街",
+   "point": {
+    "osm": [
+     "Temple Street",
+     "廟街"
+    ],
+    "near": [
+     22.306,
+     114.1699
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j3:7"
+  },
+  {
+   "id": "neon-lights",
+   "short": "Neon Lights",
+   "zh": "通菜街",
+   "point": {
+    "osm": [
+     "Neon Lights Viewpoint, Tung Choi Street",
+     "通菜街"
+    ],
+    "near": [
+     22.3199,
+     114.1705
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "changsha",
+   "short": "Changsha Street",
+   "zh": "長沙街",
+   "point": {
+    "osm": [
+     "Changsha Street, enseignes au néon",
+     "長沙街"
+    ],
+    "near": [
+     22.3168,
+     114.1693
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "hotel-nuit",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j3:9"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "wong-tai-sin",
+   "mode": "metro",
+   "label": "Métro par Prince Edward (proposé)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Jordan",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Tsuen Wan Line|荃灣綫",
+     "to": {
+      "station": "Prince Edward",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Kwun Tong Line|觀塘綫",
+     "to": {
+      "station": "Wong Tai Sin",
+      "line": "Kwun Tong Line|觀塘綫"
+     },
+     "from": {
+      "station": "Prince Edward",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "wong-tai-sin",
+   "to": "choi-hung",
+   "mode": "metro",
+   "label": "Métro, deux stations",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Wong Tai Sin",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Kwun Tong Line|觀塘綫",
+     "to": {
+      "station": "Choi Hung",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "choi-hung",
+   "to": "nan-lian",
+   "mode": "metro",
+   "label": "Métro jusqu'à Diamond Hill",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Choi Hung",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Kwun Tong Line|觀塘綫",
+     "to": {
+      "station": "Diamond Hill",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "nan-lian",
+   "to": "hotel-sieste",
+   "mode": "metro",
+   "label": "Métro jusqu'à Yau Ma Tei, puis à pied (proposé)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Diamond Hill",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Kwun Tong Line|觀塘綫",
+     "to": {
+      "station": "Yau Ma Tei",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "hotel-sieste",
+   "to": "ten-thousand",
+   "mode": "train",
+   "label": "Métro, puis East Rail jusqu'à Sha Tin",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Yau Ma Tei",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Kwun Tong Line|觀塘綫",
+     "to": {
+      "station": "Kowloon Tong",
+      "line": "Kwun Tong Line|觀塘綫"
+     }
+    },
+    {
+     "mode": "train",
+     "line": "East Rail Line|東鐵綫",
+     "to": {
+      "station": "Sha Tin",
+      "line": "East Rail Line|東鐵綫"
+     },
+     "from": {
+      "station": "Kowloon Tong",
+      "line": "East Rail Line|東鐵綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "ten-thousand",
+   "to": "goldfish",
+   "mode": "train",
+   "label": "East Rail jusqu'à Mong Kok East",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Sha Tin",
+      "line": "East Rail Line|東鐵綫"
+     }
+    },
+    {
+     "mode": "train",
+     "line": "East Rail Line|東鐵綫",
+     "to": {
+      "station": "Mong Kok East",
+      "line": "East Rail Line|東鐵綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "goldfish",
+   "to": "temple-street",
+   "mode": "metro",
+   "label": "Métro Mong Kok → Yau Ma Tei, puis à pied (proposé)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Mong Kok",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Tsuen Wan Line|荃灣綫",
+     "to": {
+      "station": "Yau Ma Tei",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "temple-street",
+   "to": "hotel-soir",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "hotel-soir",
+   "to": "neon-lights",
+   "mode": "metro",
+   "label": "Métro Jordan → Mong Kok (proposé)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Jordan",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Tsuen Wan Line|荃灣綫",
+     "to": {
+      "station": "Mong Kok",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "neon-lights",
+   "to": "changsha",
+   "mode": "walk",
+   "label": "À pied · 5 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "changsha",
+   "to": "hotel-nuit",
+   "mode": "walk",
+   "label": "À pied (proposé)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  }
+ ],
+ "day": "j3",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

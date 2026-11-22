@@ -1,0 +1,93 @@
+{
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ en voiture avec siège enfant",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j7:0"
+  },
+  {
+   "id": "chimelong",
+   "short": "Chimelong Safari",
+   "zh": "长隆野生动物世界",
+   "point": {
+    "osm": [
+     "长隆野生动物世界",
+     "Chimelong Safari Park"
+    ],
+    "near": [
+     23.0049,
+     113.326
+    ],
+    "entrance": true,
+    "R": 1500
+   }
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j7:5"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "chimelong",
+   "mode": "car",
+   "label": "Voiture · environ 1 h",
+   "segments": [
+    {
+     "mode": "car",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "chimelong",
+   "to": "hotel-soir",
+   "mode": "car",
+   "label": "Voiture · environ 1 h",
+   "segments": [
+    {
+     "mode": "car",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j7",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

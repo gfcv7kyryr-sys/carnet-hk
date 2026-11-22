@@ -1,0 +1,260 @@
+{
+ "zones": [
+  {
+   "name": "Xingping",
+   "stops": [
+    "hotel-matin",
+    "hotel-soir"
+   ]
+  },
+  {
+   "name": "Huangyao",
+   "stops": [
+    "huangyao",
+    "hy-theatre",
+    "hy-banian",
+    "hy-dailong",
+    "hy-anle",
+    "huangyao-depart"
+   ]
+  }
+ ],
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ avec le chauffeur",
+   "short": "Hôtel",
+   "zh": "漓江岛江畔度假酒店",
+   "point": {
+    "osm": [
+     "Lijiang Island Riverside Resort",
+     "漓江岛江畔度假酒店"
+    ],
+    "near": [
+     24.92,
+     110.52
+    ],
+    "entrance": true,
+    "R": 2500
+   },
+   "step": "j10:0"
+  },
+  {
+   "id": "huangyao",
+   "short": "Parking du bourg",
+   "zh": "黄姚古镇",
+   "point": {
+    "osm": [
+     "黄姚古镇停车场",
+     "黄姚古镇游客中心",
+     "Huangyao Parking"
+    ],
+    "near": [
+     24.25,
+     111.2
+    ],
+    "entrance": false,
+    "R": 1500
+   },
+   "name": "Huangyao, parking et accueil"
+  },
+  {
+   "id": "hy-theatre",
+   "short": "Théâtre ancien",
+   "zh": "黄姚古戏台",
+   "point": {
+    "osm": [
+     "黄姚古戏台",
+     "宝珠观"
+    ],
+    "near": [
+     24.2485,
+     111.201
+    ],
+    "entrance": true,
+    "R": 500
+   }
+  },
+  {
+   "id": "hy-banian",
+   "short": "Banian",
+   "zh": "黄姚龙爪榕",
+   "point": {
+    "osm": [
+     "龙爪榕"
+    ],
+    "near": [
+     24.247,
+     111.2005
+    ],
+    "entrance": false,
+    "R": 500
+   }
+  },
+  {
+   "id": "hy-dailong",
+   "short": "Pont Dailong",
+   "zh": "黄姚带龙桥",
+   "point": {
+    "osm": [
+     "带龙桥"
+    ],
+    "near": [
+     24.246,
+     111.2012
+    ],
+    "entrance": false,
+    "R": 500
+   }
+  },
+  {
+   "id": "hy-anle",
+   "short": "Rue Anle",
+   "zh": "黄姚安乐街",
+   "point": {
+    "osm": [
+     "安乐街"
+    ],
+    "near": [
+     24.2465,
+     111.202
+    ],
+    "entrance": false,
+    "R": 500
+   }
+  },
+  {
+   "id": "huangyao-depart",
+   "minor": true,
+   "kind": "parking",
+   "name": "Retour au parking",
+   "short": "Parking",
+   "zh": "黄姚古镇停车场",
+   "point": {
+    "osm": [
+     "黄姚古镇停车场",
+     "黄姚古镇游客中心",
+     "Huangyao Parking"
+    ],
+    "near": [
+     24.25,
+     111.2
+    ],
+    "entrance": false,
+    "R": 1500
+   },
+   "step": "j10:7"
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à Xingping",
+   "short": "Hôtel",
+   "zh": "漓江岛江畔度假酒店",
+   "point": {
+    "osm": [
+     "Lijiang Island Riverside Resort",
+     "漓江岛江畔度假酒店"
+    ],
+    "near": [
+     24.92,
+     110.52
+    ],
+    "entrance": true,
+    "R": 2500
+   },
+   "step": "j10:8"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "huangyao",
+   "mode": "car",
+   "label": "Voiture · 2 h à 4 h selon les travaux",
+   "segments": [
+    {
+     "mode": "car",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "huangyao",
+   "to": "hy-theatre",
+   "mode": "walk",
+   "label": "À pied · 10 min, entrée par le nord",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "hy-theatre",
+   "to": "hy-banian",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "hy-banian",
+   "to": "hy-dailong",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "hy-dailong",
+   "to": "hy-anle",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "hy-anle",
+   "to": "huangyao-depart",
+   "mode": "walk",
+   "label": "Déjeuner, jardin Nongqu, puis retour au parking",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "huangyao-depart",
+   "to": "hotel-soir",
+   "mode": "car",
+   "label": "Voiture · environ 2 h",
+   "segments": [
+    {
+     "mode": "car",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j10",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

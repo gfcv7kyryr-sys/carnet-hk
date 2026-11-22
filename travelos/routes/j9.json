@@ -1,0 +1,266 @@
+{
+ "zones": [
+  {
+   "name": "Canton",
+   "stops": [
+    "hotel-gz",
+    "gz-south"
+   ]
+  },
+  {
+   "name": "Xingping",
+   "stops": [
+    "yangshuo-station",
+    "hotel-xp",
+    "xingping",
+    "vingt-yuans",
+    "cormorans",
+    "hotel-soir"
+   ]
+  }
+ ],
+ "stops": [
+  {
+   "id": "hotel-gz",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ de l'hôtel, avec les valises",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j9:0"
+  },
+  {
+   "id": "gz-south",
+   "short": "Guangzhou South",
+   "zh": "广州南站",
+   "point": {
+    "osm": [
+     "广州南站",
+     "Guangzhou South Railway Station",
+     "Guangzhou South"
+    ],
+    "near": [
+     22.989,
+     113.269
+    ],
+    "entrance": true,
+    "R": 1500
+   }
+  },
+  {
+   "id": "yangshuo-station",
+   "short": "Gare de Yangshuo",
+   "zh": "阳朔站",
+   "point": {
+    "osm": [
+     "阳朔站",
+     "Yangshuo Railway Station",
+     "Yangshuo Station"
+    ],
+    "near": [
+     24.893,
+     110.541
+    ],
+    "entrance": true,
+    "R": 1500
+   }
+  },
+  {
+   "id": "hotel-xp",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Lijiang Island Riverside Resort",
+   "short": "Hôtel",
+   "zh": "漓江岛江畔度假酒店",
+   "point": {
+    "osm": [
+     "Lijiang Island Riverside Resort",
+     "漓江岛江畔度假酒店"
+    ],
+    "near": [
+     24.92,
+     110.52
+    ],
+    "entrance": true,
+    "R": 2500
+   },
+   "step": "j9:2"
+  },
+  {
+   "id": "xingping",
+   "short": "Vieux Xingping",
+   "zh": "兴坪古镇",
+   "point": {
+    "osm": [
+     "兴坪古镇",
+     "Xingping Ancient Town",
+     "兴坪老街"
+    ],
+    "near": [
+     24.92,
+     110.5238
+    ],
+    "entrance": false,
+    "R": 900
+   }
+  },
+  {
+   "id": "vingt-yuans",
+   "short": "Billet de 20 yuans",
+   "zh": "黄布倒影",
+   "point": {
+    "osm": [
+     "二十元人民币背景",
+     "黄布倒影",
+     "20元人民币背景图"
+    ],
+    "near": [
+     24.9245,
+     110.5174
+    ],
+    "entrance": false,
+    "R": 900
+   }
+  },
+  {
+   "id": "cormorans",
+   "short": "Ponton",
+   "zh": "兴坪码头",
+   "point": {
+    "osm": [
+     "兴坪码头",
+     "Xingping Pier"
+    ],
+    "near": [
+     24.9283,
+     110.5168
+    ],
+    "entrance": false,
+    "R": 900
+   }
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Dîner dans la vieille ville, puis l'hôtel",
+   "short": "Hôtel",
+   "zh": "漓江岛江畔度假酒店",
+   "point": {
+    "osm": [
+     "Lijiang Island Riverside Resort",
+     "漓江岛江畔度假酒店"
+    ],
+    "near": [
+     24.92,
+     110.52
+    ],
+    "entrance": true,
+    "R": 2500
+   },
+   "step": "j9:7"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-gz",
+   "to": "gz-south",
+   "mode": "taxi",
+   "label": "Taxi · 30 à 40 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "gz-south",
+   "to": "yangshuo-station",
+   "mode": "train",
+   "label": "TGV direct · environ 2 h 20",
+   "segments": [
+    {
+     "mode": "train",
+     "rail": "highspeed",
+     "snap": 600
+    }
+   ]
+  },
+  {
+   "from": "yangshuo-station",
+   "to": "hotel-xp",
+   "mode": "car",
+   "label": "Navette de l'hôtel ou chauffeur · 20 min",
+   "segments": [
+    {
+     "mode": "car",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "hotel-xp",
+   "to": "xingping",
+   "mode": "walk",
+   "label": "De l'hôtel au vieux bourg (proposé)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "xingping",
+   "to": "vingt-yuans",
+   "mode": "walk",
+   "label": "À pied le long de la rivière · 10 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "vingt-yuans",
+   "to": "cormorans",
+   "mode": "walk",
+   "label": "Retour au ponton principal",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "cormorans",
+   "to": "hotel-soir",
+   "mode": "walk",
+   "label": "Dîner dans la vieille ville, puis l'hôtel (proposé)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  }
+ ],
+ "day": "j9",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

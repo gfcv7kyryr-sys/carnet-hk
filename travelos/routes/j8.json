@@ -1,0 +1,274 @@
+{
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ de l'hôtel",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j8:0"
+  },
+  {
+   "id": "yuexiu",
+   "short": "Parc Yuexiu",
+   "zh": "越秀公园",
+   "point": {
+    "osm": [
+     "越秀公园",
+     "Yuexiu Park"
+    ],
+    "near": [
+     23.1407,
+     113.2575
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "chen",
+   "short": "Chen Clan Academy",
+   "zh": "陈家祠",
+   "point": {
+    "osm": [
+     "陈家祠",
+     "Chen Clan Academy",
+     "陈氏书院"
+    ],
+    "near": [
+     23.1298,
+     113.2401
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "yongqingfang",
+   "short": "Yongqingfang",
+   "zh": "永庆坊",
+   "point": {
+    "osm": [
+     "永庆坊",
+     "Yongqingfang"
+    ],
+    "near": [
+     23.1175,
+     113.2329
+    ],
+    "entrance": false,
+    "R": 600
+   }
+  },
+  {
+   "id": "shamian",
+   "short": "Shamian",
+   "zh": "沙面岛",
+   "point": {
+    "osm": [
+     "沙面岛",
+     "沙面",
+     "Shamian Island"
+    ],
+    "near": [
+     23.1097,
+     113.2397
+    ],
+    "entrance": false,
+    "R": 900
+   }
+  },
+  {
+   "id": "nanxin",
+   "minor": true,
+   "kind": "meal",
+   "name": "Goûter chez Nanxin, 47 Dishifu Lu",
+   "short": "Nanxin",
+   "zh": "南信牛奶甜品专家",
+   "point": {
+    "osm": [
+     "南信牛奶甜品专家",
+     "南信",
+     "Nanxin"
+    ],
+    "near": [
+     23.122,
+     113.251
+    ],
+    "entrance": false,
+    "R": 800
+   },
+   "step": "j8:6"
+  },
+  {
+   "id": "dafo",
+   "short": "Temple Dafo",
+   "zh": "大佛寺",
+   "point": {
+    "osm": [
+     "大佛寺",
+     "Dafo Temple"
+    ],
+    "near": [
+     23.1249,
+     113.2627
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "beijing-road",
+   "short": "Beijing Road",
+   "zh": "北京路步行街",
+   "point": {
+    "osm": [
+     "北京路步行街",
+     "北京路"
+    ],
+    "near": [
+     23.1235,
+     113.2639
+    ],
+    "entrance": false,
+    "R": 600
+   }
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j8:10"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "yuexiu",
+   "mode": "taxi",
+   "label": "Taxi · 15 min (option)",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "yuexiu",
+   "to": "chen",
+   "mode": "taxi",
+   "label": "Taxi · 10 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "chen",
+   "to": "yongqingfang",
+   "mode": "walk",
+   "label": "À pied · 1,5 km",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "yongqingfang",
+   "to": "shamian",
+   "mode": "taxi",
+   "label": "Déjeuner au Panxi, puis taxi jusqu'à Shamian",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "shamian",
+   "to": "nanxin",
+   "mode": "taxi",
+   "label": "Taxi jusqu'à la rue de l'hôtel (proposé)",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "nanxin",
+   "to": "dafo",
+   "mode": "taxi",
+   "label": "Taxi jusqu'au temple Dafo",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "dafo",
+   "to": "beijing-road",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "beijing-road",
+   "to": "hotel-soir",
+   "mode": "taxi",
+   "label": "Taxi · 15 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j8",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

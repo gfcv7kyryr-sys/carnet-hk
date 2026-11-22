@@ -1,0 +1,362 @@
+{
+ "zones": [
+  {
+   "name": "Hong Kong",
+   "stops": [
+    "hotel-matin",
+    "terminal-hk",
+    "macau-ferry",
+    "hotel-soir"
+   ]
+  },
+  {
+   "name": "Macao",
+   "stops": [
+    "outer-harbour",
+    "senado",
+    "a-ma",
+    "taipa",
+    "cotai",
+    "terminal-taipa"
+   ]
+  }
+ ],
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ du Nathan Hotel",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j4:0"
+  },
+  {
+   "id": "terminal-hk",
+   "minor": true,
+   "kind": "pier",
+   "name": "Terminal des ferries de Macao, Sheung Wan",
+   "short": "Ferry, Sheung Wan",
+   "zh": "港澳碼頭",
+   "point": {
+    "osm": [
+     "Hong Kong-Macau Ferry Terminal",
+     "港澳碼頭",
+     "Shun Tak Centre"
+    ],
+    "near": [
+     22.2878,
+     114.1517
+    ],
+    "entrance": false,
+    "R": 600
+   },
+   "step": "j4:0"
+  },
+  {
+   "id": "outer-harbour",
+   "minor": true,
+   "kind": "pier",
+   "name": "Terminal de l'Outer Harbour, Macao",
+   "short": "Outer Harbour",
+   "zh": "外港客运码头",
+   "point": {
+    "osm": [
+     "Outer Harbour Ferry Terminal",
+     "外港客運碼頭",
+     "Macau Outer Harbour Ferry Terminal",
+     "外港碼頭"
+    ],
+    "near": [
+     22.1975,
+     113.5585
+    ],
+    "entrance": false,
+    "R": 1200
+   },
+   "step": "j4:1"
+  },
+  {
+   "id": "senado",
+   "short": "Place du Sénat",
+   "zh": "議事亭前地",
+   "point": {
+    "osm": [
+     "Place du Sénat",
+     "議事亭前地"
+    ],
+    "near": [
+     22.1937,
+     113.5401
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "a-ma",
+   "short": "Temple A-Ma",
+   "zh": "媽閣廟",
+   "point": {
+    "osm": [
+     "Temple A-Ma",
+     "媽閣廟"
+    ],
+    "near": [
+     22.1863,
+     113.5309
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "taipa",
+   "short": "Village de Taipa",
+   "zh": "氹仔舊城區",
+   "point": {
+    "osm": [
+     "Village de Taipa",
+     "氹仔舊城區"
+    ],
+    "near": [
+     22.1534,
+     113.556
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "cotai",
+   "short": "Cotai Strip",
+   "zh": "路氹金光大道",
+   "point": {
+    "osm": [
+     "Cotai Strip : Venetian, Parisian, Londoner",
+     "路氹金光大道"
+    ],
+    "near": [
+     22.1473,
+     113.5606
+    ],
+    "entrance": false,
+    "R": 600
+   }
+  },
+  {
+   "id": "terminal-taipa",
+   "minor": true,
+   "kind": "pier",
+   "name": "Terminal des ferries de Taipa",
+   "short": "Ferry, Taipa",
+   "zh": "氹仔客运码头",
+   "point": {
+    "osm": [
+     "Taipa Ferry Terminal",
+     "氹仔客運碼頭"
+    ],
+    "near": [
+     22.164,
+     113.573
+    ],
+    "entrance": false,
+    "R": 1500
+   },
+   "step": "j4:6"
+  },
+  {
+   "id": "macau-ferry",
+   "short": "Ferry, Tsim Sha Tsui",
+   "zh": "中港碼頭",
+   "point": {
+    "osm": [
+     "China Ferry Terminal",
+     "中港碼頭"
+    ],
+    "near": [
+     22.299,
+     114.1665
+    ],
+    "entrance": false,
+    "R": 800
+   },
+   "step": "j4:7"
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Dîner à Tsim Sha Tsui, puis l'hôtel",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j4:8"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "terminal-hk",
+   "mode": "metro",
+   "label": "Métro jusqu'à Sheung Wan, changement à Admiralty",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Jordan",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Tsuen Wan Line|荃灣綫",
+     "to": {
+      "station": "Admiralty",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Island Line|港島綫",
+     "to": {
+      "station": "Sheung Wan",
+      "line": "Island Line|港島綫"
+     },
+     "from": {
+      "station": "Admiralty",
+      "line": "Island Line|港島綫"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "terminal-hk",
+   "to": "outer-harbour",
+   "mode": "ferry",
+   "label": "Ferry pour Macao · 1 h",
+   "segments": [
+    {
+     "mode": "ferry",
+     "rail": "ferry",
+     "snap": 600
+    }
+   ]
+  },
+  {
+   "from": "outer-harbour",
+   "to": "senado",
+   "mode": "taxi",
+   "label": "Taxi · 10 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "senado",
+   "to": "a-ma",
+   "mode": "taxi",
+   "label": "Taxi (option)",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "a-ma",
+   "to": "taipa",
+   "mode": "taxi",
+   "label": "Taxi jusqu'au village de Taipa",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "taipa",
+   "to": "cotai",
+   "mode": "walk",
+   "label": "À pied jusqu'au Cotai Strip",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "cotai",
+   "to": "terminal-taipa",
+   "mode": "taxi",
+   "label": "Taxi · 10 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "terminal-taipa",
+   "to": "macau-ferry",
+   "mode": "ferry",
+   "label": "Cotai Water Jet jusqu'à Tsim Sha Tsui",
+   "segments": [
+    {
+     "mode": "ferry",
+     "rail": "ferry",
+     "snap": 600
+    }
+   ]
+  },
+  {
+   "from": "macau-ferry",
+   "to": "hotel-soir",
+   "mode": "taxi",
+   "label": "Dîner chez One Dim Sum, puis taxi (proposé)",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j4",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

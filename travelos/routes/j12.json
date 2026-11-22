@@ -1,0 +1,516 @@
+{
+ "illustration": {
+  "name": "Plan du parc",
+  "calage": "travelos/routes/osm/hkdl-calage.json"
+ },
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ du Disney's Hollywood Hotel",
+   "short": "Hôtel",
+   "zh": "迪士尼好萊塢酒店",
+   "point": {
+    "osm": [
+     "Disney's Hollywood Hotel",
+     "迪士尼好萊塢酒店"
+    ],
+    "near": [
+     22.3095,
+     114.048
+    ],
+    "entrance": true,
+    "R": 1200
+   },
+   "step": "j12:0"
+  },
+  {
+   "id": "disney",
+   "short": "Interchange",
+   "zh": "香港迪士尼樂園",
+   "point": {
+    "osm": [
+     "Disneyland Resort Public Transport Interchange",
+     "迪士尼樂園公共運輸交匯處",
+     "Disneyland Resort Station",
+     "迪士尼站"
+    ],
+    "near": [
+     22.3155,
+     114.045
+    ],
+    "entrance": false,
+    "R": 1200
+   },
+   "name": "Interchange de Disneyland (navette)"
+  },
+  {
+   "id": "dl-main",
+   "short": "Entrée du parc",
+   "zh": "美國小鎮大街",
+   "point": {
+    "osm": [
+     "Hong Kong Disneyland",
+     "香港迪士尼樂園",
+     "Main Entrance"
+    ],
+    "near": [
+     22.3128,
+     114.0447
+    ],
+    "entrance": true,
+    "R": 900
+   }
+  },
+  {
+   "id": "dl-frozen",
+   "short": "Frozen Ever After",
+   "zh": "魔雪奇緣世界",
+   "point": {
+    "osm": [
+     "Frozen Ever After",
+     "魔雪奇緣夢幻之旅"
+    ],
+    "near": [
+     22.3135,
+     114.037
+    ],
+    "entrance": true,
+    "R": 900
+   }
+  },
+  {
+   "id": "dl-castle",
+   "short": "Château",
+   "zh": "奇妙夢想城堡",
+   "point": {
+    "osm": [
+     "Castle of Magical Dreams",
+     "奇妙夢想城堡"
+    ],
+    "near": [
+     22.3128,
+     114.0406
+    ],
+    "entrance": false,
+    "R": 900
+   }
+  },
+  {
+   "id": "dl-fantasy",
+   "short": "Winnie l'ourson",
+   "zh": "幻想世界",
+   "point": {
+    "osm": [
+     "The Many Adventures of Winnie the Pooh",
+     "小熊維尼歷險之旅"
+    ],
+    "near": [
+     22.3133,
+     114.0393
+    ],
+    "entrance": true,
+    "R": 900
+   }
+  },
+  {
+   "id": "fairy-tale",
+   "minor": true,
+   "kind": "attraction",
+   "name": "Fairy Tale Forest",
+   "short": "Fairy Tale Forest",
+   "zh": "童話森林",
+   "point": {
+    "osm": [
+     "Fairy Tale Forest",
+     "童話森林"
+    ],
+    "near": [
+     22.3125,
+     114.0385
+    ],
+    "entrance": false,
+    "R": 900
+   },
+   "step": "j12:5"
+  },
+  {
+   "id": "philharmagic",
+   "minor": true,
+   "kind": "attraction",
+   "name": "Mickey's PhilharMagic",
+   "short": "Mickey's PhilharMagic",
+   "zh": "米奇幻想曲",
+   "point": {
+    "osm": [
+     "Mickey's PhilharMagic",
+     "米奇幻想曲"
+    ],
+    "near": [
+     22.3127,
+     114.0395
+    ],
+    "entrance": true,
+    "R": 900
+   },
+   "step": "j12:6"
+  },
+  {
+   "id": "plaza-inn",
+   "minor": true,
+   "kind": "meal",
+   "name": "Déjeuner au Plaza Inn",
+   "short": "Plaza Inn",
+   "zh": "美國小鎮大街 Plaza Inn",
+   "point": {
+    "osm": [
+     "Plaza Inn",
+     "廣場飯店"
+    ],
+    "near": [
+     22.3122,
+     114.0418
+    ],
+    "entrance": true,
+    "R": 900
+   },
+   "step": "j12:7"
+  },
+  {
+   "id": "dl-adventure",
+   "short": "Adventureland",
+   "zh": "探險世界",
+   "point": {
+    "osm": [
+     "Adventureland",
+     "探險世界"
+    ],
+    "near": [
+     22.3115,
+     114.0405
+    ],
+    "entrance": false,
+    "R": 900
+   }
+  },
+  {
+   "id": "dl-toy",
+   "short": "Toy Story Land",
+   "zh": "反斗奇兵大本營",
+   "point": {
+    "osm": [
+     "Slinky Dog Spin",
+     "胡迪轉轉轉",
+     "Toy Story Land"
+    ],
+    "near": [
+     22.3108,
+     114.0378
+    ],
+    "entrance": true,
+    "R": 900
+   }
+  },
+  {
+   "id": "dl-mystic",
+   "short": "Mystic Manor",
+   "zh": "迷離莊園",
+   "point": {
+    "osm": [
+     "Mystic Manor",
+     "迷離莊園"
+    ],
+    "near": [
+     22.31,
+     114.0395
+    ],
+    "entrance": true,
+    "R": 900
+   }
+  },
+  {
+   "id": "cinema",
+   "minor": true,
+   "kind": "attraction",
+   "name": "Main Street Cinema : Mickey, puis la parade",
+   "short": "Mickey",
+   "zh": "大街電影院",
+   "point": {
+    "osm": [
+     "Main Street Cinema",
+     "大街電影院"
+    ],
+    "near": [
+     22.3127,
+     114.043
+    ],
+    "entrance": true,
+    "R": 900
+   },
+   "step": "j12:11"
+  },
+  {
+   "id": "jungle",
+   "minor": true,
+   "kind": "attraction",
+   "name": "Jungle River Cruise",
+   "short": "Jungle Cruise",
+   "zh": "森林河流之旅",
+   "point": {
+    "osm": [
+     "Jungle River Cruise",
+     "森林河流之旅"
+    ],
+    "near": [
+     22.3112,
+     114.04
+    ],
+    "entrance": true,
+    "R": 900
+   },
+   "step": "j12:12"
+  },
+  {
+   "id": "dl-tomorrow",
+   "short": "Tomorrowland",
+   "zh": "明日世界",
+   "point": {
+    "osm": [
+     "Orbitron",
+     "太空飛碟",
+     "Tomorrowland"
+    ],
+    "near": [
+     22.314,
+     114.0412
+    ],
+    "entrance": true,
+    "R": 900
+   }
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel",
+   "short": "Hôtel",
+   "zh": "迪士尼好萊塢酒店",
+   "point": {
+    "osm": [
+     "Disney's Hollywood Hotel",
+     "迪士尼好萊塢酒店"
+    ],
+    "near": [
+     22.3095,
+     114.048
+    ],
+    "entrance": true,
+    "R": 1200
+   },
+   "step": "j12:17"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "disney",
+   "mode": "bus",
+   "label": "Navette gratuite de l'hôtel · 5 min",
+   "segments": [
+    {
+     "mode": "bus",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "disney",
+   "to": "dl-main",
+   "mode": "walk",
+   "label": "Promenade jusqu'aux grilles",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dl-main",
+   "to": "dl-frozen",
+   "mode": "walk",
+   "label": "Tout droit vers Arendelle",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dl-frozen",
+   "to": "dl-castle",
+   "mode": "walk",
+   "label": "À pied jusqu'au château (Magic Snaps)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dl-castle",
+   "to": "dl-fantasy",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dl-fantasy",
+   "to": "fairy-tale",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "fairy-tale",
+   "to": "philharmagic",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "philharmagic",
+   "to": "plaza-inn",
+   "mode": "walk",
+   "label": "À pied jusqu'au bout de Main Street",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "plaza-inn",
+   "to": "dl-adventure",
+   "mode": "walk",
+   "label": "Sieste en poussette dans les allées",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dl-adventure",
+   "to": "dl-toy",
+   "mode": "walk",
+   "label": "À pied jusqu'à Toy Story Land",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dl-toy",
+   "to": "dl-mystic",
+   "mode": "walk",
+   "label": "Mystic Point, juste à côté",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dl-mystic",
+   "to": "cinema",
+   "mode": "walk",
+   "label": "À pied jusqu'à Main Street",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "cinema",
+   "to": "jungle",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "jungle",
+   "to": "dl-tomorrow",
+   "mode": "walk",
+   "label": "Dîner, puis Tomorrowland",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dl-tomorrow",
+   "to": "hotel-soir",
+   "mode": "bus",
+   "label": "Momentous, sortie, puis navette jusqu'à l'hôtel",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "osm": [
+       "Disneyland Resort Public Transport Interchange",
+       "迪士尼樂園公共運輸交匯處",
+       "Disneyland Resort Station",
+       "迪士尼站"
+      ],
+      "near": [
+       22.3155,
+       114.045
+      ],
+      "entrance": false,
+      "R": 1200
+     }
+    },
+    {
+     "mode": "bus",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j12",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

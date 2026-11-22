@@ -10,6 +10,8 @@ on:
       - "tools/osm-routes.py"
       - "tools/osm-discover.py"
       - "tools/park-calibrate.py"
+      - "tools/osmlocal.py"
+      - "tools/osm-prepare.sh"
       - "tools/map-preview.py"
       - "android/app/src/main/assets/ui/**"
       - "android/app/src/main/assets/map/**"
@@ -37,20 +39,26 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Inventaire OpenStreetMap (une fois, ou si le script change)
-        timeout-minutes: 25
-        continue-on-error: true
+      - name: Extraits OpenStreetMap (cache d'une semaine)
+        id: semaine
+        run: echo "w=$(date +%G-%V)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: .osm/*.osm.pbf
+          key: osm-${{ steps.semaine.outputs.w }}-v1
+      - name: Préparer OpenStreetMap en local
         run: |
-          mkdir -p travelos/routes/osm
-          if [ ! -f travelos/routes/osm/discover.json ] || git diff --name-only HEAD~1 HEAD | grep -q osm-discover.py; then
-            python3 -u tools/osm-discover.py 2>&1 | tee travelos/routes/osm/discover.log | tail -20
-          fi
+          sudo apt-get install -y -qq osmium-tool >/dev/null
+          pip install -q osmium numpy scipy pillow
+          bash tools/osm-prepare.sh
+
+      - name: Inventaire OpenStreetMap
+        run: python3 -u tools/osm-discover.py 2>&1 | tail -5
 
       - name: Caler le plan illustré de Disneyland
         if: hashFiles('travelos/routes/hkdl-calage.json') != ''
         run: |
           set -o pipefail
-          pip install numpy scipy pillow >/dev/null
           python3 tools/park-calibrate.py 2>&1 | tee travelos/routes/osm/hkdl-calage.log
 
       - name: Tracer les trajets sur OpenStreetMap

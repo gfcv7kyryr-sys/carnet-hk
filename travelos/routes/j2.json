@@ -1,371 +1,449 @@
 {
-  "day": "j2",
-  "_doc": "Carte du jour 2. Coordonnées en WGS-84 (carnet, GPS, OpenStreetMap) : aucune conversion dans l'app ; seul AMap convertit, de son côté (dev=1). Un arrêt = un seul point, partagé par le repère, les bouts de tracé et « Y aller ». minor=true : étape sans numéro (repas, sieste), point trouvé par géocodage OpenStreetMap. Chaque tronçon est une suite de segments ; chaque segment part exactement du point où le précédent s'arrête. path : tracé fixé à la main ; router foot/car : itinéraire OSRM sur OpenStreetMap ; rail funicular/tram : voie ferrée OSM ; line : ligne de métro OSM, de station en station. Les tracés calculés sont écrits dans osm/j2.json par tools/osm-routes.py (workflow « Données carte »). short : libellé court du repère sur le plan. geocode.facade : point d'entrée du bâtiment sur cette rue.",
-  "stops": [
+ "day": "j2",
+ "_doc": "Carte du jour 2. Coordonnées en WGS-84 (carnet, GPS, OpenStreetMap) : aucune conversion dans l'app ; seul AMap convertit, de son côté (dev=1). Un arrêt = un seul point, partagé par le repère, les bouts de tracé et « Y aller ». minor=true : étape sans numéro (repas, sieste), point trouvé par géocodage OpenStreetMap. Chaque tronçon est une suite de segments ; chaque segment part exactement du point où le précédent s'arrête. path : tracé fixé à la main ; router foot/car : itinéraire OSRM sur OpenStreetMap ; rail funicular/tram : voie ferrée OSM ; line : ligne de métro OSM, de station en station. Les tracés calculés sont écrits dans osm/j2.json par tools/osm-routes.py (workflow « Données carte »). short : libellé court du repère sur le plan. geocode.facade : point d'entrée du bâtiment sur cette rue.",
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ du Nathan Hotel",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j2:0"
+  },
+  {
+   "id": "star-ferry-tst",
+   "name": "Star Ferry, Tsim Sha Tsui",
+   "zh": "天星小轮尖沙咀码头",
+   "lat": 22.294,
+   "lng": 114.16857,
+   "verified": true,
+   "source": "Embarcadère de Tsim Sha Tsui (Wikipedia) : 22.29400, 114.16857",
+   "short": "Star Ferry"
+  },
+  {
+   "id": "star-ferry-central",
+   "name": "Quai 7 du Star Ferry, Central",
+   "zh": "中环7号码头",
+   "lat": 22.28722,
+   "lng": 114.16111,
+   "verified": true,
+   "source": "Central Pier 7, quai du Star Ferry (Wikipedia) : 22.28722, 114.16111",
+   "short": "Quai 7, Central"
+  },
+  {
+   "id": "peak-tram",
+   "name": "Peak Tram, station basse (Garden Road)",
+   "zh": "山顶缆车花园道总站",
+   "lat": 22.277729,
+   "lng": 114.159172,
+   "verified": true,
+   "source": "Central Terminus, Garden Road (Wikipedia) : 22.277729, 114.159172",
+   "short": "Peak Tram"
+  },
+  {
+   "id": "peak-tram-haut",
+   "name": "Peak Tram, station haute",
+   "zh": "山顶缆车山顶总站",
+   "lat": 22.27104,
+   "lng": 114.14994,
+   "place": "lugard",
+   "step": "peak-tram",
+   "verified": true,
+   "source": "The Peak Terminus, sous la Peak Tower (Wikipedia) : 22.27104, 114.14994",
+   "short": "The Peak"
+  },
+  {
+   "id": "escalator",
+   "zh": "中环至半山自动扶梯",
+   "verified": false,
+   "short": "Escalator"
+  },
+  {
+   "id": "man-mo",
+   "short": "Man Mo",
+   "zh": "文武庙",
+   "verified": true,
+   "geocode": {
+    "near": [
+     22.284,
+     114.1501
+    ],
+    "osm": [
+     "Man Mo Temple",
+     "文武廟"
+    ],
+    "facade": "Hollywood Road"
+   },
+   "source": "Entrée du temple sur Hollywood Road : côté du bâtiment OSM le plus proche de la rue (ou nœud entrance)."
+  },
+  {
+   "id": "dejeuner",
+   "minor": true,
+   "kind": "meal",
+   "name": "Déjeuner · Yum Cha Central",
+   "zh": "饮茶 中环 南丰大厦",
+   "step": "j2:5",
+   "geocode": {
+    "near": [
+     22.2866,
+     114.152
+    ],
+    "osm": [
+     "Nan Fung Place",
+     "南豐大廈"
+    ],
+    "addr": [
+     "Des Voeux Road Central",
+     "173"
+    ],
+    "q": "173 Des Voeux Road Central, Hong Kong",
+    "expect": "Des Voeux"
+   },
+   "short": "Déjeuner"
+  },
+  {
+   "id": "hotel",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Sieste à l'hôtel · Nathan Hotel",
+   "zh": "弥敦酒店",
+   "step": "j2:6",
+   "short": "Sieste",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "monster",
+   "zh": "益昌大厦(怪兽大厦)",
+   "verified": false,
+   "short": "Monster Building"
+  },
+  {
+   "id": "tram",
+   "zh": "香港电车 铜锣湾",
+   "verified": false,
+   "short": "Causeway Bay"
+  },
+  {
+   "id": "victoria-park",
+   "zh": "维多利亚公园",
+   "verified": false,
+   "short": "Victoria Park"
+  },
+  {
+   "id": "hopewell",
+   "zh": "合和中心",
+   "verified": false,
+   "short": "Hopewell Centre"
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j2:12"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "star-ferry-tst",
+   "mode": "metro",
+   "label": "Métro Jordan → Tsim Sha Tsui, puis à pied (proposé)",
+   "segments": [
     {
-      "id": "star-ferry-tst",
-      "name": "Star Ferry, Tsim Sha Tsui",
-      "zh": "天星小轮尖沙咀码头",
-      "lat": 22.294,
-      "lng": 114.16857,
-      "verified": true,
-      "source": "Embarcadère de Tsim Sha Tsui (Wikipedia) : 22.29400, 114.16857",
-      "short": "Star Ferry"
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Jordan",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
     },
     {
-      "id": "star-ferry-central",
-      "name": "Quai 7 du Star Ferry, Central",
-      "zh": "中环7号码头",
-      "lat": 22.28722,
-      "lng": 114.16111,
-      "verified": true,
-      "source": "Central Pier 7, quai du Star Ferry (Wikipedia) : 22.28722, 114.16111",
-      "short": "Quai 7, Central"
+     "mode": "metro",
+     "line": "Tsuen Wan Line|荃灣綫",
+     "to": {
+      "station": "Tsim Sha Tsui",
+      "line": "Tsuen Wan Line|荃灣綫"
+     }
     },
     {
-      "id": "peak-tram",
-      "name": "Peak Tram, station basse (Garden Road)",
-      "zh": "山顶缆车花园道总站",
-      "lat": 22.277729,
-      "lng": 114.159172,
-      "verified": true,
-      "source": "Central Terminus, Garden Road (Wikipedia) : 22.277729, 114.159172",
-      "short": "Peak Tram"
-    },
-    {
-      "id": "peak-tram-haut",
-      "name": "Peak Tram, station haute",
-      "zh": "山顶缆车山顶总站",
-      "lat": 22.27104,
-      "lng": 114.14994,
-      "place": "lugard",
-      "step": "peak-tram",
-      "verified": true,
-      "source": "The Peak Terminus, sous la Peak Tower (Wikipedia) : 22.27104, 114.14994",
-      "short": "The Peak"
-    },
-    {
-      "id": "escalator",
-      "zh": "中环至半山自动扶梯",
-      "verified": false,
-      "short": "Escalator"
-    },
-    {
-      "id": "man-mo",
-      "short": "Man Mo",
-      "zh": "文武庙",
-      "verified": true,
-      "geocode": {
-        "near": [
-          22.284,
-          114.1501
-        ],
-        "osm": [
-          "Man Mo Temple",
-          "文武廟"
-        ],
-        "facade": "Hollywood Road"
-      },
-      "source": "Entrée du temple sur Hollywood Road : côté du bâtiment OSM le plus proche de la rue (ou nœud entrance)."
-    },
-    {
-      "id": "dejeuner",
-      "minor": true,
-      "kind": "meal",
-      "name": "Déjeuner · Yum Cha Central",
-      "zh": "饮茶 中环 南丰大厦",
-      "step": "j2:5",
-      "geocode": {
-        "near": [
-          22.2866,
-          114.152
-        ],
-        "osm": [
-          "Nan Fung Place",
-          "南豐大廈"
-        ],
-        "addr": [
-          "Des Voeux Road Central",
-          "173"
-        ],
-        "q": "173 Des Voeux Road Central, Hong Kong",
-        "expect": "Des Voeux"
-      },
-      "short": "Déjeuner"
-    },
-    {
-      "id": "hotel",
-      "minor": true,
-      "kind": "hotel",
-      "name": "Sieste à l'hôtel · Nathan Hotel",
-      "zh": "弥敦酒店",
-      "step": "j2:6",
-      "geocode": {
-        "near": [
-          22.3047,
-          114.1715
-        ],
-        "osm": [
-          "Nathan Hotel",
-          "彌敦酒店"
-        ],
-        "addr": [
-          "Nathan Road",
-          "378"
-        ],
-        "q": "Nathan Hotel, Nathan Road, Hong Kong",
-        "expect": "Nathan"
-      },
-      "short": "Sieste"
-    },
-    {
-      "id": "monster",
-      "zh": "益昌大厦(怪兽大厦)",
-      "verified": false,
-      "short": "Monster Building"
-    },
-    {
-      "id": "tram",
-      "zh": "香港电车 铜锣湾",
-      "verified": false,
-      "short": "Causeway Bay"
-    },
-    {
-      "id": "victoria-park",
-      "zh": "维多利亚公园",
-      "verified": false,
-      "short": "Victoria Park"
-    },
-    {
-      "id": "hopewell",
-      "zh": "合和中心",
-      "verified": false,
-      "short": "Hopewell Centre"
+     "mode": "walk",
+     "router": "foot"
     }
-  ],
-  "legs": [
+   ]
+  },
+  {
+   "from": "star-ferry-tst",
+   "to": "star-ferry-central",
+   "mode": "ferry",
+   "label": "Star Ferry · 10 min",
+   "segments": [
     {
-      "from": "star-ferry-tst",
-      "to": "star-ferry-central",
-      "mode": "ferry",
-      "label": "Star Ferry · 10 min",
-      "segments": [
-        {
-          "mode": "ferry",
-          "path": [
-            [
-              22.294,
-              114.16857
-            ],
-            [
-              22.28722,
-              114.16111
-            ]
-          ],
-          "source": "Les deux embarcadères ; traversée directe sur l'eau."
-        }
+     "mode": "ferry",
+     "path": [
+      [
+       22.294,
+       114.16857
+      ],
+      [
+       22.28722,
+       114.16111
       ]
-    },
-    {
-      "from": "star-ferry-central",
-      "to": "peak-tram",
-      "mode": "walk",
-      "label": "À pied · 15 min",
-      "segments": [
-        {
-          "mode": "walk",
-          "router": "foot"
-        }
-      ]
-    },
-    {
-      "from": "peak-tram",
-      "to": "peak-tram-haut",
-      "mode": "peaktram",
-      "label": "Peak Tram · 7 min",
-      "segments": [
-        {
-          "mode": "peaktram",
-          "rail": "funicular"
-        }
-      ]
-    },
-    {
-      "from": "peak-tram-haut",
-      "to": "escalator",
-      "mode": "peaktram",
-      "label": "Redescente en Peak Tram, puis à pied",
-      "segments": [
-        {
-          "mode": "peaktram",
-          "rail": "funicular",
-          "to": "peak-tram"
-        },
-        {
-          "mode": "walk",
-          "router": "foot"
-        }
-      ]
-    },
-    {
-      "from": "escalator",
-      "to": "man-mo",
-      "mode": "walk",
-      "label": "Escalator jusqu'à Hollywood Road, puis à pied · 10 min",
-      "segments": [
-        {
-          "mode": "walk",
-          "router": "foot",
-          "to": {
-            "junction": [
-              "Cochrane Street",
-              "Hollywood Road"
-            ]
-          }
-        },
-        {
-          "mode": "walk",
-          "router": "foot"
-        }
-      ]
-    },
-    {
-      "from": "man-mo",
-      "to": "dejeuner",
-      "mode": "walk",
-      "label": "À pied par Possession Street, sans marches · 15 min",
-      "segments": [
-        {
-          "mode": "walk",
-          "router": "foot",
-          "to": {
-            "junction": [
-              "Hollywood Road",
-              "Possession Street"
-            ]
-          }
-        },
-        {
-          "mode": "walk",
-          "router": "foot"
-        }
-      ]
-    },
-    {
-      "from": "dejeuner",
-      "to": "hotel",
-      "mode": "metro",
-      "label": "Métro depuis Sheung Wan, changement à Admiralty",
-      "segments": [
-        {
-          "mode": "walk",
-          "router": "foot",
-          "to": {
-            "station": "Sheung Wan",
-            "line": "Island"
-          }
-        },
-        {
-          "mode": "metro",
-          "line": "Island",
-          "to": {
-            "station": "Admiralty",
-            "line": "Island"
-          }
-        },
-        {
-          "mode": "metro",
-          "line": "Tsuen Wan",
-          "from": {
-            "station": "Admiralty",
-            "line": "Tsuen Wan"
-          },
-          "to": {
-            "station": "Jordan",
-            "line": "Tsuen Wan"
-          }
-        },
-        {
-          "mode": "walk",
-          "router": "foot"
-        }
-      ]
-    },
-    {
-      "from": "hotel",
-      "to": "monster",
-      "mode": "metro",
-      "label": "Métro jusqu'à Quarry Bay, changement à Admiralty",
-      "segments": [
-        {
-          "mode": "walk",
-          "router": "foot",
-          "to": {
-            "station": "Jordan",
-            "line": "Tsuen Wan"
-          }
-        },
-        {
-          "mode": "metro",
-          "line": "Tsuen Wan",
-          "to": {
-            "station": "Admiralty",
-            "line": "Tsuen Wan"
-          }
-        },
-        {
-          "mode": "metro",
-          "line": "Island",
-          "from": {
-            "station": "Admiralty",
-            "line": "Island"
-          },
-          "to": {
-            "station": "Quarry Bay",
-            "line": "Island"
-          }
-        },
-        {
-          "mode": "walk",
-          "router": "foot"
-        }
-      ]
-    },
-    {
-      "from": "monster",
-      "to": "tram",
-      "mode": "dingding",
-      "label": "Tram « ding ding » vers l'ouest · 30 min",
-      "segments": [
-        {
-          "mode": "dingding",
-          "rail": "tram"
-        }
-      ]
-    },
-    {
-      "from": "tram",
-      "to": "victoria-park",
-      "mode": "walk",
-      "label": "À pied · 10 min",
-      "segments": [
-        {
-          "mode": "walk",
-          "router": "foot"
-        }
-      ]
-    },
-    {
-      "from": "victoria-park",
-      "to": "hopewell",
-      "mode": "taxi",
-      "label": "Taxi · 10 min (trajet indicatif)",
-      "segments": [
-        {
-          "mode": "taxi",
-          "router": "car"
-        }
-      ]
+     ],
+     "source": "Les deux embarcadères ; traversée directe sur l'eau."
     }
-  ]
+   ]
+  },
+  {
+   "from": "star-ferry-central",
+   "to": "peak-tram",
+   "mode": "walk",
+   "label": "À pied · 15 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "peak-tram",
+   "to": "peak-tram-haut",
+   "mode": "peaktram",
+   "label": "Peak Tram · 7 min",
+   "segments": [
+    {
+     "mode": "peaktram",
+     "rail": "funicular"
+    }
+   ]
+  },
+  {
+   "from": "peak-tram-haut",
+   "to": "escalator",
+   "mode": "peaktram",
+   "label": "Redescente en Peak Tram, puis à pied",
+   "segments": [
+    {
+     "mode": "peaktram",
+     "rail": "funicular",
+     "to": "peak-tram"
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "escalator",
+   "to": "man-mo",
+   "mode": "walk",
+   "label": "Escalator jusqu'à Hollywood Road, puis à pied · 10 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "junction": [
+       "Cochrane Street",
+       "Hollywood Road"
+      ]
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "man-mo",
+   "to": "dejeuner",
+   "mode": "walk",
+   "label": "À pied par Possession Street, sans marches · 15 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "junction": [
+       "Hollywood Road",
+       "Possession Street"
+      ]
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "dejeuner",
+   "to": "hotel",
+   "mode": "metro",
+   "label": "Métro depuis Sheung Wan, changement à Admiralty",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Sheung Wan",
+      "line": "Island"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Island",
+     "to": {
+      "station": "Admiralty",
+      "line": "Island"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Tsuen Wan",
+     "from": {
+      "station": "Admiralty",
+      "line": "Tsuen Wan"
+     },
+     "to": {
+      "station": "Jordan",
+      "line": "Tsuen Wan"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "hotel",
+   "to": "monster",
+   "mode": "metro",
+   "label": "Métro jusqu'à Quarry Bay, changement à Admiralty",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "Jordan",
+      "line": "Tsuen Wan"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Tsuen Wan",
+     "to": {
+      "station": "Admiralty",
+      "line": "Tsuen Wan"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "Island",
+     "from": {
+      "station": "Admiralty",
+      "line": "Island"
+     },
+     "to": {
+      "station": "Quarry Bay",
+      "line": "Island"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "monster",
+   "to": "tram",
+   "mode": "dingding",
+   "label": "Tram « ding ding » vers l'ouest · 30 min",
+   "segments": [
+    {
+     "mode": "dingding",
+     "rail": "tram"
+    }
+   ]
+  },
+  {
+   "from": "tram",
+   "to": "victoria-park",
+   "mode": "walk",
+   "label": "À pied · 10 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "victoria-park",
+   "to": "hopewell",
+   "mode": "taxi",
+   "label": "Taxi · 10 min (trajet indicatif)",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "hopewell",
+   "to": "hotel-soir",
+   "mode": "taxi",
+   "label": "Taxi jusqu'à l'hôtel (proposé)",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  }
+ ]
 }

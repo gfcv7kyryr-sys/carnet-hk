@@ -1,0 +1,515 @@
+{
+ "zones": [
+  {
+   "name": "Canton",
+   "stops": [
+    "hotel-matin",
+    "gz-south",
+    "gz-south-retour",
+    "hotel-soir"
+   ]
+  },
+  {
+   "name": "Shenzhen",
+   "stops": [
+    "futian",
+    "talent-park",
+    "inno100",
+    "zhongshuge",
+    "gangxia-north",
+    "mocaup",
+    "children-palace",
+    "one-avenue",
+    "orbit-one",
+    "civic-center",
+    "futian-retour"
+   ]
+  }
+ ],
+ "stops": [
+  {
+   "id": "hotel-matin",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ de l'hôtel",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j5:0"
+  },
+  {
+   "id": "gz-south",
+   "short": "Guangzhou South",
+   "zh": "广州南站",
+   "point": {
+    "osm": [
+     "广州南站",
+     "Guangzhou South Railway Station",
+     "Guangzhou South"
+    ],
+    "near": [
+     22.989,
+     113.269
+    ],
+    "entrance": true,
+    "R": 1500
+   }
+  },
+  {
+   "id": "futian",
+   "short": "Gare de Futian",
+   "zh": "福田站",
+   "point": {
+    "osm": [
+     "福田站",
+     "Futian Railway Station",
+     "Futian Station"
+    ],
+    "near": [
+     22.5383,
+     114.0567
+    ],
+    "entrance": true,
+    "R": 900
+   }
+  },
+  {
+   "id": "talent-park",
+   "short": "Talent Park",
+   "zh": "人才公园",
+   "point": {
+    "osm": [
+     "Talent Park, drone Meituan",
+     "人才公园"
+    ],
+    "near": [
+     22.5137,
+     113.9442
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "inno100",
+   "short": "INNO100",
+   "zh": "INNO100",
+   "point": {
+    "osm": [
+     "INNO100, boutique de robots",
+     "INNO100 深圳湾文化广场"
+    ],
+    "near": [
+     22.5163,
+     113.9398
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "zhongshuge",
+   "short": "Zhongshuge",
+   "zh": "钟书阁",
+   "point": {
+    "osm": [
+     "Librairie Zhongshuge, Happy Harbour",
+     "钟书阁 欢乐港湾"
+    ],
+    "near": [
+     22.5446,
+     113.8836
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "gangxia-north",
+   "short": "Gangxia North",
+   "zh": "岗厦北站",
+   "point": {
+    "station": "岗厦北|Gangxia North",
+    "line": "深圳地铁11号线|Shenzhen Metro Line 11\\b"
+   }
+  },
+  {
+   "id": "mocaup",
+   "short": "MOCAUP",
+   "zh": "深圳当代艺术与城市规划馆",
+   "point": {
+    "osm": [
+     "MOCAUP, musée d'art et d'urbanisme",
+     "深圳当代艺术与城市规划馆"
+    ],
+    "near": [
+     22.5486,
+     114.0567
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "children-palace",
+   "short": "Palais des enfants",
+   "zh": "深圳少年宫",
+   "point": {
+    "osm": [
+     "Palais des enfants de Shenzhen",
+     "深圳少年宫"
+    ],
+    "near": [
+     22.55,
+     114.056
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "one-avenue",
+   "short": "One Avenue",
+   "zh": "卓悦中心",
+   "point": {
+    "osm": [
+     "One Avenue, Futian",
+     "卓悦中心"
+    ],
+    "near": [
+     22.5403,
+     114.06
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "orbit-one",
+   "short": "Orbit One",
+   "zh": "轨道餐厅",
+   "point": {
+    "osm": [
+     "Orbit One, IN City Plaza",
+     "轨道餐厅 印力中心"
+    ],
+    "near": [
+     22.542,
+     114.088
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "civic-center",
+   "short": "Centre civique",
+   "zh": "深圳市民中心",
+   "point": {
+    "osm": [
+     "Centre civique de Shenzhen",
+     "深圳市民中心"
+    ],
+    "near": [
+     22.5464,
+     114.0545
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "futian-retour",
+   "short": "Gare de Futian",
+   "zh": "福田站",
+   "point": {
+    "osm": [
+     "福田站",
+     "Futian Railway Station",
+     "Futian Station"
+    ],
+    "near": [
+     22.5383,
+     114.0567
+    ],
+    "entrance": true,
+    "R": 900
+   },
+   "place": "futian",
+   "step": "j5:14"
+  },
+  {
+   "id": "gz-south-retour",
+   "short": "Guangzhou South",
+   "zh": "广州南站",
+   "point": {
+    "osm": [
+     "广州南站",
+     "Guangzhou South Railway Station",
+     "Guangzhou South"
+    ],
+    "near": [
+     22.989,
+     113.269
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "place": "gz-south",
+   "step": "j5:15"
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel vers 22 h",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j5:15"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-matin",
+   "to": "gz-south",
+   "mode": "taxi",
+   "label": "Taxi · 30 à 40 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "gz-south",
+   "to": "futian",
+   "mode": "train",
+   "label": "TGV G6579 · 1 h",
+   "segments": [
+    {
+     "mode": "train",
+     "rail": "highspeed",
+     "snap": 600
+    }
+   ]
+  },
+  {
+   "from": "futian",
+   "to": "talent-park",
+   "mode": "metro",
+   "label": "Métro 11 puis 13, sortie B1",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "福田|Futian",
+      "line": "深圳地铁11号线|Shenzhen Metro Line 11\\b"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "深圳地铁11号线|Shenzhen Metro Line 11\\b",
+     "to": {
+      "station": "后海|Houhai",
+      "line": "深圳地铁11号线|Shenzhen Metro Line 11\\b"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "深圳地铁13号线|Shenzhen Metro Line 13\\b",
+     "to": {
+      "exit": "B1",
+      "station": "人才公园|Talent Park",
+      "line": "深圳地铁13号线|Shenzhen Metro Line 13\\b"
+     },
+     "from": {
+      "station": "后海|Houhai",
+      "line": "深圳地铁13号线|Shenzhen Metro Line 13\\b"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "talent-park",
+   "to": "inno100",
+   "mode": "walk",
+   "label": "À pied · 5 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "inno100",
+   "to": "zhongshuge",
+   "mode": "taxi",
+   "label": "Robot-taxi Pony.ai ou DiDi jusqu'à Happy Harbour",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "zhongshuge",
+   "to": "gangxia-north",
+   "mode": "metro",
+   "label": "Métro ligne 5, puis ligne 11 jusqu'au terminus",
+   "segments": [
+    {
+     "mode": "metro",
+     "confirm": "station de départ près de Happy Harbour à préciser"
+    }
+   ]
+  },
+  {
+   "from": "gangxia-north",
+   "to": "mocaup",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "mocaup",
+   "to": "children-palace",
+   "mode": "walk",
+   "label": "À pied (option)",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "children-palace",
+   "to": "one-avenue",
+   "mode": "walk",
+   "label": "Balade par le Centre civique",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "one-avenue",
+   "to": "orbit-one",
+   "mode": "metro",
+   "label": "Métro ligne 1, Gangxia → Science Museum",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "岗厦|Gangxia",
+      "line": "深圳地铁1号线|Shenzhen Metro Line 1\\b"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "深圳地铁1号线|Shenzhen Metro Line 1\\b",
+     "to": {
+      "station": "科学馆|Science Museum",
+      "line": "深圳地铁1号线|Shenzhen Metro Line 1\\b"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "orbit-one",
+   "to": "civic-center",
+   "mode": "taxi",
+   "label": "Taxi · 10 à 15 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "civic-center",
+   "to": "futian-retour",
+   "mode": "walk",
+   "label": "À pied · 15 min",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "futian-retour",
+   "to": "gz-south-retour",
+   "mode": "train",
+   "label": "TGV G6588",
+   "segments": [
+    {
+     "mode": "train",
+     "rail": "highspeed",
+     "snap": 600
+    }
+   ]
+  },
+  {
+   "from": "gz-south-retour",
+   "to": "hotel-soir",
+   "mode": "taxi",
+   "label": "Taxi jusqu'à l'hôtel",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j5",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

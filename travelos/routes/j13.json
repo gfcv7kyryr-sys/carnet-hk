@@ -1,0 +1,240 @@
+{
+ "stops": [
+  {
+   "id": "hotel",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Check-out du Disney's Hollywood Hotel",
+   "short": "Hôtel",
+   "zh": "迪士尼好萊塢酒店",
+   "point": {
+    "osm": [
+     "Disney's Hollywood Hotel",
+     "迪士尼好萊塢酒店"
+    ],
+    "near": [
+     22.3095,
+     114.048
+    ],
+    "entrance": true,
+    "R": 1200
+   },
+   "step": "j13:0"
+  },
+  {
+   "id": "airport",
+   "short": "Aéroport, consigne",
+   "zh": "香港國際機場",
+   "point": {
+    "osm": [
+     "Hong Kong International Airport Terminal 1",
+     "香港國際機場一號客運大樓",
+     "Terminal 1"
+    ],
+    "near": [
+     22.308,
+     113.9185
+    ],
+    "entrance": false,
+    "R": 1200
+   }
+  },
+  {
+   "id": "ngong-ping",
+   "short": "Téléphérique, Tung Chung",
+   "zh": "昂坪360",
+   "point": {
+    "osm": [
+     "Ngong Ping 360 Tung Chung Terminal",
+     "昂坪360東涌纜車站",
+     "Tung Chung Cable Car Terminal",
+     "東涌纜車站"
+    ],
+    "near": [
+     22.289,
+     113.942
+    ],
+    "entrance": false,
+    "R": 700
+   }
+  },
+  {
+   "id": "ngong-ping-haut",
+   "minor": true,
+   "kind": "station",
+   "name": "Ngong Ping, arrivée du téléphérique",
+   "short": "Ngong Ping",
+   "zh": "昂坪纜車站",
+   "point": {
+    "osm": [
+     "Ngong Ping 360 Ngong Ping Terminal",
+     "昂坪纜車站",
+     "Ngong Ping Cable Car Terminal",
+     "昂坪纜車站"
+    ],
+    "near": [
+     22.2565,
+     113.9015
+    ],
+    "entrance": false,
+    "R": 900
+   },
+   "step": "j13:1"
+  },
+  {
+   "id": "big-buddha",
+   "short": "Grand Bouddha",
+   "zh": "天壇大佛",
+   "point": {
+    "osm": [
+     "Tian Tan Buddha",
+     "天壇大佛"
+    ],
+    "near": [
+     22.254,
+     113.905
+    ],
+    "entrance": false,
+    "R": 800
+   }
+  },
+  {
+   "id": "tai-o",
+   "short": "Tai O",
+   "zh": "大澳",
+   "point": {
+    "osm": [
+     "Tai O",
+     "大澳"
+    ],
+    "near": [
+     22.253,
+     113.862
+    ],
+    "entrance": false,
+    "R": 1200
+   }
+  },
+  {
+   "id": "tung-chung",
+   "minor": true,
+   "kind": "station",
+   "name": "Tung Chung, derniers achats",
+   "short": "Tung Chung",
+   "zh": "東涌",
+   "point": {
+    "station": "Tung Chung",
+    "line": "Tung Chung Line|東涌綫"
+   },
+   "step": "j13:6"
+  },
+  {
+   "id": "airport-soir",
+   "short": "Aéroport",
+   "zh": "香港國際機場",
+   "point": {
+    "osm": [
+     "Hong Kong International Airport Terminal 1",
+     "香港國際機場一號客運大樓",
+     "Terminal 1"
+    ],
+    "near": [
+     22.308,
+     113.9185
+    ],
+    "entrance": false,
+    "R": 1200
+   },
+   "place": "airport",
+   "step": "j13:7"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel",
+   "to": "airport",
+   "mode": "taxi",
+   "label": "Taxi jusqu'à l'aéroport",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "airport",
+   "to": "ngong-ping",
+   "mode": "bus",
+   "label": "Bus jusqu'à Tung Chung · 10 min (proposé)",
+   "segments": [
+    {
+     "mode": "bus",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "ngong-ping",
+   "to": "ngong-ping-haut",
+   "mode": "cablecar",
+   "label": "Ngong Ping 360 · 25 min",
+   "segments": [
+    {
+     "mode": "cablecar",
+     "rail": "aerialway"
+    }
+   ]
+  },
+  {
+   "from": "ngong-ping-haut",
+   "to": "big-buddha",
+   "mode": "walk",
+   "label": "À pied",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "big-buddha",
+   "to": "tai-o",
+   "mode": "bus",
+   "label": "Bus 21 · 20 min (option)",
+   "segments": [
+    {
+     "mode": "bus",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "tai-o",
+   "to": "tung-chung",
+   "mode": "bus",
+   "label": "Bus 11 jusqu'à Tung Chung (proposé)",
+   "segments": [
+    {
+     "mode": "bus",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "tung-chung",
+   "to": "airport-soir",
+   "mode": "bus",
+   "label": "Bus S1 ou métro jusqu'à l'aéroport (proposé)",
+   "segments": [
+    {
+     "mode": "bus",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j13",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

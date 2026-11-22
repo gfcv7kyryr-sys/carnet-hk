@@ -1,0 +1,282 @@
+{
+ "zones": [
+  {
+   "name": "Hong Kong",
+   "stops": [
+    "hotel-hk",
+    "west-kowloon"
+   ]
+  },
+  {
+   "name": "Canton",
+   "stops": [
+    "gz-south",
+    "hotel-gz",
+    "huacheng",
+    "canton-tower",
+    "croisiere",
+    "hotel-soir"
+   ]
+  }
+ ],
+ "stops": [
+  {
+   "id": "hotel-hk",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Départ du Nathan Hotel, avec les valises",
+   "short": "Hôtel",
+   "zh": "弥敦酒店",
+   "point": {
+    "osm": [
+     "Nathan Hotel",
+     "彌敦酒店"
+    ],
+    "near": [
+     22.3047,
+     114.1715
+    ],
+    "entrance": true,
+    "R": 600
+   },
+   "step": "j6:0"
+  },
+  {
+   "id": "west-kowloon",
+   "short": "West Kowloon",
+   "zh": "香港西九龍站",
+   "point": {
+    "osm": [
+     "Hong Kong West Kowloon Station",
+     "香港西九龍站",
+     "West Kowloon Station",
+     "香港西九龙站"
+    ],
+    "near": [
+     22.304,
+     114.165
+    ],
+    "entrance": true,
+    "R": 900
+   }
+  },
+  {
+   "id": "gz-south",
+   "short": "Guangzhou South",
+   "zh": "广州南站",
+   "point": {
+    "osm": [
+     "广州南站",
+     "Guangzhou South Railway Station",
+     "Guangzhou South"
+    ],
+    "near": [
+     22.989,
+     113.269
+    ],
+    "entrance": true,
+    "R": 1500
+   }
+  },
+  {
+   "id": "hotel-gz",
+   "minor": true,
+   "kind": "hotel",
+   "name": "voco Guangzhou Shifu : valises et sieste",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j6:2"
+  },
+  {
+   "id": "huacheng",
+   "short": "Place Huacheng",
+   "zh": "花城广场",
+   "point": {
+    "osm": [
+     "花城广场",
+     "Huacheng Square"
+    ],
+    "near": [
+     23.12,
+     113.3185
+    ],
+    "entrance": false,
+    "R": 600
+   }
+  },
+  {
+   "id": "canton-tower",
+   "short": "Tour de Canton",
+   "zh": "广州塔",
+   "point": {
+    "osm": [
+     "广州塔",
+     "Canton Tower"
+    ],
+    "near": [
+     23.1088,
+     113.318
+    ],
+    "entrance": true,
+    "R": 600
+   }
+  },
+  {
+   "id": "croisiere",
+   "short": "Croisière",
+   "zh": "珠江夜游",
+   "point": {
+    "osm": [
+     "广州塔码头",
+     "Canton Tower Pier"
+    ],
+    "near": [
+     23.1085,
+     113.3205
+    ],
+    "entrance": false,
+    "R": 600
+   }
+  },
+  {
+   "id": "hotel-soir",
+   "minor": true,
+   "kind": "hotel",
+   "name": "Retour à l'hôtel",
+   "short": "Hôtel",
+   "zh": "广州十甫voco酒店",
+   "point": {
+    "osm": [
+     "voco Guangzhou Shifu",
+     "广州十甫voco酒店",
+     "voco酒店"
+    ],
+    "near": [
+     23.1225,
+     113.25
+    ],
+    "entrance": true,
+    "R": 1500
+   },
+   "step": "j6:9"
+  }
+ ],
+ "legs": [
+  {
+   "from": "hotel-hk",
+   "to": "west-kowloon",
+   "mode": "taxi",
+   "label": "Taxi · 10 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "west-kowloon",
+   "to": "gz-south",
+   "mode": "train",
+   "label": "TGV · 48 à 85 min",
+   "segments": [
+    {
+     "mode": "train",
+     "rail": "highspeed",
+     "snap": 600
+    }
+   ]
+  },
+  {
+   "from": "gz-south",
+   "to": "hotel-gz",
+   "mode": "taxi",
+   "label": "Taxi · 30 à 40 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "hotel-gz",
+   "to": "huacheng",
+   "mode": "taxi",
+   "label": "Taxi · 20 à 30 min",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  },
+  {
+   "from": "huacheng",
+   "to": "canton-tower",
+   "mode": "metro",
+   "label": "APM de l'opéra à la tour",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot",
+     "to": {
+      "station": "大剧院|Opera House",
+      "line": "APM|旅客自动输送"
+     }
+    },
+    {
+     "mode": "metro",
+     "line": "APM|旅客自动输送",
+     "to": {
+      "station": "广州塔|Canton Tower",
+      "line": "APM|旅客自动输送"
+     }
+    },
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "canton-tower",
+   "to": "croisiere",
+   "mode": "walk",
+   "label": "À pied jusqu'au quai",
+   "segments": [
+    {
+     "mode": "walk",
+     "router": "foot"
+    }
+   ]
+  },
+  {
+   "from": "croisiere",
+   "to": "hotel-soir",
+   "mode": "taxi",
+   "label": "Taxi jusqu'à l'hôtel (proposé)",
+   "segments": [
+    {
+     "mode": "taxi",
+     "router": "car"
+    }
+   ]
+  }
+ ],
+ "day": "j6",
+ "_doc": "Plan du jour : arrêts dans l'ordre du programme, tronçons en segments par mode. Généré par tools/make-routes.py, puis tracé par tools/osm-routes.py."
+}

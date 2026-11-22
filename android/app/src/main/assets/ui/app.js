@@ -402,7 +402,7 @@ function stopTitle(x) {
   const sub = rest.join(" · ").replace(/\s*\(([^)]+)\)/, " · $1");
   return { t, sub: sub ? sub.charAt(0).toUpperCase() + sub.slice(1) : "" };
 }
-const MINOR_ICON = { meal: "🥢", hotel: "🛏" };
+const MINOR_ICON = { meal: "🥢", hotel: "🛏", station: "🚉", pier: "⛴", parking: "P", attraction: "✦" };
 const shortOf = (x) => x.short || stopTitle(x).t;
 /* Boutons propres à certaines journées : une ville à la fois, plan illustré du parc. */
 function mapExtraChips(d) {
