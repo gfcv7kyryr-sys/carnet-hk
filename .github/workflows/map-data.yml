@@ -101,7 +101,7 @@ jobs:
         run: |
           git config user.name "travelos-bot"
           git config user.email "travelos-bot@users.noreply.github.com"
-          git add travelos/routes/osm travelos/pack android/app/src/main/assets/seed android/app/src/main/assets/map travelos/preview 2>/dev/null || true
+          for p in travelos/routes/osm travelos/pack android/app/src/main/assets/seed android/app/src/main/assets/map travelos/preview; do [ -e "$p" ] && git add "$p"; done
           git diff --cached --quiet && { echo "Rien de neuf"; exit 0; }
           git commit -m "Carte du jour : trajets OSM et captures (automatique)"
           git pull --rebase origin "${GITHUB_REF_NAME}"
