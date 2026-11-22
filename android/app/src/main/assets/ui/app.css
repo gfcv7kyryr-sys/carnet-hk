@@ -646,3 +646,7 @@ body.mapmode .stale{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 140px
 /* Tuiles du guide illustrées (16:9, image entière) */
 .acard .art.cover>img{object-fit:cover}
 .acard .art.cover-cut>img{object-fit:contain}
+/* Illustration seule d'une fiche (massage) : à l'échelle du texte, pas pleine largeur */
+.cmp .art.solo{width:min(240px,42%);margin:6px auto 4px}
+.art-langue .phr{width:100%}
+.cmp .printonly{display:none}

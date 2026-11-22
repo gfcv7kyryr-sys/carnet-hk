@@ -1103,10 +1103,24 @@ function openArticle(id) {
   $("#sheetTitle").textContent = a.title;
   let extra = "";
   if (id === "dimsum") extra = `<section class="sec"><h2 class="h2">La carte.</h2><div class="signs">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}"><span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div></section>`;
-  $("#sheetBody").innerHTML = `<article class="cmp">${a.html}</article>${extra}`;
+  $("#sheetBody").innerHTML = `<article class="cmp art-${id}">${a.html}</article>${extra}`;
   $$("#sheetBody img").forEach((im) => { im.onerror = () => im.remove(); });
+  if (id === "langue") fillLangue();
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
+}
+/* « Se faire comprendre » : le carnet remplit les phrases, panneaux et chiffres par script ; l'app les remplit ici. */
+function fillLangue() {
+  const box = $("#sheetBody article"); if (!box) return;
+  const mods = $$(".mod", box);
+  const phr = mods.find((m) => m.querySelector("ul.phr"));
+  if (phr) phr.innerHTML = pocketPhrases().replace('id="langSeg"', 'id="langSegA"');
+  const grid = (items) => `<div class="signs">${items.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.fr)}"><span class="zh">${esc(x.zh)}</span><small>${esc(x.fr)}</small></button>`).join("")}</div>`;
+  mods.filter((m) => m.querySelector(".tiles")).forEach((m, i) => { m.querySelector(".tiles").outerHTML = grid(i === 0 ? P.signs : P.numbers); });
+  $("#langSegA")?.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-lang]"); if (!b) return;
+    store.set("phrLang", b.dataset.lang); const y = $("#sheet").scrollTop; openArticle("langue"); $("#sheet").scrollTop = y;
+  });
 }
 function closeSheet() { const was = !$("#sheet").hidden; $("#sheet").hidden = true; sheetStop = null; if (was) mapSync(); }
 
@@ -1189,8 +1203,8 @@ function viewGuide(arg) {
    Toutes au format 16:9, comme la tuile : l'image entière est visible, en portrait comme en paysage.
    pos = point d'intérêt gardé au centre si la tuile changeait un jour de proportions. */
 const COVERS = {
-  "hong-kong": { pos: "56% 50%" }, macao: { pos: "50% 55%" }, canton: { pos: "45% 60%" }, shenzhen: { pos: "60% 50%" },
-  "riviere-li": { pos: "45% 55%" }, dimsum: { pos: "50% 55%" }, massage: { pos: "50% 50%", cut: true },
+  "hong-kong": { pos: "60% 50%" }, macao: { pos: "60% 50%" }, canton: { pos: "45% 50%" }, shenzhen: { pos: "60% 50%" },
+  "riviere-li": { pos: "60% 50%" }, lantau: { pos: "55% 50%" }, dimsum: { pos: "50% 55%" }, massage: { pos: "48% 60%" }, langue: { pos: "50% 50%" },
 };
 function coverArt(a, tone) {
   const c = COVERS[a.id];
