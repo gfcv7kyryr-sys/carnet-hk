@@ -43,9 +43,10 @@ jobs:
       - name: Extraits OpenStreetMap (cache d'une semaine)
         id: semaine
         run: echo "w=$(date +%G-%V)" >> "$GITHUB_OUTPUT"
-      - uses: actions/cache@v4
+      - uses: actions/cache/restore@v4
+        id: osmcache
         with:
-          path: .osm/*.overpass.json
+          path: .osm
           key: osm-${{ steps.semaine.outputs.w }}-v3
       - name: Préparer OpenStreetMap en local
         timeout-minutes: 90
@@ -54,6 +55,13 @@ jobs:
           mkdir -p travelos/routes/osm
           { pip install -q numpy scipy pillow && bash tools/osm-prepare.sh; } 2>&1 | tee travelos/routes/osm/prepare.log \
             || { tail -8 travelos/routes/osm/prepare.log | while IFS= read -r l; do echo "::error::$l"; done; exit 1; }
+
+      - name: Garder les données OSM en cache (même si la suite échoue)
+        if: steps.osmcache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .osm
+          key: osm-${{ steps.semaine.outputs.w }}-v3
 
       - name: Inventaire OpenStreetMap
         run: python3 -u tools/osm-discover.py 2>&1 | tail -5
