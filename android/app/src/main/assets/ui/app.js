@@ -347,8 +347,11 @@ function viewToday() {
 const MODES = {
   ferry: { label: "Ferry", color: "#1E88E5" }, walk: { label: "À pied", color: "#2E9D4F" }, peaktram: { label: "Peak Tram", color: "#F07C00" },
   metro: { label: "Métro", color: "#C8102E" }, dingding: { label: "Tram", color: "#0B6E4F" }, taxi: { label: "Taxi", color: "#6E6E73" },
+  train: { label: "Train", color: "#6A3FB5" }, bus: { label: "Bus", color: "#C27C0E" }, cablecar: { label: "Téléphérique", color: "#D81B60" },
+  car: { label: "Voiture", color: "#455A64" },
 };
-const LEGEND_ORDER = ["ferry", "walk", "peaktram", "metro", "dingding", "taxi"];
+const LEGEND_ORDER = ["ferry", "walk", "peaktram", "metro", "train", "dingding", "bus", "cablecar", "taxi", "car"];
+const mapZone = {}, mapIllu = {}; // zone affichée (journées sur plusieurs villes) et plan illustré, par journée
 let mapFailed = false, glMap = null, glDay = null, mapUserMoved = false, mapListOpen = false, mapLegendOpen = false, mapMarkers = [];
 const mapCam = {}, mapScroll = {};
 const glOk = () => !mapFailed && !!window.maplibregl;
@@ -363,7 +366,7 @@ function mapEmbedHtml(d) {
     <section class="dm-embed" data-mapday="${d.id}">
       <div class="dm-map" id="dmMap">${glOk() ? "" : planSvg(d, stops)}</div>
       <button class="pill glass dm-full" data-mapfull aria-label="Afficher le plan en plein écran"><span aria-hidden="true">⤢</span> Plein écran</button>
-      <div class="dm-etools"><button class="pill glass" data-maplocate><span aria-hidden="true">➤</span> Ma position</button><button class="pill glass" data-mapfit><span aria-hidden="true">⤢</span> Vue du jour</button></div>
+      <div class="dm-etools"><button class="pill glass" data-maplocate><span aria-hidden="true">➤</span> Ma position</button><button class="pill glass" data-mapfit><span aria-hidden="true">⤢</span> Vue du jour</button>${mapExtraChips(d)}</div>
       <span class="dm-attrib">© les contributeurs d'OpenStreetMap · OpenFreeMap</span>
     </section>
     <div class="dm-under">
@@ -401,6 +404,13 @@ function stopTitle(x) {
 }
 const MINOR_ICON = { meal: "🥢", hotel: "🛏" };
 const shortOf = (x) => x.short || stopTitle(x).t;
+/* Boutons propres à certaines journées : une ville à la fois, plan illustré du parc. */
+function mapExtraChips(d) {
+  const zs = d.map?.zones || [], cur = mapZone[d.id] ?? 0;
+  const z = zs.length > 1 ? zs.map((x, i) => `<button class="pill glass dm-zone ${i === cur ? "on" : ""}" data-mapzone="${i}">${esc(x.name)}</button>`).join("") : "";
+  const il = d.map?.illustration ? `<button class="pill glass dm-illu ${mapIllu[d.id] !== false ? "on" : ""}" data-mapillu aria-pressed="${mapIllu[d.id] !== false}">${mapIllu[d.id] !== false ? "Plan du parc" : "Fond standard"}</button>` : "";
+  return z + il;
+}
 
 /* Libellé du retour : l'écran d'où l'on vient (« Jour 2 », « Aujourd'hui »…). */
 function mapBackLabel() {
@@ -433,7 +443,7 @@ function mapListHtml(d, stops) {
       : `<li><button class="dm-stop ${x.next ? "next" : ""} ${x.done ? "done" : ""}" data-mapstop="${x.id}">
           <span class="n" style="--c:${x.done ? "#9A9AA0" : MODES[x.mode]?.color}">${x.n}</span><span class="t"><b>${esc(tt.t)}</b>${tt.sub ? `<small>${esc(tt.sub)}</small>` : ""}</span><small class="tm">${x.done ? "fait" : esc(x.time)}</small>
         </button></li>`;
-    return row + (l ? `<li class="dm-leg m-${l.mode}"><i></i><span>${esc(l.label || MODES[l.mode]?.label || "")}</span></li>` : "");
+    return row + (l ? `<li class="dm-leg m-${l.mode} ${l.confirm ? "confirm" : ""}"><i></i><span>${esc(l.label || MODES[l.mode]?.label || "")}${l.confirm ? ` · <b>Trajet à confirmer</b>` : ""}</span></li>` : "");
   }).join("");
 }
 function viewMap(dayId) {
@@ -456,6 +466,7 @@ function viewMap(dayId) {
         <div class="dm-legend glass">${LEGEND_ORDER.filter((k) => modes.has(k)).map((k) => `<span class="m-${k}"><i></i>${MODES[k].label}</span>`).join("")}</div></div>` : ""}
       <button class="pill glass" data-maplocate><span aria-hidden="true">➤</span> Ma position</button>
       <button class="pill glass" data-mapfit><span aria-hidden="true">⤢</span> Vue du jour</button>
+      ${mapExtraChips(d)}
     </div>
     <aside class="dm-side" id="dmPanel">
       <div class="dm-listbox glass" ${mapListOpen ? "" : "hidden"}>
@@ -518,13 +529,26 @@ function mapStyle() {
 function lineFC(d, stops) {
   const nx = stops.find((x) => x.next);
   const hl = (l) => (!nx || l.to === nx.id ? 1 : 0);
-  const feats = (d.map?.legs || []).flatMap((l) => l.segments.map((s) => ({
+  const feats = (d.map?.legs || []).flatMap((l) => l.segments.filter((s) => s.path).map((s) => ({
     type: "Feature", properties: { mode: s.mode, hl: hl(l) }, geometry: { type: "LineString", coordinates: s.path.map((p) => [p[1], p[0]]) } })));
   feats.sort((a, b) => a.properties.hl - b.properties.hl);
   return { type: "FeatureCollection", features: feats };
 }
-function dayBounds(d) {
-  const pts = [...(d.map?.stops || []).map((x) => [x.lat, x.lng]), ...(d.map?.legs || []).flatMap((l) => l.segments.flatMap((s) => s.path))];
+/* Points de départ et d'arrivée des trajets à confirmer (petits ronds creux, sans ligne). */
+function endsFC(d) {
+  const seen = new Set(), feats = [];
+  for (const l of d.map?.legs || []) for (const s of l.segments) if (!s.path) for (const p of [s.from, s.to]) {
+    if (!p) continue; const k = p.join(); if (seen.has(k)) continue; seen.add(k);
+    feats.push({ type: "Feature", properties: { mode: s.mode }, geometry: { type: "Point", coordinates: [p[1], p[0]] } });
+  }
+  return { type: "FeatureCollection", features: feats };
+}
+/* Zone à cadrer : toute la journée, ou une ville (journées sur plusieurs villes). */
+function dayBounds(d, zi) {
+  const z = zi != null && zi >= 0 ? d.map?.zones?.[zi] : null, inZ = (id) => !z || z.stops.includes(id);
+  const legs = (d.map?.legs || []).filter((l) => inZ(l.from) && inZ(l.to));
+  const pts = [...(d.map?.stops || []).filter((x) => inZ(x.id)).map((x) => [x.lat, x.lng]),
+    ...legs.flatMap((l) => l.segments.flatMap((s) => s.path || [s.from, s.to].filter(Boolean)))];
   if (!pts.length) return null;
   const la = pts.map((p) => p[0]), ln = pts.map((p) => p[1]);
   return [[Math.min(...ln), Math.min(...la)], [Math.max(...ln), Math.max(...la)]];
@@ -545,9 +569,12 @@ function mapPadding() {
   if (tools) pad.bottom = Math.max(pad.bottom, H - tools.top + m + 20);
   return pad;
 }
-function mapFit(animate) {
+function mapFit(animate, zi) {
   if (!glMap || !glDay) return;
-  const b = dayBounds(glDay);
+  const zs = glDay.map?.zones || [];
+  if (zi === undefined) zi = zs.length > 1 ? (mapZone[glDay.id] ?? Math.max(0, zs.findIndex((z) => z.stops.includes(mapStops(glDay).find((x) => x.next)?.id)))) : -1;
+  if (zs.length > 1) { mapZone[glDay.id] = zi; $$("[data-mapzone]").forEach((b) => b.classList.toggle("on", +b.dataset.mapzone === zi)); }
+  const b = dayBounds(glDay, zi);
   if (!b) return;
   glMap.fitBounds(b, { padding: mapPadding(), duration: animate ? 600 : 0, maxZoom: 16 });
   mapUserMoved = false;
@@ -642,12 +669,20 @@ function mapMount() {
     const hl = (a, b) => ["case", ["==", ["get", "hl"], 1], a, b];
     m.addLayer({ id: "legs-casing", type: "line", source: "legs", layout: { "line-cap": "round", "line-join": "round" },
       paint: { "line-color": "#FFFFFF", "line-width": ["interpolate", ["linear"], ["zoom"], 11, hl(8, 5.5), 16, hl(14, 10)], "line-opacity": hl(0.95, 0.7) } });
-    const dash = { ferry: [2.2, 1.6], walk: [0, 2], taxi: [1.4, 1.4] };
+    const dash = { ferry: [2.2, 1.6], walk: [0, 2], taxi: [1.4, 1.4], cablecar: [1.2, 0.8] };
     for (const k of LEGEND_ORDER) {
       const w0 = k === "walk" ? 4 : 3.5, w1 = k === "walk" ? 7 : 6;
       m.addLayer({ id: `leg-${k}`, type: "line", source: "legs", filter: ["==", ["get", "mode"], k],
-        layout: { "line-cap": k === "ferry" || k === "taxi" ? "butt" : "round", "line-join": "round" },
+        layout: { "line-cap": k === "ferry" || k === "taxi" || k === "cablecar" ? "butt" : "round", "line-join": "round" },
         paint: { "line-color": MODES[k].color, "line-width": ["interpolate", ["linear"], ["zoom"], 11, hl(w0 * 1.4, w0), 16, hl(w1 * 1.3, w1)], "line-opacity": hl(1, 0.62), ...(dash[k] ? { "line-dasharray": dash[k] } : {}) } });
+    }
+    m.addSource("ends", { type: "geojson", data: endsFC(d) });
+    m.addLayer({ id: "ends", type: "circle", source: "ends", paint: { "circle-radius": 6, "circle-color": "#FFFFFF", "circle-stroke-width": 2.5, "circle-stroke-color": "#8A8A8E" } });
+    const il = d.map?.illustration;
+    if (il) {
+      m.addSource("plan-parc", { type: "image", url: il.image, coordinates: il.coordinates });
+      m.addLayer({ id: "plan-parc", type: "raster", source: "plan-parc", paint: { "raster-fade-duration": 0, "raster-opacity": 1 },
+        layout: { visibility: mapIllu[d.id] === false ? "none" : "visible" } }, "legs-casing");
     }
     m.addLayer({ id: "acc", type: "fill", source: "acc", paint: { "fill-color": "rgba(10,132,255,.16)", "fill-outline-color": "rgba(10,132,255,.45)" } });
     m.addLayer({ id: "me", type: "circle", source: "me", paint: { "circle-radius": 8, "circle-color": "#0A84FF", "circle-stroke-color": "#FFFFFF", "circle-stroke-width": 3 } });
@@ -1362,8 +1397,14 @@ document.addEventListener("click", (e) => {
   if (d.mapgo !== undefined) { if (d.mapgo) { stack[stack.length - 1] = { tab: "programme", view: "map", arg: d.mapgo }; go("programme", "map", d.mapgo, false); } return; }
   if (d.mapstop) return openMapStop(d.mapstop);
   if (d.maplocate !== undefined) return mapLocate();
-  if (d.mapfit !== undefined) { if (glMap) mapFit(true); else $("#planMe") && ($("#planMe").innerHTML = ""); return; }
+  if (d.mapfit !== undefined) { if (glMap) { mapUserMoved = false; mapFit(true, (glDay?.map?.zones?.length > 1) ? -1 : undefined); } else $("#planMe") && ($("#planMe").innerHTML = ""); return; }
   if (d.mapback !== undefined) return back();
+  if (d.mapzone !== undefined) { mapUserMoved = false; return mapFit(true, +d.mapzone); }
+  if (d.mapillu !== undefined) {
+    const day = mapRoot()?.dataset.mapday; mapIllu[day] = mapIllu[day] === false;
+    glMap?.getLayer("plan-parc") && glMap.setLayoutProperty("plan-parc", "visibility", mapIllu[day] ? "visible" : "none");
+    t.classList.toggle("on", mapIllu[day]); t.setAttribute("aria-pressed", mapIllu[day]); t.textContent = mapIllu[day] ? "Plan du parc" : "Fond standard"; return;
+  }
   if (d.mapfull !== undefined) { const day = mapRoot()?.dataset.mapday; return go("programme", "map", day); }
   if (d.mapreduce !== undefined) {
     // Retour à l'onglet Plan de la même journée (la page d'où l'on vient, si c'en est une).

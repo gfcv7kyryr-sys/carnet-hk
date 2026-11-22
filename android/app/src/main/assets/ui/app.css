@@ -514,6 +514,7 @@ body.mapmode main#view{padding:0;max-width:none;min-height:0}
 .m-walk i{border-color:#2E9D4F;border-top-style:dotted;border-top-width:5px}
 .m-peaktram i{border-color:#F07C00}.m-metro i{border-color:#C8102E}.m-dingding i{border-color:#0B6E4F}
 .m-taxi i{border-color:#6E6E73;border-top-style:dashed;border-top-width:3px}
+.m-train i{border-color:#6A3FB5}.m-bus i{border-color:#C27C0E}.m-cablecar i{border-color:#D81B60;border-top-style:dashed}.m-car i{border-color:#455A64}
 /* Fiche compacte (à droite en paysage, en bas en portrait) et liste des étapes à la demande. */
 .dm-side{position:absolute;z-index:4;right:calc(env(safe-area-inset-right,0px) + var(--gut));bottom:calc(env(safe-area-inset-bottom,0px) + 18px);width:var(--side);display:flex;flex-direction:column;gap:10px;max-height:calc(100dvh - env(safe-area-inset-top,0px) - 110px)}
 .dm-card{display:grid;grid-template-columns:76px minmax(0,1fr);gap:4px 14px;align-items:center;padding:12px;border-radius:var(--r-m);background:var(--gl-strong)}
@@ -542,6 +543,10 @@ body.mapmode main#view{padding:0;max-width:none;min-height:0}
 .dm-leg i{width:0;height:18px;border-left:3px solid #ccc;border-top:0}
 .dm-leg.m-ferry i{border-left:3px dashed #1E88E5}.dm-leg.m-walk i{border-left:4px dotted #2E9D4F}
 .dm-leg.m-peaktram i{border-left-color:#F07C00}.dm-leg.m-metro i{border-left-color:#C8102E}.dm-leg.m-dingding i{border-left-color:#0B6E4F}.dm-leg.m-taxi i{border-left:3px dashed #6E6E73}
+.dm-leg.m-train i{border-left-color:#6A3FB5}.dm-leg.m-bus i{border-left-color:#C27C0E}.dm-leg.m-cablecar i{border-left:3px dashed #D81B60}.dm-leg.m-car i{border-left-color:#455A64}
+.dm-leg.confirm i{border-left:3px dotted #8A8A8E !important}.dm-leg.confirm b{color:var(--red-ink);font-weight:650}
+.dm-zone.on,.dm-illu.on{color:var(--red-ink);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--red) 40%,transparent),var(--gl-shadow)}
+.dm-etools,.dm-tools{flex-wrap:wrap}
 .dm-minor{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:4px 6px;color:var(--muted);font-size:.86rem}
 .dm-minor .mi{display:grid;place-items:center;width:24px;height:24px;margin-left:2px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #d8d2c6;font-size:.75rem}
 .dm-minor small{font-size:.8rem;color:var(--soft)}

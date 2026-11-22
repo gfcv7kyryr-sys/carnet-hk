@@ -252,8 +252,10 @@ for (const d of days) {
     const id = `${l.from}>${l.to}`;
     let segments = osm?.legs?.[id]?.segments;
     if (!segments) segments = (l.segments || (l.path ? [{ mode: l.mode, path: l.path }] : [])).filter((s) => s.path).map((s) => ({ mode: s.mode, path: s.path }));
-    segments = segments.map((s) => ({ mode: s.mode, path: s.path }));
-    return { from: l.from, to: l.to, mode: l.mode, label: l.label || "", segments };
+    // Segment « à confirmer » : pas de tracé, seulement ses points de départ et d'arrivée.
+    segments = segments.map((s) => (s.path ? { mode: s.mode, path: s.path } : { mode: s.mode, path: null, from: s.from, to: s.to, confirm: s.confirm || "à confirmer" }));
+    const confirm = segments.some((s) => !s.path) || !!l.confirm;
+    return { from: l.from, to: l.to, mode: l.mode, label: l.label || "", note: l.note || "", confirm, segments };
   });
   /* Contrôle : chaque tronçon dessiné part du point de son arrêt de départ, enchaîne ses segments
      sans trou et finit sur le point de l'arrêt d'arrivée (≤ 15 m). Sinon, on refuse le paquet. */
@@ -265,16 +267,26 @@ for (const d of days) {
     if (!l.segments.length) { console.warn(`Carte ${d.id} : tronçon ${l.from} > ${l.to} sans tracé (mode seulement)`); continue; }
     let cur = pos.get(l.from);
     for (const s of l.segments) {
-      const gap = metres(s.path[0], cur);
+      const a = s.path ? s.path[0] : s.from, z = s.path ? s.path[s.path.length - 1] : s.to;
+      if (!a || !z) { cur = z || cur; continue; }
+      const gap = metres(a, cur);
       if (gap > 15) throw new Error(`Carte ${d.id} : ${l.from} > ${l.to}, segment ${s.mode} décollé de ${gap.toFixed(0)} m`);
-      cur = s.path[s.path.length - 1];
+      cur = z;
     }
     const gap = metres(cur, pos.get(l.to));
     if (gap > 15) throw new Error(`Carte ${d.id} : ${l.from} > ${l.to} finit à ${gap.toFixed(0)} m de l'arrêt`);
   }
   for (const s of stops) if (!s.zh) console.warn(`Carte ${d.id} : arrêt ${s.id} sans nom chinois pour AMap`);
   for (const s of stops) { const own = placeIndex.get(s.id); if (own && metres([s.lat, s.lng], [own.lat, own.lng]) > 150) console.warn(`Carte ${d.id} : le point de ${s.id} est à plus de 150 m de celui de sa fiche`); }
-  d.map = { stops, legs, verified: !!spec, traced: legs.filter((l) => l.segments.length).length };
+  // Zones (journées sur plusieurs villes) et plan illustré (Disneyland).
+  const zones = (spec?.zones || []).map((z) => ({ name: z.name, stops: z.stops.filter((id) => pos.has(id)) })).filter((z) => z.stops.length);
+  let illustration = null;
+  if (spec?.illustration) {
+    try { const c = JSON.parse(readFileSync(join(root, spec.illustration.calage), "utf8")); illustration = { name: spec.illustration.name, image: c.image, coordinates: c.coordinates, errorM: c.controle_max_m }; }
+    catch { console.warn(`Carte ${d.id} : plan illustré pas encore calé`); }
+  }
+  for (const s of stops) { const a = osm?.anchors?.[s.id]; if (a?.confirm) s.confirm = true; }
+  d.map = { stops, legs, zones, illustration, verified: !!spec, traced: legs.filter((l) => l.segments.some((s) => s.path)).length };
 }
 
 const pack = {
