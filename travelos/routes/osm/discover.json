@@ -55580,5 +55580,362 @@
 ],
 "d": 610
 }
+],
+"gares_xp": [
+{
+"t": "n2751337944",
+"name": "兴坪",
+"en": "Xingping",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.919619,
+110.519652
+],
+"d": 3274
+},
+{
+"t": "n12182045164",
+"name": "兴坪 (pedestrians only)",
+"en": "Xingping",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.919088,
+110.521545
+],
+"d": 3119
+},
+{
+"t": "n9990834128",
+"name": "厄根底码头",
+"en": "Ergendi Pier",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.925972,
+110.509629
+],
+"d": 4100
+},
+{
+"t": "n13335121284",
+"name": "兴坪旅游客运站",
+"en": "Xingping bus station",
+"zh": null,
+"k": {
+"amenity": "bus_station",
+"public_transport": "station"
+},
+"p": [
+24.920746,
+110.527704
+],
+"d": 2475
+},
+{
+"t": "w400661513",
+"name": "兴坪旅游客运站",
+"en": "Xingping bus station",
+"zh": null,
+"k": {
+"public_transport": "station"
+},
+"p": [
+24.920954,
+110.527382
+],
+"d": 2496
+},
+{
+"t": "n626319796",
+"name": "马山码头",
+"en": "Mashan Bamboo Boat Terminal",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.93665,
+110.487094
+],
+"d": 6393
+},
+{
+"t": "n9921969217",
+"name": null,
+"en": "Bamboo Boat Terminal",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.938148,
+110.48708
+],
+"d": 6416
+},
+{
+"t": "w1336686706",
+"name": null,
+"en": null,
+"zh": null,
+"k": {
+"amenity": "bus_station",
+"public_transport": "station"
+},
+"p": [
+24.938196,
+110.486517
+],
+"d": 6473
+},
+{
+"t": "n3338456960",
+"name": null,
+"en": null,
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.969684,
+110.452853
+],
+"d": 10754
+},
+{
+"t": "n9992606711",
+"name": null,
+"en": null,
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.967437,
+110.454586
+],
+"d": 10493
+},
+{
+"t": "n3676370264",
+"name": "阳朔",
+"en": "Yangshuo",
+"zh": "阳朔",
+"k": {
+"public_transport": "station",
+"railway": "station"
+},
+"p": [
+24.963606,
+110.563362
+],
+"d": 3977
+},
+{
+"t": "n5189859021",
+"name": "阳朔高铁站",
+"en": "Yangshuo HSR Station",
+"zh": "阳朔高铁站",
+"k": {
+"amenity": "bus_station",
+"public_transport": "station"
+},
+"p": [
+24.963314,
+110.562748
+],
+"d": 3925
+},
+{
+"t": "n3338456963",
+"name": null,
+"en": null,
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station"
+},
+"p": [
+24.970726,
+110.45406
+],
+"d": 10692
+},
+{
+"t": "n3338457399",
+"name": "杨堤码头",
+"en": "Yangdi Bamboo Pier",
+"zh": "杨堤码头",
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station",
+"tourism": "attraction"
+},
+"p": [
+24.99437,
+110.448797
+],
+"d": 12477
+},
+{
+"t": "n4861996825",
+"name": "水岩头",
+"en": "Shuiyantou Pier",
+"zh": null,
+"k": {
+"amenity": "ferry_terminal",
+"public_transport": "station",
+"tourism": "attraction"
+},
+"p": [
+24.993522,
+110.449449
+],
+"d": 12369
+},
+{
+"t": "w1090971677",
+"name": "杨堤客运站",
+"en": "Yangdi Bus Terminal",
+"zh": null,
+"k": {
+"amenity": "bus_station",
+"public_transport": "station"
+},
+"p": [
+24.997031,
+110.444563
+],
+"d": 12996
+}
+],
+"sommets_xp": [
+{
+"t": "n13589633699",
+"name": "瞭望塔",
+"en": "The Watchtower",
+"zh": null,
+"k": {
+"natural": "peak"
+},
+"p": [
+24.902645,
+110.483529
+],
+"d": 5446
+},
+{
+"t": "n4781028439",
+"name": "大面山",
+"en": "Damian Mountain",
+"zh": null,
+"k": {
+"natural": "peak"
+},
+"p": [
+24.909884,
+110.495795
+],
+"d": 5169
+},
+{
+"t": "n12016559978",
+"name": "鲤鱼翅",
+"en": null,
+"zh": null,
+"k": {
+"natural": "peak"
+},
+"p": [
+24.902815,
+110.501533
+],
+"d": 6142
+},
+{
+"t": "n4780981642",
+"name": "老寨山",
+"en": "Laozhai Hill",
+"zh": null,
+"k": {
+"natural": "peak"
+},
+"p": [
+24.917735,
+110.520504
+],
+"d": 6236
+},
+{
+"t": "n1599397646",
+"name": "相公山",
+"en": "Xianggong Hill",
+"zh": null,
+"k": {
+"natural": "peak"
+},
+"p": [
+24.925835,
+110.479038
+],
+"d": 2841
+},
+{
+"t": "n4781028264",
+"name": "金寨山",
+"en": "Jinzhai Mountain",
+"zh": null,
+"k": {
+"natural": "peak"
+},
+"p": [
+24.922372,
+110.483313
+],
+"d": 3356
+},
+{
+"t": "n3151840555",
+"name": "九马画山",
+"en": "9 horse mountain",
+"zh": null,
+"k": {
+"natural": "peak"
+},
+"p": [
+24.938406,
+110.490692
+],
+"d": 2455
+},
+{
+"t": "n10595406988",
+"name": "神笔峰",
+"en": "Magic Brush Peak",
+"zh": null,
+"k": {
+"natural": "peak"
+},
+"p": [
+24.980355,
+110.442818
+],
+"d": 4352
+}
 ]
 }
