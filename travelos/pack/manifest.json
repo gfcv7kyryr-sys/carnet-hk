@@ -1603,6 +1603,11 @@
    "sha256": "8d863f78096ad3ecd85b2b12d8654a0780ff936212c4336ea16290c5aac092f1"
   },
   {
+   "path": "travelos/icons/music.webp",
+   "size": 12218,
+   "sha256": "37a6a967921a587ba793a56901c3b1d7474a9144725a3604a513b19999978c66"
+  },
+  {
    "path": "travelos/icons/photo.webp",
    "size": 10918,
    "sha256": "4bd83e00d6f762a5f70003b9e72add0a887940bb490e887c657a67c026d0ee61"
