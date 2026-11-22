@@ -314,6 +314,10 @@ const pack = {
   dimsum: DS.map(([zh, roman, fr]) => ({ zh, roman, fr: plain(fr) })),
   weather: WEATHER.map(([place, min, max]) => ({ place, min, max })),
   cityAudio: Object.entries(AUDIO_CITY).map(([id, e]) => ({ id, ...audio(e) })),
+  // Album du voyage (travelos/album/album.json + les fichiers audio à côté) : vide tant que les chansons ne sont pas déposées.
+  album: (() => { try { const a = JSON.parse(readFileSync(join(root, "travelos/album/album.json"), "utf8"));
+    for (const c of a.chapters || []) c.tracks = (c.tracks || []).filter((t) => t.src && existsSync(join(root, t.src)));
+    return a; } catch { return null; } })(),
   rates: readRates(),
   lockscreen: existsSync(join(root, "travelos/lockscreen/lanternes.webp")) ? "travelos/lockscreen/lanternes.webp" : null,
   articles,
@@ -336,6 +340,8 @@ writeFileSync(join(seedDir, "pack.json"), json);
 // Manifeste : tous les médias cités + le pack lui-même.
 const referenced = new Set(["travelos/pack/pack.json", ...articles.flatMap((a) => a.images)]);
 if (pack.lockscreen) referenced.add(pack.lockscreen);
+for (const c of pack.album?.chapters || []) { for (const t of c.tracks) referenced.add(t.src); if (c.cover) referenced.add(c.cover); }
+if (pack.album?.cover) referenced.add(pack.album.cover);
 for (const d of days) if (d.depth) { referenced.add(d.depth.bg); referenced.add(d.depth.fg); }
 for (const d of days) for (const sc of d.scenes) { referenced.add(sc.bg); referenced.add(sc.fg); referenced.add(sc.glass); }
 // Icônes de l'accueil (travelos/icons/<id>.webp), ajoutées dès qu'elles sont déposées dans le dépôt.

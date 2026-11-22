@@ -650,3 +650,13 @@ body.mapmode .stale{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 140px
 .cmp .art.solo{width:min(240px,42%);margin:6px auto 4px}
 .art-langue .phr{width:100%}
 .cmp .printonly{display:none}
+/* Traduire : deux onglets sous le sélecteur du guide */
+.seg.sub{margin-bottom:18px;transform:scale(.94)}
+/* Album du voyage */
+.tracks{display:grid;gap:8px}
+.trk{display:flex;align-items:center;gap:14px;text-align:left;padding:12px 16px;border-radius:16px;background:var(--card,#fff);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.trk i{font-style:normal;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--red);color:#fff;font-size:.8rem;flex:none}
+.trk span{flex:1;font-weight:650}
+.trk small{display:block;font-weight:400;color:var(--muted);font-size:.85rem}
+.trk em{font-style:normal;color:var(--muted);font-size:.9rem}
+.trk.on{outline:2px solid var(--red)}

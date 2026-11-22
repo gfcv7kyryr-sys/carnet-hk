@@ -18,7 +18,7 @@ let states = {};              // état des étapes : { "j3:4": "DONE" }
 let stack = [];               // historique de navigation du profil Pilote
 const TONE = { hk: "hk", mo: "mo", sz: "sz", gz: "gz", ys: "li", li: "li", lt: "lt" };
 const RV_ICON = { vol: "機", hotel: "床", train: "車", ferry: "船", resto: "食", activite: "票", voiture: "車" };
-const TABS = { today: "Aujourd'hui", programme: "Programme", places: "Lieux", food: "Repas", guide: "Guide", pocket: "Dans la poche", more: "Plus et réglages" };
+const TABS = { today: "Aujourd'hui", programme: "Programme", places: "Lieux", food: "Repas", guide: "Guide", pocket: "Dans la poche", more: "Plus et réglages", music: "Musique" };
 
 /* ================= temps ================= */
 
@@ -150,7 +150,7 @@ function go(tab, view = null, arg = null, push = true) {
   mapTeardown();
   document.body.classList.toggle("mapmode", view === "map");
   const v = $("#view");
-  const r = { today: viewToday, programme: view === "day" ? () => viewDay(arg) : view === "map" ? () => viewMap(arg) : viewProgramme, places: viewPlaces, food: () => viewFood(arg), guide: () => viewGuide(arg), pocket: () => viewPocket(arg), more: () => viewMore(arg) }[tab];
+  const r = { today: viewToday, programme: view === "day" ? () => viewDay(arg) : view === "map" ? () => viewMap(arg) : viewProgramme, places: viewPlaces, food: () => viewFood(arg), guide: () => viewGuide(arg), pocket: () => viewPocket(arg), more: () => viewMore(arg), music: viewMusic }[tab];
   v.innerHTML = `<div class="view">${r()}</div>`;
   $("#pageTitle").textContent = view === "day" ? `Jour ${dayById(arg)?.number} · ${dayById(arg)?.city}` : view === "map" ? "Plan du jour" : TABS[tab];
   window.scrollTo(0, 0);
@@ -186,21 +186,21 @@ function phase() {
 
 /* Icônes façon iPhone : image travelos/icons/<id>.webp si elle existe (à générer), sinon dégradé + caractère. */
 const APPS = {
-  tickets: ["票", "Billets", "mo"], phrases: ["話", "Phrases", "li"], translate: ["譯", "Traduire", "sz"],
+  tickets: ["票", "Billets", "mo"], music: ["樂", "Musique", "hk"], translate: ["譯", "Traduire", "sz"],
   ask: ["問", "Demander", "ui"], sos: ["救", "SOS", "gz"], audio: ["聽", "Récit", "hk"],
   conv: ["換", "Devises", "food"], photo: ["影", "Photo", "lt"], games: ["戲", "Jeux", "li"], plans: ["圖", "Plans", "lt"],
 };
 function appIcon(id, d, size = "") {
   const [g, label, tone] = APPS[id];
   const act = {
-    tickets: `data-pocket="resas"`, phrases: `data-pocket="phrases"`, ask: `data-guide="ask"`,
+    tickets: `data-pocket="resas"`, music: `data-music`, ask: `data-guide="ask"`,
     translate: `data-guide="translate"`, sos: `data-pocket="sos"`, conv: `data-pocket="conv"`, photo: `data-guide="photo"`,
     audio: d.audio ? `data-audio="${esc(d.audio.src)}" data-title="Jour ${d.number} · ${esc(d.city)}"` : `data-day="${d.id}"`,
     games: `data-soon="Les jeux arrivent dans une prochaine version."`, plans: `data-daymap="${d.id}"`,
   }[id];
   return `<button class="app-ic ${size}" ${act}><span class="sq tone-${tone}"><b class="han">${g}</b><img src="/pack/travelos/icons/${id}.webp" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"></span><span class="lb">${label}</span></button>`;
 }
-const HOME_APPS = ["plans", "tickets", "phrases", "translate", "ask", "sos", "conv", "audio", "photo", "games"];
+const HOME_APPS = ["plans", "tickets", "music", "translate", "ask", "sos", "conv", "audio", "photo", "games"];
 
 function homeData() {
   const ph = phase();
@@ -1193,9 +1193,11 @@ function foodDimsum() {
 
 const GUIDE = [["learn", "Comprendre"], ["ask", "Demander"], ["translate", "Traduire"], ["photo", "Photo"]];
 function viewGuide(arg) {
+  const sub = arg === "phrases" ? "phrases" : "translate"; // Traduire regroupe Traduction et Phrases utiles
+  if (arg === "phrases") arg = "translate";
   const seg = GUIDE.some(([k]) => k === arg) ? arg : store.get("guideSeg", "learn");
   store.set("guideSeg", seg);
-  const body = { learn: guideLearn, ask: guideAsk, translate: guideTranslate, photo: guidePhoto }[seg]();
+  const body = { learn: guideLearn, ask: guideAsk, translate: () => guideTranslateTabs(sub), photo: guidePhoto }[seg]();
   return `<header class="hero-t small"><h1 class="display">Le guide</h1></header>
     <div class="sec"><div style="text-align:center"><div class="seg">${GUIDE.map(([k, l]) => `<button class="${k === seg ? "on" : ""}" data-guide="${k}">${l}</button>`).join("")}</div></div>${body}</div>`;
 }
@@ -1238,6 +1240,12 @@ function guideAsk(ctx) {
     <textarea id="askQ" placeholder="Votre question"></textarea>
     <div class="acts"><button class="pill red" data-ask="photo">Prendre une photo et demander</button><button class="pill" data-ask="text">Demander sans photo</button></div></div>`;
 }
+function guideTranslateTabs(sub) {
+  return `<div style="text-align:center;margin-top:-4px"><div class="seg sub" role="tablist">
+      <button role="tab" aria-selected="${sub === "translate"}" class="${sub === "translate" ? "on" : ""}" data-guide="translate">Traduction</button>
+      <button role="tab" aria-selected="${sub === "phrases"}" class="${sub === "phrases" ? "on" : ""}" data-guide="phrases">Phrases utiles</button></div></div>
+    ${sub === "phrases" ? pocketPhrases() : guideTranslate()}`;
+}
 function guideTranslate() {
   return `<div class="tile tr"><h3>Traducteur hors ligne</h3>
     <p id="trState">…</p>
@@ -1248,7 +1256,7 @@ function guideTranslate() {
     <div class="acts" id="trActs" hidden><button class="pill red" id="trShow">Montrer en grand</button><button class="pill" id="trSpeakZh">Écouter (mandarin)</button><button class="pill" id="trSpeakYue">Écouter (cantonais)</button></div></div>
   <div class="tile"><h3>Conversation et caméra</h3><p>Pour traduire en parlant ou en photographiant un menu, Google Traduction fonctionne aussi hors ligne une fois la langue « chinois » téléchargée dans l'appli. À installer avant le départ : le Play Store ne fonctionne pas en Chine continentale.</p>
     <div class="acts"><button class="pill" id="gTr">Ouvrir Google Traduction</button></div></div>
-  <div class="acts" style="justify-content:center"><button class="pill" data-pocket="phrases">Phrases toutes prêtes</button><button class="pill" data-pocket="signs">Panneaux</button></div>`;
+  <div class="acts" style="justify-content:center"><button class="pill" data-guide="phrases">Phrases utiles</button><button class="pill" data-pocket="signs">Panneaux</button></div>`;
 }
 function guidePhoto() {
   const d = phase().day || P.days[0];
@@ -1260,6 +1268,7 @@ function guidePhoto() {
     ${items.map((p) => `<section class="sec"><div class="sec-h"><h2 class="h3">${esc(p.name)}</h2><button class="pill" data-place="${p.id}">Fiche</button></div><div class="bento">${p.shots.map(shotHtml).join("")}</div></section>`).join("") || `<p class="muted" style="text-align:center">Pas de conseil photo pour cette journée.</p>`}`;
 }
 after.guide = () => {
+  $("#langSeg")?.addEventListener("click", (e) => { const b = e.target.closest("[data-lang]"); if (b) { store.set("phrLang", b.dataset.lang); go("guide", null, "phrases", false); } });
   if ($("#askQ")) {
     $("#askCtx").addEventListener("input", (e) => store.set("askCtx", e.target.value));
   }
@@ -1311,9 +1320,10 @@ function askGuide(withPhoto) {
 
 /* ================= Poche ================= */
 
-const POCKET = [["resas", "Billets"], ["hotels", "Hôtels"], ["phrases", "Phrases"], ["conv", "Devises"], ["signs", "Panneaux"], ["sos", "SOS"]];
+const POCKET = [["resas", "Billets"], ["hotels", "Hôtels"], ["conv", "Devises"], ["signs", "Panneaux"], ["sos", "SOS"]];
 function viewPocket(seg) {
   seg = seg || store.get("pocketSeg", "resas");
+  if (seg === "phrases") seg = "resas"; // les phrases vivent désormais dans Guide › Traduire › Phrases utiles
   store.set("pocketSeg", seg);
   const body = { resas: pocketResas, hotels: pocketHotels, phrases: pocketPhrases, conv: pocketConv, signs: pocketSigns, sos: pocketSos }[seg]();
   return `<header class="hero-t small"><h1 class="display">Dans la poche</h1></header>
@@ -1518,8 +1528,32 @@ function closeShow() { if ($("#show").hidden) return; $("#show").hidden = true; 
 
 /* ================= audio ================= */
 
+/* ================= album du voyage ================= */
+
+function albumTracks() { return (P.album?.chapters || []).flatMap((c) => c.tracks.map((t) => ({ ...t, chapter: c.title }))); }
+let albumQueue = null; // index de la piste en cours quand on écoute l'album
+function viewMusic() {
+  const a = P.album, list = albumTracks();
+  if (!a || !list.length) return `<header class="hero-t small"><h1 class="display">${esc(a?.title || "L'album du voyage")}</h1></header>
+    <div class="tile" style="max-width:640px;margin:0 auto;text-align:center"><p class="big" style="font-size:3rem">樂</p>
+    <h3>Les chansons arrivent bientôt</h3><p>Dès qu'elles seront déposées dans le carnet, une synchronisation (Plus › Contenu) les télécharge sur la tablette pour les écouter hors ligne.</p></div>`;
+  let i = 0;
+  return `<header class="hero-t small"><h1 class="display">${esc(a.title || "L'album du voyage")}</h1>${a.subtitle ? `<p class="muted">${esc(a.subtitle)}</p>` : ""}</header>
+    <div class="acts" style="justify-content:center"><button class="pill red" data-track="0">▶ Écouter l'album</button></div>
+    ${a.chapters.filter((c) => c.tracks.length).map((c) => `<section class="sec"><h2 class="h3">${esc(c.title)}</h2>
+      <div class="tracks">${c.tracks.map((t) => { const k = i++; return `<button class="trk" data-track="${k}"><i>▶</i><span>${esc(t.title)}${t.style ? `<small>${esc(t.style)}</small>` : ""}</span>${t.seconds ? `<em>${dur(t.seconds)}</em>` : ""}</button>`; }).join("")}</div></section>`).join("")}`;
+}
+function playAlbum(k) {
+  const list = albumTracks(); if (!list[k]) return;
+  albumQueue = k;
+  playAudio(list[k].src, `${list[k].title} · ${list[k].chapter}`, true);
+  $$(".trk").forEach((b) => b.classList.toggle("on", +b.dataset.track === k));
+}
+
 const player = $("#player");
-function playAudio(src, title) {
+player.addEventListener("ended", () => { if (albumQueue != null) playAlbum(albumQueue + 1); });
+function playAudio(src, title, fromAlbum = false) {
+  if (!fromAlbum) albumQueue = null;
   player.src = `/pack/${src}`;
   $("#mpTitle").textContent = title || "Audio";
   $("#miniPlayer").hidden = false;
@@ -1588,7 +1622,10 @@ document.addEventListener("click", (e) => {
   if (d.back !== undefined) return back();
   if (d.close !== undefined) return closeSheet();
   if (d.closeShow !== undefined) return closeShow();
+  if (d.pocket === "phrases") return go("guide", null, "phrases", stack[stack.length - 1]?.tab !== "guide");
   if (d.pocket) return go("pocket", null, d.pocket, stack[stack.length - 1]?.tab !== "pocket");
+  if (d.music !== undefined) return go("music");
+  if (d.track !== undefined) return playAlbum(+d.track);
   if (d.more) return go("more", null, d.more, false);
   if (d.food) return go("food", null, d.food, stack[stack.length - 1]?.tab !== "food");
   if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
