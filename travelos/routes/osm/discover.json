@@ -26241,23 +26241,6 @@
 "zh": "广州南站",
 "named": [
 {
-"t": "n7658137930",
-"name": "广州南站",
-"en": "Guangzhou South Railway Station",
-"zh": "广州南站",
-"k": {
-"public_transport": "stop_position",
-"railway": "stop",
-"ref": "2203"
-},
-"p": [
-22.991686,
-113.266845
-],
-"d": 372,
-"score": 6
-},
-{
 "t": "n9625872463",
 "name": "广州南站",
 "en": "Guangzhou South Railway Station",
@@ -26273,6 +26256,23 @@
 "p": [
 22.991637,
 113.26677
+],
+"d": 372,
+"score": 6
+},
+{
+"t": "n7658137930",
+"name": "广州南站",
+"en": "Guangzhou South Railway Station",
+"zh": "广州南站",
+"k": {
+"public_transport": "stop_position",
+"railway": "stop",
+"ref": "2203"
+},
+"p": [
+22.991686,
+113.266845
 ],
 "d": 372,
 "score": 6
@@ -28061,24 +28061,6 @@
 "zh": "广州塔",
 "named": [
 {
-"t": "n5078787517",
-"name": "广州塔",
-"en": "Canton Tower",
-"zh": "广州塔",
-"k": {
-"operator": "广州地铁集团有限公司",
-"public_transport": "stop_position",
-"railway": "stop",
-"ref": "309"
-},
-"p": [
-23.109041,
-113.318043
-],
-"d": 27,
-"score": 4
-},
-{
 "t": "n5594226424",
 "name": "广州塔",
 "en": "Canton Tower",
@@ -28093,6 +28075,24 @@
 "p": [
 23.109046,
 113.317985
+],
+"d": 27,
+"score": 4
+},
+{
+"t": "n5078787517",
+"name": "广州塔",
+"en": "Canton Tower",
+"zh": "广州塔",
+"k": {
+"operator": "广州地铁集团有限公司",
+"public_transport": "stop_position",
+"railway": "stop",
+"ref": "309"
+},
+"p": [
+23.109041,
+113.318043
 ],
 "d": 27,
 "score": 4
@@ -53535,6 +53535,21 @@
 "d": 618
 },
 {
+"t": "n357140956",
+"name": "幻想世界 Fantasyland",
+"en": "Fantasyland",
+"zh": "幻想世界",
+"k": {
+"public_transport": "station",
+"railway": "station"
+},
+"p": [
+22.312376,
+114.039673
+],
+"d": 189
+},
+{
 "t": "n1696912181",
 "name": "反斗奇兵大本營 Toy Story Land",
 "en": "Toy Story Land",
@@ -53622,21 +53637,6 @@
 114.03835
 ],
 "d": 430
-},
-{
-"t": "n357140956",
-"name": "幻想世界 Fantasyland",
-"en": "Fantasyland",
-"zh": "幻想世界",
-"k": {
-"public_transport": "station",
-"railway": "station"
-},
-"p": [
-22.312376,
-114.039673
-],
-"d": 189
 },
 {
 "t": "n4842097917",
@@ -54173,6 +54173,39 @@
 "d": 831
 },
 {
+"t": "n357140849",
+"name": "美國小鎮大街 Main Street, USA",
+"en": "Main Street, USA",
+"zh": "美國小鎮大街",
+"k": {
+"public_transport": "station",
+"railway": "station"
+},
+"p": [
+22.313078,
+114.044072
+],
+"d": 273
+},
+{
+"t": "n14383306115",
+"name": "Disneyland",
+"en": null,
+"zh": null,
+"k": {
+"network": "MTR Hong Kong",
+"operator": "MTR Hong kong",
+"public_transport": "station",
+"railway": "station",
+"station": "subway"
+},
+"p": [
+22.315393,
+114.044969
+],
+"d": 481
+},
+{
 "t": "n1696925558",
 "name": "歷奇噴水池 Liki Tikis",
 "en": "Liki Tikis",
@@ -54303,21 +54336,6 @@
 114.045142
 ],
 "d": 505
-},
-{
-"t": "n357140849",
-"name": "美國小鎮大街 Main Street, USA",
-"en": "Main Street, USA",
-"zh": "美國小鎮大街",
-"k": {
-"public_transport": "station",
-"railway": "station"
-},
-"p": [
-22.313078,
-114.044072
-],
-"d": 273
 },
 {
 "t": "n1272780357",
@@ -54620,24 +54638,6 @@
 "d": 608
 },
 {
-"t": "n14383306115",
-"name": "Disneyland",
-"en": null,
-"zh": null,
-"k": {
-"network": "MTR Hong Kong",
-"operator": "MTR Hong kong",
-"public_transport": "station",
-"railway": "station",
-"station": "subway"
-},
-"p": [
-22.315393,
-114.044969
-],
-"d": 481
-},
-{
 "t": "n4620931816",
 "name": "迪士尼樂園巴士總站 Disneyland Bus Terminus",
 "en": "Disneyland Bus Terminus",
@@ -54651,6 +54651,26 @@
 114.046142
 ],
 "d": 637
+},
+{
+"t": "w112659018",
+"name": "迪士尼 Disneyland Resort",
+"en": "Disneyland Resort",
+"zh": "迪士尼",
+"k": {
+"building": "train_station",
+"network": "MTR",
+"operator": "香港鐵路有限公司 MTR Corporation Limited",
+"public_transport": "station",
+"railway": "station",
+"ref": "DIS",
+"station": "subway"
+},
+"p": [
+22.31539,
+114.045139
+],
+"d": 494
 },
 {
 "t": "w111785045",
@@ -54995,26 +55015,6 @@
 114.042846
 ],
 "d": 235
-},
-{
-"t": "w112659018",
-"name": "迪士尼 Disneyland Resort",
-"en": "Disneyland Resort",
-"zh": "迪士尼",
-"k": {
-"building": "train_station",
-"network": "MTR",
-"operator": "香港鐵路有限公司 MTR Corporation Limited",
-"public_transport": "station",
-"railway": "station",
-"ref": "DIS",
-"station": "subway"
-},
-"p": [
-22.31539,
-114.045139
-],
-"d": 494
 },
 {
 "t": "w112659020",

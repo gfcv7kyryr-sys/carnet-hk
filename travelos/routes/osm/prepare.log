@@ -3,12 +3,16 @@
 · mo (cache)
 · gz (cache)
 · sz (cache)
-· xp2 (cache)
+  xp3 via overpass-api.de : HTTP Error 504: Gateway Timeout (39 s)
+  xp3 via z.overpass-api.de : HTTP Error 502: Bad Gateway (0 s)
+· xp3 : 113 éléments, 0 Mo, 47 s (lz4.overpass-api.de)
 · hy (cache)
+· gares : 1364 éléments, 0 Mo, 45 s (overpass-api.de)
 · rail (cache)
-total 141216
-drwxr-xr-x  2 runner runner     4096 Nov 22 05:30 .
-drwxr-xr-x 11 runner runner     4096 Nov 22 05:39 ..
+total 142380
+drwxr-xr-x  2 runner runner     4096 Nov 22 12:16 .
+drwxr-xr-x 11 runner runner     4096 Nov 22 12:14 ..
+-rw-r--r--  1 runner runner   949221 Nov 22 12:16 gares.overpass.json
 -rw-r--r--  1 runner runner 36196099 Nov 22 04:58 gz.overpass.json
 -rw-r--r--  1 runner runner  5250225 Nov 22 04:12 hk-lantau.overpass.json
 -rw-r--r--  1 runner runner 46533155 Nov 22 04:11 hk-ville.overpass.json
@@ -18,3 +22,4 @@ drwxr-xr-x 11 runner runner     4096 Nov 22 05:39 ..
 -rw-r--r--  1 runner runner 34909871 Nov 22 04:47 sz.overpass.json
 -rw-r--r--  1 runner runner   222969 Nov 22 04:47 xp.overpass.json
 -rw-r--r--  1 runner runner   224572 Nov 22 05:30 xp2.overpass.json
+-rw-r--r--  1 runner runner   239824 Nov 22 12:16 xp3.overpass.json
