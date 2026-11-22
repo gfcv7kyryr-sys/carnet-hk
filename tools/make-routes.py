@@ -277,7 +277,8 @@ DAYS["j8"] = {
 }
 
 # ===== Jour 9 · Canton → Xingping =====
-YANGSHUO = osm(["阳朔站", "Yangshuo Railway Station", "Yangshuo Station"], [24.8930, 110.5410], R=1500)
+# Gare TGV « Yangshuo » : dans les collines à environ 6 km à l'est du bourg de Xingping (饭甑山村)
+YANGSHUO = {**osm(["阳朔站", "桂林阳朔", "阳朔", "Yangshuo"], [24.8930, 110.5410], entrance=False, R=7000), "tag": {"railway": "station"}}
 DAYS["j9"] = {
   "zones": [{"name": "Canton", "stops": ["hotel-gz", "gz-south"]},
             {"name": "Xingping", "stops": ["yangshuo-station", "hotel-xp", "xingping", "vingt-yuans", "cormorans", "hotel-soir"]}],

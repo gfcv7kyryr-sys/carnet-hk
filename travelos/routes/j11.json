@@ -89,15 +89,19 @@
    "point": {
     "osm": [
      "阳朔站",
-     "Yangshuo Railway Station",
-     "Yangshuo Station"
+     "桂林阳朔",
+     "阳朔",
+     "Yangshuo"
     ],
     "near": [
      24.893,
      110.541
     ],
-    "entrance": true,
-    "R": 1500
+    "entrance": false,
+    "R": 7000,
+    "tag": {
+     "railway": "station"
+    }
    },
    "step": "j11:3"
   },
