@@ -1185,11 +1185,22 @@ function viewGuide(arg) {
   return `<header class="hero-t small"><h1 class="display">Le guide</h1></header>
     <div class="sec"><div style="text-align:center"><div class="seg">${GUIDE.map(([k, l]) => `<button class="${k === seg ? "on" : ""}" data-guide="${k}">${l}</button>`).join("")}</div></div>${body}</div>`;
 }
+/* Illustrations des tuiles du guide, embarquées dans l'APK (assets/ui/covers) : disponibles avant toute synchronisation.
+   Toutes au format 16:9, comme la tuile : l'image entière est visible, en portrait comme en paysage.
+   pos = point d'intérêt gardé au centre si la tuile changeait un jour de proportions. */
+const COVERS = {
+  "hong-kong": { pos: "56% 50%" }, macao: { pos: "50% 55%" }, canton: { pos: "45% 60%" }, shenzhen: { pos: "60% 50%" },
+  "riviere-li": { pos: "45% 55%" }, dimsum: { pos: "50% 55%" }, massage: { pos: "50% 50%", cut: true },
+};
+function coverArt(a, tone) {
+  const c = COVERS[a.id];
+  return `<div class="art tone-${tone} cover ${c.cut ? "cover-cut" : ""}"><span class="g">${esc(a.glyph || "")}</span><img src="covers/${a.id}.webp" alt="" width="1672" height="941" style="object-position:${c.pos}" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"></div>`;
+}
 function guideLearn() {
   const card = (a) => {
     const im = a.images[0];
     const tone = (a.html.match(/tone-([a-z]+)/) || [])[1] || "hk";
-    return `<button class="acard" data-article="${a.id}">${art(im, tone, a.glyph, "")}<b>${esc(a.title)}</b></button>`;
+    return `<button class="acard" data-article="${a.id}">${COVERS[a.id] ? coverArt(a, tone) : art(im, tone, a.glyph, "")}<b>${esc(a.title)}</b></button>`;
   };
   const g = (k) => P.articles.filter((a) => a.group === k);
   return `<section class="sec"><h2 class="h3">Comprendre les villes</h2><div class="grid">${g("comprendre").map(card).join("")}</div></section>
