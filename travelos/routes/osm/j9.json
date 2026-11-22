@@ -1,6 +1,6 @@
 {
  "day": "j9",
- "generated": "2026-11-22T05:15:38+00:00",
+ "generated": "2026-11-22T05:34:26+00:00",
  "license": "© les contributeurs d'OpenStreetMap (ODbL)",
  "anchors": {
   "hotel-gz": {
@@ -30,7 +30,7 @@
     24.893,
     110.541
    ],
-   "source": "point du carnet (« 阳朔站 / Yangshuo Railway Station / Yangshuo Station » introuvable dans OSM)",
+   "source": "point du carnet (« 阳朔站 / 桂林阳朔 / 阳朔 / Yangshuo » introuvable dans OSM)",
    "confirm": true
   },
   "hotel-xp": {

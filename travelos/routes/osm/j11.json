@@ -1,6 +1,6 @@
 {
  "day": "j11",
- "generated": "2026-11-22T05:12:51+00:00",
+ "generated": "2026-11-22T05:31:18+00:00",
  "license": "© les contributeurs d'OpenStreetMap (ODbL)",
  "anchors": {
   "hotel-matin": {
@@ -32,7 +32,7 @@
     24.893,
     110.541
    ],
-   "source": "point du carnet (« 阳朔站 / Yangshuo Railway Station / Yangshuo Station » introuvable dans OSM)",
+   "source": "point du carnet (« 阳朔站 / 桂林阳朔 / 阳朔 / Yangshuo » introuvable dans OSM)",
    "confirm": true
   },
   "osm:{\"R\": 900, \"entrance\": true, \"near\": [22.304, 114.165], \"osm\": [\"Hong Kong West Kowloon Station\", \"香港西九龍站\", \"West Kowloon Station\", \"香港西九龙站\"]}": {
