@@ -1,0 +1,27 @@
+{
+ "day": "j7",
+ "generated": "2026-11-22T05:01:06+00:00",
+ "license": "© les contributeurs d'OpenStreetMap (ODbL)",
+ "anchors": {
+  "osm:{\"R\": 1500, \"entrance\": true, \"near\": [23.0049, 113.326], \"osm\": [\"长隆野生动物世界\", \"Chimelong Safari Park\"]}": {
+   "p": [
+    23.00441,
+    113.311555
+   ],
+   "source": "OSM : w297264709 « Chimelong Safari Park » (sans entrée cartographiée)"
+  },
+  "chimelong": {
+   "p": [
+    23.00441,
+    113.311555
+   ],
+   "source": "OSM : w297264709 « Chimelong Safari Park » (sans entrée cartographiée)"
+  }
+ },
+ "legs": {},
+ "report": [],
+ "flags": {
+  "hotel-matin": "« voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM",
+  "hotel-soir": "« voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM"
+ }
+}

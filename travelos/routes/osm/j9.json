@@ -1,0 +1,286 @@
+{
+ "day": "j9",
+ "generated": "2026-11-22T05:01:14+00:00",
+ "license": "© les contributeurs d'OpenStreetMap (ODbL)",
+ "anchors": {
+  "osm:{\"R\": 1500, \"entrance\": true, \"near\": [22.989, 113.269], \"osm\": [\"广州南站\", \"Guangzhou South Railway Station\", \"Guangzhou South\"]}": {
+   "p": [
+    22.991591,
+    113.266811
+   ],
+   "source": "OSM : r13992195 « Guangzhou South Railway Station » (sans entrée cartographiée)"
+  },
+  "gz-south": {
+   "p": [
+    22.991591,
+    113.266811
+   ],
+   "source": "OSM : r13992195 « Guangzhou South Railway Station » (sans entrée cartographiée)"
+  },
+  "yangshuo-station": {
+   "p": [
+    24.893,
+    110.541
+   ],
+   "source": "point du carnet (« 阳朔站 / Yangshuo Railway Station / Yangshuo Station » introuvable dans OSM)",
+   "confirm": true
+  },
+  "osm:{\"R\": 900, \"entrance\": false, \"near\": [24.92, 110.5238], \"osm\": [\"兴坪古镇\", \"Xingping Ancient Town\", \"兴坪老街\"]}": {
+   "p": [
+    24.919123,
+    110.523609
+   ],
+   "source": "OSM : n9921956319 « Xingping Ancient Town »"
+  },
+  "xingping": {
+   "p": [
+    24.919123,
+    110.523609
+   ],
+   "source": "OSM : n9921956319 « Xingping Ancient Town »"
+  },
+  "osm:{\"R\": 900, \"entrance\": false, \"near\": [24.9245, 110.5174], \"osm\": [\"二十元人民币背景\", \"黄布倒影\", \"20元人民币背景图\"]}": {
+   "p": [
+    24.925103,
+    110.51664
+   ],
+   "source": "OSM : n4376696293 « 20 Yuan View »"
+  },
+  "vingt-yuans": {
+   "p": [
+    24.925103,
+    110.51664
+   ],
+   "source": "OSM : n4376696293 « 20 Yuan View »"
+  },
+  "cormorans": {
+   "p": [
+    24.9283,
+    110.5168
+   ],
+   "source": "point du carnet (« 兴坪码头 / Xingping Pier » introuvable dans OSM)",
+   "confirm": true
+  }
+ },
+ "legs": {
+  "gz-south>yangshuo-station": {
+   "segments": [
+    {
+     "mode": "train",
+     "path": null,
+     "from": [
+      22.991591,
+      113.266811
+     ],
+     "to": [
+      24.893,
+      110.541
+     ],
+     "confirm": "voie highspeed à 141 m / 6619 m des points"
+    }
+   ]
+  },
+  "xingping>vingt-yuans": {
+   "segments": [
+    {
+     "mode": "walk",
+     "path": [
+      [
+       24.919123,
+       110.523609
+      ],
+      [
+       24.919112,
+       110.523524
+      ],
+      [
+       24.919618,
+       110.523445
+      ],
+      [
+       24.919726,
+       110.523414
+      ],
+      [
+       24.919954,
+       110.523376
+      ],
+      [
+       24.920364,
+       110.52327
+      ],
+      [
+       24.920587,
+       110.523215
+      ],
+      [
+       24.921253,
+       110.523033
+      ],
+      [
+       24.921296,
+       110.523014
+      ],
+      [
+       24.921331,
+       110.522989
+      ],
+      [
+       24.921347,
+       110.522875
+      ],
+      [
+       24.921345,
+       110.522677
+      ],
+      [
+       24.921397,
+       110.52243
+      ],
+      [
+       24.921459,
+       110.522255
+      ],
+      [
+       24.921501,
+       110.521994
+      ],
+      [
+       24.921776,
+       110.522053
+      ],
+      [
+       24.922013,
+       110.522121
+      ],
+      [
+       24.92216,
+       110.52211
+      ],
+      [
+       24.922313,
+       110.521965
+      ],
+      [
+       24.922457,
+       110.521887
+      ],
+      [
+       24.922653,
+       110.521591
+      ],
+      [
+       24.922968,
+       110.520825
+      ],
+      [
+       24.923188,
+       110.520478
+      ],
+      [
+       24.92346,
+       110.520207
+      ],
+      [
+       24.923628,
+       110.519818
+      ],
+      [
+       24.923822,
+       110.519469
+      ],
+      [
+       24.924002,
+       110.519333
+      ],
+      [
+       24.924247,
+       110.519148
+      ],
+      [
+       24.924433,
+       110.518947
+      ],
+      [
+       24.924697,
+       110.518538
+      ],
+      [
+       24.924837,
+       110.518358
+      ],
+      [
+       24.925043,
+       110.518198
+      ],
+      [
+       24.925134,
+       110.518084
+      ],
+      [
+       24.925191,
+       110.517926
+      ],
+      [
+       24.92521,
+       110.517742
+      ],
+      [
+       24.92521,
+       110.517446
+      ],
+      [
+       24.925156,
+       110.517227
+      ],
+      [
+       24.925091,
+       110.516869
+      ],
+      [
+       24.925091,
+       110.516723
+      ],
+      [
+       24.925113,
+       110.516643
+      ],
+      [
+       24.925103,
+       110.51664
+      ]
+     ],
+     "source": "OSRM à pied sur OpenStreetMap (15 min estimées)",
+     "m": 1125
+    }
+   ]
+  },
+  "vingt-yuans>cormorans": {
+   "segments": [
+    {
+     "mode": "walk",
+     "path": null,
+     "from": [
+      24.925103,
+      110.51664
+     ],
+     "to": [
+      24.9283,
+      110.5168
+     ],
+     "confirm": "OSRM foot : départ ou arrivée à plus de 250 m d'une voie"
+    }
+   ]
+  }
+ },
+ "report": [
+  "gz-south>yangshuo-station : 0 segment(s) tracé(s), 1 à confirmer",
+  "xingping>vingt-yuans : 1 segment(s) tracé(s)",
+  "vingt-yuans>cormorans : 0 segment(s) tracé(s), 1 à confirmer"
+ ],
+ "flags": {
+  "hotel-gz": "« voco Guangzhou Shifu / 广州十甫voco酒店 / voco酒店 » introuvable dans OSM",
+  "hotel-xp": "« Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM",
+  "hotel-soir": "« Lijiang Island Riverside Resort / 漓江岛江畔度假酒店 » introuvable dans OSM"
+ }
+}
