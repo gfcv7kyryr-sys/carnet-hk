@@ -47,7 +47,8 @@ jobs:
         id: osmcache
         with:
           path: .osm
-          key: osm-${{ steps.semaine.outputs.w }}-v4
+          key: osm-${{ steps.semaine.outputs.w }}-v5-${{ github.run_id }}
+          restore-keys: osm-${{ steps.semaine.outputs.w }}-v5-
       - name: Préparer OpenStreetMap en local
         timeout-minutes: 90
         run: |
@@ -57,11 +58,11 @@ jobs:
             || { tail -8 travelos/routes/osm/prepare.log | while IFS= read -r l; do echo "::error::$l"; done; exit 1; }
 
       - name: Garder les données OSM en cache (même si la suite échoue)
-        if: steps.osmcache.outputs.cache-hit != 'true'
+        if: always() && hashFiles('.osm/*.json') != ''
         uses: actions/cache/save@v4
         with:
           path: .osm
-          key: osm-${{ steps.semaine.outputs.w }}-v4
+          key: osm-${{ steps.semaine.outputs.w }}-v5-${{ github.run_id }}
 
       - name: Inventaire OpenStreetMap
         run: python3 -u tools/osm-discover.py 2>&1 | tail -5

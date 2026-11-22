@@ -4,7 +4,8 @@ Une zone déjà présente (cache de la semaine) n'est pas retéléchargée."""
 import json, os, sys, time, urllib.parse, urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, ".osm")
-SERVERS = ["https://maps.mail.ru/osm/tools/overpass/api/interpreter", "https://overpass-api.de/api/interpreter",
+SERVERS = ["https://overpass-api.de/api/interpreter", "https://z.overpass-api.de/api/interpreter", "https://lz4.overpass-api.de/api/interpreter",
+           "https://maps.mail.ru/osm/tools/overpass/api/interpreter", "https://overpass.nchc.org.tw/api/interpreter",
            "https://overpass.private.coffee/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
 POI = ('nwr["tourism"]{b};nwr["historic"]{b};nwr["leisure"~"park|garden"]["name"]{b};nwr["building"]["name"]{b};nwr["man_made"~"pier|tower"]["name"]{b};'
        'nwr["amenity"~"^(place_of_worship|ferry_terminal|bus_station|theatre|arts_centre|library|marketplace|parking)$"]["name"]{b};'
@@ -27,7 +28,7 @@ def fetch(name, bbox, body):
     b = "(%s,%s,%s,%s)" % bbox
     q = f"[out:json][timeout:600][maxsize:1000000000];({body.replace('{b}', b)});out body geom qt;"
     data = urllib.parse.urlencode({"data": q}).encode()
-    for k in range(3):
+    for k in range(2):
         for u in SERVERS:
             t = time.time()
             try:
@@ -39,6 +40,10 @@ def fetch(name, bbox, body):
                 print(f"· {name} : {len(d['elements'])} éléments, {len(raw) // 1048576} Mo, {time.time() - t:.0f} s ({u.split('/')[2]})", flush=True); return
             except Exception as e:
                 print(f"  {name} via {u.split('/')[2]} : {str(e)[:160]} ({time.time() - t:.0f} s)", flush=True); time.sleep(5)
-    sys.exit(f"zone {name} impossible à télécharger")
+        time.sleep(60)
+    print(f"⚠ zone {name} non téléchargée cette fois : elle sera retentée au prochain calcul", flush=True)
+    MISSING.append(name)
+MISSING = []
 os.makedirs(OUT, exist_ok=True)
 for n, (bb, body) in ZONES.items(): fetch(n, bb, body)
+if MISSING: print("::warning::Zones OSM manquantes : " + ", ".join(MISSING))
