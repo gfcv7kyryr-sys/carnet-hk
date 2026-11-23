@@ -11,6 +11,7 @@ def fam(m):
     style = m.group(0)
     def scale(st, k, extra):
         st = re.sub(r"font-size:\s*(\d+(?:\.\d+)?)px", lambda x: f"font-size:{float(x.group(1))*k:.1f}px", st)
+        if st[-1:] in ('"', '}'): return st[:-1].rstrip(";") + extra + st[-1]
         return st + extra
     if "'Caveat Brush'" in style:
         big = re.search(r"font-size:\s*(\d+)", style); big = big and int(big.group(1)) >= 40

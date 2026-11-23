@@ -1,7 +1,7 @@
-@font-face{font-family:'Fraunces';font-style:italic;src:url(fonts/Caveat.woff2) format('woff2');font-weight:400 700;font-display:block}
-@font-face{font-family:'Fraunces';font-weight:700;src:url(fonts/CaveatBrush-Regular.woff2) format('woff2');font-display:block}
-@font-face{font-family:'Nunito';src:url(fonts/Andika-Regular.woff2) format('woff2');font-weight:400;font-display:block}
-@font-face{font-family:'Nunito';src:url(fonts/Andika-Bold.woff2) format('woff2');font-weight:700;font-display:block}
+@font-face{font-family:'Caveat';font-style:italic;src:url(fonts/Caveat.woff2) format('woff2');font-weight:400 700;font-display:block}
+@font-face{font-family:'Caveat Brush';font-weight:700;src:url(fonts/CaveatBrush-Regular.woff2) format('woff2');font-display:block}
+@font-face{font-family:'Andika';src:url(fonts/Andika-Regular.woff2) format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:'Andika';src:url(fonts/Andika-Bold.woff2) format('woff2');font-weight:700;font-display:block}
 @font-face{font-family:'Special Elite';src:url(fonts/SpecialElite-Regular.woff2) format('woff2');font-display:block}
 @font-face{font-family:'Ma Shan Zheng';src:url(fonts/MaShanZheng.woff2) format('woff2');font-display:block}
 :root{--ink:#2B2420;--navy:#2B3A67;--gold:#F2C14E;--hl:#F7E08A;--paper:#F7F0E1;--bg:#E9E1CF;--top:56px}

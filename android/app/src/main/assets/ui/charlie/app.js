@@ -234,7 +234,7 @@ function enhance(b, p) {
   /* polaroïds : remplacer le dessin par une vraie photo */
   $$('.pola', b).forEach((po, i) => { const im = po.querySelector('img'); if (im) polaroid(po, im, id + ':po' + i); });
   /* mot du jour : petite animation au toucher */
-  $$('div', b).filter(el => /Ma Shan Zheng/.test(el.style.fontFamily) && /solid #C23B2C|solid rgb\(194, 59, 44\)/.test(el.getAttribute('style') || '')).forEach(el => {
+  $$('div', b).filter(el => /Ma Shan Zheng/.test(el.style.fontFamily) && /solid #C23B2C|solid #C8341F|solid rgb\(194, 59, 44\)|solid rgb\(200, 52, 31\)/.test(el.getAttribute('style') || '')).forEach(el => {
     el.classList.add('zh-say'); const box = el.parentElement; const fr = box.querySelector('.h1:not(:first-child), div[style*="font-size:36px"]');
     const word = $$('div', box.parentElement).find(d => /font-size: ?36px/.test(d.getAttribute('style') || ''));
     tapify(el, () => { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); SND.pop(); });
@@ -248,6 +248,12 @@ function enhance(b, p) {
   if (id === 'Prologue1') { const nm = $$('div', b).find(d => d.textContent.trim() === 'Charlie' && /66px/.test(d.style.fontSize)); }
   if (id === 'Fin') diplome(b);
   if (p.kind === 'cover') { const r = b.firstElementChild; if (r && r.children.length === 2) r.appendChild(r.firstElementChild); }
+  /* gabarits A+B : on resserre la page si son contenu déborde */
+  $$('.abp-in', b).forEach(el => { fitAbp(el); $$('img', el).forEach(im => { if (!im.complete) im.addEventListener('load', () => fitAbp(el), { once: true }); }); });
+}
+function fitAbp(el) {
+  let s = parseFloat(el.style.getPropertyValue('--s')) || 1;
+  while (el.scrollHeight > el.clientHeight + 1 && s > 0.6) { s = +(s - 0.04).toFixed(2); el.style.setProperty('--s', s); }
 }
 
 function photoZone(el, k) {
