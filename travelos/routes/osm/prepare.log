@@ -1,45 +1,23 @@
-  hk-ville via overpass-api.de : HTTP Error 504: Gateway Timeout (44 s)
-  hk-ville via z.overpass-api.de : HTTP Error 504: Gateway Timeout (58 s)
-  hk-ville via lz4.overpass-api.de : HTTP Error 504: Gateway Timeout (53 s)
-  hk-ville via maps.mail.ru : HTTP Error 504: Gateway Timeout (55 s)
-  hk-ville via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
-  hk-ville via overpass.private.coffee : HTTP Error 502: Bad Gateway (396 s)
-  hk-ville via overpass.kumi.systems : HTTP Error 502: Bad Gateway (396 s)
-  hk-ville via overpass-api.de : HTTP Error 504: Gateway Timeout (49 s)
-· hk-ville : 36633 éléments, 44 Mo, 41 s (z.overpass-api.de)
-  hk-lantau via overpass-api.de : HTTP Error 504: Gateway Timeout (49 s)
-  hk-lantau via z.overpass-api.de : HTTP Error 502: Bad Gateway (0 s)
-· hk-lantau : 4360 éléments, 5 Mo, 52 s (lz4.overpass-api.de)
-  mo via overpass-api.de : HTTP Error 504: Gateway Timeout (47 s)
-  mo via z.overpass-api.de : HTTP Error 504: Gateway Timeout (55 s)
-· mo : 10465 éléments, 10 Mo, 75 s (lz4.overpass-api.de)
-· gz : 30620 éléments, 34 Mo, 46 s (overpass-api.de)
-· sz : 25578 éléments, 33 Mo, 64 s (overpass-api.de)
-  xp3 via overpass-api.de : HTTP Error 504: Gateway Timeout (52 s)
-· xp3 : 113 éléments, 0 Mo, 44 s (z.overpass-api.de)
-  hy via overpass-api.de : HTTP Error 502: Bad Gateway (0 s)
-· hy : 12 éléments, 0 Mo, 54 s (z.overpass-api.de)
-  gares via overpass-api.de : HTTP Error 504: Gateway Timeout (53 s)
-  gares via z.overpass-api.de : HTTP Error 502: Bad Gateway (0 s)
-  gares via lz4.overpass-api.de : HTTP Error 502: Bad Gateway (0 s)
-  gares via maps.mail.ru : HTTP Error 504: Gateway Timeout (47 s)
-  gares via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
-  gares via overpass.private.coffee : HTTP Error 504: Gateway Timeout (132 s)
-  gares via overpass.kumi.systems : HTTP Error 504: Gateway Timeout (131 s)
+· hk-ville (cache)
+· hk-lantau (cache)
+· mo (cache)
+· gz (cache)
+· sz (cache)
+· xp3 (cache)
+· hy (cache)
   gares via overpass-api.de : HTTP Error 502: Bad Gateway (1 s)
-  gares via z.overpass-api.de : HTTP Error 502: Bad Gateway (1 s)
+  gares via z.overpass-api.de : HTTP Error 504: Gateway Timeout (46 s)
   gares via lz4.overpass-api.de : HTTP Error 502: Bad Gateway (1 s)
-  gares via maps.mail.ru : HTTP Error 504: Gateway Timeout (52 s)
+  gares via maps.mail.ru : HTTP Error 504: Gateway Timeout (48 s)
   gares via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
-  gares via overpass.private.coffee : HTTP Error 504: Gateway Timeout (434 s)
-  gares via overpass.kumi.systems : HTTP Error 502: Bad Gateway (137 s)
-⚠ zone gares non téléchargée cette fois : elle sera retentée au prochain calcul
-  rail via overpass-api.de : HTTP Error 502: Bad Gateway (0 s)
-· rail : 8169 éléments, 10 Mo, 45 s (z.overpass-api.de)
-::warning::Zones OSM manquantes : gares
-total 141024
-drwxr-xr-x  2 runner runner     4096 Nov 23 11:19 .
-drwxr-xr-x 11 runner runner     4096 Nov 23 10:29 ..
+  gares via overpass.private.coffee : HTTP Error 504: Gateway Timeout (139 s)
+  gares via overpass.kumi.systems : HTTP Error 502: Bad Gateway (266 s)
+· gares : 1364 éléments, 0 Mo, 62 s (overpass-api.de)
+· rail (cache)
+total 141952
+drwxr-xr-x  2 runner runner     4096 Nov 23 11:40 .
+drwxr-xr-x 11 runner runner     4096 Nov 23 11:29 ..
+-rw-r--r--  1 runner runner   949324 Nov 23 11:40 gares.overpass.json
 -rw-r--r--  1 runner runner 36200088 Nov 23 10:55 gz.overpass.json
 -rw-r--r--  1 runner runner  5250225 Nov 23 10:51 hk-lantau.overpass.json
 -rw-r--r--  1 runner runner 46532291 Nov 23 10:49 hk-ville.overpass.json
