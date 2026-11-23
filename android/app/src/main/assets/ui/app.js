@@ -1470,6 +1470,10 @@ function moreSettings() {
       <div class="seg" id="lockSeg"><button class="${store.get("lockWp", false) ? "" : "on"}" data-lockwp="0">Non</button><button class="${store.get("lockWp", false) ? "on" : ""}" data-lockwp="1">Oui</button></div></div>
     <div class="tile"><h3>Espace de Charlie</h3><p>Une histoire et un coloriage s'ouvrent chaque jour du voyage à minuit, comme un calendrier de l'avent. Pour tout voir en avance :</p>
       <div class="seg"><button class="${store.get("kidsAll", false) ? "" : "on"}" data-kidsall="0">Un par jour</button><button class="${store.get("kidsAll", false) ? "on" : ""}" data-kidsall="1">Tout ouvert</button></div></div>
+    <div class="tile"><h3>Mode dodo</h3><p>Après l'histoire du soir, Xiao Long va dormir et l'espace de Charlie reste fermé jusqu'à 7 h. On peut aussi limiter le temps par jour.</p>
+      <div class="seg"><button class="${store.get("kidsDodo", true) ? "" : "on"}" data-kidsdodo="0">Non</button><button class="${store.get("kidsDodo", true) ? "on" : ""}" data-kidsdodo="1">Oui</button></div>
+      <div class="seg" style="margin-top:10px">${[0, 15, 20, 30].map((m) => `<button class="${+store.get("kidsMax", 0) === m ? "on" : ""}" data-kidsmax="${m}">${m ? m + " min" : "Sans limite"}</button>`).join("")}</div>
+      <div class="acts"><button class="pill" data-kidswake>Rouvrir l'espace maintenant</button></div></div>
     <div class="tile"><h3>Carte</h3><p>Fond de carte OpenStreetMap, sans compte ni clé. <b>Y aller</b> ouvre AMap avec la destination et le mode déjà choisis.</p>
       <p><b>Cartes hors ligne</b> : une zone par journée, à télécharger en Wi-Fi avant le départ pour garder la carte sans réseau. <span class="muted" id="offlineState"></span></p>
       <div class="acts"><button class="pill" id="offlineGo">Télécharger les journées</button></div></div>
@@ -1702,6 +1706,9 @@ document.addEventListener("click", (e) => {
     return go("programme", "day", day, false);
   }
   if (d.zoom) { const v = +d.zoom; store.set("textZoom", v); N.setTextZoom && N.setTextZoom(v); return go("more", null, "settings", false); }
+  if (d.kidsdodo) { store.set("kidsDodo", d.kidsdodo === "1"); return go("more", null, "settings", false); }
+  if (d.kidsmax) { store.set("kidsMax", +d.kidsmax); return go("more", null, "settings", false); }
+  if (d.kidswake !== undefined) { store.set("kidsDodoUntil", 0); store.set("kidsTime." + new Date().toDateString(), 0); toast("L'espace de Charlie est rouvert"); return; }
   if (d.kidsall) { store.set("kidsAll", d.kidsall === "1"); return go("more", null, "settings", false); }
   if (d.lockwp) { store.set("lockWp", d.lockwp === "1"); store.set("lockWpDate", null); if (d.lockwp === "1") updateLockWallpaper(true); return go("more", null, "settings", false); }
   if (d.photoday) { store.set("photoDay", d.photoday); return go("guide", null, "photo", false); }
@@ -1766,11 +1773,32 @@ $("#switchProfile").addEventListener("click", showChooser);
 /* Pas de jeux vidéo : son carnet, des coloriages au stylet, des histoires illustrées lues à voix haute.
    Contenu attendu dans le paquet : P.kids = { carnet: [...], coloriages: [{ title, src }], stories: [{ title, cover, pages: [{ img, text }], audio }] } */
 const KID_COLORS = ["#E53935", "#FB8C00", "#FDD835", "#43A047", "#1E88E5", "#8E24AA", "#F06292", "#8D6E63", "#212121", "#FFFFFF"];
+/* Mode dodo : après l'histoire du soir (ou quand la durée du jour est atteinte), Xiao Long va dormir
+   et l'espace reste fermé jusqu'au lendemain 7 h. Les parents sortent toujours par l'appui long sur 龍. */
+function kidsSleep() {
+  const t = new Date(); if (t.getHours() >= 7) t.setDate(t.getDate() + 1); t.setHours(7, 0, 0, 0);
+  store.set("kidsDodoUntil", t.getTime()); player.pause(); kidsDodoCheck();
+}
+function kidsDodoCheck() {
+  const until = store.get("kidsDodoUntil", 0), on = store.get("kidsDodo", true) && Date.now() < until;
+  $("#kidsDodo").hidden = !on; $("#kids").classList.toggle("dodo", on);
+  if (on) { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = true; $("#kids").classList.remove("carnet-on"); }
+  else if ($("#kidsSub").hidden) $("#kidsHome").hidden = false;
+  return on;
+}
+setInterval(() => {
+  if ($("#kids").hidden || document.hidden || !P) return;
+  if (kidsDodoCheck()) return;
+  const max = +store.get("kidsMax", 0); if (!max) return;
+  const k = "kidsTime." + new Date().toDateString(), used = store.get(k, 0) + 15;
+  store.set(k, used); if (used >= max * 60) kidsSleep();
+}, 15000);
 function kidsBack() { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = false; $("#kids").classList.remove("carnet-on"); player.pause(); }
 addEventListener("message", (e) => { if (e.origin === location.origin && e.data === "kids-back") kidsBack(); });
 // Images des histoires : celles du carnet embarqué (charlie/img/…) ou celles du paquet.
 /* Calendrier de l'avent : l'histoire et le coloriage du jour N s'ouvrent à minuit (heure de Hong Kong) le jour N du voyage.
    Réglage parents (Plus › Réglages › Espace de Charlie) pour tout ouvrir en avance. */
+const kidsDodoOpen = (day) => kidsDayOpen(day);
 const kidsDayOpen = (day) => !day || store.get("kidsAll", false) || (P.days[day - 1] && P.days[day - 1].date <= nowHK().date);
 const kidsDoor = (day) => {
   const d = P.days[day - 1], n = d ? daysBetween(nowHK().date, d.date) : 0;
@@ -1798,6 +1826,11 @@ function kidsOpen(kind, arg) {
         ? `<button class="ks-card" data-kid="story" data-kidarg="${i}">${st.cover ? `<img src="${kidImg(st.cover)}" alt="">` : `<span class="ks-blank"></span>`}<b>${esc(st.title)}</b></button>`
         : `<button class="ks-card locked" data-kidlock="${st.day}">${kidsDoor(st.day)}<b>Jour ${st.day}</b></button>`).join("")}</div>`
       : `<p class="ks-soon">Les histoires de Xiao Long arrivent bientôt, avec leurs images et la voix qui les raconte.</p>`);
+  } else if (kind === "songs") {
+    const a = P.album; let n = 0;
+    html = head("Chansons") + (a && albumTracks().length ? `<div class="ksg">${a.chapters.filter((c) => c.tracks.length).map((c) => c.tracks.map((t) => { const k = n++;
+      return `<button class="ksg-t" data-ksong="${k}"><img src="${esc(c.jacket || a.jacket || "")}" alt="" onerror="this.style.visibility='hidden'"><b>${esc(t.title)}</b></button>`; }).join("")).join("")}</div>`
+      : `<p class="ks-soon">Les chansons arrivent bientôt.</p>`);
   } else if (kind === "carnet") {
     // Le carnet interactif de Charlie (embarqué dans l'APK, il marche sans synchronisation).
     $("#kidsHome").hidden = true; $("#kids").classList.add("carnet-on");
@@ -1820,8 +1853,10 @@ function kidsStory(i, at) {
   const show = () => {
     const pg = st.pages[pos], last = pos === n - 1, next = list[i + 1];
     $("#sbImg").src = kidImg(pg.img);
-    $("#sbText").innerHTML = esc(pg.text).split("\n").map((l) => `<p>${l}</p>`).join("")
-      + (last ? `<p class="sb-fin">Fin</p>${next ? `<button class="sb-next" data-kid="story" data-kidarg="${i + 1}">Histoire suivante ›</button>` : ""}` : "");
+    const clean = pg.text.replace(/\[[^\]]*\]\s*/g, "").replace(/\s+([,.!?…»])/g, " $1").trim();
+    $("#sbText").innerHTML = esc(clean).split("\n").map((l) => `<p>${l}</p>`).join("")
+      + (last ? `<p class="sb-fin">Fin</p>${store.get("kidsDodo", true) && new Date().getHours() >= 17 ? `<button class="sb-next" data-kidsleep>Bonne nuit, Xiao Long</button>`
+        : next && kidsDodoOpen(next.day) ? `<button class="sb-next" data-kid="story" data-kidarg="${i + 1}">Histoire suivante ›</button>` : ""}` : "");
     $$(".sb-dots i", sub).forEach((d, k) => d.classList.toggle("on", k === pos));
     $$("[data-sbgo]", sub).forEach((b) => (b.disabled = +b.dataset.sbgo < 0 ? pos === 0 : last));
     if (pg.audio) playAudio(pg.audio, st.title);
@@ -1835,6 +1870,7 @@ function kidsStory(i, at) {
   show();
   if (st.audio) setTimeout(() => playAudio(st.audio, st.title), 300);
 }
+const KID_STICKERS = ["charlie/img/14566025ac14b0d813a10bb276b2ba4d.webp", "charlie/img/cc459c3c89deea0b0695c95393b90600.webp", "charlie/img/1a6e3ec341e432f8fbe1450b9930caca.webp", "charlie/img/a8c68e21c846af149b3a667dabc7cf5b.webp", "charlie/img/8e6572d12c801b5cce63a832874d65f2.webp", "charlie/img/196a0daceefb6dbcd3b114637210fffd.webp", "charlie/img/2309a78711eb78d27a76af5bc053a617.webp", "charlie/img/368ba0e58182f131fe1087897e8ad72c.webp", "charlie/img/929ae064e41947acbb076154a70158ac.webp", "charlie/img/63d3ed5786f9d1c0cd7f272c804e72d1.webp", "charlie/img/a18aa4c83de2f7e4fbeb57943f9ea3a5.webp", "charlie/img/d5c28042f1fb4df4a3d40e2405b1749d.webp", "charlie/img/1d21ded010cbf0b3b1bc2750de40f75c.webp", "charlie/img/f1058ad4e7f01079f268807cb36ebd6c.webp"];
 function kidsColor(i) {
   const pg = (P.kids?.coloriages || [])[i];
   const sub = $("#kidsSub");
@@ -1842,7 +1878,8 @@ function kidsColor(i) {
     <div class="kc"><div class="kc-paper"><canvas id="kcCanvas"></canvas>${pg ? `<img class="kc-lines" src="/pack/${esc(pg.src)}" alt="">` : ""}</div>
     <div class="kc-tools">${KID_COLORS.map((c, n) => `<button class="kc-c ${n === 0 ? "on" : ""}" data-kc="${c}" style="--c:${c}" aria-label="Couleur"></button>`).join("")}
       <span class="kc-sep"></span><button class="kc-t" data-kcsize="8" aria-label="Fin">●</button><button class="kc-t on" data-kcsize="20" aria-label="Moyen" style="font-size:1.4rem">●</button><button class="kc-t" data-kcsize="44" aria-label="Gros" style="font-size:2rem">●</button>
-      <span class="kc-sep"></span><button class="kc-t" data-kcerase aria-label="Gomme">⌫</button><button class="kc-t" data-kcundo aria-label="Annuler">↶</button><button class="kc-t" data-kcclear aria-label="Tout effacer">🗑</button></div></div>`;
+      <span class="kc-sep"></span><button class="kc-t" data-kcerase aria-label="Gomme">⌫</button><button class="kc-t" data-kcundo aria-label="Annuler">↶</button><button class="kc-t" data-kcclear aria-label="Tout effacer">🗑</button><span class="kc-sep"></span><button class="kc-t kc-stk" data-kcstk aria-label="Autocollants"><img src="${KID_STICKERS[0]}" alt=""></button></div>
+    <div class="kc-tray" hidden>${KID_STICKERS.map((s) => `<button data-sticker="${s}"><img src="${s}" alt=""></button>`).join("")}</div></div>`;
   $("#kidsHome").hidden = true; sub.hidden = false;
   const cv = $("#kcCanvas"), box = cv.parentElement, ctx = cv.getContext("2d");
   const key = `kidsColor.${pg ? pg.src : "blank"}`;
@@ -1850,11 +1887,17 @@ function kidsColor(i) {
   fit();
   const saved = gameStore.get(key, null);
   if (saved) { const im = new Image(); im.onload = () => ctx.drawImage(im, 0, 0, box.clientWidth, box.clientHeight); im.src = saved; }
-  let color = KID_COLORS[0], size = 20, erase = false, last = null, undo = [];
+  let color = KID_COLORS[0], size = 20, erase = false, last = null, undo = [], sticker = null;
+  const tray = sub.querySelector(".kc-tray");
+  tray.addEventListener("click", (e) => { const b = e.target.closest("[data-sticker]"); if (!b) return; sticker = b.dataset.sticker; $$("[data-sticker]", tray).forEach((x) => x.classList.toggle("on", x === b)); });
   const save = () => { try { gameStore.set(key, cv.toDataURL("image/webp", 0.85)); } catch {} };
   cv.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "touch" && e.width > 40) return; // paume posée sur l'écran : ignorée
-    cv.setPointerCapture(e.pointerId); undo.push(ctx.getImageData(0, 0, cv.width, cv.height)); if (undo.length > 15) undo.shift();
+    undo.push(ctx.getImageData(0, 0, cv.width, cv.height)); if (undo.length > 15) undo.shift();
+    if (sticker) { // autocollant : posé d'un toucher, centré sous le doigt
+      const im = new Image(); im.onload = () => { const w = Math.min(box.clientWidth, box.clientHeight) * 0.24, h = w * im.height / im.width;
+        ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1; ctx.drawImage(im, e.offsetX - w / 2, e.offsetY - h / 2, w, h); save(); }; im.src = sticker; return; }
+    cv.setPointerCapture(e.pointerId);
     last = { x: e.offsetX, y: e.offsetY };
   });
   cv.addEventListener("pointermove", (e) => {
@@ -1869,6 +1912,8 @@ function kidsColor(i) {
   ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => cv.addEventListener(ev, end));
   sub.querySelector(".kc-tools").addEventListener("click", (e) => {
     const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.kcstk !== undefined) { tray.hidden = !tray.hidden; b.classList.toggle("on", !tray.hidden); if (tray.hidden) { sticker = null; $$("[data-sticker]", tray).forEach((x) => x.classList.remove("on")); } return; }
+    if (b.dataset.kc || b.dataset.kcsize || b.dataset.kcerase !== undefined) { sticker = null; tray.hidden = true; $$("[data-sticker], [data-kcstk]", sub).forEach((x) => x.classList.remove("on")); }
     if (b.dataset.kc) { color = b.dataset.kc; erase = false; $$(".kc-c, [data-kcerase]", sub).forEach((x) => x.classList.toggle("on", x === b)); }
     if (b.dataset.kcsize) { size = +b.dataset.kcsize; $$("[data-kcsize]", sub).forEach((x) => x.classList.toggle("on", x === b)); }
     if (b.dataset.kcerase !== undefined) { erase = true; $$(".kc-c, [data-kcerase]", sub).forEach((x) => x.classList.toggle("on", x === b)); }
@@ -1877,18 +1922,26 @@ function kidsColor(i) {
   });
 }
 $("#kids").addEventListener("click", (e) => {
+  const sg = e.target.closest("[data-ksong]");
+  if (sg) { playAlbum(+sg.dataset.ksong); $$(".ksg-t").forEach((x) => x.classList.toggle("on", x === sg)); return; }
   const lk = e.target.closest("[data-kidlock]");
   if (lk) { lk.classList.remove("wiggle"); void lk.offsetWidth; lk.classList.add("wiggle"); return; }
-  const b = e.target.closest("[data-kid],[data-kidback]"); if (!b) return;
+  const b = e.target.closest("[data-kid],[data-kidback],[data-kidsleep]"); if (!b) return;
   if (b.dataset.kidback !== undefined) return kidsBack();
+  if (b.dataset.kidsleep !== undefined) return kidsSleep();
   kidsOpen(b.dataset.kid, b.dataset.kidarg);
 });
 function openKids() {
   kidsBack();
   $("#kids").hidden = false;
   const n = daysBetween(nowHK().date, P.trip.startDate);
-  $("#kidsCount").textContent = n > 0 ? n : "C'est parti !";
-  $("#kidsSleeps").textContent = n > 1 ? "dodos avant Hong Kong" : n === 1 ? "dodo avant Hong Kong" : "Xiao Long ouvre la valise";
+  // Compte à rebours pour une enfant qui ne lit pas : une lanterne par dodo quand il en reste 14 ou moins,
+  // sinon une grande lanterne avec le nombre (pour les parents).
+  const lant = (on) => `<i class="kl ${on ? "on" : ""}"></i>`;
+  $("#kidsCountBox").innerHTML = n <= 0 ? `<b class="kc-go">C'est le voyage !</b>`
+    : n <= 14 ? `<div class="kl-row">${Array.from({ length: n }, () => lant(true)).join("")}</div><span>${n} dodo${n > 1 ? "s" : ""} avant Hong Kong</span>`
+    : `<div class="kl-big"><i class="kl on"></i><b>${n}</b></div><span>dodos avant Hong Kong</span>`;
+  kidsDodoCheck();
 }
 // Sortie du profil Carnet : appui long (1,5 s) sur le dragon, pour éviter les sorties par accident.
 (() => {

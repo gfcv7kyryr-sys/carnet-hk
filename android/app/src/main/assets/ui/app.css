@@ -910,3 +910,58 @@ body.mp-on #view{padding-bottom:96px}
 @keyframes kdw{20%{transform:rotate(-3deg)}40%{transform:rotate(3deg)}60%{transform:rotate(-2deg)}80%{transform:rotate(1deg)}}
 .ks-door{width:100%;padding:6px}
 .ks-door small{font-size:.9rem}
+
+/* ===== Espace de Charlie : nouvel accueil (audit nov. 2026) ===== */
+@font-face{font-family:"Caveat Brush";src:url("charlie/fonts/CaveatBrush-Regular.woff2") format("woff2");font-display:swap}
+.kids,.kids button{font-family:"Andika",system-ui,sans-serif}
+.kids h1,.kids h2,.kdoor strong{font-family:"Caveat Brush","Andika",cursive;font-weight:400;letter-spacing:.01em}
+.kids h1{font-size:clamp(3rem,7vw,4.6rem)}
+.kh-hero{display:flex;align-items:center;justify-content:center;gap:clamp(12px,3vw,40px);margin:4px 0 10px}
+.kh-xl{width:clamp(130px,17vw,200px);height:auto;filter:drop-shadow(0 12px 18px rgba(43,36,32,.25));animation:xlb 3.2s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes xlb{0%,100%{transform:scale(1,1)}50%{transform:scale(1.03,.97) translateY(2px)}}
+.kh-xl:active{animation:xlj .5s}
+@keyframes xlj{30%{transform:translateY(-22px) rotate(-4deg)}60%{transform:translateY(0) scale(1.05,.95)}}
+.kids-count{display:grid;justify-items:center;gap:6px;font-size:clamp(1.1rem,2vw,1.4rem);color:var(--ink2)}
+.kl-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:420px}
+.kl{width:30px;height:38px;border-radius:45% 45% 40% 40%;background:#C8BFAF;position:relative;display:block}
+.kl::before{content:"";position:absolute;left:50%;top:-7px;width:10px;height:7px;margin-left:-5px;background:#2B2420;border-radius:2px}
+.kl::after{content:"";position:absolute;left:50%;bottom:-9px;width:3px;height:9px;margin-left:-1.5px;background:#E3A92B}
+.kl.on{background:radial-gradient(circle at 50% 45%,#FFD27A,#E8432E 60%,#B8261A);box-shadow:0 0 16px rgba(232,67,46,.55)}
+.kl-big{position:relative;display:grid;place-items:center}
+.kl-big .kl{width:96px;height:118px}
+.kl-big .kl::before{width:30px;height:16px;margin-left:-15px;top:-14px}
+.kl-big .kl::after{height:18px;bottom:-18px;width:5px}
+.kl-big b{position:absolute;font:700 2.6rem/1 "Andika",sans-serif;color:#FFF5DE;text-shadow:0 2px 4px rgba(120,20,10,.5)}
+.kc-go{font-family:"Caveat Brush",cursive;font-size:2.4rem;color:#C23B2C}
+.kids-doors{grid-template-columns:repeat(4,auto)}
+@media (orientation:portrait){.kids-doors{grid-template-columns:repeat(2,auto)}}
+.kd-img{width:clamp(150px,19vw,220px)}
+.kd-img img{inset:8%;width:84%;height:84%;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
+.tone-sz{--ta:#2E8B57;--tb:#1F6F8B}
+.kdoor strong{font-size:clamp(1.9rem,3vw,2.4rem)}
+/* Mode dodo */
+.kids-dodo{position:fixed;inset:0;z-index:6;display:grid;place-content:center;justify-items:center;gap:10px;text-align:center;
+  background:radial-gradient(circle at 50% 35%,#2C3E70,#141B33 70%);color:#F5EBD3}
+.kids-dodo img{width:min(46vw,320px);animation:xlb 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(255,214,120,.35))}
+.kids-dodo h2{font-family:"Caveat Brush",cursive;font-size:clamp(2.4rem,6vw,3.6rem);margin:0}
+.kids-dodo p{font-size:1.4rem;margin:0;opacity:.85}
+.kids.dodo .kids-exit{z-index:7;background:rgba(255,255,255,.15);color:#F5EBD3}
+/* Chansons */
+.ksg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:18px}
+.ksg-t{display:grid;gap:8px;justify-items:center;padding:10px;border-radius:22px;background:#fff;box-shadow:0 8px 20px -12px rgba(0,0,0,.35);font-size:1.05rem;color:var(--ink)}
+.ksg-t img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px}
+.ksg-t.on{outline:4px solid #C23B2C}
+/* Coloriage : cibles plus grosses, autocollants */
+.kc-c{width:48px!important;height:48px!important}
+.kc-t{min-width:48px;min-height:48px;font-size:1.5rem}
+.kc-stk img{width:38px;height:38px;object-fit:contain}
+.kc-stk.on{background:#FFE7A8;border-radius:14px}
+.kc-tray{display:flex;gap:10px;overflow-x:auto;padding:10px;margin-top:10px;background:#fff;border-radius:22px;box-shadow:0 8px 20px -12px rgba(0,0,0,.35)}
+.kc-tray button{flex:0 0 auto;width:78px;height:78px;border-radius:16px;display:grid;place-items:center;background:#FBF5E8}
+.kc-tray button img{width:66px;height:66px;object-fit:contain}
+.kc-tray button.on{background:#FFE7A8;outline:3px solid #E3A92B}
+.kids-doors{display:grid!important;grid-template-columns:repeat(4,auto);justify-content:center;gap:clamp(14px,2.4vw,34px)}
+.kd-img{width:clamp(132px,15vw,196px)}
+@media (orientation:landscape) and (max-height:900px){.kids h1{font-size:clamp(2.6rem,5.5vw,3.8rem)}.kh-xl{width:clamp(110px,13vw,170px)}}
+@media (orientation:portrait){.kids-doors{grid-template-columns:repeat(2,auto)}.kd-img{width:clamp(180px,34vw,260px)}}
+.kdoor strong{white-space:nowrap}
