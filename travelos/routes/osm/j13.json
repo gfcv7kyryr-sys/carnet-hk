@@ -1,6 +1,6 @@
 {
  "day": "j13",
- "generated": "2026-11-22T23:27:47+00:00",
+ "generated": "2026-11-23T11:21:05+00:00",
  "license": "© les contributeurs d'OpenStreetMap (ODbL)",
  "anchors": {
   "osm:{\"R\": 800, \"entrance\": true, \"near\": [22.309, 114.0369], \"osm\": [\"Disney's Hollywood Hotel\", \"迪士尼好萊塢酒店\"]}": {
@@ -3359,6 +3359,10 @@
       [
        22.254087,
        113.905121
+      ],
+      [
+       22.254035,
+       113.905069
       ],
       [
        22.254035,

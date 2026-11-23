@@ -26241,6 +26241,23 @@
 "zh": "广州南站",
 "named": [
 {
+"t": "n7658137930",
+"name": "广州南站",
+"en": "Guangzhou South Railway Station",
+"zh": "广州南站",
+"k": {
+"public_transport": "stop_position",
+"railway": "stop",
+"ref": "2203"
+},
+"p": [
+22.991686,
+113.266845
+],
+"d": 372,
+"score": 6
+},
+{
 "t": "n9625872463",
 "name": "广州南站",
 "en": "Guangzhou South Railway Station",
@@ -26256,23 +26273,6 @@
 "p": [
 22.991637,
 113.26677
-],
-"d": 372,
-"score": 6
-},
-{
-"t": "n7658137930",
-"name": "广州南站",
-"en": "Guangzhou South Railway Station",
-"zh": "广州南站",
-"k": {
-"public_transport": "stop_position",
-"railway": "stop",
-"ref": "2203"
-},
-"p": [
-22.991686,
-113.266845
 ],
 "d": 372,
 "score": 6
@@ -28061,6 +28061,24 @@
 "zh": "广州塔",
 "named": [
 {
+"t": "n5078787517",
+"name": "广州塔",
+"en": "Canton Tower",
+"zh": "广州塔",
+"k": {
+"operator": "广州地铁集团有限公司",
+"public_transport": "stop_position",
+"railway": "stop",
+"ref": "309"
+},
+"p": [
+23.109041,
+113.318043
+],
+"d": 27,
+"score": 4
+},
+{
 "t": "n5594226424",
 "name": "广州塔",
 "en": "Canton Tower",
@@ -28075,24 +28093,6 @@
 "p": [
 23.109046,
 113.317985
-],
-"d": 27,
-"score": 4
-},
-{
-"t": "n5078787517",
-"name": "广州塔",
-"en": "Canton Tower",
-"zh": "广州塔",
-"k": {
-"operator": "广州地铁集团有限公司",
-"public_transport": "stop_position",
-"railway": "stop",
-"ref": "309"
-},
-"p": [
-23.109041,
-113.318043
 ],
 "d": 27,
 "score": 4
@@ -40454,10 +40454,10 @@
 "building": "yes"
 },
 "p": [
-23.108766,
-113.242233
+23.108732,
+113.242237
 ],
-"d": 279,
+"d": 281,
 "score": 2
 },
 {
@@ -40476,6 +40476,66 @@
 "score": 1
 },
 {
+"t": "n14232819769",
+"name": "读",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "artwork"
+},
+"p": [
+23.109751,
+113.239599
+],
+"d": 12,
+"score": 0
+},
+{
+"t": "n14232819770",
+"name": "卖麦芽糖",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "artwork"
+},
+"p": [
+23.109667,
+113.239514
+],
+"d": 19,
+"score": 0
+},
+{
+"t": "n9082447223",
+"name": "童年",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "artwork"
+},
+"p": [
+23.109895,
+113.239605
+],
+"d": 24,
+"score": 0
+},
+{
+"t": "n14232819771",
+"name": "挂钥匙的一代",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "artwork"
+},
+"p": [
+23.109672,
+113.239445
+],
+"d": 26,
+"score": 0
+},
+{
 "t": "n14232819777",
 "name": "对焦",
 "en": null,
@@ -40488,6 +40548,21 @@
 113.23953
 ],
 "d": 35,
+"score": 0
+},
+{
+"t": "n9082447222",
+"name": "乐韵悠悠",
+"en": null,
+"zh": null,
+"k": {
+"tourism": "artwork"
+},
+"p": [
+23.109832,
+113.239368
+],
+"d": 37,
 "score": 0
 },
 {
@@ -40750,84 +40825,6 @@
 113.241437
 ],
 "d": 179,
-"score": 0
-},
-{
-"t": "n14245023374",
-"name": "萧养石",
-"en": null,
-"zh": "萧养石",
-"k": {
-"natural": "stone",
-"tourism": "artwork"
-},
-"p": [
-23.108098,
-113.239376
-],
-"d": 181,
-"score": 0
-},
-{
-"t": "n13232610061",
-"name": "六二三路",
-"en": "Liuersan Road",
-"zh": "六二三路",
-"k": {
-"public_transport": "stop_position"
-},
-"p": [
-23.111347,
-113.239753
-],
-"d": 183,
-"score": 0
-},
-{
-"t": "w352610322",
-"name": "台湾银行广州支行(日)旧址",
-"en": null,
-"zh": null,
-"k": {
-"building": "yes",
-"historic": "building"
-},
-"p": [
-23.110138,
-113.241452
-],
-"d": 186,
-"score": 0
-},
-{
-"t": "n5209904625",
-"name": "六二三路",
-"en": "Liuersan Road",
-"zh": "六二三路",
-"k": {
-"highway": "bus_stop",
-"public_transport": "platform"
-},
-"p": [
-23.111272,
-113.240365
-],
-"d": 188,
-"score": 0
-},
-{
-"t": "w352610308",
-"name": "旧泰国人俱乐部",
-"en": null,
-"zh": "旧泰国人俱乐部",
-"k": {
-"building": "yes"
-},
-"p": [
-23.109021,
-113.241418
-],
-"d": 191,
 "score": 0
 }
 ],
@@ -53907,21 +53904,6 @@
 "d": 618
 },
 {
-"t": "n357140956",
-"name": "幻想世界 Fantasyland",
-"en": "Fantasyland",
-"zh": "幻想世界",
-"k": {
-"public_transport": "station",
-"railway": "station"
-},
-"p": [
-22.312376,
-114.039673
-],
-"d": 189
-},
-{
 "t": "n1696912181",
 "name": "反斗奇兵大本營 Toy Story Land",
 "en": "Toy Story Land",
@@ -54009,6 +53991,21 @@
 114.03835
 ],
 "d": 430
+},
+{
+"t": "n357140956",
+"name": "幻想世界 Fantasyland",
+"en": "Fantasyland",
+"zh": "幻想世界",
+"k": {
+"public_transport": "station",
+"railway": "station"
+},
+"p": [
+22.312376,
+114.039673
+],
+"d": 189
 },
 {
 "t": "n4842097917",
@@ -54545,39 +54542,6 @@
 "d": 831
 },
 {
-"t": "n357140849",
-"name": "美國小鎮大街 Main Street, USA",
-"en": "Main Street, USA",
-"zh": "美國小鎮大街",
-"k": {
-"public_transport": "station",
-"railway": "station"
-},
-"p": [
-22.313078,
-114.044072
-],
-"d": 273
-},
-{
-"t": "n14383306115",
-"name": "Disneyland",
-"en": null,
-"zh": null,
-"k": {
-"network": "MTR Hong Kong",
-"operator": "MTR Hong kong",
-"public_transport": "station",
-"railway": "station",
-"station": "subway"
-},
-"p": [
-22.315393,
-114.044969
-],
-"d": 481
-},
-{
 "t": "n1696925558",
 "name": "歷奇噴水池 Liki Tikis",
 "en": "Liki Tikis",
@@ -54708,6 +54672,21 @@
 114.045142
 ],
 "d": 505
+},
+{
+"t": "n357140849",
+"name": "美國小鎮大街 Main Street, USA",
+"en": "Main Street, USA",
+"zh": "美國小鎮大街",
+"k": {
+"public_transport": "station",
+"railway": "station"
+},
+"p": [
+22.313078,
+114.044072
+],
+"d": 273
 },
 {
 "t": "n1272780357",
@@ -55010,6 +54989,24 @@
 "d": 608
 },
 {
+"t": "n14383306115",
+"name": "Disneyland",
+"en": null,
+"zh": null,
+"k": {
+"network": "MTR Hong Kong",
+"operator": "MTR Hong kong",
+"public_transport": "station",
+"railway": "station",
+"station": "subway"
+},
+"p": [
+22.315393,
+114.044969
+],
+"d": 481
+},
+{
 "t": "n4620931816",
 "name": "迪士尼樂園巴士總站 Disneyland Bus Terminus",
 "en": "Disneyland Bus Terminus",
@@ -55023,26 +55020,6 @@
 114.046142
 ],
 "d": 637
-},
-{
-"t": "w112659018",
-"name": "迪士尼 Disneyland Resort",
-"en": "Disneyland Resort",
-"zh": "迪士尼",
-"k": {
-"building": "train_station",
-"network": "MTR",
-"operator": "香港鐵路有限公司 MTR Corporation Limited",
-"public_transport": "station",
-"railway": "station",
-"ref": "DIS",
-"station": "subway"
-},
-"p": [
-22.31539,
-114.045139
-],
-"d": 494
 },
 {
 "t": "w111785045",
@@ -55387,6 +55364,26 @@
 114.042846
 ],
 "d": 235
+},
+{
+"t": "w112659018",
+"name": "迪士尼 Disneyland Resort",
+"en": "Disneyland Resort",
+"zh": "迪士尼",
+"k": {
+"building": "train_station",
+"network": "MTR",
+"operator": "香港鐵路有限公司 MTR Corporation Limited",
+"public_transport": "station",
+"railway": "station",
+"ref": "DIS",
+"station": "subway"
+},
+"p": [
+22.31539,
+114.045139
+],
+"d": 494
 },
 {
 "t": "w112659020",
