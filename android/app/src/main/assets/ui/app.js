@@ -8,9 +8,24 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const json = (s, d) => { try { return JSON.parse(s) ?? d; } catch { return d; } };
+/* Profils : Jonas et Éric partagent le même carnet (étapes cochées, notes…) ; seuls les réglages d'affichage
+   (taille du texte, clair ou sombre, verre ou mat) et les sauvegardes de jeux sont propres à chacun. */
+const PROFILES = [
+  { id: "jonas", name: "Jonas", kind: "pilote" },
+  { id: "eric", name: "Éric", kind: "pilote" },
+  { id: "charlie", name: "Charlie", kind: "kids" },
+];
+const PROFILE_PREFS = new Set(["theme", "textZoom", "matte"]);
+let curProfile = null;
+const skey = (k) => (curProfile && PROFILE_PREFS.has(k) ? `p.${curProfile}.${k}` : k);
 const store = {
-  get: (k, d) => { try { const v = localStorage.getItem("tos." + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
-  set: (k, v) => { try { localStorage.setItem("tos." + k, JSON.stringify(v)); } catch {} },
+  get: (k, d) => { try { let v = localStorage.getItem("tos." + skey(k)); if (v == null && skey(k) !== k) v = localStorage.getItem("tos." + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set: (k, v) => { try { localStorage.setItem("tos." + skey(k), JSON.stringify(v)); } catch {} },
+};
+/* Sauvegardes des jeux : une par profil. */
+const gameStore = {
+  get: (game, d) => store.get(`game.${curProfile || "jonas"}.${game}`, d),
+  set: (game, v) => store.set(`game.${curProfile || "jonas"}.${game}`, v),
 };
 
 let P = null;                 // paquet de contenu
@@ -236,9 +251,12 @@ function homeData() {
 /* Fond de l'écran verrouillé : les lanternes du carnet (appliqué une fois, et à chaque nouveau paquet). */
 function updateLockWallpaper(force) {
   if (!store.get("lockWp", false) || !N.setLockWallpaper || !P.lockscreen) return;
-  const key = `${P.lockscreen}:${json(N.syncState(), {}).packVersion || "seed"}`;
+  // Lanternes sur fond noir en mode sombre, sur fond blanc en mode clair.
+  const dark = document.documentElement.dataset.theme === "dark";
+  const img = (dark ? P.lockscreenDark : P.lockscreenLight) || P.lockscreen;
+  const key = `${img}:${json(N.syncState(), {}).packVersion || "seed"}`;
   if (!force && store.get("lockWpDate", null) === key) return;
-  const r = N.setLockWallpaper(P.lockscreen);
+  const r = N.setLockWallpaper(img);
   if (r === "ok") { store.set("lockWpDate", key); if (force) toast("Les lanternes sont sur l'écran verrouillé"); }
   else if (force) toast(r);
 }
@@ -1703,22 +1721,105 @@ function refreshKeepScroll() {
 /* ================= profils ================= */
 
 function showChooser() {
-  player.pause(); $("#miniPlayer").hidden = true;
+  player.pause(); $("#miniPlayer").hidden = true; document.body.classList.remove("mp-on");
   $("#pilote").hidden = true; $("#kids").hidden = true; closeSheet(); closeShow();
+  curProfile = null; applyTheme(); // l'écran de lancement suit le thème du système
   const last = store.get("lastProfile", null);
   $$(".profile").forEach((b) => b.classList.toggle("last", b.dataset.profile === last));
   $("#chooser").hidden = false;
 }
 $$(".profile").forEach((b) => b.addEventListener("click", () => {
-  const p = b.dataset.profile;
-  store.set("lastProfile", p);
+  const p = PROFILES.find((x) => x.id === b.dataset.profile) || PROFILES[0];
+  store.set("lastProfile", p.id);
+  curProfile = p.id; applyPrefs(); updateLockWallpaper();
   $("#chooser").hidden = true;
-  if (p === "pilote") { $("#pilote").hidden = false; stack = []; go("today"); }
+  $("#switchProfile").innerHTML = `<span class="han">${esc(p.name[0])}</span>`;
+  const av = b.querySelector("img"); if (av) $("#switchProfile").innerHTML = `<img src="${av.getAttribute("src")}" alt="">`;
+  $("#switchProfile").setAttribute("aria-label", `${p.name} · changer de profil`);
+  if (p.kind === "pilote") { $("#pilote").hidden = false; stack = []; go("today"); }
   else openKids();
 }));
 $("#switchProfile").addEventListener("click", showChooser);
 
+/* ================= espace de Charlie ================= */
+/* Pas de jeux vidéo : son carnet, des coloriages au stylet, des histoires illustrées lues à voix haute.
+   Contenu attendu dans le paquet : P.kids = { carnet: [...], coloriages: [{ title, src }], stories: [{ title, cover, pages: [{ img, text }], audio }] } */
+const KID_COLORS = ["#E53935", "#FB8C00", "#FDD835", "#43A047", "#1E88E5", "#8E24AA", "#F06292", "#8D6E63", "#212121", "#FFFFFF"];
+function kidsBack() { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = false; player.pause(); }
+function kidsOpen(kind, arg) {
+  const k = P.kids || {}, sub = $("#kidsSub");
+  const head = (t) => `<header class="ks-head"><button class="ks-back" data-kidback aria-label="Retour">‹</button><h2>${esc(t)}</h2></header>`;
+  let html = "";
+  if (kind === "color" && arg != null) return kidsColor(+arg);
+  if (kind === "color") {
+    const pages = k.coloriages || [];
+    html = head("Coloriages") + `<div class="ks-grid"><button class="ks-card" data-kid="color" data-kidarg="-1"><span class="ks-blank"></span><b>Page blanche</b></button>
+      ${pages.map((p, i) => `<button class="ks-card" data-kid="color" data-kidarg="${i}"><img src="/pack/${esc(p.src)}" alt=""><b>${esc(p.title)}</b></button>`).join("")}</div>
+      ${pages.length ? "" : `<p class="ks-soon">Les dessins à colorier arrivent bientôt. En attendant : une page blanche.</p>`}`;
+  } else if (kind === "story" && arg != null) {
+    const st = (k.stories || [])[+arg]; if (!st) return;
+    html = head(st.title) + `<div class="ks-book">${st.pages.map((p) => `<figure class="ks-page">${p.img ? `<img src="/pack/${esc(p.img)}" alt="">` : ""}<figcaption>${esc(p.text)}</figcaption></figure>`).join("")}</div>`;
+    if (st.audio) setTimeout(() => playAudio(st.audio, st.title), 300);
+  } else if (kind === "story") {
+    const list = k.stories || [];
+    html = head("Histoires") + (list.length ? `<div class="ks-grid">${list.map((st, i) => `<button class="ks-card" data-kid="story" data-kidarg="${i}">${st.cover ? `<img src="/pack/${esc(st.cover)}" alt="">` : `<span class="ks-blank"></span>`}<b>${esc(st.title)}</b></button>`).join("")}</div>`
+      : `<p class="ks-soon">Les histoires de Xiao Long arrivent bientôt, avec leurs images et la voix qui les raconte.</p>`);
+  } else if (kind === "carnet") {
+    const days = k.carnet || [];
+    html = head("Mon carnet") + (days.length ? `<div class="ks-book">${days.map((p) => `<figure class="ks-page">${p.img ? `<img src="/pack/${esc(p.img)}" alt="">` : ""}<figcaption><b>${esc(p.title || "")}</b><br>${esc(p.text || "")}</figcaption></figure>`).join("")}</div>`
+      : `<p class="ks-soon">Une carte postale de Mamie Nainai par jour du voyage : elles arrivent bientôt.</p>`);
+  }
+  $("#kidsHome").hidden = true; sub.innerHTML = html; sub.hidden = false; sub.scrollTop = 0;
+}
+/* Coloriage au stylet : pression prise en compte, gomme, annuler, effacer ; le dessin est gardé par page. */
+function kidsColor(i) {
+  const pg = (P.kids?.coloriages || [])[i];
+  const sub = $("#kidsSub");
+  sub.innerHTML = `<header class="ks-head"><button class="ks-back" data-kidback aria-label="Retour">‹</button><h2>${esc(pg?.title || "Page blanche")}</h2></header>
+    <div class="kc"><div class="kc-paper"><canvas id="kcCanvas"></canvas>${pg ? `<img class="kc-lines" src="/pack/${esc(pg.src)}" alt="">` : ""}</div>
+    <div class="kc-tools">${KID_COLORS.map((c, n) => `<button class="kc-c ${n === 0 ? "on" : ""}" data-kc="${c}" style="--c:${c}" aria-label="Couleur"></button>`).join("")}
+      <span class="kc-sep"></span><button class="kc-t" data-kcsize="8" aria-label="Fin">●</button><button class="kc-t on" data-kcsize="20" aria-label="Moyen" style="font-size:1.4rem">●</button><button class="kc-t" data-kcsize="44" aria-label="Gros" style="font-size:2rem">●</button>
+      <span class="kc-sep"></span><button class="kc-t" data-kcerase aria-label="Gomme">⌫</button><button class="kc-t" data-kcundo aria-label="Annuler">↶</button><button class="kc-t" data-kcclear aria-label="Tout effacer">🗑</button></div></div>`;
+  $("#kidsHome").hidden = true; sub.hidden = false;
+  const cv = $("#kcCanvas"), box = cv.parentElement, ctx = cv.getContext("2d");
+  const key = `kidsColor.${pg ? pg.src : "blank"}`;
+  const fit = () => { const r = box.getBoundingClientRect(), dpr = devicePixelRatio || 1; cv.width = r.width * dpr; cv.height = r.height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
+  fit();
+  const saved = gameStore.get(key, null);
+  if (saved) { const im = new Image(); im.onload = () => ctx.drawImage(im, 0, 0, box.clientWidth, box.clientHeight); im.src = saved; }
+  let color = KID_COLORS[0], size = 20, erase = false, last = null, undo = [];
+  const save = () => { try { gameStore.set(key, cv.toDataURL("image/webp", 0.85)); } catch {} };
+  cv.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "touch" && e.width > 40) return; // paume posée sur l'écran : ignorée
+    cv.setPointerCapture(e.pointerId); undo.push(ctx.getImageData(0, 0, cv.width, cv.height)); if (undo.length > 15) undo.shift();
+    last = { x: e.offsetX, y: e.offsetY };
+  });
+  cv.addEventListener("pointermove", (e) => {
+    if (!last) return;
+    const p = e.pointerType === "pen" ? Math.max(0.25, e.pressure || 0.5) * 1.6 : 1;
+    ctx.globalCompositeOperation = erase ? "destination-out" : "source-over";
+    ctx.strokeStyle = color; ctx.lineWidth = size * p; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.globalAlpha = erase ? 1 : 0.9;
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke();
+    last = { x: e.offsetX, y: e.offsetY };
+  });
+  const end = () => { if (last) { last = null; save(); } };
+  ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => cv.addEventListener(ev, end));
+  sub.querySelector(".kc-tools").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.kc) { color = b.dataset.kc; erase = false; $$(".kc-c, [data-kcerase]", sub).forEach((x) => x.classList.toggle("on", x === b)); }
+    if (b.dataset.kcsize) { size = +b.dataset.kcsize; $$("[data-kcsize]", sub).forEach((x) => x.classList.toggle("on", x === b)); }
+    if (b.dataset.kcerase !== undefined) { erase = true; $$(".kc-c, [data-kcerase]", sub).forEach((x) => x.classList.toggle("on", x === b)); }
+    if (b.dataset.kcundo !== undefined && undo.length) { ctx.putImageData(undo.pop(), 0, 0); save(); }
+    if (b.dataset.kcclear !== undefined) { undo.push(ctx.getImageData(0, 0, cv.width, cv.height)); ctx.clearRect(0, 0, cv.width, cv.height); save(); }
+  });
+}
+$("#kids").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-kid],[data-kidback]"); if (!b) return;
+  if (b.dataset.kidback !== undefined) return kidsBack();
+  kidsOpen(b.dataset.kid, b.dataset.kidarg);
+});
 function openKids() {
+  kidsBack();
   $("#kids").hidden = false;
   const n = daysBetween(nowHK().date, P.trip.startDate);
   $("#kidsCount").textContent = n > 0 ? n : "C'est parti !";
@@ -1739,7 +1840,9 @@ function openKids() {
 function applyTheme() {
   const mode = store.get("theme", "auto");
   const dark = mode === "dark" || (mode === "auto" && N.systemDark());
+  const was = document.documentElement.dataset.theme;
   document.documentElement.dataset.theme = dark ? "dark" : "light";
+  if (P && was !== document.documentElement.dataset.theme) updateLockWallpaper();
 }
 function applyPrefs() {
   document.body.classList.toggle("matte", !!store.get("matte", false));
@@ -1772,14 +1875,7 @@ async function reloadPack() {
   const s = stack[stack.length - 1]; if (s && !$("#pilote").hidden) go(s.tab, s.view, s.arg, false);
   decorateChooser();
 }
-function decorateChooser() {
-  const hero = P.days[0]?.image;
-  if (hero) {
-    const bg = $("#chooserBg"); bg.onload = () => bg.classList.add("ok"); bg.src = `/pack/${hero}`;
-    const av = $("#avPilote");
-    if (!av.querySelector("img")) { const im = new Image(); im.onload = () => av.prepend(im); im.src = `/pack/${hero}`; }
-  }
-}
+function decorateChooser() {}
 
 // Retour de veille ou de l'arrière-plan : heure, scène et prochaine étape à jour tout de suite.
 document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });

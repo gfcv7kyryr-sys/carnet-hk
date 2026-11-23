@@ -1,6 +1,6 @@
 {
  "formatVersion": 1,
- "packVersion": "4016214252fb",
+ "packVersion": "285d5f6d0807",
  "files": [
   {
    "path": "audio/a-ma.mp3",
@@ -1763,14 +1763,24 @@
    "sha256": "fbe4c72bfa32b00b12aec9b978d17d373cafc3857751437fa1891f1b4b3756b4"
   },
   {
+   "path": "travelos/lockscreen/lanternes-blanc.webp",
+   "size": 240022,
+   "sha256": "dba49f6955d75544169a9055681a73416fc9bc9c06c36fdf9465fe715a6f5b45"
+  },
+  {
+   "path": "travelos/lockscreen/lanternes-noir.webp",
+   "size": 235304,
+   "sha256": "590feb3dc68aa0bea481a934904fdfa8a853f87747c6e32ce289927e446057f1"
+  },
+  {
    "path": "travelos/lockscreen/lanternes.webp",
    "size": 263412,
    "sha256": "086e02778cec377926f516f9e19c22b672cdae0c8a5731423d343a0264e03269"
   },
   {
    "path": "travelos/pack/pack.json",
-   "size": 1172353,
-   "sha256": "4016214252fbdb7d7738c95544c3dcfd73363dfbe557b6ba4a2238a7bfbc7fa7"
+   "size": 1172485,
+   "sha256": "285d5f6d0807cc1145ac05195ea2aed79575dde9cc5de61a8a3d015b1a7d0db6"
   },
   {
    "path": "travelos/scenes/j1-1-bg.webp",

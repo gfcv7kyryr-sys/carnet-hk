@@ -314,12 +314,16 @@ const pack = {
   dimsum: DS.map(([zh, roman, fr]) => ({ zh, roman, fr: plain(fr) })),
   weather: WEATHER.map(([place, min, max]) => ({ place, min, max })),
   cityAudio: Object.entries(AUDIO_CITY).map(([id, e]) => ({ id, ...audio(e) })),
+  // Espace de Charlie (travelos/kids/kids.json) : carnet, coloriages, histoires ; vide tant que rien n'est déposé.
+  kids: (() => { try { return JSON.parse(readFileSync(join(root, "travelos/kids/kids.json"), "utf8")); } catch { return null; } })(),
   // Album du voyage (travelos/album/album.json + les fichiers audio à côté) : vide tant que les chansons ne sont pas déposées.
   album: (() => { try { const a = JSON.parse(readFileSync(join(root, "travelos/album/album.json"), "utf8"));
     for (const c of a.chapters || []) c.tracks = (c.tracks || []).filter((t) => t.src && existsSync(join(root, t.src)));
     return a; } catch { return null; } })(),
   rates: readRates(),
   lockscreen: existsSync(join(root, "travelos/lockscreen/lanternes.webp")) ? "travelos/lockscreen/lanternes.webp" : null,
+  lockscreenDark: existsSync(join(root, "travelos/lockscreen/lanternes-noir.webp")) ? "travelos/lockscreen/lanternes-noir.webp" : null,
+  lockscreenLight: existsSync(join(root, "travelos/lockscreen/lanternes-blanc.webp")) ? "travelos/lockscreen/lanternes-blanc.webp" : null,
   articles,
   specialties: SPEC.map(([region, dishes]) => ({ region: plain(region), dishes: dishes.map(([zh, name, text, verdict]) => ({ zh, name: plain(name), text: plain(text), verdict: verdict || "" })) })),
   emergency: EMERGENCY,
@@ -340,6 +344,9 @@ writeFileSync(join(seedDir, "pack.json"), json);
 // Manifeste : tous les médias cités + le pack lui-même.
 const referenced = new Set(["travelos/pack/pack.json", ...articles.flatMap((a) => a.images)]);
 if (pack.lockscreen) referenced.add(pack.lockscreen);
+for (const k of ["lockscreenDark", "lockscreenLight"]) if (pack[k]) referenced.add(pack[k]);
+for (const p of [...(pack.kids?.carnet || []), ...(pack.kids?.coloriages || [])]) { if (p.img) referenced.add(p.img); if (p.src) referenced.add(p.src); }
+for (const st of pack.kids?.stories || []) { for (const x of [st.cover, st.audio, ...st.pages.map((p) => p.img)]) if (x) referenced.add(x); }
 for (const c of pack.album?.chapters || []) { for (const t of c.tracks) referenced.add(t.src); if (c.cover) referenced.add(c.cover); }
 if (pack.album?.cover) referenced.add(pack.album.cover);
 for (const d of days) if (d.depth) { referenced.add(d.depth.bg); referenced.add(d.depth.fg); }
