@@ -118,30 +118,47 @@ def mission_parts(el):
     return t if not grid else txt(grid.find_previous_sibling() or el).replace("Ta mission :", "").strip(), grid
 
 # ---------------------------------------------------------------- briques HTML
-def rule(): return '<div class="abp-rule"><i></i></div>'
+PACK = json.load(open(os.path.join(ROOT, "travelos/pack/pack.json")))
+CITY = {i + 1: d.get("city", "") for i, d in enumerate(PACK.get("days", []))}
+NUM = [0]
+CLOUD = '<svg class="lv-cl" viewBox="0 0 40 16" aria-hidden="true"><path d="M2 12c3-6 9-6 11-1 1-5 8-6 10-1 2-3 7-3 8 1 2-1 5 0 6 1"/></svg>'
+def kicker(day): return f'<div class="lv-kick">Jour {day} · {esc(CITY.get(int(day), ""))}</div>'
+def rule(): return '<div class="lv-rule"><i></i></div>'
+def subtitle(sub): return f'<div class="lv-st">{CLOUD}<span>{esc(sub)}</span>{CLOUD}</div>' if sub else ""
 def stars_html():
-    return ('<div class="abp-stars"><span class="abp-sl">J\'ai aimé</span><span>' +
+    return ('<div class="lv-stars"><span class="lv-sl">J\'ai aimé</span><span>' +
             "".join(f'<img src="img/{STAR}.webp" alt="" aria-hidden="true">' for _ in range(5)) + "</span></div>")
-def info_html(lines, stamp=None):
-    li = "".join(f'<div class="abp-il"><b>{esc(a)}</b><span>{esc(b)}</span></div>' for a, b in lines)
-    return f'<div class="abp-info">{li}</div>'
+def info_strip(lines):
+    lines = [(a, b) for a, b in lines if b][:3]
+    if not lines: return ""
+    NUM[0] += 1
+    cols = "".join(f'<div class="lv-ic"><i>{esc(a or "À savoir")}</i><b>{esc(b)}</b></div>' for a, b in lines)
+    return f'<div class="lv-info"><div class="lv-num"><small>N°</small><b>{NUM[0]}</b></div>{cols}</div>'
+def info_html(lines, stamp=None): return info_strip(lines)
 def sais_html(el):
     t = re.sub(r"^Le sais-tu\s*\?\s*", "", txt(el)); t = re.split(r"\s*Ta mission", t)[0]
-    return f'<div class="abp-sais{" long" if len(t) > 55 else ""}"><div><b>Le sais-tu ?</b><span>{esc(t)}</span></div></div>'
+    return f'<div class="lv-sais"><b>Le sais-tu ?</b><span>{esc(t)}</span></div>'
 def explique_html(el, who="Xiao Long t'explique"):
     ps = para(el); ps = [re.sub(r"^Xiao Long t'explique\s*", "", p) for p in ps]
-    return f'<div class="abp-exp"><div class="abp-eh"><i></i>{esc(who)}</div>' + "".join(f"<p>{esc(p)}</p>" for p in ps if p) + "</div>"
+    return (f'<div class="lv-exp"><div class="lv-eh"><img src="img/livre-xiaolong-explique.webp" alt="" aria-hidden="true"><span>{esc(who)}</span></div>'
+            + "".join(f"<p>{esc(p)}</p>" for p in ps if p) + "</div>")
+def mission_box(text, grid=""):
+    gom = '' if grid else '<div class="lv-gom"><div class="ck"></div><small>ta gommette</small></div>'
+    return f'<div class="lv-mis"><div class="lv-mt"><span class="lv-tag">★ Ta mission</span><p>{esc(text)}</p>{grid}</div>{gom}</div>'
 def mission_html(el):
     t, grid = mission_parts(el)
-    g = ""
-    if grid is not None:
-        g = str(unpos(grid))
-    return (f'<div class="abp-mis"><div class="abp-mt"><b>Ta mission</b><span>{esc(t)}</span>{g}</div>'
-            + ('' if grid is not None else '<div class="ck"></div>') + "</div>")
+    return mission_box(t, str(unpos(grid)) if grid is not None else "")
+def slot_html(el):
+    """case photo à coller → polaroïd vide, la photo prendra exactement la forme du cadre"""
+    cands = [d for d in [el] + el.find_all("div") if re.match(r"(colle ici|ta photo)", txt(d), re.I) and not d.find("div", string=re.compile(r"(colle ici|ta photo)", re.I))]
+    z = cands[-1] if cands else el
+    zt = txt(z); cap = txt(el).replace(zt, "", 1).strip()
+    return (f'<div class="pola lv-pola lv-slot"><span class="lv-tape" aria-hidden="true"></span><div class="lv-phz">{esc(zt)}</div>'
+            f'<div class="cap">{esc(cap)}</div></div>')
 def pola_html(el):
     im = el.find("img"); cap = txt(el)
-    im = Tag(name="img", attrs={"src": im["src"], "alt": im.get("alt", "")})
-    return f'<div class="pola"><img src="{im["src"]}" alt="{H.escape(im["alt"])}"><div class="cap">{esc(cap)}</div></div>'
+    return (f'<div class="pola lv-pola"><span class="lv-tape" aria-hidden="true"></span><img src="{im["src"]}" alt="{H.escape(im.get("alt", ""))}">'
+            f'<div class="cap">{esc(cap)}</div></div>')
 def art_html(el, cls="abp-art"):
     return f'<img class="{cls}" src="{el["src"]}" alt="{H.escape(el.get("alt", ""))}">'
 def keep(el, cls):
@@ -158,34 +175,30 @@ def place_half(half, side, day, page_id):
     info = get("info"); cks = [n for n in get("note") if is_ck(n)]
     notes = [txt(n) for n in get("note") if 2 < len(txt(n)) < 140 and n not in cks and not re.match(r"J\d+-T\d", txt(n))]
     longs = [n for n in get("note") if len(txt(n)) >= 140]
-    h = [f'<div class="abp-h"><div class="abp-t">{esc(t)}</div>' + (f'<div class="abp-st">{esc(sub)}</div>' if sub else "") + rule() + "</div>"]
-    # bandeau image : arche (photo ou dessin) + colonne (détouré, tampon, fiche)
+    cut = art_html(arts.pop(0), "lv-cut") if (arts and (hero or photos)) else ""
+    h = [f'<div class="lv-h">{kicker(day)}<div class="lv-t">{esc(t)}</div>{subtitle(sub)}{cut}</div>']
     left = ""
     if hero: left = pola_html(hero[0])
-    elif photos: left = keep(photos.pop(0), "abp-ph1")
-    elif arts: left = f'<div class="abp-arch">{art_html(arts.pop(0))}</div>'
-    col = ""
-    if arts: col += art_html(arts.pop(0), "abp-cut")
-    if info and info_lines(info[0]): col += info_html(info_lines(info[0]))
-    if stamps: col += art_html(stamps[0], "abp-stamp")
-    h.append(f'<div class="abp-band"><div class="abp-hero">{left}</div><div class="abp-col">{col}</div></div>')
-    if notes: h.append('<div class="abp-notes">' + "".join(f"<span>{esc(n)}</span>" for n in notes[:2]) + "</div>")
-    for a in arts: h.append(art_html(a, "abp-cut2"))
-    if cks: h.append('<div class="abp-cks">' + "".join(ckline(c) for c in cks) + "</div>")
-    for e in get("explique"): h.append(explique_html(e))
-    for e in longs: h.append('<div class="abp-exp abp-tale">' + "".join(f"<p>{esc(x)}</p>" for x in para(e)) + "</div>")
+    elif photos: left = slot_html(photos.pop(0))
+    elif arts: left = f'<div class="lv-artf">{art_html(arts.pop(0))}</div>'
+    if stamps: left += art_html(stamps[0], "lv-stamp")
+    col = "".join(explique_html(e) for e in get("explique"))
+    if notes: col += '<div class="lv-notes">' + "".join(f"<span>{esc(n)}</span>" for n in notes[:2]) + "</div>"
+    if not get("explique") and arts: col += art_html(arts.pop(0), "lv-cut2")
+    h.append(f'<div class="lv-band"><div class="lv-hero">{left}</div><div class="lv-col">{col}</div></div>')
+    for a in arts: h.append(art_html(a, "lv-cut2"))
+    if cks: h.append('<div class="lv-cks">' + "".join(ckline(c) for c in cks) + "</div>")
+    for e in longs: h.append('<div class="lv-exp lv-tale">' + "".join(f"<p>{esc(x)}</p>" for x in para(e)) + "</div>")
     for e in get("extra"): h.append(keep(e, "abp-x"))
     for e in photos: h.append(keep(e, "abp-ph"))
     for e in get("draw"): h.append(keep(e, "abp-dr"))
     mis = "".join(mission_html(e) for e in get("mission"))
-    for e in info:
+    for e in info + get("sais"):   # mission glissée dans la fiche ou dans « le sais-tu »
         m = re.search(r"Ta mission\s*:?\s*(.*)", txt(e))
-        if m and not mis: mis = f'<div class="abp-mis"><div class="abp-mt"><b>Ta mission</b><span>{esc(m.group(1))}</span></div><div class="ck"></div></div>'
-    for e in get("sais"):   # mission glissée dans la bulle « le sais-tu »
-        m = re.search(r"Ta mission\s*:?\s*(.*)", txt(e))
-        if m and not mis: mis = f'<div class="abp-mis"><div class="abp-mt"><b>Ta mission</b><span>{esc(m.group(1))}</span></div><div class="ck"></div></div>'
-    bot = "".join(sais_html(e) for e in get("sais")) + mis
-    if bot: h.append(f'<div class="abp-bot">{bot}</div>')
+        if m and not mis: mis = mission_box(m.group(1))
+    bot = mis + "".join(sais_html(e) for e in get("sais"))
+    if bot: h.append(f'<div class="lv-bot">{bot}</div>')
+    if info: h.append(info_strip(info_lines(info[0])))
     if get("stars"): h.append(stars_html())
     return f'<div class="abp abp-place {side}"><div class="abp-in">' + "".join(h) + f'</div><div class="abp-folio">Jour {day}</div></div>'
 
@@ -236,7 +249,7 @@ def duo_half(half, side, day):
             elif is_ck(e) and len(txt(e)) < 80: body.append(ckline(e))
             elif e.find("div", style=re.compile("text-stroke")) or k in ("draw", "photo", "extra"): body.append(keep(e, "abd-k"))
             else: body.append(f'<p>{esc(txt(e))}</p>')
-        out.append(f'<div class="abd-sec{" rev" if i else ""}"><div class="abd-t">{esc(sec["t"])}</div>' + (f'<div class="abd-sub">{esc(sec["sub"])}</div>' if sec["sub"] else "") +
+        out.append(f'<div class="abd-sec{" rev" if i else ""}">' + (kicker(day) if not i else "") + f'<div class="abd-t">{esc(sec["t"])}</div>' + (f'<div class="abd-sub">{esc(sec["sub"])}</div>' if sec["sub"] else "") +
                    f'<div class="abd-row"><div class="abd-pic">{pola_html(pic) if pic is not None else ""}</div><div class="abd-txt">{"".join(body)}</div></div></div>')
     st = stars_html() if get("stars") else ""
     return f'<div class="abp abp-duo {side}"><div class="abp-in">{out[0]}<div class="abd-sep">{rule()}</div>{out[1]}{st}</div><div class="abp-folio">Jour {day}</div></div>'
@@ -270,14 +283,22 @@ def matin(p, root):
     sign = next((x for x in ps if x.startswith("Bisous")), "Bisous de dragon, Mamie Nainai xxx")
     timbre = letter.find("img", alt="Timbre")
     pm = next((txt(d) for d in letter.find_all("div") if re.search(r"\d\d\.\d\d\.\d\d", txt(d)) and not d.find("div")), "")
+    city = CITY.get(int(n), "")
+    if re.search(r"Macao", city): land, val = ("中國澳門", "MACAU"), "5 avos"
+    elif re.search(r"Hong Kong|Lantau|Disney", city): land, val = ("中國香港", "HONG KONG"), "$5"
+    else: land, val = ("中国", "CHINA"), "¥ 1,20"
+    pic = post.find("img")["src"] if post else ""
     left = [f'<div class="abm-head"><div class="abm-seal"><small>JOUR</small><b>{n}</b></div>'
-            f'<div><div class="abm-date">{esc(date)}</div><div class="abm-route">{esc(route)}</div></div></div>']
-    if post: left.append(f'<div class="abm-post"><img src="{post.find("img")["src"]}" alt="Carte postale"></div>')
+            f'<div>{kicker(n)}<div class="abm-date">{esc(date)}</div><div class="abm-route">{esc(route)}</div></div></div>']
+    if post: left.append(f'<div class="abm-post"><span class="lv-tape" aria-hidden="true"></span><img src="{pic}" alt="Carte postale"></div>')
+    stamp = (f'<div class="abm-stamp"><div class="abm-si">' + (f'<img src="{pic}" alt="" aria-hidden="true">' if pic else "") +
+             f'<span class="abm-sv">{esc(val)}</span></div><div class="abm-sl"><b>{land[0]}</b><span>{land[1]}</span></div></div>')
+    pmark = (f'<div class="abm-pm"><svg viewBox="0 0 120 40" aria-hidden="true"><path d="M0 8c10-6 20 6 30 0s20 6 30 0 20 6 30 0 20 6 30 0M0 20c10-6 20 6 30 0s20 6 30 0 20 6 30 0 20 6 30 0M0 32c10-6 20 6 30 0s20 6 30 0 20 6 30 0 20 6 30 0"/></svg>'
+             f'<div class="abm-pmc"><span>{esc(city.upper() or "HONG KONG")}</span><b>{esc((re.search(r"\d\d\.\d\d\.\d\d", pm) or [pm])[0])}</b><span>✦ 小龍 ✦</span></div></div>')
     left.append('<div class="abm-letter"><div class="abm-lt">'
                 f'<p class="g">{esc(greet)}</p>' + "".join(f"<p>{esc(x)}</p>" for x in body) +
                 f'<p class="s">{esc(re.sub(r"Mamie Nainai.*", "", sign))}<b>Mamie Nainai</b></p></div>'
-                '<div class="abm-addr">' + (f'<img src="{timbre["src"]}" alt="Timbre">' if timbre else "") +
-                (f'<div class="abm-pm">{esc(pm)}</div>' if pm else "") +
+                f'<div class="abm-addr">{stamp}{pmark}'
                 '<div class="abm-to"><span>Xiao Long</span><span>Le port aux parfums</span><span>Hong Kong</span></div></div></div>')
     right = ['<div class="abm-hi">' + (art_html(xl, "abm-xl") if xl else "") +
              (f'<div class="abm-bub">{esc(txt(bubble))}</div>' if bubble else "") + "</div>"]
@@ -316,11 +337,13 @@ def soir_right(half, day):
     photos = [e for k, e in items if k == "photo" and e is not obj and e is not story]
     wide = lambda e: int((re.search(r"width:\s*(\d+)", e.get("style", "")) or [0, 0])[1])
     scene = next((e for k, e in items if k == "art" and wide(e) >= 200), None)
-    sleep = next((e for k, e in items if k == "art" and e is not scene), None)
+    lastnight = obj is not None and "perle" in txt(obj).lower()
+    if not lastnight: scene = None   # grande image décorative (gratte-ciel) : on la laisse de côté
+    sleep = next((e for k, e in items if k == "art" and wide(e) < 200), None)
     night = next((e for k, e in items if k in ("decor", "art") and e is not sleep and e.name == "img"), None)
     tease = next((txt(e) for k, e in items if k == "note" and ("zzz" in txt(e) or "Demain" in txt(e) or "再见" in txt(e))), "")
     h = [f'<div class="abs-h"><div><div class="abs-t">{esc(title)}</div><div class="abs-st">{esc(sub)}</div></div>'
-         + (f'<div class="abs-moon"><img src="{night["src"]}" alt=""></div>' if night is not None else '<div class="abs-moon"></div>') + "</div>"]
+         + '<div class="abs-moon" aria-hidden="true"><i></i><b></b><b></b><b></b></div>' + "</div>"]
     ps = para(story) if story.find("p") else [txt(d) for d in story.find_all("div") if not d.find("div") and txt(d)] or [txt(story)]
     h.append('<div class="abs-story">' + "".join(f"<p>{esc(x)}</p>" for x in ps) + "</div>")
     if obj is not None and scene is not None:   # dernier soir : la scène + la case de la perle
@@ -372,6 +395,32 @@ def skin_page(root, pid):
         el["style"] = re.sub(r"transform:\s*rotate\([^)]*\)", "transform:none", el["style"])
     return str(root)
 
+
+# ---------------------------------------------------------------- couverture (1re) et 4e de couverture, d'après le livre imprimé
+def cover_page(root):
+    back, front = root.find_all(recursive=False)[:2]
+    lined = back.find(class_="lined")
+    ps = [txt(x) for x in lined.find_all("p")] if lined else []
+    if lined and not ps: ps = [txt(lined).replace("Il était une fois…", "").strip()]
+    stops = [x.strip() for x in re.split(r"●", txt(back.find(string=re.compile("Le grand voyage")).find_parent("div"))) if x.strip() and "Le grand voyage" not in x]
+    xl = back.find("img", alt=re.compile("mandarine"))
+    tease = next((txt(d) for d in back.find_all("div", recursive=False) if txt(d).startswith("Tu es prête")), "")
+    fr = ('<div class="lvc lvc-front"><div class="lvc-frame"></div>'
+          '<div class="lvc-art"><img src="img/livre-couverture-carte.webp" alt="Hong Kong, la baie et les îles en carte illustrée"></div>'
+          '<div class="lvc-card"><div class="lvc-t">Hong Kong</div><div class="lvc-st">&amp; la Chine du Sud</div>'
+          f'{rule()}<div class="lvc-k">Le carnet d\'exploratrice de Charlie</div>'
+          '<div class="lvc-story">Xiao Long et la valise de Mamie Nainai</div></div>'
+          '<div class="lvc-seal"><b>小龍</b><span>N°1 · 2027</span></div>'
+          '<div class="lvc-date">Du 20 février au 6 mars 2027</div></div>')
+    bk = ('<div class="lvc lvc-back"><div class="lvc-frame"></div>'
+          '<div class="lvc-zh">小龍</div><div class="lvc-sc">Les carnets d\'exploratrice de Charlie</div>'
+          f'{rule()}<div class="lvc-k">Carnet n°1 · Hong Kong &amp; la Chine du Sud · 2027</div>'
+          '<div class="lvc-sum"><div class="lvc-sh">Il était une fois…</div>' + "".join(f"<p>{esc(x)}</p>" for x in ps) +
+          '<div class="lvc-route">' + "".join(f"<span>{esc(x)}</span>" for x in stops) + "</div>"
+          + (f'<div class="lvc-go">' + (art_html(xl, "lvc-xl") if xl is not None else "") + f'<span>{esc(tease)}</span></div>' if tease else "") +
+          '</div><div class="lvc-by">Fait main par papa Jonas et papa Éric</div></div>')
+    return f'<div style="width:1118px;height:794px;display:flex">{bk}{fr}</div>'
+
 # ---------------------------------------------------------------- assemblage
 stats = {"deep": 0, "half": 0, "keep": 0}
 for n, p in enumerate(D["pages"]):
@@ -383,7 +432,9 @@ for n, p in enumerate(D["pages"]):
             new = matin(p, root)
         elif p["kind"] == "cherche":
             new = cherche_page(root)
-        elif p["kind"] in ("cover", "prologue", "fin"):
+        elif p["kind"] == "cover":
+            new = cover_page(root)
+        elif p["kind"] in ("prologue", "fin"):
             new = skin_page(root, p["id"])
         elif p["kind"] in ("lieux", "soir") and len(halves) == 2:
             h0 = lambda: BeautifulSoup(str(halves[0]), "lxml").body.find("div")
@@ -405,7 +456,7 @@ for n, p in enumerate(D["pages"]):
     css = p.get("css", "")
     p["html"] = restyle(new or p["html"], css if n else "")
     css = re.sub(r"\{[^}]*\}", fam_block, css)
-    p["css"] = css.replace("#F7F0E1", "#FBF5E9").replace("#C23B2C", "#C8341F").replace("#E8D3A8", "#F3E6CC")
+    p["css"] = css.replace("#F7F0E1", "#FAF5EA").replace("#C23B2C", "#C8102E").replace("#E8D3A8", "#F3E6CC")
 
 open(os.path.join(ROOT, "android/app/src/main/assets/ui/charlie/pages.js"), "w").write(head + json.dumps(D, ensure_ascii=False, separators=(",", ":")) + tail)
 print("ok", stats)

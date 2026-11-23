@@ -234,7 +234,7 @@ function enhance(b, p) {
   /* polaroïds : remplacer le dessin par une vraie photo */
   $$('.pola', b).forEach((po, i) => { const im = po.querySelector('img'); if (im) polaroid(po, im, id + ':po' + i); });
   /* mot du jour : petite animation au toucher */
-  $$('div', b).filter(el => /Ma Shan Zheng/.test(el.style.fontFamily) && /solid #C23B2C|solid #C8341F|solid rgb\(194, 59, 44\)|solid rgb\(200, 52, 31\)/.test(el.getAttribute('style') || '')).forEach(el => {
+  $$('div', b).filter(el => /Ma Shan Zheng/.test(el.style.fontFamily) && /solid #C23B2C|solid #C8341F|solid #C8102E|solid rgb\(194, 59, 44\)|solid rgb\(200, 52, 31\)|solid rgb\(200, 16, 46\)/.test(el.getAttribute('style') || '')).forEach(el => {
     el.classList.add('zh-say'); const box = el.parentElement; const fr = box.querySelector('.h1:not(:first-child), div[style*="font-size:36px"]');
     const word = $$('div', box.parentElement).find(d => /font-size: ?36px/.test(d.getAttribute('style') || ''));
     tapify(el, () => { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); SND.pop(); });
@@ -252,8 +252,9 @@ function enhance(b, p) {
   $$('.abp-in', b).forEach(el => { fitAbp(el); $$('img', el).forEach(im => { if (!im.complete) im.addEventListener('load', () => fitAbp(el), { once: true }); }); });
 }
 function fitAbp(el) {
-  let s = parseFloat(el.style.getPropertyValue('--s')) || 1;
-  while (el.scrollHeight > el.clientHeight + 1 && s > 0.6) { s = +(s - 0.04).toFixed(2); el.style.setProperty('--s', s); }
+  /* on part d'une mise en page généreuse (photo et texte plus grands) et on resserre jusqu'à ce que tout tienne */
+  let s = 1.3; el.style.setProperty('--s', s);
+  while (el.scrollHeight > el.clientHeight + 1 && s > 0.6) { s = +(s - 0.03).toFixed(2); el.style.setProperty('--s', s); }
 }
 
 function photoZone(el, k) {
@@ -307,18 +308,66 @@ function cherche(b, p) {
   const scene = $$('img', b).find(im => /824px/.test(im.style.width)); if (!scene) return;
   const frame = scene.parentElement; const ov = document.createElement('div'); ov.className = 'cs-ov'; frame.appendChild(ov);
   const rows = $$('.row', b); const found = S.found[p.id] = S.found[p.id] || [];
-  const ring = i => { const [x, y, r] = p.spots[i]; const d = document.createElement('div'); d.className = 'cs-ring'; Object.assign(d.style, { left: x + 'px', top: y + 'px', width: 2 * r + 'px', height: 2 * r + 'px' }); ov.appendChild(d); };
+  const label = i => { const l = rows[i] && rows[i].querySelector('.lbl'); return l ? l.textContent.trim() : ''; };
+  const ringIn = (host, i) => { const [x, y, r] = p.spots[i]; const d = document.createElement('div'); d.className = host === ov ? 'cs-ring' : 'cz-ring'; Object.assign(d.style, { left: x + 'px', top: y + 'px', width: 2 * r + 'px', height: 2 * r + 'px' }); host.appendChild(d); };
+  const ring = i => ringIn(ov, i);
   const tick = (i, anim) => { const row = rows[i]; if (!row) return; row.classList.add('found'); $$('.ck, div[style*="width:16px"]', row).forEach(c => { c.classList.add(c.classList.contains('ck') ? 'ck' : 'ck2', 'on'); if (anim) { c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); } }); };
   found.forEach(i => { ring(i); tick(i); });
-  ov.addEventListener('click', e => {
-    e.stopPropagation(); const [x, y] = local(e, ov);
+  /* toucher en (x, y), coordonnées du cadre ; renvoie l'indice trouvé, -1 si raté, null si déjà trouvé */
+  const hit = (x, y, cx, cy, extra) => {
     let best = -1, bd = 1e9; p.spots.forEach(([sx, sy, r], i) => { const d = Math.hypot(x - sx, y - sy); if (d < r * 1.15 && d / r < bd) { bd = d / r; best = i; } });
     if (best >= 0 && !found.includes(best)) {
-      found.push(best); save(); ring(best); tick(best, true); SND.found(); confetti(40, e.clientX, e.clientY);
-      const lbl = rows[best] && rows[best].querySelector('.lbl'); if (lbl) say('Bravo ! ' + lbl.textContent.replace(/\d+\s*empreintes/, 'les empreintes'));
+      found.push(best); save(); ring(best); tick(best, true); if (extra) extra(best); SND.found(); confetti(40, cx, cy);
+      const lbl = label(best); if (lbl) say('Bravo ! ' + lbl.replace(/\d+\s*empreintes/, 'les empreintes'));
       if (found.length === p.spots.length) setTimeout(() => { SND.fanfare(); confetti(220); toast('Bravo ! Tu as tout trouvé !', 3000); say('Bravo Charlie ! Tu as tout trouvé !'); }, 900);
-    } else if (best < 0) { const m = document.createElement('div'); m.className = 'cs-miss'; m.style.left = x + 'px'; m.style.top = y + 'px'; ov.appendChild(m); setTimeout(() => m.remove(), 700); SND.miss(); }
+      return best;
+    }
+    if (best < 0) SND.miss();
+    return best < 0 ? -1 : null;
+  };
+  ov.addEventListener('click', e => {
+    e.stopPropagation(); const [x, y] = local(e, ov);
+    if (hit(x, y, e.clientX, e.clientY) === -1) { const m = document.createElement('div'); m.className = 'cs-miss'; m.style.left = x + 'px'; m.style.top = y + 'px'; ov.appendChild(m); setTimeout(() => m.remove(), 700); }
   });
+  /* plein écran avec zoom (pincer, ou les boutons + et −) */
+  const zb = document.createElement('button'); zb.className = 'cz-btn'; zb.setAttribute('aria-label', 'Agrandir l\'image');
+  zb.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg>';
+  Object.assign(zb.style, { left: frame.offsetLeft + frame.offsetWidth - 34 + 'px', top: frame.offsetTop - 16 + 'px' });
+  frame.parentElement.appendChild(zb);
+  zb.addEventListener('click', e => { e.stopPropagation(); SND.pop(); openZoom(); });
+  function openZoom() {
+    let z = $('#czoom'); if (!z) { z = document.createElement('section'); z.id = 'czoom'; document.body.appendChild(z); }
+    const W = ov.offsetWidth, Hh = ov.offsetHeight;   // repère des cibles : le calque cs-ov
+    z.innerHTML = `<div class="cz-top"><h2>Cherche et trouve</h2><span class="cz-hint">Pince pour zoomer, glisse pour te promener</span>
+      <span><button data-z="-1" aria-label="Dézoomer">−</button> <button data-z="1" aria-label="Zoomer">+</button> <button data-z="0">Fermer</button></span></div>
+      <div class="cz-vp"><div class="cz-in" style="width:${W}px;height:${Hh}px"></div></div><div class="cz-left"></div>`;
+    z.hidden = false;
+    const vp = $('.cz-vp', z), inn = $('.cz-in', z), left = $('.cz-left', z);
+    const im = scene.cloneNode(); Object.assign(im.style, { position: 'absolute', left: scene.offsetLeft - ov.offsetLeft + 'px', top: scene.offsetTop - ov.offsetTop + 'px', width: scene.offsetWidth + 'px', height: scene.offsetHeight + 'px', transform: 'none' });
+    inn.appendChild(im); found.forEach(i => ringIn(inn, i));
+    const list = () => { left.innerHTML = p.spots.map((_, i) => `<span class="${found.includes(i) ? 'ok' : ''}">${esc(label(i)) || 'Objet ' + (i + 1)}</span>`).join(''); };
+    list();
+    let k0 = Math.min(vp.clientWidth / W, vp.clientHeight / Hh), k = k0, tx = (vp.clientWidth - W * k) / 2, ty = (vp.clientHeight - Hh * k) / 2;
+    const clamp = () => { k = Math.max(k0, Math.min(k0 * 5, k)); const w = W * k, h = Hh * k;
+      tx = w <= vp.clientWidth ? (vp.clientWidth - w) / 2 : Math.min(0, Math.max(vp.clientWidth - w, tx));
+      ty = h <= vp.clientHeight ? (vp.clientHeight - h) / 2 : Math.min(0, Math.max(vp.clientHeight - h, ty)); };
+    const apply = () => { clamp(); inn.style.transform = `translate(${tx}px,${ty}px) scale(${k})`; };
+    const zoomAt = (f, cx, cy) => { const r = vp.getBoundingClientRect(); const px = cx - r.left, py = cy - r.top; tx = px - (px - tx) * f; ty = py - (py - ty) * f; k *= f; apply(); };
+    apply();
+    const pts = new Map(); let moved = false, pinch = null, last = null;
+    vp.onpointerdown = e => { vp.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); moved = false; last = [e.clientX, e.clientY];
+      if (pts.size === 2) { const [a, c] = [...pts.values()]; pinch = { d: Math.hypot(a[0] - c[0], a[1] - c[1]), k }; } };
+    vp.onpointermove = e => { if (!pts.has(e.pointerId)) return; const prev = pts.get(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]);
+      if (pts.size === 2 && pinch) { const [a, c] = [...pts.values()]; const d = Math.hypot(a[0] - c[0], a[1] - c[1]); const f = (pinch.k * d / pinch.d) / k; zoomAt(f, (a[0] + c[0]) / 2, (a[1] + c[1]) / 2); moved = true; return; }
+      const dx = e.clientX - prev[0], dy = e.clientY - prev[1]; if (Math.hypot(e.clientX - last[0], e.clientY - last[1]) > 8) moved = true; tx += dx; ty += dy; apply(); };
+    vp.onpointerup = vp.onpointercancel = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch = null;
+      if (!moved && e.type === 'pointerup' && pts.size === 0) { const r = vp.getBoundingClientRect(); const x = (e.clientX - r.left - tx) / k, y = (e.clientY - r.top - ty) / k;
+        const res = hit(x, y, e.clientX, e.clientY, i => { ringIn(inn, i); list(); });
+        if (res === -1) { const m = document.createElement('div'); m.className = 'cs-miss'; m.style.left = x + 'px'; m.style.top = y + 'px'; inn.appendChild(m); setTimeout(() => m.remove(), 700); } } };
+    vp.onwheel = e => { e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX, e.clientY); };
+    $('.cz-top', z).onclick = e => { const bt = e.target.closest('[data-z]'); if (!bt) return; const d = +bt.dataset.z;
+      if (!d) { z.hidden = true; z.innerHTML = ''; return; } const r = vp.getBoundingClientRect(); zoomAt(d > 0 ? 1.5 : 1 / 1.5, r.left + r.width / 2, r.top + r.height / 2); };
+  }
   /* indice : toucher l'image ronde d'une ligne */
   rows.forEach((row, i) => {
     const th = row.firstElementChild; const lbl = row.querySelector('.lbl');
@@ -383,13 +432,15 @@ function openDraw({ key, title, w, h, outline, onDone, lines, stickers }) {
   const ov = $('#draw'); ov.hidden = false; stopSpeak();
   ov.innerHTML = `<div class="dr-top"><button data-a="cancel">Annuler</button><h2></h2><button class="ok" data-a="ok">C'est fini !</button></div><div class="dr-wrap"><canvas></canvas></div><div class="dr-tools"></div>`;
   $('h2', ov).textContent = title;
-  const cv = $('canvas', ov), ctx = cv.getContext('2d'); const K = Math.min(4, 1600 / Math.max(w, h)); cv.width = Math.round(w * K); cv.height = Math.round(h * K);
-  const wrap = $('.dr-wrap', ov);
+  const cv = $('canvas', ov), ctx = cv.getContext('2d'); const wrap = $('.dr-wrap', ov);
+  /* résolution du dessin calée sur sa taille à l'écran (et non sur la petite case du carnet) : trait net et fin */
+  const dpr = Math.min(2, window.devicePixelRatio || 1), view = Math.min((wrap.clientWidth || 1000) / w, (wrap.clientHeight || 700) / h);
+  const K = Math.max(1, Math.min(view * dpr, 2400 / Math.max(w, h))); cv.width = Math.round(w * K); cv.height = Math.round(h * K);
   const li = lines ? Object.assign(document.createElement('img'), { className: 'dr-lines', src: lines, alt: '' }) : null; if (li) wrap.appendChild(li);
   const fit = () => { const k = Math.min(wrap.clientWidth / cv.width, wrap.clientHeight / cv.height); cv.style.width = cv.width * k + 'px'; cv.style.height = cv.height * k + 'px';
     if (li) Object.assign(li.style, { width: cv.style.width, height: cv.style.height, left: cv.offsetLeft + 'px', top: cv.offsetTop + 'px' }); };
   let color = outline ? '#C23B2C' : COLORS[0], size = outline ? 26 : 10, eraser = false; const hist = [];
-  const bg = () => { if (outline) { ctx.save(); ctx.font = `${parseFloat(outline.font) * K}px 'Ma Shan Zheng'`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 1.5 * K; ctx.strokeStyle = '#C23B2C'; ctx.strokeText(outline.text, cv.width / 2, cv.height / 2 + 4 * K); ctx.restore(); } };
+  const bg = () => { if (outline) { ctx.save(); ctx.font = `${parseFloat(outline.font) * K}px 'Ma Shan Zheng'`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 3.5 * dpr; ctx.strokeStyle = '#C23B2C'; ctx.strokeText(outline.text, cv.width / 2, cv.height / 2 + 4 * K); ctx.restore(); } };
   const base = async () => { ctx.clearRect(0, 0, cv.width, cv.height); if (!outline) { ctx.fillStyle = '#FFFCF5'; ctx.fillRect(0, 0, cv.width, cv.height); } const u = S.media[key] && await mediaURL(key); if (u) { const im = new Image(); im.src = u; await im.decode().catch(() => {}); ctx.drawImage(im, 0, 0, cv.width, cv.height); } else bg(); };
   base().then(fit); setTimeout(fit, 50);
   const tools = $('.dr-tools', ov);
@@ -418,7 +469,8 @@ function openDraw({ key, title, w, h, outline, onDone, lines, stickers }) {
   cv.onpointerup = cv.onpointercancel = () => { drawing = false; if (outline) bg(); };
   function line(e, x, y) {
     const pr = e.pointerType === 'pen' && e.pressure ? 0.5 + e.pressure : 1;
-    ctx.save(); ctx.lineCap = ctx.lineJoin = 'round'; ctx.lineWidth = size * K * 0.5 * pr;
+    const css = cv.width / (cv.getBoundingClientRect().width || cv.width);   // pixels du dessin par pixel d'écran
+    ctx.save(); ctx.lineCap = ctx.lineJoin = 'round'; ctx.lineWidth = (outline ? size * 0.5 : size * 1.4) * css * pr;
     if (eraser) { if (outline) ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = outline ? '#000' : '#FFFCF5'; } else ctx.strokeStyle = color;
     if (outline && !eraser) ctx.globalAlpha = 0.9;
     ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(x, y); ctx.stroke(); ctx.restore(); lx = x; ly = y;
@@ -535,7 +587,7 @@ const kv = document.createElement('main'); kv.id = 'kv'; document.body.insertBef
 let view = 'home', book = null;
 function setView(v, html, title) {
   view = v; document.body.dataset.view = v;
-  kv.hidden = v === 'carnet' || v === 'book';
+  kv.hidden = v === 'carnet';
   if (!kv.hidden) { kv.innerHTML = html; kv.scrollTop = 0; }
   if (title != null) $('#ptitle').textContent = title;
 }
@@ -569,25 +621,42 @@ function stories() {
 }
 /* Une histoire = un petit livre : planches 1118 × 794 (image à gauche, texte à droite), même moteur que le carnet. */
 const clean = t => t.replace(/\[[^\]]*\]\s*/g, '').replace(/\s+([,.!?…»])/g, ' $1').trim();
-function storyBoard(s, p, n) {
+function storyPage(s, p, n) {
   const last = n === s.pages.length - 1, total = s.pages.length;
   const end = last ? `<div class="abs-end"><span class="abs-fin">Fin</span>${T && T.eveningDodo() ? '<button class="kbtn" data-kact="sleep">Bonne nuit, Xiao Long</button>' : ''}</div>` : '';
   const dots = Array.from({ length: total }, (_, k) => `<i class="${k === n ? 'on' : ''}"></i>`).join('');
-  return `<div class="abs${p.pos ? ' ' + p.pos : ''}"><img class="abs-img" src="${im(p.img)}" alt="">
+  return `<div class="sb-page abs${p.pos ? ' ' + p.pos : ''}"><img class="abs-img" src="${im(p.img)}" alt="">
     <div class="abs-panel">${n === 0 ? `<span class="abs-seal"><small>JOUR</small><b>${s.day}</b></span>` : ''}
       <div class="abs-txt">${clean(p.text).split('\n').map(l => `<p>${esc(l)}</p>`).join('')}</div>${end}<div class="abs-dots">${dots}</div></div></div>`;
 }
+/* Histoire du soir : l'image en plein écran sous la barre du haut, des flèches, un fondu d'une page à l'autre. */
+const ARROW = d => `<svg viewBox="0 0 24 24"><path d="${d < 0 ? 'M15 4l-8 8 8 8' : 'M9 4l8 8-8 8'}"/></svg>`;
 function openStory(i) {
   const s = (PK().kids?.stories || [])[i]; if (!s || !open(s.day)) return;
-  book = { s, audio: new Audio() };
-  P = s.pages.map((p, n) => ({ id: `S${s.day}-${n}`, title: s.title, css: '', html: storyBoard(s, p, n), kind: 'story' }));
-  setView('book', '', s.title.replace(/^Jour \d+ · /, '')); go(0, 0, 0);
+  stopBook(); book = { s, n: -1, audio: new Audio() };
+  setView('book', `<div class="sb"><div class="sb-stage"></div>
+    <button class="nav sb-nav" data-bp="-1" aria-label="Page précédente">${ARROW(-1)}</button>
+    <button class="nav sb-nav next" data-bp="1" aria-label="Page suivante">${ARROW(1)}</button></div>`, s.title.replace(/^Jour \d+ · /, ''));
+  const st = $('.sb-stage', kv); let x0 = null;
+  st.addEventListener('pointerdown', e => { x0 = e.clientX; });
+  st.addEventListener('pointerup', e => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 50) bookPage(book.n + (dx < 0 ? 1 : -1)); });
+  bookPage(0);
 }
-function bookPage(i) {
-  if (!book) return; const p = book.s.pages[i]; book.audio.pause();
-  if (p && p.audio && (!single() || half === 0)) { book.audio.src = '/pack/' + p.audio; book.audio.play().catch(() => {}); }
+function bookPage(n) {
+  if (!book) return; const s = book.s; if (n < 0 || n >= s.pages.length || n === book.n) return;
+  const p = s.pages[n], st = $('.sb-stage', kv); if (!st) return;
+  book.n = n; if (n) SND.tick();
+  const old = $$('.sb-page', st), el = document.createElement('div');
+  el.innerHTML = storyPage(s, p, n); const pg = el.firstElementChild; st.appendChild(pg);
+  requestAnimationFrame(() => requestAnimationFrame(() => pg.classList.add('on')));
+  setTimeout(() => old.forEach(o => o.remove()), 450);
+  $('.sb-nav[data-bp="-1"]', kv).classList.toggle('off', n === 0);
+  $('.sb-nav[data-bp="1"]', kv).classList.toggle('off', n === s.pages.length - 1);
+  book.audio.pause();
+  if (p.audio) { book.audio.src = '/pack/' + p.audio; book.audio.play().catch(() => {}); }
 }
-function stopBook() { if (book) { book.audio.pause(); book = null; } if (P !== CP) { P = CP; } }
+function stopBook() { if (book) { book.audio.pause(); book = null; } }
+kv.addEventListener('click', e => { const b = e.target.closest('[data-kact]'); if (b && b.dataset.kact === 'sleep' && T) { stopBook(); T.sleep(); } });
 vp.addEventListener('click', e => { const b = e.target.closest('[data-kact]'); if (b && b.dataset.kact === 'sleep' && T) { stopBook(); T.sleep(); } });
 /* Coloriages : le dessin du jour, l'atelier du carnet, des autocollants. */
 let colItems = [];
@@ -626,6 +695,7 @@ kv.addEventListener('click', e => {
   const s = e.target.closest('[data-story]'); if (s) { SND.pop(); return openStory(+s.dataset.story); }
   const c = e.target.closest('[data-col]'); if (c) return openColor(+c.dataset.col);
   const l = e.target.closest('[data-lock]'); if (l) { l.classList.remove('wiggle'); void l.offsetWidth; l.classList.add('wiggle'); SND.miss(); return; }
+  const bp = e.target.closest('[data-bp]'); if (bp && book) return bookPage(book.n + +bp.dataset.bp);
   const so = e.target.closest('[data-song]'); if (so) return playSong(+so.dataset.song);
   if (e.target.closest('[data-sp]')) { if (au.paused) au.play().catch(() => {}); else au.pause(); }
 });

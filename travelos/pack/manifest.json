@@ -1,6 +1,6 @@
 {
  "formatVersion": 1,
- "packVersion": "8956d692260d",
+ "packVersion": "ee45423215e6",
  "files": [
   {
    "path": "audio/a-ma.mp3",
@@ -1924,8 +1924,8 @@
   },
   {
    "path": "travelos/pack/pack.json",
-   "size": 1219550,
-   "sha256": "8956d692260dbb7f78ba443acf3341d8ed03a15d66b9bb44c5c93b84cf7e975a"
+   "size": 1219563,
+   "sha256": "ee45423215e6bb15cd412c6e89fa97bade9fe14ef7cdc8e7d63fb311d52a4f49"
   },
   {
    "path": "travelos/scenes/j1-1-bg.webp",
