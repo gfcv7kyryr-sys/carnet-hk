@@ -252,7 +252,7 @@ function homeData() {
 function updateLockWallpaper(force) {
   if (!store.get("lockWp", false) || !N.setLockWallpaper || !P.lockscreen) return;
   // Lanternes sur fond noir en mode sombre, sur fond blanc en mode clair.
-  const dark = document.documentElement.dataset.theme === "dark";
+  const dark = !!N.systemDark(); // comme l'écran des profils : le thème du système, pas celui du profil
   const img = (dark ? P.lockscreenDark : P.lockscreenLight) || P.lockscreen;
   const key = `${img}:${json(N.syncState(), {}).packVersion || "seed"}`;
   if (!force && store.get("lockWpDate", null) === key) return;
@@ -1722,22 +1722,38 @@ function refreshKeepScroll() {
 
 /* ================= profils ================= */
 
-function showChooser() {
-  player.pause(); $("#miniPlayer").hidden = true; document.body.classList.remove("mp-on");
-  $("#pilote").hidden = true; $("#kids").hidden = true; closeSheet(); closeShow();
+/* Lancement et retour de veille : le fond net de l'écran verrouillé se floute (effet « déverrouillage »).
+   Après une veille, on garde la page en cours : reprendre le même profil y ramène directement. */
+let resumeProfile = null;
+function playUnlock() {
+  const c = $("#chooser"); c.classList.remove("unlock"); void c.offsetWidth; c.classList.add("unlock");
+}
+function showChooser(opts) {
+  const keep = !!(opts && opts.keep);
+  resumeProfile = keep ? curProfile : null;
+  if (!keep) { player.pause(); $("#miniPlayer").hidden = true; document.body.classList.remove("mp-on"); closeSheet(); closeShow(); }
+  $("#pilote").hidden = true; $("#kids").hidden = true;
   curProfile = null; applyTheme(); // l'écran de lancement suit le thème du système
   const last = store.get("lastProfile", null);
   $$(".profile").forEach((b) => b.classList.toggle("last", b.dataset.profile === last));
   $("#chooser").hidden = false;
+  playUnlock();
+}
+// Retour de veille (écran éteint) : après 2 min, on repasse par les profils, sauf si la musique joue.
+function onUnlock(awayMs) {
+  if (!$("#chooser").hidden) return playUnlock();
+  if (awayMs >= 120000 && player.paused) showChooser({ keep: true });
 }
 $$(".profile").forEach((b) => b.addEventListener("click", () => {
   const p = PROFILES.find((x) => x.id === b.dataset.profile) || PROFILES[0];
   store.set("lastProfile", p.id);
-  curProfile = p.id; applyPrefs(); updateLockWallpaper();
+  const resume = resumeProfile === p.id; resumeProfile = null;
+  curProfile = p.id; applyPrefs();
   $("#chooser").hidden = true;
   $("#switchProfile").innerHTML = `<span class="han">${esc(p.name[0])}</span>`;
   const av = b.querySelector("img"); if (av) $("#switchProfile").innerHTML = `<img src="${av.getAttribute("src")}" alt="">`;
   $("#switchProfile").setAttribute("aria-label", `${p.name} · changer de profil`);
+  if (resume) { $(p.kind === "pilote" ? "#pilote" : "#kids").hidden = false; return; }
   if (p.kind === "pilote") { $("#pilote").hidden = false; stack = []; go("today"); }
   else openKids();
 }));
@@ -1921,7 +1937,7 @@ function decorateChooser() {}
 document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
 window.addEventListener("resize", () => { if ($("#dmMap")) requestAnimationFrame(() => mapSync(false)); });
 window.TravelOS = {
-  back, onHome, toast, onResume: () => tick(), onTranslate, onSystemTheme: () => applyTheme(),
+  back, onHome, toast, onResume: (away) => { tick(); if (away >= 0) onUnlock(away); }, onTranslate, onSystemTheme: () => { applyTheme(); updateLockWallpaper(); },
   onPermission: () => {
     if (mapLocateAsked) { mapLocateAsked = false; if (N.hasLocationPermission()) mapLocate(); else toast("Position non autorisée : la carte et les fiches restent disponibles."); }
     else window.TravelOS.onGpsPermission?.();

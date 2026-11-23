@@ -57,6 +57,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        androidx.core.content.ContextCompat.registerReceiver(
+            this, screenOff, android.content.IntentFilter(Intent.ACTION_SCREEN_OFF),
+            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
         val container = (application as TravelOsApp).container
 
         val loader = LocalContent.loader(this, container.packSync.dir)
@@ -127,12 +131,23 @@ class MainActivity : ComponentActivity() {
         super.onPause()
     }
 
+    /** Écran éteint = veille : au retour, l'écran des profils rejoue le flou du déverrouillage. */
+    private var screenOffAt = -1L
+    private val screenOff = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: Intent?) {
+            screenOffAt = android.os.SystemClock.elapsedRealtime()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        if (::webView.isInitialized) js("window.TravelOS && TravelOS.onResume && TravelOS.onResume()")
+        val away = if (screenOffAt < 0) -1L else android.os.SystemClock.elapsedRealtime() - screenOffAt
+        screenOffAt = -1L
+        if (::webView.isInitialized) js("window.TravelOS && TravelOS.onResume && TravelOS.onResume($away)")
     }
 
     override fun onDestroy() {
+        try { unregisterReceiver(screenOff) } catch (_: Exception) {}
         (application as TravelOsApp).container.gps.stop()
         webView.destroy()
         super.onDestroy()

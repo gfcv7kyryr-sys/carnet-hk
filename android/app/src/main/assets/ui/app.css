@@ -860,3 +860,14 @@ body.mp-on #view{padding-bottom:96px}
 .ks-pt{display:block;font-size:.8em;opacity:.65;margin-bottom:.3em}
 .ks-card img{aspect-ratio:3/2;object-fit:cover}
 .ks-sync{font-family:system-ui;font-size:1rem;background:#fff3c4;border-radius:14px;padding:10px 14px;margin:-8px 0 16px}
+/* Écran verrouillé → profils : même image, même cadrage qu'Android (recadrage centré),
+   puis un voile de verre qui floute le fond au déverrouillage. */
+.chooser-wall{transform:none!important;background-size:cover!important;background-position:center center!important}
+.chooser-blur{position:absolute;inset:0;pointer-events:none;background:rgba(255,255,255,.14);
+  -webkit-backdrop-filter:blur(34px) saturate(140%);backdrop-filter:blur(34px) saturate(140%)}
+:root[data-theme=dark] .chooser-blur{background:rgba(0,0,0,.22)}
+.chooser.unlock .chooser-blur{animation:wpBlur .75s cubic-bezier(.32,.72,0,1) both}
+.chooser.unlock .chooser-in{animation:wpIn .6s cubic-bezier(.32,.72,0,1) .22s both}
+@keyframes wpBlur{from{opacity:0}to{opacity:1}}
+@keyframes wpIn{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.chooser.unlock .chooser-blur,.chooser.unlock .chooser-in{animation:none}}
