@@ -1,23 +1,51 @@
-· hk-ville (cache)
-· hk-lantau (cache)
-· mo (cache)
-· gz (cache)
-· sz (cache)
-· xp3 (cache)
-· hy (cache)
-· gares (cache)
-· rail (cache)
-total 142380
-drwxr-xr-x  2 runner runner     4096 Nov 22 12:16 .
-drwxr-xr-x 11 runner runner     4096 Nov 22 23:26 ..
--rw-r--r--  1 runner runner   949221 Nov 22 12:16 gares.overpass.json
--rw-r--r--  1 runner runner 36196099 Nov 22 04:58 gz.overpass.json
--rw-r--r--  1 runner runner  5250225 Nov 22 04:12 hk-lantau.overpass.json
--rw-r--r--  1 runner runner 46533155 Nov 22 04:11 hk-ville.overpass.json
--rw-r--r--  1 runner runner     7412 Nov 22 04:49 hy.overpass.json
--rw-r--r--  1 runner runner 10593816 Nov 22 04:13 mo.overpass.json
--rw-r--r--  1 runner runner 10648144 Nov 22 04:49 rail.overpass.json
--rw-r--r--  1 runner runner 34909871 Nov 22 04:47 sz.overpass.json
--rw-r--r--  1 runner runner   222969 Nov 22 04:47 xp.overpass.json
--rw-r--r--  1 runner runner   224572 Nov 22 05:30 xp2.overpass.json
--rw-r--r--  1 runner runner   239824 Nov 22 12:16 xp3.overpass.json
+  hk-ville via overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-ville via z.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-ville via lz4.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-ville via maps.mail.ru : HTTP Error 504: Gateway Timeout (51 s)
+  hk-ville via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
+  hk-ville via overpass.private.coffee : HTTP Error 504: Gateway Timeout (203 s)
+  hk-ville via overpass.kumi.systems : HTTP Error 502: Bad Gateway (254 s)
+  hk-ville via overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-ville via z.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-ville via lz4.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-ville via maps.mail.ru : HTTP Error 504: Gateway Timeout (51 s)
+  hk-ville via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
+  hk-ville via overpass.private.coffee : HTTP Error 504: Gateway Timeout (130 s)
+  hk-ville via overpass.kumi.systems : HTTP Error 504: Gateway Timeout (302 s)
+⚠ zone hk-ville non téléchargée cette fois : elle sera retentée au prochain calcul
+  hk-lantau via overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-lantau via z.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-lantau via lz4.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-lantau via maps.mail.ru : HTTP Error 504: Gateway Timeout (58 s)
+  hk-lantau via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
+  hk-lantau via overpass.private.coffee : HTTP Error 504: Gateway Timeout (32 s)
+  hk-lantau via overpass.kumi.systems : HTTP Error 504: Gateway Timeout (259 s)
+  hk-lantau via overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-lantau via z.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-lantau via lz4.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  hk-lantau via maps.mail.ru : HTTP Error 504: Gateway Time-out (1 s)
+  hk-lantau via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
+  hk-lantau via overpass.private.coffee : HTTP Error 504: Gateway Timeout (132 s)
+  hk-lantau via overpass.kumi.systems : HTTP Error 504: Gateway Timeout (165 s)
+⚠ zone hk-lantau non téléchargée cette fois : elle sera retentée au prochain calcul
+  mo via overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  mo via z.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  mo via lz4.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  mo via maps.mail.ru : HTTP Error 504: Gateway Time-out (1 s)
+  mo via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
+  mo via overpass.private.coffee : HTTP Error 504: Gateway Timeout (302 s)
+  mo via overpass.kumi.systems : The read operation timed out (660 s)
+  mo via overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  mo via z.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  mo via lz4.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  mo via maps.mail.ru : HTTP Error 504: Gateway Timeout (50 s)
+  mo via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
+  mo via overpass.private.coffee : The read operation timed out (660 s)
+  mo via overpass.kumi.systems : HTTP Error 502: Bad Gateway (249 s)
+⚠ zone mo non téléchargée cette fois : elle sera retentée au prochain calcul
+  gz via overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  gz via z.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  gz via lz4.overpass-api.de : <urlopen error [Errno 101] Network is unreachable> (0 s)
+  gz via maps.mail.ru : HTTP Error 504: Gateway Time-out (1 s)
+  gz via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
+  gz via overpass.private.coffee : HTTP Error 504: Gateway Timeout (140 s)
