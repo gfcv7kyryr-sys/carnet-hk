@@ -37,6 +37,15 @@ function tone(seq) {
     o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d + 0.02); t += d * 0.6;
   }
 }
+function rustle() {
+  if (!S.cfg.sound) return;
+  try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  const n = AC.sampleRate * 0.45, buf = AC.createBuffer(1, n, AC.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) { const t = i / n; d[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * t) ** 2 * (0.6 + 0.4 * Math.sin(t * 40)); }
+  const src = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain();
+  src.buffer = buf; f.type = 'bandpass'; f.frequency.value = 2400; f.Q.value = 0.7; g.gain.value = 0.22;
+  src.connect(f).connect(g).connect(AC.destination); src.start();
+}
 const SND = {
   tick: () => tone([[880, .08, 'triangle', .12]]),
   found: () => tone([[784, .12], [1047, .12], [1319, .22]]),
@@ -87,21 +96,54 @@ function layout() {
   $('#prev').disabled = idx === 0 && !(one && half);
   $('#next').disabled = idx === P.length - 1 && !(one && !half && board._halves);
 }
+/* Page qui se tourne : une feuille (recto = ancienne page, verso = nouvelle) pivote autour de la reliure. */
+let flipping = false;
+function pageFlip(oldB, wasOne, oldHalf, dir) {
+  if (!oldB || !dir || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const w = vp.clientWidth, h = vp.clientHeight, one = single() && board._halves;
+  const layer = document.createElement('div'); layer.className = 'flip-layer';
+  const face = (src, shift, cls = '') => { const f = document.createElement('div'); f.className = 'flip-face ' + cls; const c = src.cloneNode(true); c.classList.remove('enter'); c.style.left = shift + 'px'; f.appendChild(c); const sh = document.createElement('i'); sh.className = 'flip-shade'; f.appendChild(sh); return f; };
+  const place = (el, x, wd) => Object.assign(el.style, { left: x + 'px', width: wd + 'px', height: h + 'px' });
+  const anim = [];
+  if (!one && !wasOne) {
+    const half = w / 2;
+    const stat = face(oldB, dir > 0 ? 0 : -half); place(stat, dir > 0 ? 0 : half, half); layer.appendChild(stat);
+    const fl = document.createElement('div'); fl.className = 'flip-leaf'; place(fl, dir > 0 ? half : 0, half);
+    fl.style.transformOrigin = dir > 0 ? 'left center' : 'right center';
+    const front = face(oldB, dir > 0 ? -half : 0), back = face(board, dir > 0 ? 0 : -half, 'back');
+    fl.append(front, back); layer.appendChild(fl);
+    anim.push(fl.animate([{ transform: 'rotateY(0deg)' }, { transform: `rotateY(${dir > 0 ? -180 : 180}deg)` }], { duration: 700, easing: 'cubic-bezier(.45,.05,.35,1)' }));
+    anim.push(front.lastChild.animate([{ opacity: 0 }, { opacity: .45 }], { duration: 350, fill: 'forwards' }));
+    anim.push(back.lastChild.animate([{ opacity: .45 }, { opacity: .45, offset: .5 }, { opacity: 0 }], { duration: 700 }));
+  } else {
+    // une page à la fois : la feuille part vers la gauche (suivante) ou revient de la gauche (précédente)
+    const fl = document.createElement('div'); fl.className = 'flip-leaf'; place(fl, 0, w); fl.style.transformOrigin = 'left center';
+    if (dir > 0) { fl.append(face(oldB, 0)); layer.appendChild(fl);
+      anim.push(fl.animate([{ transform: 'rotateY(0deg)', opacity: 1 }, { transform: 'rotateY(-100deg)', opacity: .2 }], { duration: 600, easing: 'cubic-bezier(.45,.05,.35,1)' })); }
+    else { const under = face(oldB, 0); place(under, 0, w); layer.appendChild(under);
+      const nf = face(board, 0); fl.append(nf); layer.appendChild(fl);
+      anim.push(fl.animate([{ transform: 'rotateY(-100deg)', opacity: .2 }, { transform: 'rotateY(0deg)', opacity: 1 }], { duration: 600, easing: 'cubic-bezier(.45,.05,.35,1)' })); }
+  }
+  vp.appendChild(layer); flipping = true; rustle();
+  Promise.all(anim.map(a => a.finished)).catch(() => {}).then(() => { layer.remove(); flipping = false; });
+}
 function go(i, h = 0, dir = 0) {
   i = Math.max(0, Math.min(P.length - 1, i)); stopSpeak(); closeSheet();
+  const oldB = board, wasOne = !!(board && single() && board._halves), oldHalf = half;
   idx = i; half = h; cur = P[i]; S.seen.last = i; S.seen.half = h; S.seen[cur.id] = 1; save();
   const b = document.createElement('div'); b.className = 'board'; b.dataset.b = cur.id; b.innerHTML = cur.html;
   vp.replaceChildren(b); board = b; b._halves = hasHalves(b);
   if (half && !(single() && b._halves)) half = 0;
-  if (dir) { b.style.setProperty('--dx', (dir * 40) + 'px'); b.classList.add('enter'); setTimeout(() => b.classList.remove('enter'), 300); }
   layout(); enhance(b, cur);
+  if (dir) pageFlip(oldB, wasOne, oldHalf, dir);
   $('#ptitle').textContent = cur.kind === 'cover' ? 'Xiao Long et la valise de Mamie Nainai' : cur.title.replace(/·/g, '–').replace(/\s*\(.*?\)\s*/g, ' ');
   dots();
 }
 function step(d) {
+  if (flipping) return;
   const one = single() && board._halves;
   if (d > 0) { if (one && !half) go(idx, 1, 1); else if (idx < P.length - 1) go(idx + 1, 0, 1); }
-  else { if (one && half) go(idx, 0, -1); else if (idx > 0) { const pb = P[idx - 1]; go(idx - 1, 0, -1); if (single() && board._halves) { half = 1; S.seen.half = 1; layout(); } } }
+  else { if (one && half) go(idx, 0, -1); else if (idx > 0) go(idx - 1, single() ? 1 : 0, -1); }
 }
 $('#prev').onclick = () => step(-1); $('#next').onclick = () => step(1);
 addEventListener('keydown', e => { if (!$$('.ov').some(o => !o.hidden)) { if (e.key === 'ArrowRight') step(1); if (e.key === 'ArrowLeft') step(-1); } });
@@ -179,7 +221,7 @@ function enhance(b, p) {
   let zi = 0;
   $$('div', b).forEach(el => {
     const t = ownText(el).replace(/\s+/g, ' ').trim();
-    if (/^colle ici/i.test(t) && !/de Mamie$/i.test(t) && !/Mamie a oublié/.test(t)) photoZone(el, id + ':ph' + (zi++));
+    if (/^(colle ici|ta photo)/i.test(t) && !/de Mamie$/i.test(t) && !/Mamie a oublié/.test(t)) photoZone(el, id + ':ph' + (zi++));
   });
   /* dessins */
   let di = 0;
@@ -221,6 +263,7 @@ function polaroid(po, im, k) {
   po.appendChild(btn);
   const show = async () => { const u = S.media[k] && await mediaURL(k); im.src = u || orig; };
   show();
+  po.classList.add('tap'); po.addEventListener('click', e => { if (e.target !== btn) btn.dispatchEvent(new MouseEvent('click', { bubbles: false, clientX: e.clientX, clientY: e.clientY })); });
   btn.addEventListener('click', async e => {
     e.stopPropagation();
     const doPick = async () => { const f = await pickPhoto(); if (!f) return; await putMedia(k, await shrink(f)); await show(); SND.pop(); };

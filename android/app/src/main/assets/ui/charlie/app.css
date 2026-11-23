@@ -168,3 +168,16 @@ img.meteo.lit[data-m="3"]{background:radial-gradient(circle,#9FE0D2 0 55%,transp
 /* Dans TravelOS : pas de bouton d'écoute (la narration viendra en fichiers audio) ; bouton retour */
 .speak{display:none!important}
 #btn-home{padding-right:6px}
+
+/* Page qui se tourne */
+#vp{perspective:2200px}
+.flip-layer{position:absolute;inset:0;z-index:30;pointer-events:none;transform-style:preserve-3d}
+.flip-leaf{position:absolute;top:0;transform-style:preserve-3d}
+.flip-face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--paper)}
+.flip-layer>.flip-face{position:absolute;top:0}
+.flip-face.back{transform:rotateY(180deg)}
+.flip-face .board{pointer-events:none}
+.flip-shade{position:absolute;inset:0;opacity:0;background:linear-gradient(90deg,rgba(43,36,32,.35),rgba(43,36,32,0) 55%,rgba(255,255,255,.18));pointer-events:none}
+.flip-face.back .flip-shade{background:linear-gradient(270deg,rgba(43,36,32,.35),rgba(43,36,32,0) 55%)}
+.pola.tap{cursor:pointer}
+.polacam{width:44px;height:44px;background-size:24px}
