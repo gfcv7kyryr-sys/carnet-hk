@@ -573,7 +573,7 @@ function storyBoard(s, p, n) {
   const last = n === s.pages.length - 1, total = s.pages.length;
   const end = last ? `<div class="abs-end"><span class="abs-fin">Fin</span>${T && T.eveningDodo() ? '<button class="kbtn" data-kact="sleep">Bonne nuit, Xiao Long</button>' : ''}</div>` : '';
   const dots = Array.from({ length: total }, (_, k) => `<i class="${k === n ? 'on' : ''}"></i>`).join('');
-  return `<div class="abs"><img class="abs-img" src="${im(p.img)}" alt="">
+  return `<div class="abs${p.pos === 'top' ? ' top' : ''}"><img class="abs-img" src="${im(p.img)}" alt="">
     <div class="abs-panel">${n === 0 ? `<span class="abs-seal"><small>JOUR</small><b>${s.day}</b></span>` : ''}
       <div class="abs-txt">${clean(p.text).split('\n').map(l => `<p>${esc(l)}</p>`).join('')}</div>${end}<div class="abs-dots">${dots}</div></div></div>`;
 }

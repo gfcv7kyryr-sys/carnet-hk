@@ -4,47 +4,52 @@
   {
    "day": 1,
    "title": "Jour 1 · Bonjour, Hong Kong !",
-   "cover": "charlie/img/1a922b37bd6e98f95ddced40cd9ed56a.webp",
+   "cover": "travelos/kids/histoires/j01-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/1a922b37bd6e98f95ddced40cd9ed56a.webp",
-     "text": "[warmly] Xiao Long vient d'arriver à Hong Kong. Tout est grand : les tours, les bus à étage, les gens pressés. [pause] Xiao Long, lui, est tout petit. Et il aimerait tellement avoir un ami. Il entre dans un grand parc plein de fleurs."
+     "img": "travelos/kids/histoires/j01-p01.webp",
+     "text": "[warmly] Xiao Long vient d'arriver à Hong Kong. Tout est grand : les tours, les bus à étage, les gens pressés. [pause] Xiao Long, lui, est tout petit. Et il aimerait tellement avoir un ami. Il entre dans un grand parc plein de fleurs.",
+     "pos": "top"
     },
     {
-     "img": "charlie/img/1a922b37bd6e98f95ddced40cd9ed56a.webp",
+     "img": "travelos/kids/histoires/j01-p02.webp",
      "text": "Sur un rocher, une tortue se chauffe au soleil. Xiao Long prend une grande inspiration et crie : [shouts] « BONJOUR ! » [pause] Floup ! La tortue rentre la tête dans sa carapace. [sighs] « Oh non… J'ai crié trop fort. »"
     },
     {
-     "img": "charlie/img/8e6572d12c801b5cce63a832874d65f2.webp",
+     "img": "travelos/kids/histoires/j01-p03.webp",
      "text": "Près du lac, un flamant rose dort sur une patte. Cette fois, Xiao Long ne crie pas. Il s'approche tout près, tout près, tout près… et lui souffle dans l'oreille : [whispers] « Bonjour. » [gasps] Le flamant sursaute si fort qu'il tombe dans l'eau. PLOUF ! « Oh non… Je l'ai surpris. »"
     },
     {
-     "img": "charlie/img/8e6572d12c801b5cce63a832874d65f2.webp",
+     "img": "travelos/kids/histoires/j01-p04.webp",
      "text": "Sur un banc, un pigeon picore des miettes. Xiao Long essaie autre chose : il lui fait sa plus grosse grimace de dragon, avec les crocs et les yeux qui roulent. [mischievously] « Grrrrr ! » Le pigeon s'envole à tire-d'aile. « Oh non… Je lui ai fait peur. »"
     },
     {
-     "img": "charlie/img/9fee999e20eed8881852cb6f52db7225.webp",
+     "img": "travelos/kids/histoires/j01-p05.webp",
      "text": "[sad] Xiao Long s'assoit au bord du lac, tout triste. « Personne ne veut être mon ami. » Une petite voix répond au-dessus de lui : [playfully] « Ce n'est pas ça… C'est que tu dis bonjour bizarrement ! » C'est un petit écureuil, assis sur une branche."
     },
     {
-     "img": "charlie/img/9fee999e20eed8881852cb6f52db7225.webp",
+     "img": "travelos/kids/histoires/j01-p06.webp",
      "text": "« Ici, on dit nǐ hǎo, explique l'écureuil. Et surtout, on le dit avec un sourire. Pas trop fort, pas trop près, pas trop méchant. Juste gentil. » Xiao Long s'entraîne : [softly] « Nǐ hǎo. » Un petit sourire. [happy] « Nǐ hǎo ! » Un grand sourire."
     },
     {
-     "img": "charlie/img/368ba0e58182f131fe1087897e8ad72c.webp",
-     "text": "Il retourne voir la tortue. « Nǐ hǎo », dit-il doucement, avec son plus beau sourire. La tortue sort la tête. « Nǐ hǎo ! » Puis il va voir le flamant, tout mouillé : « Pardon de t'avoir surpris. Nǐ hǎo. » [laughs] Le flamant rit et secoue ses plumes."
+     "img": "travelos/kids/histoires/j01-p07.webp",
+     "text": "Il retourne voir la tortue. « Nǐ hǎo », dit-il doucement, avec son plus beau sourire. La tortue sort la tête. « Nǐ hǎo ! » Puis il va voir le flamant, tout mouillé : « Pardon de t'avoir surpris. Nǐ hǎo. » [laughs] Le flamant rit et secoue ses plumes.",
+     "pos": "top"
     },
     {
-     "img": "charlie/img/368ba0e58182f131fe1087897e8ad72c.webp",
-     "text": "Même le pigeon revient se poser. « Nǐ hǎo, pigeon. Je ne ferai plus de grimace. Promis. » Alors le pigeon roucoule, et vient picorer tout près de ses pattes. Rrrou, rrrou."
+     "img": "travelos/kids/histoires/j01-p08.webp",
+     "text": "Même le pigeon revient se poser. « Nǐ hǎo, pigeon. Je ne ferai plus de grimace. Promis. » Alors le pigeon roucoule, et vient picorer tout près de ses pattes. Rrrou, rrrou.",
+     "pos": "top"
     },
     {
-     "img": "charlie/img/d58b75dd626a265e1f28c4f0333da841.webp",
-     "text": "[excited] Le soir, tous les nouveaux amis s'installent au bord de l'eau. Combien sont-ils ? [pause] Xiao Long les compte sur ses griffes : l'écureuil, un. La tortue, deux. Le flamant, trois. Le pigeon, quatre. Et… [pause] un poisson rouge sort la tête de l'eau pour dire nǐ hǎo : cinq !"
+     "img": "travelos/kids/histoires/j01-p09.webp",
+     "text": "[excited] Le soir, tous les nouveaux amis s'installent au bord de l'eau. Combien sont-ils ? [pause] Xiao Long les compte sur ses griffes : l'écureuil, un. La tortue, deux. Le flamant, trois. Le pigeon, quatre. Et… [pause] un poisson rouge sort la tête de l'eau pour dire nǐ hǎo : cinq !",
+     "pos": "top"
     },
     {
-     "img": "charlie/img/d58b75dd626a265e1f28c4f0333da841.webp",
-     "text": "[softly] Au-dessus de la baie, les grandes tours s'allument en musique, rouges, vertes, bleues. Xiao Long ne se sent plus tout petit dans la grande ville. Il a cinq amis. [pause] Et il connaît le mot le plus magique de Hong Kong : un nǐ hǎo, avec un sourire. Bonne nuit, petit dragon."
+     "img": "travelos/kids/histoires/j01-p10.webp",
+     "text": "[softly] Au-dessus de la baie, les grandes tours s'allument en musique, rouges, vertes, bleues. Xiao Long ne se sent plus tout petit dans la grande ville. Il a cinq amis. [pause] Et il connaît le mot le plus magique de Hong Kong : un nǐ hǎo, avec un sourire. Bonne nuit, petit dragon.",
+     "pos": "top"
     }
    ]
   },
@@ -62,35 +67,35 @@
      "text": "[worried] « C'est trop haut, chuchote Ding-Ding. Et si je glissais ? Et si je roulais jusqu'en bas ? » Alors Ding-Ding reste en bas. Les gens attendent, attendent, puis finissent par monter à pied, en soufflant comme des bœufs."
     },
     {
-     "img": "charlie/img/929ae064e41947acbb076154a70158ac.webp",
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
      "text": "Un matin, Xiao Long monte à bord. « Pourquoi tu ne démarres pas ? » Ding-Ding avoue, tout bas : [whispers] « J'ai peur. La montagne est trop grande, et moi je suis trop petit. » [pause] Xiao Long hoche la tête. « Moi aussi, j'ai peur, des fois. »"
     },
     {
-     "img": "charlie/img/929ae064e41947acbb076154a70158ac.webp",
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
      "text": "« Quand j'ai peur, dit Xiao Long, je dis une phrase magique. Écoute bien : [pause] petit dragon, grand courage ! » Ding-Ding la répète d'une toute petite voix : [softly] « Petit tram… grand courage. » Ses roues tremblent encore un peu. Mais il avance. Crrr… crrr…"
     },
     {
-     "img": "charlie/img/619adde7b7329c0c1926b0b554079c90.webp",
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
      "text": "Ça monte ! Les arbres sont tout penchés. Les immeubles ont l'air de tomber. [gasps] « Je n'y arriverai pas ! » crie Ding-Ding, et il s'arrête au milieu de la pente. [pause] Que faire, au milieu d'une montagne, quand on a très peur ?"
     },
     {
-     "img": "charlie/img/619adde7b7329c0c1926b0b554079c90.webp",
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
      "text": "Xiao Long colle son museau à la vitre. « Ne regarde pas tout en haut. Regarde juste le prochain arbre. » Ding-Ding regarde le prochain arbre. Il l'atteint. « Et maintenant, le suivant. » Un arbre. Encore un arbre. [encouraging] « Petit tram, grand courage ! »"
     },
     {
-     "img": "charlie/img/af6f5ee67deacfed7c66253cf3909b6b.webp",
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
      "text": "Un oiseau se pose sur le toit. [excited] « Tu montes jusqu'en haut ? Je n'ai jamais vu un tram aussi courageux ! » Ding-Ding rougit… encore plus que d'habitude. Et il grimpe un peu plus vite."
     },
     {
-     "img": "charlie/img/af6f5ee67deacfed7c66253cf3909b6b.webp",
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
      "text": "Et tout à coup… le sommet ! [awe] En bas, la ville est minuscule, les bateaux ressemblent à des jouets et la mer brille comme un miroir. [excited] « Je suis en haut ! Moi ! Tout en haut ! » Ding-ding ! Ding-ding !"
     },
     {
-     "img": "charlie/img/0b8a177b0e6b9f3ee07c8cb1dc6925d7.webp",
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
      "text": "Les gens applaudissent. Xiao Long saute de joie. Et Ding-Ding comprend quelque chose : il a eu peur… [pause] et il est quand même monté. [curious] « Alors le courage, ce n'est pas de ne jamais avoir peur ? » « Non, sourit Xiao Long. C'est d'avancer un petit peu, même avec la peur. »"
     },
     {
-     "img": "charlie/img/0b8a177b0e6b9f3ee07c8cb1dc6925d7.webp",
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
      "text": "[softly] Ce soir, Ding-Ding redescend tout doucement, la cloche fière. Demain, il montera encore. Et si un jour quelqu'un a peur, dans le tram ou ailleurs, il connaît la phrase magique. [pause] Petit dragon, grand courage. Bonne nuit, Ding-Ding."
     }
    ]
@@ -109,35 +114,35 @@
      "text": "[gasps] …TOUT EST GRIS ! Les immeubles sont gris. Le ballon est gris. Les fleurs sont grises. Même le soleil a l'air un peu gris. [shouts] « Quelqu'un a volé les couleurs ! » Xiao Long enfile sa casquette de détective et sort sa loupe. « Je vais trouver le coupable ! »"
     },
     {
-     "img": "charlie/img/95a74e71474e5968c453b154de88b231.webp",
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
      "text": "[curious] Par terre, il y a une petite tache rouge. Un peu plus loin, une tache orange. Puis une tache jaune. « Des traces de couleurs ! » Xiao Long se gratte le menton. « Après le rouge, l'orange et le jaune… quelle couleur vient ensuite ? » [pause]"
     },
     {
-     "img": "charlie/img/95a74e71474e5968c453b154de88b231.webp",
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
      "text": "[excited] « Vert ! Bien sûr ! » Et voilà une tache verte, qui mène au marché aux poissons rouges. Mais les poissons rouges sont… gris. Le marchand se gratte la tête : [mysterious] « Ce matin, j'ai vu passer quelque chose de tout doux, tout léger, qui volait… et qui pleurait. »"
     },
     {
-     "img": "charlie/img/3a4102c7ad20254e4077da786a5da04c.webp",
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
      "text": "Xiao Long écrit dans son carnet : « Doux. Léger. Vole. Pleure. » [curious] Hmm… Un oiseau ? Non, les oiseaux ne volent pas les couleurs. Un papillon ? Non, les papillons ne pleurent pas. [pause] Qui peut bien être doux, léger, et voler dans le ciel ?"
     },
     {
-     "img": "charlie/img/3a4102c7ad20254e4077da786a5da04c.webp",
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
      "text": "Dernier indice : sur l'escalier aux mille statues dorées, une statue porte un chapeau bleu tout neuf, et une autre, une écharpe violette. « Le voleur essaie les couleurs ! » Tout en haut, Xiao Long entend : [whispers] « Snif… snif… » Il avance sur la pointe des pattes. Un, deux, trois…"
     },
     {
-     "img": "charlie/img/75fa5d54bf13fc357f4db06003c79a22.webp",
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
      "text": "[surprised] C'est un tout petit nuage ! Un nuage gris, gros comme un oreiller, avec du rouge, du jaune et du bleu barbouillés plein les joues. « C'est toi qui as pris les couleurs ? » [sad] Le petit nuage baisse les yeux. « Oui… Les nuages sont toujours blancs ou gris. Moi, je voulais être beau. Comme la cité. »"
     },
     {
-     "img": "charlie/img/75fa5d54bf13fc357f4db06003c79a22.webp",
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
      "text": "Xiao Long pourrait se fâcher très fort. Mais il regarde le petit nuage, ses yeux mouillés, ses joues toutes barbouillées. [softly] « Tu étais triste d'être tout gris, c'est ça ? » Le nuage fait oui. « Je comprends. Mais regarde : maintenant, ce sont tous les gens de la cité qui sont tristes. »"
     },
     {
-     "img": "charlie/img/3a96bb3c5241cf57221f641748c11610.webp",
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
      "text": "Le petit nuage réfléchit. Puis il prend une grande inspiration et… il se met à pleuvoir ! Une pluie toute douce : une goutte rouge, une goutte orange, une goutte jaune, une goutte verte, une goutte bleue, une goutte violette. Les immeubles retrouvent leurs couleurs, une par une. Et quand le soleil passe à travers la pluie… [pause]"
     },
     {
-     "img": "charlie/img/3a96bb3c5241cf57221f641748c11610.webp",
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
      "text": "[awe] …un arc-en-ciel apparaît, juste sur le dos du petit nuage ! [happy] « Je suis beau ! » rit le nuage. « Tu as toujours été beau, dit Xiao Long. Et maintenant, en plus, tu as réparé ta bêtise. » En chinois, arc-en-ciel se dit cǎihóng. [softly] Et le soir, quand un petit nuage passe dans le ciel, il fait parfois un clin d'œil. Bonne nuit, petit nuage."
     }
    ]
@@ -156,35 +161,35 @@
      "text": "Sur la grande place aux pavés en vagues, un petit pigeon tout maigre le regarde. [sad] « Rrrou… Tu n'aurais pas une miette ? J'ai faim depuis ce matin. » Xiao Long regarde sa boîte. Il en a six… [sighs] « Bon. Tiens. » Une tartelette pour le pigeon. Combien en reste-t-il ? [pause] Cinq !"
     },
     {
-     "img": "charlie/img/05028a1346f75cfb0526a98ab383eac1.webp",
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
      "text": "Sur un banc, un gros chat dort au soleil. Enfin… il dort d'un œil. [mischievously] « Mmm, ça sent drôlement bon, par ici… » Xiao Long soupire. « D'accord. » Une tartelette pour le chat. Combien en reste-t-il ? [pause] Quatre !"
     },
     {
-     "img": "charlie/img/05028a1346f75cfb0526a98ab383eac1.webp",
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
      "text": "Près de la fontaine, trois canetons pleurent : [crying] « Coin ! Notre maman est partie chercher à manger, et on a faim ! » Xiao Long a le cœur tout serré. Il coupe une tartelette en trois morceaux. Les canetons arrêtent de pleurer. Combien en reste-t-il ? [pause] Trois !"
     },
     {
-     "img": "charlie/img/7e9595316fb4b2e6d582e213ed34bd6a.webp",
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
      "text": "Dans une ruelle, une vieille tortue traverse, tout doucement. [tired] « Je marche depuis cent ans… je suis tellement fatiguée. » Xiao Long hésite. Il ne lui en reste plus beaucoup… « Tenez, madame la tortue. » Combien en reste-t-il ? [pause] Deux !"
     },
     {
-     "img": "charlie/img/7e9595316fb4b2e6d582e213ed34bd6a.webp",
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
      "text": "Enfin, voilà le grand escalier, et tout en haut, le grand mur de la vieille église. Xiao Long ouvre sa boîte : deux tartelettes. « Une pour maintenant, une pour plus tard. » Mais juste derrière lui, un ventre énorme se met à gargouiller : [drawn out] GRRRROUUUU !"
     },
     {
-     "img": "charlie/img/aed45e104257814f8f64151aa4d3269c.webp",
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
      "text": "[gasps] C'est un lion ! Un lion de danse chinoise, rouge et or, avec des yeux énormes et une crinière de pompons. [tired] « J'ai dansé toute la journée, soupire le lion. Je n'ai plus de forces. » Xiao Long serre sa boîte contre son ventre. C'était sa tartelette pour plus tard…"
     },
     {
-     "img": "charlie/img/aed45e104257814f8f64151aa4d3269c.webp",
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
      "text": "Il pense au pigeon, au chat, aux canetons, à la tortue. Ils avaient l'air si contents. [softly] « Tiens, lion. » Combien en reste-t-il ? [pause] Une seule. UNE. Xiao Long monte les marches, s'assoit tout en haut, ouvre grand la bouche… et entend des petits pas derrière lui."
     },
     {
-     "img": "charlie/img/a6ba29913a73fbd2b57e48b44029ffb1.webp",
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
      "text": "Le pigeon, le chat, les trois canetons, la tortue et le lion arrivent en file indienne. Le lion porte une boîte GÉANTE. [excited] « Pour toi ! On a cherché tous ensemble ! » Xiao Long ouvre la boîte et compte : un, deux, trois, quatre, cinq, six, sept, huit, neuf, dix, onze… [pause] DOUZE tartelettes !"
     },
     {
-     "img": "charlie/img/a6ba29913a73fbd2b57e48b44029ffb1.webp",
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
      "text": "[warmly] Alors tout le monde s'assoit sur les marches, et on partage. Le soleil se couche, les moustaches sont pleines de miettes. Xiao Long dit : « Xièxie ! », merci en chinois. Puis il rit : [laughs] « Quand on donne, ça revient en double ! » [pause] Et chacun se demande avec qui il partagera sa prochaine tartelette. Bonne nuit, les gourmands."
     }
    ]
@@ -203,35 +208,35 @@
      "text": "« Dans une heure », répond la contrôleuse, une grande grue élégante avec une casquette. Une heure ! [sighs] Xiao Long gigote. Il tape des pattes. Il colle son nez à la vitre, le décolle, le recolle. [impatient] « Et maintenant, on arrive quand ? »"
     },
     {
-     "img": "charlie/img/dcf747f1c686d112fa62ed7817de3cf4.webp",
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
      "text": "[laughs softly] La grue rit doucement. « Quand on attend, le temps est lent comme un escargot. Mais on peut le faire courir. Tu connais le jeu \"Je vois quelque chose de…\" ? » Xiao Long secoue la tête. [playfully] « Je commence : je vois quelque chose de… vert ! »"
     },
     {
-     "img": "charlie/img/dcf747f1c686d112fa62ed7817de3cf4.webp",
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
      "text": "Xiao Long regarde partout. Le siège ? Bleu. Son sac ? Rouge. Dehors… [pause] [excited] « Les rizières ! Les champs de riz tout verts ! » « Gagné ! À toi. » Xiao Long réfléchit fort. « Je vois quelque chose de… jaune ! »"
     },
     {
-     "img": "charlie/img/df433827827d316cae21ac9e9a8efeb9.webp",
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
      "text": "[curious] La grue cherche. Le soleil ? Il est caché. Une banane ? Il n'y en a pas. Qu'est-ce qui peut bien être jaune, dans ce train ? [pause] « Je donne ma langue au chat ! » [mischievously] « C'est mon ventre ! » rit Xiao Long, en montrant son ventre doré. [laughs] La grue éclate de rire."
     },
     {
-     "img": "charlie/img/df433827827d316cae21ac9e9a8efeb9.webp",
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
      "text": "Ils jouent encore : quelque chose de blanc, un nuage. Quelque chose de noir, un buffle dans un champ. Quelque chose de rose, le chapeau d'une dame. Le train file, file : kuài, kuài ! En chinois, kuài veut dire vite. [pause] Et Xiao Long ne demande plus rien."
     },
     {
-     "img": "charlie/img/bc64001d2a0ca10a066038dcd90869d8.webp",
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
      "text": "[announcer voice] « Mesdames et messieurs, nous arrivons à Canton ! » [surprised] « Déjà ? » s'étonne Xiao Long. Le temps a couru si vite qu'il ne l'a pas vu passer."
     },
     {
-     "img": "charlie/img/bc64001d2a0ca10a066038dcd90869d8.webp",
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
      "text": "À Canton, il y a une tour immense, toute fine au milieu, qui s'allume la nuit de toutes les couleurs. Mais c'est l'après-midi, et elle est grise. « Elle s'allume quand ? » demande Xiao Long. « Ce soir, quand il fera noir. » [sighs] Encore attendre !"
     },
     {
-     "img": "charlie/img/63afa23864e4c1191a4eee67fddeb153.webp",
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
      "text": "Cette fois, Xiao Long ne gigote pas. Il compte les bateaux sur la rivière : un, deux, trois… Il cherche quelque chose de violet. Il mange une petite brioche. Et le soleil descend, descend, sans qu'il s'en aperçoive… [pause]"
     },
     {
-     "img": "charlie/img/63afa23864e4c1191a4eee67fddeb153.webp",
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
      "text": "[awe] Et soudain, la tour s'allume : rouge, orange, jaune, vert, bleu, violet ! Elle change de couleur comme un arc-en-ciel qui danse. [softly] Xiao Long sourit. Attendre, c'est long. Mais avec un jeu, un ami et un peu de patience, la surprise arrive toujours. Bonne nuit, petit voyageur."
     }
    ]
@@ -250,35 +255,35 @@
      "text": "Xiao Long sort sa loupe. [confident] « Ne vous inquiétez pas, Monsieur Wang. Je mène l'enquête ! » Premier indice : par terre, des traces de pattes rondes, avec des griffes. Trois sortes de traces : des grandes, des moyennes… et des toutes petites."
     },
     {
-     "img": "charlie/img/f125be84f444047598b1aa6a8a8779bc.webp",
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
      "text": "Premier suspect : le tigre blanc. Il a de grandes pattes rondes avec des griffes ! [suspicious] « C'est toi qui as mangé les bambous ? » Le tigre bâille. [laughs] « Des bambous ? Beurk ! Moi, je mange de la viande. Ce n'est pas moi. »"
     },
     {
-     "img": "charlie/img/f125be84f444047598b1aa6a8a8779bc.webp",
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
      "text": "Deuxième suspect : la girafe. Elle est si grande qu'elle peut tout attraper. « C'est toi ? » La girafe mâchouille une feuille. [amused] « Moi, je mange les feuilles tout en haut des arbres. Les bambous, c'est bien trop bas ! Ce n'est pas moi. »"
     },
     {
-     "img": "charlie/img/a8c68e21c846af149b3a667dabc7cf5b.webp",
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
      "text": "Deuxième indice : accroché à une branche, un poil noir. Et juste à côté, un poil blanc. Xiao Long réfléchit très fort. [curious] « Qui est noir et blanc, a des pattes rondes, et adore les bambous ? » [pause]"
     },
     {
-     "img": "charlie/img/a8c68e21c846af149b3a667dabc7cf5b.webp",
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
      "text": "Troisième indice : un bruit. [whispers] Rrrrron… Rrrrron… Ça vient de derrière le rocher. Xiao Long s'approche sur la pointe des pattes. Monsieur Wang aussi. Un, deux, trois… [gasps]"
     },
     {
-     "img": "charlie/img/955d4e8c50ed8f2a66eff2fd05216e9a.webp",
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
      "text": "Trois bébés pandas ! Un grand, un moyen et un tout petit, roulés en boule, le ventre tout rond, des feuilles de bambou plein les moustaches. Ils dorment comme des loirs. [softly] En chinois, panda se dit xióngmāo : ça veut dire « l'ours-chat »."
     },
     {
-     "img": "charlie/img/955d4e8c50ed8f2a66eff2fd05216e9a.webp",
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
      "text": "Le plus petit panda ouvre un œil. Il voit Xiao Long. Il voit Monsieur Wang. Il voit la loupe. [nervously] « Euh… Ce n'est pas nous ? » Mais une feuille de bambou dépasse de sa bouche. [pause] Xiao Long hausse un sourcil. Le petit panda baisse la tête."
     },
     {
-     "img": "charlie/img/51b285cb47dff47b0b40c15f799c7cb4.webp",
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
      "text": "[sad] « C'est nous, avoue le grand panda. On avait trop faim, et on a tout mangé. Pardon, Monsieur Wang. » « Pardon », répètent le moyen et le petit. Monsieur Wang croise les bras… puis il sourit. [warmly] « Merci de dire la vérité. C'est ce qu'il y a de plus courageux. »"
     },
     {
-     "img": "charlie/img/51b285cb47dff47b0b40c15f799c7cb4.webp",
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
      "text": "Alors tout le monde va chercher de nouveaux bambous : le grand panda porte les grands, le moyen porte les moyens, et le petit porte… une feuille. [laughs] Le soir, la montagne de bambous est revenue, et les trois pandas dorment, bien sages, le ventre plein. [softly] Bonne nuit, les petits ours-chats."
     }
    ]
@@ -297,35 +302,35 @@
      "text": "Bip est très gentil. Mais Bip se trompe souvent. Un monsieur demande une glace à la vanille. [playfully] Bip lui sert… une glace au ketchup. Une dame demande deux boules. Bip lui en sert… [pause] onze."
     },
     {
-     "img": "charlie/img/196a0daceefb6dbcd3b114637210fffd.webp",
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
      "text": "Sur un banc, une bande de singes se met à rire très fort : [laughs] « Ha ha ha ! Bip le robot raté ! Bip ne sait rien faire ! » Bip baisse sa tête ronde. Ses yeux deviennent tout petits et tout bleus. [sad] « Bip… Je suis nul. »"
     },
     {
-     "img": "charlie/img/196a0daceefb6dbcd3b114637210fffd.webp",
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
      "text": "Xiao Long arrive à ce moment-là. Il voit Bip, tout triste, et les singes qui rient. Il sent quelque chose de lourd dans son ventre. [pause] Comment se sent-on, quand tout le monde se moque de nous ? Xiao Long, lui, le sait bien."
     },
     {
-     "img": "charlie/img/67653d95059dd8cc34315d8db21ed175.webp",
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
      "text": "Il se plante devant les singes. [firmly] « Arrêtez ! Ce n'est pas drôle pour lui. » Puis il se tourne vers Bip. [softly] « Tu sais, moi aussi je me trompe. Hier, j'ai mis mes chaussures à l'envers. Avant-hier, j'ai dit bonjour à un lampadaire. » [giggles] Bip fait un tout petit bip de rire."
     },
     {
-     "img": "charlie/img/67653d95059dd8cc34315d8db21ed175.webp",
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
      "text": "« Quand on se trompe, on essaie encore, dit Xiao Long. Allez : une glace à la fraise, s'il te plaît. » Bip se concentre. Bzzz… clic… Il sert une glace… à la fraise ! [pause] Mais… carrée."
     },
     {
-     "img": "charlie/img/6d3f9dd992a9888a272efbf5ff5c7d82.webp",
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
      "text": "Bip va se remettre à pleurer. Mais Xiao Long goûte la glace carrée. [surprised] « Mmm ! Elle est géniale ! Elle ne coule pas sur les doigts ! » Les singes s'approchent, tout timides. « Nous aussi, on peut avoir une glace carrée ? »"
     },
     {
-     "img": "charlie/img/6d3f9dd992a9888a272efbf5ff5c7d82.webp",
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
      "text": "[excited] Alors Bip invente : des glaces carrées, des glaces rondes, des glaces en triangle comme son chapeau. Une ronde pour Xiao Long, une carrée pour le grand singe, une triangle pour le petit singe. [pause] Et quelle forme pour la maman singe ? Elle choisit… un rond, comme la lune."
     },
     {
-     "img": "charlie/img/4f04634b94a23ef804483af05eef0617.webp",
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
      "text": "Le grand singe se gratte la tête. [sighs] « Pardon, Bip. On n'aurait pas dû se moquer. » Bip clignote de toutes les couleurs. [happy] « Bip ! Pardon accepté ! » En chinois, robot se dit jīqìrén. Et Bip est maintenant le jīqìrén le plus célèbre du parc."
     },
     {
-     "img": "charlie/img/4f04634b94a23ef804483af05eef0617.webp",
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
      "text": "[softly] Le soir, les tours de Shenzhen s'allument comme des milliers d'étoiles. Bip range son chariot. Aujourd'hui, il a appris une chose : une erreur, ce n'est pas la fin. Parfois, c'est le début d'une invention. Bonne nuit, petit robot."
     }
    ]
@@ -344,35 +349,35 @@
      "text": "[storytelling tone] « Il y a très, très longtemps, Canton était un tout petit village. Cette année-là, il n'avait pas plu depuis des mois. La terre était toute craquelée, le riz ne poussait plus, et les gens avaient faim. [sad] Les enfants ne riaient plus. »"
     },
     {
-     "img": "charlie/img/e6360c5ddb8634cff42faa944f992244.webp",
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
      "text": "« Un matin, on entendit de la musique dans le ciel. [awe] Cinq nuages descendirent, de cinq couleurs : un rouge, un jaune, un vert, un bleu et un blanc. Sur chaque nuage, il y avait un magicien. Et chaque magicien était assis sur… [pause] un mouton ! »"
     },
     {
-     "img": "charlie/img/e6360c5ddb8634cff42faa944f992244.webp",
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
      "text": "« Chaque mouton portait dans sa bouche une gerbe de riz doré. Les gens avaient un peu peur. Mais le magicien rouge leur sourit : [warmly] \"N'ayez pas peur. Nous avons vu que vous aviez faim. Nous venons vous aider.\" »"
     },
     {
-     "img": "charlie/img/5b0497ac42f85cd587f6fc7546d52e5f.webp",
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
      "text": "« Ils donnèrent les gerbes de riz aux villageois. Une, deux, trois, quatre, cinq. \"Plantez ces grains, dirent-ils. Partagez-les avec tout le monde. Et votre village n'aura plus jamais faim.\" » [pause] Xiao Long ouvre de grands yeux. [curious] « Et ils ont partagé ? »"
     },
     {
-     "img": "charlie/img/5b0497ac42f85cd587f6fc7546d52e5f.webp",
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
      "text": "« Oh oui, dit la tortue. Ils plantèrent les grains ensemble. Celui qui avait un champ prêtait sa terre. Celui qui avait des bras portait l'eau. Celle qui avait une belle voix chantait pour donner du courage. [softly] Chacun donnait ce qu'il avait. »"
     },
     {
-     "img": "charlie/img/47af1fed0aa98d69658f8bc7ab130fd6.webp",
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
      "text": "« Et le riz poussa ! Vert, puis doré, si haut qu'il dépassait les enfants. [happy] Les gens mangèrent, ils rirent, ils dansèrent. Le petit village devint une grande ville… la ville qu'on appelle encore aujourd'hui la ville des moutons. »"
     },
     {
-     "img": "charlie/img/47af1fed0aa98d69658f8bc7ab130fd6.webp",
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
      "text": "« Et les magiciens ? » demande Xiao Long. [softly] « Ils remontèrent au ciel. Mais leurs cinq moutons voulurent rester, pour veiller sur la ville. Ils se transformèrent en pierre. Ce sont eux, juste là. » [pause] Combien de moutons veillent sur la ville ? Xiao Long les compte tout bas : un, deux, trois, quatre, cinq."
     },
     {
-     "img": "charlie/img/52cd77892586ed0e0a77af713103512c.webp",
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
      "text": "Le plus petit mouton a un tout petit sourire de pierre. Xiao Long lui caresse la tête. [whispers] « Merci d'avoir aidé le village. » En chinois, mouton se dit yáng. Et Canton s'appelle aussi Yángchéng : la ville des moutons."
     },
     {
-     "img": "charlie/img/52cd77892586ed0e0a77af713103512c.webp",
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
      "text": "Ce soir-là, au restaurant, un petit moineau tout maigre se pose sur la table de Xiao Long. Xiao Long se souvient des magiciens. Il pousse doucement une poignée de riz vers lui. [warmly] Le moineau gazouille de joie. Chacun donne ce qu'il a. [softly] Bonne nuit, petits moutons de pierre."
     }
    ]
@@ -391,35 +396,35 @@
      "text": "Aujourd'hui, Noiraud veut attraper son premier poisson. Il plonge : plouf ! [pause] Rien. Il replonge : plouf ! Rien. Le poisson argenté lui file sous le bec et fait des bulles moqueuses. [playfully] Blou-blou-blou."
     },
     {
-     "img": "charlie/img/0be3435a3421f5c1e0a257e22de36e99.webp",
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
      "text": "Noiraud remonte sur le radeau. Ses plumes se hérissent. Ses yeux deviennent tout petits. Il tape des pattes. [angry] « J'en ai MARRE ! Je suis NUL ! Je ne pêcherai JAMAIS ! » Et il donne un grand coup d'aile dans l'eau. SPLASH ! Tout le monde est mouillé."
     },
     {
-     "img": "charlie/img/0be3435a3421f5c1e0a257e22de36e99.webp",
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
      "text": "Xiao Long, sur le radeau d'à côté, essuie l'eau sur son museau. Il ne gronde pas. Il demande juste, doucement : [softly] « Tu es en colère, hein ? » [angry] « OUI ! » crie Noiraud. Puis, plus bas : [sad] « Oui… J'ai comme du feu dans le ventre. »"
     },
     {
-     "img": "charlie/img/4647be5a4450f588ccfbc291a3a64919.webp",
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
      "text": "« Moi aussi, j'ai du feu dans le ventre quand je suis en colère, dit Xiao Long. Je suis un dragon ! Si je ne fais pas attention, je crache des flammes partout. Alors j'ai un truc : le souffle du dragon. Tu veux essayer ? » Noiraud hésite. Puis il hoche la tête."
     },
     {
-     "img": "charlie/img/4647be5a4450f588ccfbc291a3a64919.webp",
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
      "text": "[slowly] « D'abord, on sent une fleur. » Xiao Long inspire très lentement par le nez. [inhales deeply] Mmmmh. « Ensuite, on souffle sur une bougie, tout doucement. » [exhales slowly] Fffffff. « On recommence. Une fois… deux fois… trois fois. »"
     },
     {
-     "img": "charlie/img/11cb2fd47d68e2e227f34160b3ba3fb0.webp",
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
      "text": "Noiraud sent la fleur. Mmmmh. Il souffle la bougie. Fffffff. Une fois. Deux fois. Trois fois. [pause] Ses plumes se recouchent, une à une. Ses yeux redeviennent ronds. Le feu dans son ventre s'éteint doucement, comme une petite braise."
     },
     {
-     "img": "charlie/img/11cb2fd47d68e2e227f34160b3ba3fb0.webp",
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
      "text": "« Ça va mieux ? » Noiraud fait oui. [softly] « J'étais en colère parce que je voulais réussir tout de suite. » « Tu as le droit d'être en colère, dit Xiao Long. Mais pas d'éclabousser tout le monde. Et maintenant que tu es calme… tu veux réessayer ? »"
     },
     {
-     "img": "charlie/img/99727657bdb2fe933a5929cc8a8c2a62.webp",
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
      "text": "Noiraud regarde l'eau. Il attend. Il ne se presse pas. Il voit le poisson argenté qui tourne, qui tourne… [pause] Et hop ! Il plonge. Plouf ! Il remonte avec le poisson dans le bec ! [excited] Le vieux pêcheur rit et applaudit. En chinois, poisson se dit yú."
     },
     {
-     "img": "charlie/img/99727657bdb2fe933a5929cc8a8c2a62.webp",
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
      "text": "[softly] Au coucher du soleil, la rivière devient toute dorée. Noiraud se sèche les ailes à côté de Xiao Long. « Demain, si je me fâche encore… » [warmly] « …tu sentiras la fleur, et tu souffleras la bougie », sourit Xiao Long. Mmmmh. Fffffff. Bonne nuit, Noiraud."
     }
    ]
@@ -438,35 +443,35 @@
      "text": "Soudain, on entend : [whispers] « Ouhouhouuu… » Xiao Long ouvre un œil. « Ouhouhouuu… » Ça vient du vieux théâtre. [nervously] « C'est… c'est un fantôme ? » Il remonte sa couverture jusqu'aux cornes."
     },
     {
-     "img": "charlie/img/b1f78e8d6bdd1cc96cfe3b4fe0eb317f.webp",
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
      "text": "« Ouhouhouuu… » Le cœur de Xiao Long bat très vite : boum-boum, boum-boum. Il pourrait rester caché sous la couverture toute la nuit. Mais il a envie de savoir. Alors il prend sa dēnglong, sa lanterne rouge, et il dit tout bas : [softly] « Petit dragon, grand courage. »"
     },
     {
-     "img": "charlie/img/b1f78e8d6bdd1cc96cfe3b4fe0eb317f.webp",
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
      "text": "Dans la ruelle, tout est noir. Sur le mur, une ombre IMMENSE apparaît, avec des cornes et une queue à piques ! [gasps] Xiao Long se fige. L'ombre se fige aussi. Il lève une patte. L'ombre lève une patte. [pause] [relieved] « Ah… c'est mon ombre ! Avec la lanterne, elle est géante. »"
     },
     {
-     "img": "charlie/img/9bd2d920df7ef708ec055c6f9f08a6e0.webp",
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
      "text": "Il approche la lanterne du mur : l'ombre devient toute petite. Il l'éloigne : l'ombre redevient géante. Petite, grande, petite, grande… [laughs softly] « Une ombre, ça grandit ou ça rapetisse, mais ça ne fait pas de mal. » Il se sent déjà un peu mieux."
     },
     {
-     "img": "charlie/img/9bd2d920df7ef708ec055c6f9f08a6e0.webp",
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
      "text": "Devant le théâtre, les dragons de pierre ont l'air de le regarder, les yeux brillants sous la lune. « Ouhouhouuu… » Le bruit vient de tout en haut, sous le toit. Xiao Long monte l'escalier en bois. Une marche… crrrr… deux marches… crrrr… [whispers] trois marches…"
     },
     {
-     "img": "charlie/img/73daa3d842399328a593feb223a937c5.webp",
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
      "text": "Sous le toit, dans un coin, deux grands yeux jaunes s'allument ! [gasps] Xiao Long lève sa lanterne et… [pause] [surprised] c'est une chouette ! Une maman chouette, toute ronde, avec trois petits chouettons duveteux serrés contre elle. [softly] « Ouhouhouuu », chante la maman, pour bercer ses petits."
     },
     {
-     "img": "charlie/img/73daa3d842399328a593feb223a937c5.webp",
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
      "text": "[laughs] « Le fantôme, c'était toi ! » rit Xiao Long. La chouette cligne des yeux. « Un fantôme ? Moi ? Je chante la berceuse à mes enfants. Ils ont peur du noir, tu sais. » [surprised] « Des chouettes qui ont peur du noir ? » « Eh oui. Même les chouettes. »"
     },
     {
-     "img": "charlie/img/51a1d18f402d9e73328f51c12743e5d6.webp",
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
      "text": "Les trois chouettons regardent la lanterne avec des yeux émerveillés. Alors Xiao Long a une idée. Il accroche sa lanterne à une poutre, tout près du nid. [softly] Une petite lumière rouge, toute douce. Les chouettons ferment les yeux. Un, deux, trois."
     },
     {
-     "img": "charlie/img/51a1d18f402d9e73328f51c12743e5d6.webp",
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
      "text": "Xiao Long redescend et se glisse sous sa couverture. Dehors, on entend encore : « Ouhouhouuu… » [warmly] Mais maintenant, ce n'est plus un fantôme. C'est une berceuse. Dans le noir, ce qu'on imagine fait souvent bien plus peur que ce qui est vraiment là. [softly] Bonne nuit, petits chouettons."
     }
    ]
@@ -485,35 +490,35 @@
      "text": "[sad] « Je ne veux pas partir, dit Xiao Long. Je veux rester avec la rivière, les montagnes, les radeaux et les cormorans. » Une grosse larme roule sur son museau. Puis une deuxième. Il se sent tout lourd et tout gris dedans."
     },
     {
-     "img": "charlie/img/b4255b4120bbe635dc4337d2f750f0b1.webp",
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
      "text": "La vieille tortue de la rivière s'approche. [warmly] « Tu es triste ? » « Oui. » « C'est normal, quand on aime un endroit. La tristesse, c'est l'amour qui n'a pas envie de dire au revoir. » Xiao Long renifle. [sad] « Mais je vais tout oublier ! »"
     },
     {
-     "img": "charlie/img/b4255b4120bbe635dc4337d2f750f0b1.webp",
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
      "text": "« Pas si tu fais une boîte à souvenirs », dit la tortue. Elle lui donne une petite boîte en bambou. [softly] « Mets dedans quelque chose de chaque endroit que tu aimes. Comme ça, tu emporteras un peu d'ici avec toi. »"
     },
     {
-     "img": "charlie/img/77cc6e2e9381525dcf3f16c1303569a0.webp",
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
      "text": "Xiao Long cherche. Sur le chemin, il trouve un galet tout lisse et tout doux. Dans la boîte. Au bord de l'eau, une plume noire de cormoran. Dans la boîte. Sous un arbre, une feuille en forme de cœur. Dans la boîte. [pause] Qu'est-ce qui pourrait encore aller dans la boîte ?"
     },
     {
-     "img": "charlie/img/77cc6e2e9381525dcf3f16c1303569a0.webp",
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
      "text": "Il ajoute un grain de riz du petit-déjeuner, un ticket de radeau, et un dessin des montagnes en pain de sucre, fait avec ses griffes. Il referme la boîte. [softly] Elle est petite. Mais elle est pleine."
     },
     {
-     "img": "charlie/img/0faf3f604c0870ddcc23eb734c25a8e2.webp",
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
      "text": "Alors Xiao Long se tourne vers la rivière et dit tout haut : « Zàijiàn, rivière ! Zàijiàn, montagnes ! » En chinois, zàijiàn veut dire au revoir. Mais mot à mot, ça veut dire : [warmly] « à se revoir ». Ce n'est pas un adieu. C'est une promesse."
     },
     {
-     "img": "charlie/img/0faf3f604c0870ddcc23eb734c25a8e2.webp",
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
      "text": "L'après-midi, Xiao Long monte dans le grand train blanc pour rentrer à Hong Kong. Le train entre dans un tunnel : tout devient noir ! [playfully] « Tunnel ! Un ! » Puis le jour revient. Et encore un tunnel ! « Deux ! » [pause] Combien de tunnels avant Hong Kong ?"
     },
     {
-     "img": "charlie/img/e84e56512adfec4ec780de80fea1154d.webp",
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
      "text": "[excited] « Trois ! Quatre ! Cinq ! » Xiao Long compte, la boîte serrée contre lui. « Six ! Sept ! Huit ! Neuf ! » Il ne pleure plus. Il rit à chaque tunnel. « DIX ! » Et voilà les tours de Hong Kong qui brillent au loin."
     },
     {
-     "img": "charlie/img/e84e56512adfec4ec780de80fea1154d.webp",
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
      "text": "[softly] Le soir, dans son lit, Xiao Long ouvre la boîte. Il touche le galet, la plume, la feuille. Et il revoit tout : le soleil rose, la rivière, les montagnes. La tristesse est encore un peu là. Mais elle est toute petite, maintenant, et pleine de jolies choses. Bonne nuit, petite boîte à souvenirs."
     }
    ]
@@ -532,35 +537,35 @@
      "text": "Xiao Long court jusqu'à l'entrée. Là, il y a une girafe en bois qui tient une règle, et un grand ours en uniforme. « Pour monter, il faut être aussi grand que la girafe. » Xiao Long se met tout droit. Il tend le cou. Il se met sur la pointe des pattes. [pause] Il lui manque… une tête."
     },
     {
-     "img": "charlie/img/63d3ed5786f9d1c0cd7f272c804e72d1.webp",
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
      "text": "[kindly] « Trop petit, désolé », dit l'ours gentiment. [angry] « Je ne suis PAS trop petit ! » crie Xiao Long. Il tape des pattes. Il croise les bras. Il fait la plus grosse bouderie de toute l'histoire des dragons. [grumbling] Hmpf !"
     },
     {
-     "img": "charlie/img/63d3ed5786f9d1c0cd7f272c804e72d1.webp",
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
      "text": "Xiao Long boude sur un banc. Il a du feu dans le ventre. Il a envie de crier encore. [pause] Et puis il se souvient de Noiraud, le cormoran. Il sent la fleur… [inhales deeply] Mmmmh. Il souffle la bougie… [exhales slowly] Fffffff. Une fois. Deux fois. Trois fois. Le feu redescend un peu."
     },
     {
-     "img": "charlie/img/d0b48e13616686c559d29198bc663dcf.webp",
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
      "text": "À côté de lui, un petit éléphant pleure aussi. [sad] « Moi aussi, je suis trop petit pour la Montagne Fusée. » Xiao Long le regarde. Ils sont tous les deux tout petits, et tous les deux tout tristes. [curious] « On cherche un manège pour les petits ? »"
     },
     {
-     "img": "charlie/img/d0b48e13616686c559d29198bc663dcf.webp",
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
      "text": "Ils trouvent les tasses qui tournent. Elles tournent, tournent, tournent… [laughs] si vite que les oreilles du petit éléphant s'envolent comme des ailes ! Puis le train de la forêt, qui fait tchou-tchou. Puis le carrousel, avec ses chevaux qui montent et qui descendent."
     },
     {
-     "img": "charlie/img/bd3aee1286cf810ce4621fdcb07575f4.webp",
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
      "text": "[laughing] Xiao Long rit tellement qu'il en a le hoquet. Hic ! « Les manèges des petits, c'est génial ! » Le petit éléphant hoche la tête. Hic ! Lui aussi a le hoquet. En chinois, content se dit kāixīn : ça veut dire « le cœur ouvert »."
     },
     {
-     "img": "charlie/img/bd3aee1286cf810ce4621fdcb07575f4.webp",
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
      "text": "L'après-midi, c'est la grande parade. Et là, surprise : [pause] pour bien voir une parade, être petit, c'est parfait ! Les petits sont devant, tout devant. Les chars passent, les danseurs font coucou, et un nuage de confettis tombe pile sur Xiao Long."
     },
     {
-     "img": "charlie/img/be246631f75cd812c9f4077b46c9b08a.webp",
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
      "text": "Le soir, Xiao Long repasse devant la girafe en bois. Il se mesure encore. Toujours une tête de trop peu. Mais cette fois, il ne boude pas. [warmly] « Un jour, je serai assez grand. Et ce jour-là, je reviendrai. » L'ours lui fait un clin d'œil : « Je t'attendrai. »"
     },
     {
-     "img": "charlie/img/be246631f75cd812c9f4077b46c9b08a.webp",
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
      "text": "Au-dessus du château, les feux d'artifice éclatent : des étoiles, des fleurs, des cœurs. Xiao Long et le petit éléphant les regardent, assis sur le même banc. [softly] Être petit, parfois, ça énerve. Mais ça a aussi ses trésors. Bonne nuit, petit dragon au cœur ouvert."
     }
    ]
@@ -579,35 +584,35 @@
      "text": "[excited] Un trésor ! Xiao Long monte dans une petite cabine qui vole au-dessus de la mer, accrochée à un câble. Tout en bas, il voit des bateaux, des îles et des avions. [awe] Et au loin, sur la montagne, un immense Bouddha assis, tout en bronze, qui sourit au ciel."
     },
     {
-     "img": "charlie/img/80fad44c7b2cf187ccd1f05db7277a11.webp",
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
      "text": "Au pied du grand escalier, Xiao Long compte les marches. Il y en a beaucoup, beaucoup, beaucoup : plus de deux cents ! [determined] « Un trésor, ça se mérite », souffle-t-il. Et il commence à monter. Une marche, deux marches, trois marches…"
     },
     {
-     "img": "charlie/img/80fad44c7b2cf187ccd1f05db7277a11.webp",
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
      "text": "À mi-chemin, il s'arrête pour souffler. Et là, sur une marche, il trouve… [pause] une plume rose. [curious] Une plume de flamant ! Il se souvient de son tout premier jour : la tortue, le flamant tout mouillé, et son premier nǐ hǎo."
     },
     {
-     "img": "charlie/img/c838884093895e9727eb23d4f7bedd99.webp",
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
      "text": "Un peu plus haut, il entend : [playfully] ding-ding ! Une petite cloche est accrochée à la rambarde. Ding-Ding, le petit tram courageux ! Sur la marche suivante, une goutte de peinture arc-en-ciel : le petit nuage ! Puis une miette de tartelette dorée. [pause] Qui a bien pu laisser tous ces indices ?"
     },
     {
-     "img": "charlie/img/c838884093895e9727eb23d4f7bedd99.webp",
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
      "text": "Marche après marche, les souvenirs reviennent : une feuille de bambou pour les trois pandas, une petite glace carrée pour Bip, une plume noire pour Noiraud, une petite lanterne rouge pour les chouettons. [softly] Le cœur de Xiao Long devient tout chaud."
     },
     {
-     "img": "charlie/img/1b5093340b8662883c7224eb34a7f751.webp",
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
      "text": "Tout en haut, devant le grand Bouddha, il y a un coffre. Xiao Long l'ouvre, le cœur battant… [pause] Le coffre est vide. Juste un miroir, au fond. Xiao Long y voit son reflet. [surprised] « Vide ? Mais… où est le trésor ? »"
     },
     {
-     "img": "charlie/img/1b5093340b8662883c7224eb34a7f751.webp",
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
      "text": "Alors il entend des voix derrière lui. Il se retourne. [excited] Ils sont tous là ! L'écureuil, la tortue, le flamant, Ding-Ding, le petit nuage, le lion de danse, la grue du train, les trois pandas, Bip, Noiraud, la maman chouette, le petit éléphant… [shouts] « Surprise ! »"
     },
     {
-     "img": "charlie/img/dbed0856384cf81cec55117a53cbba2d.webp",
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
      "text": "« C'est nous qui avons laissé les indices ! » dit l'écureuil. [warmly] « Le trésor, c'est tout ce que tu as vécu, dit Noiraud. Et les amis que tu t'es faits. » Xiao Long a les yeux qui brillent. [pause] Combien d'amis s'est-il faits pendant ce voyage ? Tellement qu'il n'arrive plus à les compter. En chinois, ami se dit péngyou."
     },
     {
-     "img": "charlie/img/dbed0856384cf81cec55117a53cbba2d.webp",
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
      "text": "[softly] Le soir, dans l'avion, Xiao Long regarde par le hublot. En bas, Hong Kong brille de mille lumières. Il pose la patte sur son cœur et dit merci, xièxie, à tous ses péngyou. [warmly] Le plus beau trésor d'un voyage ne tient pas dans un coffre. Il tient dans le cœur. Bonne nuit, et zàijiàn."
     }
    ]

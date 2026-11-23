@@ -213,3 +213,9 @@
 .abp-sais{min-width:100px;min-height:100px}
 .abp-sais.long{width:150px;height:auto;min-height:104px;border-radius:52px;padding:12px 16px}
 .board .abp .abp-x{border-color:#E7CF98!important;border-radius:14px}
+
+/* ---------------------------------------------------------------- HISTOIRES : bandeau de texte plus discret, en haut si les personnages sont en bas */
+.board .abs-panel{left:130px;right:130px;bottom:22px;padding:20px 34px 14px;border-radius:26px;background:rgba(251,245,233,.94)}
+.board .abs-txt p{font-size:23px;line-height:1.42}
+.board .abs.top .abs-panel{top:22px;bottom:auto}
+.board .abs.top .abs-seal{top:auto;bottom:-58px;left:-30px}

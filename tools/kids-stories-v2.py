@@ -3,6 +3,7 @@
 # Images : en attendant celles de ChatGPT (travelos/kids/histoires/jNN-pMM.webp), on reprend celles du carnet.
 import json, os, re, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+POS = json.load(open(os.path.join(ROOT, "tools/histoires-pos.json")))
 md = html.unescape(open(os.path.join(ROOT, "tools/histoires-v2.md")).read()).replace("\\[", "[").replace("\\]", "]")
 path = os.path.join(ROOT, "travelos/kids/kids.json")
 k = json.load(open(path))
@@ -18,10 +19,12 @@ for sec in re.split(r"\n## ", md):
     out = []
     for i, t in enumerate(pages):
         own = f"travelos/kids/histoires/j{day:02d}-p{i+1:02d}.webp"
-        img = own[len("travelos/"):] if os.path.exists(os.path.join(ROOT, own)) else (ph[min(i // 2, len(ph) - 1)] if ph else None)
+        pos = POS.get(f"j{day:02d}-p{i+1:02d}")
+        img = own if os.path.exists(os.path.join(ROOT, own)) else (ph[min(i // 2, len(ph) - 1)] if ph else None)
         au = f"travelos/kids/audio/j{day:02d}-p{i+1:02d}.mp3"
         pg = {"img": img, "text": t.strip()}
-        if os.path.exists(os.path.join(ROOT, au)): pg["audio"] = au[len("travelos/"):]
+        if os.path.exists(os.path.join(ROOT, au)): pg["audio"] = au
+        if pos and os.path.exists(os.path.join(ROOT, own)): pg["pos"] = pos
         out.append(pg)
     S.append({"day": day, "title": f"Jour {day} · {title}", "cover": out[0]["img"], "pages": out})
 k["stories"] = S
