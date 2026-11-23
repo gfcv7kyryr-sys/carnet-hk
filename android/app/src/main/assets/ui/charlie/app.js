@@ -533,42 +533,43 @@ function setView(v, html, title) {
   if (!kv.hidden) { kv.innerHTML = html; kv.scrollTop = 0; }
   if (title != null) $('#ptitle').textContent = title;
 }
-const door = (k, t, src, r, tape) => `<button class="k-pola" data-go="${k}" style="--r:${r}deg"><i class="k-tape t${tape}"></i><span class="k-ph"><img src="${src}" alt=""></span><b>${t}</b></button>`;
-const sealed = (day, r) => `<button class="k-env" data-lock style="--r:${r}deg"><span class="k-seal">${day}</span><small>${T ? esc(T.doorText(day)) : ''}</small></button>`;
+const MED = { carnet: ['#C8341F', '#D9A441'], stories: ['#2B3A67', '#D9A441'], color: ['#2F7D6B', '#D9A441'], songs: ['#D9A441', '#C8341F'] };
+const door = (k, t, src) => `<button class="ab-door" data-go="${k}"><span class="ab-med" style="--m:${MED[k][0]};--r:${MED[k][1]}"><img src="${src}" alt=""></span><b>${t}</b></button>`;
+const sealed = (day) => `<button class="ab-item locked" data-lock><span class="ab-moon lock"><b>${day}</b></span><span class="ab-lbl">Jour ${day}</span><small>${T ? esc(T.doorText(day)) : ''}</small></button>`;
 const open = day => !day || !T || T.dayOpen(day);
+const lanterns = n => `<span class="ab-lant" aria-hidden="true">${'<i></i>'.repeat(n)}</span>`;
 function home() {
   stopBook(); stopSong();
   const n = T ? T.daysToTrip() : 0, d = T ? T.tripDay() : 0;
   const st = PK().kids?.stories || [], today = st.filter(s => open(s.day)).pop();
-  const count = n > 0 ? `Encore <b>${n}</b> dodo${n > 1 ? 's' : ''} avant Hong Kong` : d ? `Jour <b>${d}</b> du voyage` : 'Le voyage est fini… les souvenirs restent !';
-  setView('home', `<div class="ksheet"><section class="kp">
-      <h1 class="k-title"><span>Le carnet de Charlie</span></h1>
-      <p class="k-hand">Hong Kong · Macao · Chine du Sud — 2027</p>
-      <img class="k-xl" src="img/14566025ac14b0d813a10bb276b2ba4d.webp" alt="">
-      <div class="k-garland"><img src="img/3dd109bb36f32854f2401313b338739e.webp" alt=""></div>
-      <p class="k-count">${count}</p></section>
-    <section class="kp grid4">
-      ${door('carnet', 'Mon carnet', 'thumbs/Couverture.webp', -3, 'A')}
-      ${door('stories', 'Histoire du soir', today ? im(today.cover) : 'img/1a6e3ec341e432f8fbe1450b9930caca.webp', 2, 'B')}
-      ${door('color', 'Coloriage', 'img/60c2c2f5285921f841870ec5b742c5bf.webp', 2.5, 'C')}
-      ${door('songs', 'Chansons', '../album/disque-8.webp', -2, 'D')}
-    </section></div>`, 'Le carnet de Charlie');
+  const count = n > 0 ? `Encore ${n} dodo${n > 1 ? 's' : ''}` : d ? `Jour ${d} du voyage` : 'Les souvenirs du voyage';
+  const bg = today ? im(today.cover) : 'img/1a922b37bd6e98f95ddced40cd9ed56a.webp';
+  setView('home', `<div class="ab-home"><img class="ab-bg" src="${bg}" alt="">
+      <div class="ab-titlecard"><span class="ab-kicker">Hong Kong · Macao · Chine du Sud</span><h1>Le carnet de Charlie</h1></div>
+      <div class="ab-count">${lanterns(3)}<span>${count}</span></div>
+      <div class="ab-band">
+        ${door('carnet', 'Mon carnet', 'img/627bfa2f435e25229f1a57369e466e56.webp')}
+        ${door('stories', 'Histoire du soir', 'img/1a6e3ec341e432f8fbe1450b9930caca.webp')}
+        ${door('color', 'Coloriage', 'img/60c2c2f5285921f841870ec5b742c5bf.webp')}
+        ${door('songs', 'Chansons', 'img/48e3c5d324be8f1c52b78c3ddab42e36.webp')}
+      </div></div>`, '');
 }
 function openCarnet() { stopSong(); P = CP; setView('carnet', '', null); go(Math.min(+(S.seen.last || 0), CP.length - 1), +(S.seen.half || 0)); }
 function stories() {
   stopBook(); stopSong();
   const st = PK().kids?.stories || [];
-  setView('stories', `<div class="ksheet"><section class="kp wide"><h1 class="k-title"><span>Les histoires de Xiao Long</span></h1>
-    <p class="k-hand">Une nouvelle histoire s'ouvre chaque soir du voyage.</p>
-    <div class="k-grid">${st.map((s, i) => open(s.day) ? `<button class="k-pola sm" data-story="${i}" style="--r:${rot(i)}deg"><i class="k-tape"></i><span class="k-ph"><img src="${im(s.cover)}" alt="" loading="lazy"></span><b>Jour ${s.day}</b></button>` : sealed(s.day, rot(i))).join('')}</div></section></div>`, 'Histoires');
+  setView('stories', `<div class="ab-page"><header class="ab-head"><span class="ab-kicker">Une nouvelle histoire chaque soir du voyage</span><h1>Les histoires de Xiao Long</h1></header>
+    <div class="ab-grid">${st.map((s, i) => open(s.day) ? `<button class="ab-item" data-story="${i}"><span class="ab-moon"><img src="${im(s.cover)}" alt="" loading="lazy"></span><span class="ab-lbl">Jour ${s.day}</span><small>${esc(s.title.replace(/^Jour \d+ · /, ''))}</small></button>` : sealed(s.day)).join('')}</div></div>`, 'Histoires');
 }
 /* Une histoire = un petit livre : planches 1118 × 794 (image à gauche, texte à droite), même moteur que le carnet. */
 const clean = t => t.replace(/\[[^\]]*\]\s*/g, '').replace(/\s+([,.!?…»])/g, ' $1').trim();
 function storyBoard(s, p, n) {
-  const last = n === s.pages.length - 1, name = s.title.replace(/^Jour \d+ · /, '');
-  const end = last ? `<div class="sb-end"><span class="k-fin">Fin</span>${T && T.eveningDodo() ? '<button class="kbtn" data-kact="sleep">Bonne nuit, Xiao Long</button>' : ''}</div>` : '';
-  return `<div class="sbk"><div class="sbk-l"><div class="sbk-pola" style="--r:${n % 2 ? 2 : -2}deg"><i class="k-tape t${'ABCD'[n % 4]}"></i><img src="${im(p.img)}" alt=""></div><span class="sbk-n">${n + 1}</span></div>
-    <div class="sbk-r">${n === 0 ? `<div class="sbk-tag">Jour ${s.day}</div><h2 class="k-title sm"><span>${esc(name)}</span></h2>` : ''}<div class="sbk-txt">${clean(p.text).split('\n').map(l => `<p>${esc(l)}</p>`).join('')}</div>${end}</div></div>`;
+  const last = n === s.pages.length - 1, total = s.pages.length;
+  const end = last ? `<div class="abs-end"><span class="abs-fin">Fin</span>${T && T.eveningDodo() ? '<button class="kbtn" data-kact="sleep">Bonne nuit, Xiao Long</button>' : ''}</div>` : '';
+  const dots = Array.from({ length: total }, (_, k) => `<i class="${k === n ? 'on' : ''}"></i>`).join('');
+  return `<div class="abs"><img class="abs-img" src="${im(p.img)}" alt="">
+    <div class="abs-panel">${n === 0 ? `<span class="abs-seal"><small>JOUR</small><b>${s.day}</b></span>` : ''}
+      <div class="abs-txt">${clean(p.text).split('\n').map(l => `<p>${esc(l)}</p>`).join('')}</div>${end}<div class="abs-dots">${dots}</div></div></div>`;
 }
 function openStory(i) {
   const s = (PK().kids?.stories || [])[i]; if (!s || !open(s.day)) return;
@@ -588,9 +589,8 @@ function colors() {
   stopBook(); stopSong();
   const cl = PK().kids?.coloriages || [];
   colItems = [{ id: 'blank', title: 'Page blanche' }].concat(cl.map((c, n) => ({ id: 'c' + n, title: c.title, src: c.src, day: c.day })));
-  setView('color', `<div class="ksheet"><section class="kp wide"><h1 class="k-title"><span>Coloriages</span></h1>
-    <p class="k-hand">Un nouveau dessin chaque jour du voyage. Et plein d'autocollants !</p>
-    <div class="k-grid">${colItems.map((c, i) => open(c.day) ? `<button class="k-pola sm" data-col="${i}" style="--r:${rot(i)}deg"><i class="k-tape"></i><span class="k-ph paper"><img class="mine" data-colk="col:${c.id}" alt="">${c.src ? `<img src="${im(c.src)}" alt="">` : ''}</span><b>${esc(c.title)}</b></button>` : sealed(c.day, rot(i))).join('')}</div></section></div>`, 'Coloriages');
+  setView('color', `<div class="ab-page"><header class="ab-head"><span class="ab-kicker">Un nouveau dessin chaque jour, et plein d'autocollants</span><h1>Coloriages</h1></header>
+    <div class="ab-grid">${colItems.map((c, i) => open(c.day) ? `<button class="ab-item" data-col="${i}"><span class="ab-sheet"><img class="mine" data-colk="col:${c.id}" alt="">${c.src ? `<img src="${im(c.src)}" alt="">` : ''}</span><span class="ab-lbl">${esc(c.title)}</span></button>` : sealed(c.day)).join('')}</div></div>`, 'Coloriages');
   $$('[data-colk]', kv).forEach(async el => { const u = S.media[el.dataset.colk] && await mediaURL(el.dataset.colk); if (u) el.src = u; else el.remove(); });
 }
 function openColor(i) { const c = colItems[i]; if (!c) return; openDraw({ key: 'col:' + c.id, title: c.title, w: 1500, h: 1000, lines: c.src ? im(c.src) : null, stickers: true, onDone: colors }); }
@@ -600,10 +600,10 @@ function songsView() {
   stopBook();
   const a = PK().album, ch = a && (a.chapters || []).find(c => /Xiao Long/.test(c.title));
   songs = ch ? ch.tracks : [];
-  setView('songs', `<div class="ksheet"><section class="kp"><h1 class="k-title"><span>Les chansons de Xiao Long</span></h1>
-      <div class="k-pola big" style="--r:-3deg"><i class="k-tape tB"></i><span class="k-ph"><img src="../${esc(ch?.jacket || 'album/disque-8.webp')}" alt=""></span><b>Xiao Long</b></div></section>
-    <section class="kp"><div class="k-tracks">${songs.map((t, i) => `<button class="k-ticket" data-song="${i}" style="--r:${[-1.5, 1, -.5][i % 3]}deg"><span class="k-play"></span><b>${esc(t.title)}</b><small>${Math.floor(t.seconds / 60)}:${String(t.seconds % 60).padStart(2, '0')}</small></button>`).join('') || '<p class="k-hand">Les chansons arrivent bientôt.</p>'}</div>
-      <div class="k-player"${song < 0 ? ' hidden' : ''}><button class="k-big" data-sp aria-label="Lecture ou pause"></button><div class="k-bar"><i></i></div></div></section></div>`, 'Chansons');
+  setView('songs', `<div class="ab-page ab-songs"><div class="ab-songs-l"><span class="ab-moon big"><img src="../${esc(ch?.jacket || 'album/disque-8.webp')}" alt=""></span></div>
+    <div class="ab-songs-r"><header class="ab-head left"><span class="ab-kicker">L'album du voyage</span><h1>Les chansons de Xiao Long</h1></header>
+      <div class="ab-tracks">${songs.map((t, i) => `<button class="ab-track" data-song="${i}"><span class="ab-play"></span><b>${esc(t.title)}</b><small>${Math.floor(t.seconds / 60)}:${String(t.seconds % 60).padStart(2, '0')}</small></button>`).join('') || '<p class="ab-kicker">Les chansons arrivent bientôt.</p>'}</div>
+      <div class="k-player"${song < 0 ? ' hidden' : ''}><button class="k-big" data-sp aria-label="Lecture ou pause"></button><div class="k-bar"><i></i></div></div></div></div>`, 'Chansons');
   songUI();
 }
 function playSong(i) { const t = songs[i]; if (!t) return; if (T) T.pauseParent(); if (song !== i) { song = i; au.src = '/pack/' + t.src; } au.play().catch(() => {}); songUI(); }

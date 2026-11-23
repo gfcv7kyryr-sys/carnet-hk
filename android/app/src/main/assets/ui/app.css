@@ -970,3 +970,10 @@ body.mp-on #view{padding-bottom:96px}
 .kids-dodo{background:radial-gradient(circle at 50% 38%,#3A4C80,#2B3A67 55%,#1E2A4C)}
 .kids-dodo h2{font-family:"Caveat Brush",cursive}
 .kids-dodo p{font-family:"Caveat",cursive;font-size:1.8rem}
+/* Mode dodo — style A+B (Fraunces, papier de riz, or) */
+@font-face{font-family:"Fraunces";src:url("charlie/fonts/Fraunces.woff2") format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Fraunces";src:url("charlie/fonts/Fraunces-Italic.woff2") format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
+.kids-dodo{color:#FBF5E9}
+.kids-dodo h2{font-family:"Fraunces",serif;font-weight:700;letter-spacing:-.01em;color:#FBF5E9}
+.kids-dodo h2::after{content:"";display:block;width:60%;margin:10px auto 0;border-bottom:3px solid #D9A441}
+.kids-dodo p{font-family:"Fraunces",serif;font-style:italic;font-size:1.6rem;color:#F3E6CC}
