@@ -5,18 +5,11 @@
 · sz (cache)
 · xp3 (cache)
 · hy (cache)
-  gares via overpass-api.de : HTTP Error 502: Bad Gateway (1 s)
-  gares via z.overpass-api.de : HTTP Error 504: Gateway Timeout (46 s)
-  gares via lz4.overpass-api.de : HTTP Error 502: Bad Gateway (1 s)
-  gares via maps.mail.ru : HTTP Error 504: Gateway Timeout (48 s)
-  gares via overpass.nchc.org.tw : <urlopen error [Errno -2] Name or service not known> (0 s)
-  gares via overpass.private.coffee : HTTP Error 504: Gateway Timeout (139 s)
-  gares via overpass.kumi.systems : HTTP Error 502: Bad Gateway (266 s)
-· gares : 1364 éléments, 0 Mo, 62 s (overpass-api.de)
+· gares (cache)
 · rail (cache)
 total 141952
 drwxr-xr-x  2 runner runner     4096 Nov 23 11:40 .
-drwxr-xr-x 11 runner runner     4096 Nov 23 11:29 ..
+drwxr-xr-x 11 runner runner     4096 Nov 23 12:18 ..
 -rw-r--r--  1 runner runner   949324 Nov 23 11:40 gares.overpass.json
 -rw-r--r--  1 runner runner 36200088 Nov 23 10:55 gz.overpass.json
 -rw-r--r--  1 runner runner  5250225 Nov 23 10:51 hk-lantau.overpass.json
