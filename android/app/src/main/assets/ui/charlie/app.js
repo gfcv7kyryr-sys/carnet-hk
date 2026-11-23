@@ -253,8 +253,8 @@ function enhance(b, p) {
 }
 function fitAbp(el) {
   /* on part d'une mise en page généreuse (photo et texte plus grands) et on resserre jusqu'à ce que tout tienne */
-  let s = 1.3; el.style.setProperty('--s', s);
-  while (el.scrollHeight > el.clientHeight + 1 && s > 0.6) { s = +(s - 0.03).toFixed(2); el.style.setProperty('--s', s); }
+  let s = 1; el.style.setProperty('--s', s);
+  while (el.scrollHeight > el.clientHeight + 1 && s > 0.6) { s = +(s - 0.04).toFixed(2); el.style.setProperty('--s', s); }
 }
 
 function photoZone(el, k) {

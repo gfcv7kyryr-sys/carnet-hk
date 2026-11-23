@@ -14,17 +14,19 @@ def fam(m):
         if st[-1:] in ('"', '}'): return st[:-1].rstrip(";") + extra + st[-1]
         return st + extra
     if "'Caveat Brush'" in style:
-        pass   # titres : Caveat Brush, comme le livre imprimé
+        big = re.search(r"font-size:\s*(\d+)", style); big = big and int(big.group(1)) >= 40
+        style = style.replace("'Caveat Brush',cursive", "'Fraunces',serif")
+        style = scale(style, 0.74, ";font-weight:700;letter-spacing:-0.01em" + (";color:#C8341F" if big else ""))
     elif "'Caveat'" in style:
-        style = style.replace("'Caveat',cursive", "'Dancing Script',cursive")
-        style = scale(style, 0.82, ";font-weight:700")
+        style = style.replace("'Caveat',cursive", "'Fraunces',serif")
+        style = scale(style, 0.8, ";font-style:italic;font-variation-settings:'opsz' 14")
     elif "'Special Elite'" in style:
-        style = style.replace("'Special Elite',monospace", "'Josefin Sans',sans-serif")
-        style = scale(style, 0.9, ";font-weight:700;letter-spacing:.12em;text-transform:uppercase")
-    style = style.replace("'Andika',sans-serif", "'Lora',serif")
+        style = style.replace("'Special Elite',monospace", "'Nunito',sans-serif")
+        style = scale(style, 0.92, ";font-weight:800;letter-spacing:.08em;text-transform:uppercase")
+    style = style.replace("'Andika',sans-serif", "'Nunito',sans-serif")
     return style
 
-KF = {"Caveat Brush": 1.0, "Caveat'": 0.82, "Special Elite": 0.9}
+KF = {"Caveat Brush": 0.74, "Caveat'": 0.8, "Special Elite": 0.92}
 UL = ";text-decoration:underline;text-decoration-color:#D9A441;text-decoration-thickness:3px;text-underline-offset:7px;text-decoration-skip-ink:none"
 
 def restyle(h, css=""):
@@ -41,13 +43,13 @@ def restyle(h, css=""):
     # polices (chaque attribut style est traité en entier)
     h = re.sub(r'style="[^"]*"', fam, h)
     # papier de riz, rouge laqué, kraft doré
-    h = h.replace("#F7F0E1", "#FAF5EA").replace("#C23B2C", "#C8102E").replace("#E8D3A8", "#F3E6CC")
+    h = h.replace("#F7F0E1", "#FBF5E9").replace("#C23B2C", "#C8341F").replace("#E8D3A8", "#F3E6CC")
     # cadres photo et cartes : droits, avec un liseré doré (fini le scotch de travers)
     def card(m):
         st = m.group(0)
         if re.search(r"background:\s*#(FFF|FFFCF5)\b", st) and "box-shadow" in st:
             st = re.sub(r"transform:\s*rotate\([^)]*\)", "transform:none", st)
-            st = st.replace("box-shadow:0 3px 10px rgba(59,47,40,.25)", "box-shadow:0 6px 16px rgba(80,40,10,.16)")
+            st = st.replace("box-shadow:0 3px 10px rgba(59,47,40,.25)", "box-shadow:inset 0 0 0 2px #D9A441,0 6px 16px rgba(80,40,10,.18)")
         return st
     h = re.sub(r'style="[^"]*"', card, h)
     return h
@@ -61,6 +63,6 @@ for n, p in enumerate(d["pages"]):
     p["html"] = restyle(p["html"], p.get("css", "") if n else "")  # couverture : tailles d'origine
     css = p.get("css", "")
     css = re.sub(r"\{[^}]*\}", fam_block, css)
-    p["css"] = css.replace("#F7F0E1", "#FAF5EA").replace("#C23B2C", "#C8102E").replace("#E8D3A8", "#F3E6CC")
+    p["css"] = css.replace("#F7F0E1", "#FBF5E9").replace("#C23B2C", "#C8341F").replace("#E8D3A8", "#F3E6CC")
 open(os.path.join(ROOT, "android/app/src/main/assets/ui/charlie/pages.js"), "w").write(head + json.dumps(d, ensure_ascii=False, separators=(",", ":")) + tail)
 print("ok", len(d["pages"]), "pages")
