@@ -1,4 +1,8 @@
 {
-  "_doc": "Position du bandeau de texte des histoires quand l'image a ses personnages en bas : top (sinon en bas). Clé jNN-pMM.",
-  "j01-p01": "top", "j01-p07": "top", "j01-p08": "top", "j01-p09": "top", "j01-p10": "top"
+  "_doc": "Position du bandeau de texte des histoires (clé jNN-pMM) : top = en haut ; wide = en bas, sur toute la largeur (pour cacher un défaut de l'image) ; sinon en bas, centré.",
+  "j01-p01": "top",
+  "j01-p09": "top",
+  "j01-p10": "top",
+  "j01-p07": "wide",
+  "j01-p08": "wide"
 }

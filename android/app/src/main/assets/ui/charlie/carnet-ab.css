@@ -219,3 +219,6 @@
 .board .abs-txt p{font-size:23px;line-height:1.42}
 .board .abs.top .abs-panel{top:22px;bottom:auto}
 .board .abs.top .abs-seal{top:auto;bottom:-58px;left:-30px}
+.board .abs.wide .abs-panel{left:28px;right:28px;bottom:16px;min-height:206px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}
+.board .abs.wide .abs-dots{margin-top:auto}
+.board .abs.wide .abs-txt{margin:auto 0}
