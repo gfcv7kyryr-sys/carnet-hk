@@ -797,3 +797,34 @@ body.mp-on #view{padding-bottom:96px}
 .kc-t.on{background:rgba(43,36,32,.1)}
 .kc-sep{width:1px;height:30px;background:rgba(43,36,32,.15)}
 .kids-exit{left:auto;right:18px;z-index:2}
+/* Dim sum et spécialités illustrés */
+.signs.foodgrid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.signs.foodgrid button{padding:12px 10px 14px}
+.signs.foodgrid .food{width:100%;aspect-ratio:1;object-fit:contain;margin-bottom:6px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.12))}
+.spec-img{width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.12))}
+.spec .zh-s{font-family:var(--f-han);color:var(--muted);font-weight:500;margin-left:4px}
+/* Livre de Charlie */
+.kb-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:none}
+.kb-tabs button{flex:none;font-size:1.3rem;padding:8px 16px;border-radius:999px;background:rgba(43,36,32,.08);color:var(--ink2);font-family:inherit}
+.kb-tabs button.on{background:var(--ink2);color:#FBF6EC}
+.kb{position:relative;display:flex;align-items:center;justify-content:center}
+.kb-page{width:100%;aspect-ratio:2339/1654;max-height:calc(100vh - 210px);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 18px 40px -18px rgba(43,36,32,.5);touch-action:pan-y}
+.kb-page img{width:100%;height:100%;object-fit:contain;display:block;user-select:none;-webkit-user-drag:none}
+.kb-page.half{aspect-ratio:1169/1654;width:min(100%,calc((100vh - 210px)*.707))}
+.kb-page.half img{width:200%;max-width:none;object-fit:cover;object-position:left}
+.kb-page.half.right img{transform:translateX(-50%)}
+.kb-arrow{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.85);box-shadow:0 6px 16px rgba(0,0,0,.15);font-size:2rem;color:var(--ink2);z-index:2}
+.kb-arrow.l{left:-8px}.kb-arrow.r{right:-8px}
+.kb-arrow:disabled{opacity:0}
+/* Lanternes nettement plus grandes sur l'écran de lancement */
+.chooser-lant{width:auto;height:min(52vh,640px);max-width:92vw;object-fit:contain;-webkit-mask:none;mask:none}
+.chooser-in{margin-top:clamp(10px,2vh,24px)}
+/* portrait : une seule page, prise dans la double page (moitié gauche ou droite) */
+.kb-page.half{width:auto;height:min(calc(100vh - 220px),calc(88vw * 1.415));aspect-ratio:1169/1654;background-size:200% 100%;background-position:left center;background-repeat:no-repeat}
+.kb-page.half.right{background-position:right center}
+.kb-page.half img{display:none}
+.kb-page:not(.half){background:none}
+.signs.foodgrid button{min-width:0;overflow:hidden}
+.signs.foodgrid .food{width:100%;height:auto;max-width:100%}
+.kids{grid-template-columns:100%}
+.signs.foodgrid button{grid-template-columns:minmax(0,1fr);width:100%}.signs.foodgrid .food{width:100%;max-width:220px;justify-self:center}

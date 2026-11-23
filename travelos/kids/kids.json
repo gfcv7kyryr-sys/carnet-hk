@@ -1,0 +1,131 @@
+{
+ "book": {
+  "title": "Xiao Long et la valise de Mamie Nainai",
+  "spreads": [
+   "travelos/kids/carnet/page-01.webp",
+   "travelos/kids/carnet/page-02.webp",
+   "travelos/kids/carnet/page-03.webp",
+   "travelos/kids/carnet/page-04.webp",
+   "travelos/kids/carnet/page-05.webp",
+   "travelos/kids/carnet/page-06.webp",
+   "travelos/kids/carnet/page-07.webp",
+   "travelos/kids/carnet/page-08.webp",
+   "travelos/kids/carnet/page-09.webp",
+   "travelos/kids/carnet/page-10.webp",
+   "travelos/kids/carnet/page-11.webp",
+   "travelos/kids/carnet/page-12.webp",
+   "travelos/kids/carnet/page-13.webp",
+   "travelos/kids/carnet/page-14.webp",
+   "travelos/kids/carnet/page-15.webp",
+   "travelos/kids/carnet/page-16.webp",
+   "travelos/kids/carnet/page-17.webp",
+   "travelos/kids/carnet/page-18.webp",
+   "travelos/kids/carnet/page-19.webp",
+   "travelos/kids/carnet/page-20.webp",
+   "travelos/kids/carnet/page-21.webp",
+   "travelos/kids/carnet/page-22.webp",
+   "travelos/kids/carnet/page-23.webp",
+   "travelos/kids/carnet/page-24.webp",
+   "travelos/kids/carnet/page-25.webp",
+   "travelos/kids/carnet/page-26.webp",
+   "travelos/kids/carnet/page-27.webp",
+   "travelos/kids/carnet/page-28.webp",
+   "travelos/kids/carnet/page-29.webp",
+   "travelos/kids/carnet/page-30.webp",
+   "travelos/kids/carnet/page-31.webp",
+   "travelos/kids/carnet/page-32.webp",
+   "travelos/kids/carnet/page-33.webp",
+   "travelos/kids/carnet/page-34.webp",
+   "travelos/kids/carnet/page-35.webp",
+   "travelos/kids/carnet/page-36.webp",
+   "travelos/kids/carnet/page-37.webp",
+   "travelos/kids/carnet/page-38.webp",
+   "travelos/kids/carnet/page-39.webp",
+   "travelos/kids/carnet/page-40.webp",
+   "travelos/kids/carnet/page-41.webp",
+   "travelos/kids/carnet/page-42.webp",
+   "travelos/kids/carnet/page-43.webp",
+   "travelos/kids/carnet/page-44.webp",
+   "travelos/kids/carnet/page-45.webp",
+   "travelos/kids/carnet/page-46.webp",
+   "travelos/kids/carnet/page-47.webp",
+   "travelos/kids/carnet/page-48.webp",
+   "travelos/kids/carnet/page-49.webp",
+   "travelos/kids/carnet/page-50.webp",
+   "travelos/kids/carnet/page-51.webp",
+   "travelos/kids/carnet/page-52.webp",
+   "travelos/kids/carnet/page-53.webp",
+   "travelos/kids/carnet/page-54.webp",
+   "travelos/kids/carnet/page-55.webp",
+   "travelos/kids/carnet/page-56.webp",
+   "travelos/kids/carnet/page-57.webp",
+   "travelos/kids/carnet/page-58.webp",
+   "travelos/kids/carnet/page-59.webp",
+   "travelos/kids/carnet/page-60.webp"
+  ],
+  "chapters": [
+   {
+    "title": "Début",
+    "spread": 1
+   },
+   {
+    "title": "Jour 1",
+    "spread": 4
+   },
+   {
+    "title": "Jour 2",
+    "spread": 8
+   },
+   {
+    "title": "Jour 3",
+    "spread": 14
+   },
+   {
+    "title": "Jour 4",
+    "spread": 19
+   },
+   {
+    "title": "Jour 5",
+    "spread": 24
+   },
+   {
+    "title": "Jour 6",
+    "spread": 28
+   },
+   {
+    "title": "Jour 7",
+    "spread": 32
+   },
+   {
+    "title": "Jour 8",
+    "spread": 36
+   },
+   {
+    "title": "Jour 9",
+    "spread": 40
+   },
+   {
+    "title": "Jour 10",
+    "spread": 44
+   },
+   {
+    "title": "Jour 11",
+    "spread": 48
+   },
+   {
+    "title": "Jour 12",
+    "spread": 52
+   },
+   {
+    "title": "Jour 13",
+    "spread": 56
+   },
+   {
+    "title": "Fin",
+    "spread": 59
+   }
+  ]
+ },
+ "coloriages": [],
+ "stories": []
+}

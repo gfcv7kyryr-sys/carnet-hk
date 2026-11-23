@@ -1120,13 +1120,19 @@ function openArticle(id) {
   if (!a) return;
   $("#sheetTitle").textContent = a.title;
   let extra = "";
-  if (id === "dimsum") extra = `<section class="sec"><h2 class="h2">La carte.</h2><div class="signs">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}"><span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div></section>`;
+  if (id === "dimsum") extra = `<section class="sec"><h2 class="h2">La carte.</h2><div class="signs foodgrid">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}">${foodImg(x.zh)}<span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div></section>`;
   $("#sheetBody").innerHTML = `<article class="cmp art-${id}">${a.html}</article>${extra}`;
   $$("#sheetBody img").forEach((im) => { im.onerror = () => im.remove(); });
   if (id === "langue") fillLangue();
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
 }
+/* Illustrations des dim sum et des spécialités, embarquées dans l'APK (assets/ui/food), par nom chinois. */
+const FOOD_IMG = { "蝦餃": "har-gau", "燒賣": "siu-mai", "叉燒包": "char-siu-bao", "腸粉": "cheung-fun", "蛋撻": "dan-tat", "糯米雞": "lo-mai-gai",
+  "蘿蔔糕": "lo-bak-go", "芋角": "wu-gok", "流沙包": "lau-sa-bao", "排骨": "pai-gwat", "春卷": "chun-gyun", "鳳爪": "fung-zau",
+  "雲吞麵": "wonton-mein", "燒味": "siu-mei", "煲仔飯": "bo-zai-fan", "雞蛋仔": "gai-daan-jai", "葡撻": "pastel-de-nata", "豬扒包": "zhu-pa-bao",
+  "免治": "minchi", "粥": "jook", "雙皮奶": "sheung-pei-nai", "桂林米粉": "guilin-mifen", "豆豉排骨": "douchi-paigu", "啤酒魚": "pijiu-yu" };
+const foodImg = (zh, cls = "food") => FOOD_IMG[zh] ? `<img class="${cls}" src="food/${FOOD_IMG[zh]}.webp" alt="" loading="lazy">` : "";
 /* « Se faire comprendre » : la fiche garde ce qui lui est propre (cantonais ou mandarin, compter sur les doigts)
    et renvoie vers les listes, qui ne vivent qu'à un seul endroit : Guide › Traduire. */
 function fillLangue() {
@@ -1200,11 +1206,11 @@ function foodSpec() {
   const label = { "SÛR": "Sûr", SURV: "À surveiller", VOUS: "Pour vous" };
   return `<p class="muted" style="text-align:center">Sûr : cuit, chaud, sans arêtes. À surveiller : arêtes, épices. Pour vous : pas pour Charlie.</p>` +
     P.specialties.map((r) => `<section class="sec"><h2 class="h3">${esc(r.region)}</h2><div>${r.dishes.map((x) => `<button class="spec" style="width:100%;text-align:left" data-showtext="${esc(x.zh)}" data-showfr="${esc(x.name)}">
-      <span class="zh">${esc(x.zh)}</span><span><b>${esc(x.name)}</b><small>${esc(x.text)}</small></span>${x.verdict ? `<span class="verdict v-${esc(x.verdict)}">${label[x.verdict] || esc(x.verdict)}</span>` : ""}</button>`).join("")}</div></section>`).join("");
+      ${FOOD_IMG[x.zh] ? foodImg(x.zh, "spec-img") : `<span class="zh">${esc(x.zh)}</span>`}<span><b>${esc(x.name)}</b>${FOOD_IMG[x.zh] ? ` <span class="zh-s">${esc(x.zh)}</span>` : ""}<small>${esc(x.text)}</small></span>${x.verdict ? `<span class="verdict v-${esc(x.verdict)}">${label[x.verdict] || esc(x.verdict)}</span>` : ""}</button>`).join("")}</div></section>`).join("");
 }
 function foodDimsum() {
   return `<div class="acts" style="justify-content:center"><button class="pill red" data-article="dimsum">Le dim sum, mode d'emploi</button></div>
-    <div class="signs">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}"><span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div>`;
+    <div class="signs foodgrid">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}">${foodImg(x.zh)}<span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div>`;
 }
 
 /* ================= Guide ================= */
@@ -1764,12 +1770,49 @@ function kidsOpen(kind, arg) {
     const list = k.stories || [];
     html = head("Histoires") + (list.length ? `<div class="ks-grid">${list.map((st, i) => `<button class="ks-card" data-kid="story" data-kidarg="${i}">${st.cover ? `<img src="/pack/${esc(st.cover)}" alt="">` : `<span class="ks-blank"></span>`}<b>${esc(st.title)}</b></button>`).join("")}</div>`
       : `<p class="ks-soon">Les histoires de Xiao Long arrivent bientôt, avec leurs images et la voix qui les raconte.</p>`);
+  } else if (kind === "carnet" && k.book) {
+    return kidsBook(+(arg ?? store.get("kidsBookAt", 0)));
   } else if (kind === "carnet") {
     const days = k.carnet || [];
     html = head("Mon carnet") + (days.length ? `<div class="ks-book">${days.map((p) => `<figure class="ks-page">${p.img ? `<img src="/pack/${esc(p.img)}" alt="">` : ""}<figcaption><b>${esc(p.title || "")}</b><br>${esc(p.text || "")}</figcaption></figure>`).join("")}</div>`
       : `<p class="ks-soon">Une carte postale de Mamie Nainai par jour du voyage : elles arrivent bientôt.</p>`);
   }
   $("#kidsHome").hidden = true; sub.innerHTML = html; sub.hidden = false; sub.scrollTop = 0;
+}
+/* Le carnet de Charlie, page par page : la double page entière en paysage, une page à la fois en portrait.
+   On tourne en glissant le doigt ou avec les flèches ; les onglets mènent au début de chaque journée. */
+function kidsBook(at) {
+  const b = P.kids.book, n = b.spreads.length, sub = $("#kidsSub");
+  const portrait = () => innerHeight > innerWidth;
+  let pos = Math.max(0, Math.min(at || 0, n - 1)); // numéro de double page
+  sub.innerHTML = `<header class="ks-head"><button class="ks-back" data-kidback aria-label="Retour">‹</button><h2>Mon carnet</h2></header>
+    <nav class="kb-tabs">${b.chapters.map((c) => `<button data-kbch="${c.spread - 1}">${esc(c.title.replace("Jour ", "J"))}</button>`).join("")}</nav>
+    <div class="kb"><button class="kb-arrow l" data-kbgo="-1" aria-label="Page précédente">‹</button>
+      <div class="kb-page" id="kbPage"><img id="kbImg" alt=""></div>
+      <button class="kb-arrow r" data-kbgo="1" aria-label="Page suivante">›</button></div>`;
+  $("#kidsHome").hidden = true; sub.hidden = false;
+  const img = $("#kbImg"), page = $("#kbPage");
+  const show = () => {
+    const pt = portrait(), max = pt ? n * 2 - 1 : n - 1; pos = Math.max(0, Math.min(pos, max));
+    const sp = pt ? Math.floor(pos / 2) : pos;
+    img.src = `/pack/${b.spreads[sp]}`; page.style.backgroundImage = `url("/pack/${b.spreads[sp]}")`;
+    page.classList.toggle("half", pt); page.classList.toggle("right", pt && pos % 2 === 1);
+    store.set("kidsBookAt", pt ? sp : pos);
+    const ch = [...b.chapters].reverse().find((c) => c.spread - 1 <= sp);
+    $$(".kb-tabs button", sub).forEach((x) => x.classList.toggle("on", ch && +x.dataset.kbch === ch.spread - 1));
+    $(".kb-arrow.l", sub).disabled = pos === 0; $(".kb-arrow.r", sub).disabled = pos === max;
+    [sp - 1, sp + 1].forEach((k) => { if (b.spreads[k]) new Image().src = `/pack/${b.spreads[k]}`; });
+  };
+  // en portrait, on garde la double page en cours au passage de l'orientation
+  if (portrait()) pos = pos * 2;
+  show();
+  sub.querySelector(".kb-tabs").addEventListener("click", (e) => { const t = e.target.closest("[data-kbch]"); if (t) { pos = +t.dataset.kbch * (portrait() ? 2 : 1); show(); } });
+  sub.querySelectorAll("[data-kbgo]").forEach((x) => x.addEventListener("click", () => { pos += +x.dataset.kbgo; show(); }));
+  let x0 = null;
+  page.addEventListener("pointerdown", (e) => { x0 = e.clientX; });
+  page.addEventListener("pointerup", (e) => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 50) { pos += dx < 0 ? 1 : -1; show(); } });
+  const onRot = () => { if (!document.body.contains(page)) return removeEventListener("resize", onRot); show(); };
+  addEventListener("resize", onRot);
 }
 /* Coloriage au stylet : pression prise en compte, gomme, annuler, effacer ; le dessin est gardé par page. */
 function kidsColor(i) {
