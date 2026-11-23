@@ -1120,19 +1120,15 @@ function openArticle(id) {
   if (!a) return;
   $("#sheetTitle").textContent = a.title;
   let extra = "";
-  if (id === "dimsum") extra = `<section class="sec"><h2 class="h2">La carte.</h2><div class="signs foodgrid">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}">${foodImg(x.zh)}<span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div></section>`;
+  if (id === "dimsum") extra = `<section class="sec"><h2 class="h2">La carte.</h2><div class="signs foodgrid">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}">${foodImg(x.image)}<span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div></section>`;
   $("#sheetBody").innerHTML = `<article class="cmp art-${id}">${a.html}</article>${extra}`;
   $$("#sheetBody img").forEach((im) => { im.onerror = () => im.remove(); });
   if (id === "langue") fillLangue();
   $("#sheet").hidden = false;
   $("#sheet").scrollTop = 0;
 }
-/* Illustrations des dim sum et des spécialités, embarquées dans l'APK (assets/ui/food), par nom chinois. */
-const FOOD_IMG = { "蝦餃": "har-gau", "燒賣": "siu-mai", "叉燒包": "char-siu-bao", "腸粉": "cheung-fun", "蛋撻": "dan-tat", "糯米雞": "lo-mai-gai",
-  "蘿蔔糕": "lo-bak-go", "芋角": "wu-gok", "流沙包": "lau-sa-bao", "排骨": "pai-gwat", "春卷": "chun-gyun", "鳳爪": "fung-zau",
-  "雲吞麵": "wonton-mein", "燒味": "siu-mei", "煲仔飯": "bo-zai-fan", "雞蛋仔": "gai-daan-jai", "葡撻": "pastel-de-nata", "豬扒包": "zhu-pa-bao",
-  "免治": "minchi", "粥": "jook", "雙皮奶": "sheung-pei-nai", "桂林米粉": "guilin-mifen", "豆豉排骨": "douchi-paigu", "啤酒魚": "pijiu-yu" };
-const foodImg = (zh, cls = "food") => FOOD_IMG[zh] ? `<img class="${cls}" src="food/${FOOD_IMG[zh]}.webp" alt="" loading="lazy">` : "";
+/* Illustrations des dim sum et des spécialités : celles du carnet (paquet). */
+const foodImg = (src, cls = "food") => src ? `<img class="${cls}" src="/pack/${esc(src)}" alt="" loading="lazy" onerror="this.remove()">` : "";
 /* « Se faire comprendre » : la fiche garde ce qui lui est propre (cantonais ou mandarin, compter sur les doigts)
    et renvoie vers les listes, qui ne vivent qu'à un seul endroit : Guide › Traduire. */
 function fillLangue() {
@@ -1206,11 +1202,11 @@ function foodSpec() {
   const label = { "SÛR": "Sûr", SURV: "À surveiller", VOUS: "Pour vous" };
   return `<p class="muted" style="text-align:center">Sûr : cuit, chaud, sans arêtes. À surveiller : arêtes, épices. Pour vous : pas pour Charlie.</p>` +
     P.specialties.map((r) => `<section class="sec"><h2 class="h3">${esc(r.region)}</h2><div>${r.dishes.map((x) => `<button class="spec" style="width:100%;text-align:left" data-showtext="${esc(x.zh)}" data-showfr="${esc(x.name)}">
-      ${FOOD_IMG[x.zh] ? foodImg(x.zh, "spec-img") : `<span class="zh">${esc(x.zh)}</span>`}<span><b>${esc(x.name)}</b>${FOOD_IMG[x.zh] ? ` <span class="zh-s">${esc(x.zh)}</span>` : ""}<small>${esc(x.text)}</small></span>${x.verdict ? `<span class="verdict v-${esc(x.verdict)}">${label[x.verdict] || esc(x.verdict)}</span>` : ""}</button>`).join("")}</div></section>`).join("");
+      ${x.image ? foodImg(x.image, "spec-img") : `<span class="zh">${esc(x.zh)}</span>`}<span><b>${esc(x.name)}</b>${x.image ? ` <span class="zh-s">${esc(x.zh)}</span>` : ""}<small>${esc(x.text)}</small></span>${x.verdict ? `<span class="verdict v-${esc(x.verdict)}">${label[x.verdict] || esc(x.verdict)}</span>` : ""}</button>`).join("")}</div></section>`).join("");
 }
 function foodDimsum() {
   return `<div class="acts" style="justify-content:center"><button class="pill red" data-article="dimsum">Le dim sum, mode d'emploi</button></div>
-    <div class="signs foodgrid">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}">${foodImg(x.zh)}<span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div>`;
+    <div class="signs foodgrid">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}">${foodImg(x.image)}<span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div>`;
 }
 
 /* ================= Guide ================= */

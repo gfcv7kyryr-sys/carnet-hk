@@ -828,3 +828,31 @@ body.mp-on #view{padding-bottom:96px}
 .signs.foodgrid .food{width:100%;height:auto;max-width:100%}
 .kids{grid-template-columns:100%}
 .signs.foodgrid button{grid-template-columns:minmax(0,1fr);width:100%}.signs.foodgrid .food{width:100%;max-width:220px;justify-self:center}
+/* Écran de lancement : les lanternes en fond d'écran, les profils posés au milieu */
+.chooser{place-items:center;align-content:center}
+.chooser-wall{position:absolute;inset:0;background:#fff url("lanternes-blanc.webp") center 38%/cover no-repeat;transform:scale(1.18);transform-origin:50% 30%}
+:root[data-theme=dark] .chooser-wall{background:#000 url("lanternes-noir.webp") center 38%/cover no-repeat}
+@media (orientation:portrait){.chooser-wall{background-size:auto 78%;background-position:center 8%;transform:none}}
+.chooser-in{position:relative;z-index:1;margin:0;padding:clamp(18px,3vh,30px) clamp(24px,4vw,48px);border-radius:44px;
+  background:rgba(255,255,255,.42);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);
+  box-shadow:0 20px 60px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.7)}
+:root[data-theme=dark] .chooser-in{background:rgba(0,0,0,.38);box-shadow:0 20px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.12)}
+@media (orientation:portrait){.chooser-in{margin-top:34vh}}
+.chooser h1{margin-bottom:clamp(18px,3vh,30px)}
+.chooser-lant{display:none}
+/* (révision) fond d'écran plein cadre, profils posés au milieu, sans panneau */
+.chooser-wall{transform:none;background-size:cover;background-position:center top}
+@media (orientation:landscape){.chooser-wall{background-size:auto 112%;background-position:center 0}}
+@media (orientation:portrait){.chooser-wall{background-size:auto 100%;background-position:center top}}
+.chooser-in{background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none;backdrop-filter:none;margin:0!important;padding:0}
+.chooser h1{text-shadow:0 0 18px #fff,0 0 4px #fff}
+:root[data-theme=dark] .chooser h1{text-shadow:0 0 18px #000,0 0 4px #000}
+.profile .disc{background:rgba(242,242,247,.62);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);box-shadow:0 0 0 1px rgba(255,255,255,.7),0 14px 34px rgba(0,0,0,.18)}
+:root[data-theme=dark] .profile .disc{background:rgba(28,28,30,.55);box-shadow:0 0 0 1px rgba(255,255,255,.18),0 14px 34px rgba(0,0,0,.5)}
+.profile .disc b{color:#3A3A3C}
+:root[data-theme=dark] .profile .disc b{color:#D1D1D6}
+.profile strong{padding:3px 12px;border-radius:999px;background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+:root[data-theme=dark] .profile strong{background:rgba(0,0,0,.45)}
+.profile.last .disc{box-shadow:0 0 0 2px currentColor,0 14px 34px rgba(0,0,0,.18)}
+.chooser h1{justify-self:center;width:fit-content;padding:6px 22px;border-radius:999px;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);text-shadow:none;font-size:clamp(1.6rem,3vw,2.2rem)}
+:root[data-theme=dark] .chooser h1{background:rgba(0,0,0,.45);text-shadow:none}

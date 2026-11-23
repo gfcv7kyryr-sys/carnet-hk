@@ -1,6 +1,6 @@
 {
  "formatVersion": 1,
- "packVersion": "130ba0b4f4b4",
+ "packVersion": "42b396cfb981",
  "files": [
   {
    "path": "audio/a-ma.mp3",
@@ -443,6 +443,11 @@
    "sha256": "5a5c786701d56efd9efb540e382a122300c58f91af4640fb7ce2b17240d9f774"
   },
   {
+   "path": "img/378ece5c1517a97e0af1f5ed308b89b5.webp",
+   "size": 80438,
+   "sha256": "71d993486476e43a16b6dffd19f13a65c5c6ec59465af1a79fbfaf059c870bd3"
+  },
+  {
    "path": "img/39d56ed7e51ec97cb314dfb65c930222.webp",
    "size": 206584,
    "sha256": "c22bac5fd3a7fb5d01fe7a448e1d69d4d6da585c68145e917110e9902cbe55e3"
@@ -588,6 +593,16 @@
    "sha256": "93bd93c37c2f12390053ed86f9a16573eb3ea733243005babfb374fc4e842201"
   },
   {
+   "path": "img/814bc81c1542e9cd8e094e5a4ebe00e8.webp",
+   "size": 86664,
+   "sha256": "c9add12e97fddf4c018174da7412bbc4a2cab0191a5d7aacbc88b5aa0dca597d"
+  },
+  {
+   "path": "img/81bc46a30116f886db1cc4b354dc040c.webp",
+   "size": 73930,
+   "sha256": "aed76da1026b3f5ad08f5fbf418247fb335ff9d536c89c85bf3b0351048cd72b"
+  },
+  {
    "path": "img/85b345f0902959958219c610a89717a7.webp",
    "size": 94462,
    "sha256": "242629f1432c6924194ddfaf100019c7b068f778c8bc02a2108fe3c22b0e49bb"
@@ -601,6 +616,11 @@
    "path": "img/8c3407ebe8ab8816e618251ae148824e.webp",
    "size": 183644,
    "sha256": "b97d1e1e5a2a3fbc10d8f76e00b13239a4bd206f5a9e2d5ed2596d42aecf3cb6"
+  },
+  {
+   "path": "img/8dbd1b1287bd3cdf00749f79b021025f.webp",
+   "size": 76218,
+   "sha256": "bb89d73b82ca340cedc2bd357609e24ffa98f755cab5882ec1d8c8ae12613bfb"
   },
   {
    "path": "img/97d7dfaa926a741edd56a7b740417362.webp",
@@ -791,6 +811,11 @@
    "path": "img/e1ec53bcd98a7342a90931b2a0c9251d.webp",
    "size": 264124,
    "sha256": "9160317365cb8e6e6cff377ca6a1f0f3f3d6b1e55571c27a03b25a49a0774d2a"
+  },
+  {
+   "path": "img/e8ee7cbbece6aea947b1d84827e5dc2a.webp",
+   "size": 120414,
+   "sha256": "fef17e33ba8f9235549d04241eb2da8875e0984563bc3661ae7ead9510718732"
   },
   {
    "path": "img/eb57bb8eac47b1539f5ffee4e587df69.webp",
@@ -1163,6 +1188,11 @@
    "sha256": "c6b8e2c233a2d79e969f56a227b3c18b3b2f693bf70eb5e30121bcd7c263a7aa"
   },
   {
+   "path": "travelos/hd/2831760bd1e28eed26ea2e7879998313.webp",
+   "size": 311646,
+   "sha256": "6f2c8bf024a81f3f1de57869aacf07709570c05d60cc4b3aa3cc155654fc5cb9"
+  },
+  {
    "path": "travelos/hd/28fbbce3f0ff730270c57fa1bbe60e4d.webp",
    "size": 140168,
    "sha256": "819de9d9a862ff671c71f7b098fa2a0800e034c84eda9b589f3443259751d9e7"
@@ -1201,6 +1231,16 @@
    "path": "travelos/hd/31d87b89d8a52c2ad763efe1d7204c8c.webp",
    "size": 189854,
    "sha256": "58aabaed2bb7d4693ec76859d77fca8b92e13eb42761dd1281dd08f9b5c365f3"
+  },
+  {
+   "path": "travelos/hd/3543ccea54e35afa7150b75697b50552.webp",
+   "size": 300192,
+   "sha256": "01a25ce4ef0dd9ea3cc5435af1c1b9e143bf43acaf7627454387263afa76413f"
+  },
+  {
+   "path": "travelos/hd/36c6f063ff7a20bdccce71470f9670a9.webp",
+   "size": 187820,
+   "sha256": "333936e45114aa05dcb33c856c0185b870d1b81ecf5e0ae47758602fe939eeaf"
   },
   {
    "path": "travelos/hd/36eab0855021c6850bcd1fc9950242f0.webp",
@@ -1343,6 +1383,11 @@
    "sha256": "b65b7e1daba2531fd65c63cfacdff50f95a15016bbc7bc394a75b5dfca9a020a"
   },
   {
+   "path": "travelos/hd/5e90f163054692b5fd140164d7ab14ac.webp",
+   "size": 201100,
+   "sha256": "89e393482cb672e59963fa0765fc5817d0db56edc2cf1ee57d589420f6fba41d"
+  },
+  {
    "path": "travelos/hd/5f2fa228a92f680df77156ec658ffa93.webp",
    "size": 375368,
    "sha256": "11f87d08de00eeca3569986b0d58f97d32fee074e9fecefcc6078f7452527862"
@@ -1356,6 +1401,11 @@
    "path": "travelos/hd/655350e3bad45393487fe759503c4f02.webp",
    "size": 332274,
    "sha256": "f1af7e961763728711d95a35792779840d0c82377dc751ea96e9cbf751c0e1d7"
+  },
+  {
+   "path": "travelos/hd/679cbb7a611de1a6192781f4b6d8b955.webp",
+   "size": 406212,
+   "sha256": "6cf3b2f8c47acf2374be0095ea1e775206dbf4b34433ea63507acd9ea443aea3"
   },
   {
    "path": "travelos/hd/6802c3e22aacb3d5033a87f93f18939b.webp",
@@ -1376,6 +1426,16 @@
    "path": "travelos/hd/74e89f2d3e39b8adc2a1d0cd95e711e6.webp",
    "size": 231218,
    "sha256": "cd828a2325f15b3bd1d0efe2c16ffe2fa2bfac4296b9859418a77e818ab8c592"
+  },
+  {
+   "path": "travelos/hd/783d04d4ada5f887785db7c6d1928a88.webp",
+   "size": 222722,
+   "sha256": "09a07a3fcce8cb1b9818901eac9d02d1d620bbe2f3979cc67888e93b8966e602"
+  },
+  {
+   "path": "travelos/hd/7e1bc0571bdae4cb74b81d6e32b94198.webp",
+   "size": 206736,
+   "sha256": "9c114a5c2021ae40365b61dc90e01289559aa65776f8adc84bef6ecd42639aab"
   },
   {
    "path": "travelos/hd/7fa2fabce074ff4cba048870f4088a06.webp",
@@ -1406,6 +1466,11 @@
    "path": "travelos/hd/8d7b76d315c7cbff0f29a7aadb61c9f0.webp",
    "size": 331666,
    "sha256": "3d5c9b4454abe9172966174de9b4ecb74e24dd8bb8c1a1b47b59c0c9085aac63"
+  },
+  {
+   "path": "travelos/hd/8eee95d08b69a0c2c0b431bca773a299.webp",
+   "size": 357014,
+   "sha256": "a6b5a6d894373a26d95733a2fb4f2dcdef7f9f7b4b3037d3d691ce5fe9b5d06d"
   },
   {
    "path": "travelos/hd/8fdf46bc0c66f700ab617818af2d0687.webp",
@@ -1441,6 +1506,11 @@
    "path": "travelos/hd/98cd3df1664e2a5477504a4a24d4dcfd.webp",
    "size": 219492,
    "sha256": "16a855a2da623c23535bf6a792181a922c3b3ac1e3d6a12317422c2a9b47c2bd"
+  },
+  {
+   "path": "travelos/hd/990875fd995297ce7e60469857cb0923.webp",
+   "size": 406542,
+   "sha256": "1254c358cb8e7fdd88066a60616c4908887efd02fd8b234692396b3e72f173f4"
   },
   {
    "path": "travelos/hd/9a226aa7c6d6b9ce0354945078108bd5.webp",
@@ -1488,6 +1558,11 @@
    "sha256": "7aad47c671462ca55f9e8f729bf6ca584e7c8873125453106409fba90df7a804"
   },
   {
+   "path": "travelos/hd/ac0b479613b56cd03a3b803242e9ad5b.webp",
+   "size": 358548,
+   "sha256": "9f80ea08caff48cc2432290dfeaa26a4335b07f09bc776c09263ba330f665264"
+  },
+  {
    "path": "travelos/hd/ac5c9ee64b2435fea0df13781e273dc4.webp",
    "size": 341182,
    "sha256": "8db4249e61f677b57738568ae786b2fe313642d823e3ee412bdd9089d4ca1eee"
@@ -1511,6 +1586,11 @@
    "path": "travelos/hd/b2abe9ed6587f9f3fa187ab3e146a178.webp",
    "size": 268560,
    "sha256": "ca1908b0b5da986448c93edd6cfd89ec10189a2dcc5aabff6ce2d91ff33e8c33"
+  },
+  {
+   "path": "travelos/hd/b7e7a525ed113ae320d99b3dfb61f236.webp",
+   "size": 390674,
+   "sha256": "f971b67705d0165ac34cb1824bbdb9203342136743b0c0998cff0fcc60e2958e"
   },
   {
    "path": "travelos/hd/b866e66dcea9d8041d08cd83a446f4b3.webp",
@@ -1568,6 +1648,11 @@
    "sha256": "6b0e3d276ff5d1c6b05ed7ef8ecd16702f1167c1164109fa455d2c6a97ed4540"
   },
   {
+   "path": "travelos/hd/d3ab31d40836ce5853f23962fea4702e.webp",
+   "size": 322282,
+   "sha256": "00d20704f0b16d7eeb87d3d73ebcebaba18f4bc8302bb670cab3440d7840d530"
+  },
+  {
    "path": "travelos/hd/d3c2d3c25d4d8d50b088d506092cbe74.webp",
    "size": 249628,
    "sha256": "a73b3e796c185386bf736f8fd3cf880cc7f5b505a4d3a56c463e473b5d5e5f98"
@@ -1581,6 +1666,11 @@
    "path": "travelos/hd/d3ff1476aadd0be441d9a7ff8fa365c0.webp",
    "size": 257458,
    "sha256": "93636f9c14160ad6eac41695621bfb9b6c383d79db716d7215ee93a19fa5eaa1"
+  },
+  {
+   "path": "travelos/hd/d6f51077e39babf8aee4d022efe4c962.webp",
+   "size": 451798,
+   "sha256": "6a19f4cb86990c3377e926a7936ba690b1b9538d221a9021d47e852baa4a2467"
   },
   {
    "path": "travelos/hd/d8642d15d6dbe099856427fa0eaf29d5.webp",
@@ -1616,6 +1706,11 @@
    "path": "travelos/hd/e5efd309091398585f0a5bac24390318.webp",
    "size": 335690,
    "sha256": "3e950e1c81db9bfe1c0847e27bac85e0c685617564db02e6cfd873d2696fb349"
+  },
+  {
+   "path": "travelos/hd/e6584fa1df6e4e0281de529be991f8f7.webp",
+   "size": 330766,
+   "sha256": "5602aae32ee7e1489fcf89fd5a097bd7248a390d283e572bf856e5168bf8d3cf"
   },
   {
    "path": "travelos/hd/e7bcc3f4f858239fc7a3929bbbd0662f.webp",
@@ -2079,8 +2174,8 @@
   },
   {
    "path": "travelos/pack/pack.json",
-   "size": 1175217,
-   "sha256": "130ba0b4f4b4514c285c9c187fd8761915015bf5669e6ccdbf62fc84387fc0cd"
+   "size": 1177023,
+   "sha256": "42b396cfb9813652fd029a713fb3c1ab427dc2ff77682ee7a42cedda24ff9c90"
   },
   {
    "path": "travelos/scenes/j1-1-bg.webp",

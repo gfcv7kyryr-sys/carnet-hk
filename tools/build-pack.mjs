@@ -74,6 +74,7 @@ const MEAL_DATA = optional("MEAL_DATA", {});
 const NOTE = optional("NOTE", {});
 const SHOTS = optional("SHOTS", {});
 const SPEC = optional("SPEC", []);
+const SPEC_F = optional("SPEC_F", {});
 const COMPRENDRE = optional("COMPRENDRE", []);
 
 // Taux du convertisseur du carnet : « const rates=Object.assign({HKD:9.08,…} ».
@@ -311,7 +312,8 @@ const pack = {
   phrases: PHR.map(([fr, zhHans, pinyin, zhHant, jyutping]) => ({ fr: plain(fr), zhHans, pinyin, zhHant: zhHant || "", jyutping: jyutping || "" })),
   signs: SIGNS.map(([zh, fr]) => ({ zh, fr: plain(fr) })),
   numbers: NUMS.map(([zh, fr]) => ({ zh, fr: plain(fr) })),
-  dimsum: DS.map(([zh, roman, fr]) => ({ zh, roman, fr: plain(fr) })),
+  // Illustrations du carnet : F01 à F12 pour les dim sum (dans l'ordre), SPEC_F pour les spécialités.
+  dimsum: DS.map(([zh, roman, fr], i) => ({ zh, roman, fr: plain(fr), image: img(`F${String(i + 1).padStart(2, "0")}`) })),
   weather: WEATHER.map(([place, min, max]) => ({ place, min, max })),
   cityAudio: Object.entries(AUDIO_CITY).map(([id, e]) => ({ id, ...audio(e) })),
   // Espace de Charlie (travelos/kids/kids.json) : carnet, coloriages, histoires ; vide tant que rien n'est déposé.
@@ -325,7 +327,7 @@ const pack = {
   lockscreenDark: existsSync(join(root, "travelos/lockscreen/lanternes-noir.webp")) ? "travelos/lockscreen/lanternes-noir.webp" : null,
   lockscreenLight: existsSync(join(root, "travelos/lockscreen/lanternes-blanc.webp")) ? "travelos/lockscreen/lanternes-blanc.webp" : null,
   articles,
-  specialties: SPEC.map(([region, dishes]) => ({ region: plain(region), dishes: dishes.map(([zh, name, text, verdict]) => ({ zh, name: plain(name), text: plain(text), verdict: verdict || "" })) })),
+  specialties: SPEC.map(([region, dishes]) => ({ region: plain(region), dishes: dishes.map(([zh, name, text, verdict]) => ({ zh, name: plain(name), text: plain(text), verdict: verdict || "", image: SPEC_F[name] ? img(SPEC_F[name]) : null })) })),
   emergency: EMERGENCY,
 };
 
