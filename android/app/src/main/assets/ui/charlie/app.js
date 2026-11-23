@@ -1,7 +1,8 @@
 /* Le carnet de Charlie — version interactive (PWA hors ligne) */
 (() => {
 'use strict';
-const C = window.CARNET, P = C.pages;
+const C = window.CARNET, CP = C.pages;
+let P = CP; // pages affichées : celles du carnet, ou celles d'une histoire
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const W = 1118, H = 794, HALF = 559;
 
@@ -130,13 +131,13 @@ function pageFlip(oldB, wasOne, oldHalf, dir) {
 function go(i, h = 0, dir = 0) {
   i = Math.max(0, Math.min(P.length - 1, i)); stopSpeak(); closeSheet();
   const oldB = board, wasOne = !!(board && single() && board._halves), oldHalf = half;
-  idx = i; half = h; cur = P[i]; S.seen.last = i; S.seen.half = h; S.seen[cur.id] = 1; save();
+  idx = i; half = h; cur = P[i]; if (P === CP) { S.seen.last = i; S.seen.half = h; S.seen[cur.id] = 1; save(); }
   const b = document.createElement('div'); b.className = 'board'; b.dataset.b = cur.id; b.innerHTML = cur.html;
   vp.replaceChildren(b); board = b; b._halves = hasHalves(b);
   if (half && !(single() && b._halves)) half = 0;
-  layout(); enhance(b, cur);
+  layout(); if (P === CP) enhance(b, cur); else bookPage(i);
   if (dir) pageFlip(oldB, wasOne, oldHalf, dir);
-  $('#ptitle').textContent = cur.kind === 'cover' ? 'Xiao Long et la valise de Mamie Nainai' : cur.title.replace(/·/g, '–').replace(/\s*\(.*?\)\s*/g, ' ');
+  if (P === CP) $('#ptitle').textContent = cur.kind === 'cover' ? 'Xiao Long et la valise de Mamie Nainai' : cur.title.replace(/·/g, '–').replace(/\s*\(.*?\)\s*/g, ' ');
   dots();
 }
 function step(d) {
@@ -153,7 +154,7 @@ let sx = null, sy = 0, st = 0;
 stage.addEventListener('pointerdown', e => { if (e.target.closest('.cs-ov,.zone,.nav,.speak')) { sx = null; return; } sx = e.clientX; sy = e.clientY; st = Date.now(); });
 stage.addEventListener('pointerup', e => { if (sx == null) return; const dx = e.clientX - sx, dy = e.clientY - sy; if (Math.abs(dx) > 70 && Math.abs(dx) > 1.6 * Math.abs(dy) && Date.now() - st < 700) step(dx < 0 ? 1 : -1); sx = null; });
 function dots() {
-  const d = $('#dots'); if (!d.children.length) d.innerHTML = P.map(() => '<i></i>').join('');
+  const d = $('#dots'); if (d.children.length !== P.length) d.innerHTML = P.map(() => '<i></i>').join('');
   [...d.children].forEach((x, i) => { x.className = i === idx ? 'on' : (S.seen[P[i].id] ? '' : ''); });
 }
 /* coordonnées dans la planche (non transformée) */
@@ -372,12 +373,15 @@ function diplome(b) {
    DESSIN
    ====================================================================== */
 const COLORS = ['#2B2420', '#C23B2C', '#F28C28', '#F2C14E', '#3FA34D', '#3FA796', '#2F6FD0', '#7A4BC2', '#E98FA0', '#8A5A2B', '#FFFFFF'];
-function openDraw({ key, title, w, h, outline, onDone }) {
+function openDraw({ key, title, w, h, outline, onDone, lines, stickers }) {
   const ov = $('#draw'); ov.hidden = false; stopSpeak();
   ov.innerHTML = `<div class="dr-top"><button data-a="cancel">Annuler</button><h2></h2><button class="ok" data-a="ok">C'est fini !</button></div><div class="dr-wrap"><canvas></canvas></div><div class="dr-tools"></div>`;
   $('h2', ov).textContent = title;
   const cv = $('canvas', ov), ctx = cv.getContext('2d'); const K = Math.min(4, 1600 / Math.max(w, h)); cv.width = Math.round(w * K); cv.height = Math.round(h * K);
-  const wrap = $('.dr-wrap', ov); const fit = () => { const k = Math.min(wrap.clientWidth / cv.width, wrap.clientHeight / cv.height); cv.style.width = cv.width * k + 'px'; cv.style.height = cv.height * k + 'px'; };
+  const wrap = $('.dr-wrap', ov);
+  const li = lines ? Object.assign(document.createElement('img'), { className: 'dr-lines', src: lines, alt: '' }) : null; if (li) wrap.appendChild(li);
+  const fit = () => { const k = Math.min(wrap.clientWidth / cv.width, wrap.clientHeight / cv.height); cv.style.width = cv.width * k + 'px'; cv.style.height = cv.height * k + 'px';
+    if (li) Object.assign(li.style, { width: cv.style.width, height: cv.style.height, left: cv.offsetLeft + 'px', top: cv.offsetTop + 'px' }); };
   let color = outline ? '#C23B2C' : COLORS[0], size = outline ? 26 : 10, eraser = false; const hist = [];
   const bg = () => { if (outline) { ctx.save(); ctx.font = `${parseFloat(outline.font) * K}px 'Ma Shan Zheng'`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 1.5 * K; ctx.strokeStyle = '#C23B2C'; ctx.strokeText(outline.text, cv.width / 2, cv.height / 2 + 4 * K); ctx.restore(); } };
   const base = async () => { ctx.clearRect(0, 0, cv.width, cv.height); if (!outline) { ctx.fillStyle = '#FFFCF5'; ctx.fillRect(0, 0, cv.width, cv.height); } const u = S.media[key] && await mediaURL(key); if (u) { const im = new Image(); im.src = u; await im.decode().catch(() => {}); ctx.drawImage(im, 0, 0, cv.width, cv.height); } else bg(); };
@@ -389,9 +393,21 @@ function openDraw({ key, title, w, h, outline, onDone }) {
   const er = tb('🧽', () => { eraser = true; $$('button', tools).forEach(x => x.classList.remove('on')); er.classList.add('on'); }, 'Gomme');
   tb('↩︎', () => { const d = hist.pop(); if (d) ctx.putImageData(d, 0, 0); }, 'Annuler le dernier trait');
   tb('🗑', () => { hist.push(ctx.getImageData(0, 0, cv.width, cv.height)); ctx.clearRect(0, 0, cv.width, cv.height); if (!outline) { ctx.fillStyle = '#FFFCF5'; ctx.fillRect(0, 0, cv.width, cv.height); } bg(); }, 'Tout effacer');
+  let sticker = null, tray = null;
+  if (stickers) {
+    tray = document.createElement('div'); tray.className = 'dr-tray'; tray.hidden = true;
+    tray.innerHTML = STICKERS.map(f => `<button data-st="${f}"><img src="img/${f}" alt=""></button>`).join('');
+    ov.appendChild(tray);
+    const sb = tb('', () => { tray.hidden = !tray.hidden; sb.classList.toggle('on', !tray.hidden); if (tray.hidden) { sticker = null; $$('button', tray).forEach(x => x.classList.remove('on')); } }, 'Autocollants');
+    sb.classList.add('stk'); sb.innerHTML = `<img src="img/${STICKERS[0]}" alt="">`;
+    tray.onclick = e => { const b = e.target.closest('[data-st]'); if (!b) return; sticker = b.dataset.st; $$('button', tray).forEach(x => x.classList.toggle('on', x === b)); SND.tick(); };
+    $$('button', tools).forEach(x => { if (x !== sb) x.addEventListener('click', () => { sticker = null; tray.hidden = true; sb.classList.remove('on'); }); });
+  }
   let drawing = false, lx, ly;
   const pt = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * cv.width / r.width, (e.clientY - r.top) * cv.height / r.height]; };
-  cv.onpointerdown = e => { cv.setPointerCapture(e.pointerId); drawing = true; hist.push(ctx.getImageData(0, 0, cv.width, cv.height)); if (hist.length > 25) hist.shift(); [lx, ly] = pt(e); line(e, lx + .1, ly + .1); };
+  cv.onpointerdown = e => {
+    if (sticker) { const [x, y] = pt(e); hist.push(ctx.getImageData(0, 0, cv.width, cv.height)); const im = new Image(); im.onload = () => { const sw = cv.width * 0.2, sh = sw * im.height / im.width; ctx.drawImage(im, x - sw / 2, y - sh / 2, sw, sh); SND.stamp(); }; im.src = 'img/' + sticker; return; }
+    cv.setPointerCapture(e.pointerId); drawing = true; hist.push(ctx.getImageData(0, 0, cv.width, cv.height)); if (hist.length > 25) hist.shift(); [lx, ly] = pt(e); line(e, lx + .1, ly + .1); };
   cv.onpointermove = e => { if (!drawing) return; (e.getCoalescedEvents ? e.getCoalescedEvents() : [e]).forEach(ev => { const [x, y] = pt(ev); line(ev, x, y); }); };
   cv.onpointerup = cv.onpointercancel = () => { drawing = false; if (outline) bg(); };
   function line(e, x, y) {
@@ -489,15 +505,128 @@ function openParent() {
   <label>Sons <input type="checkbox" id="o-sound" ${S.cfg.sound ? 'checked' : ''}></label>
   <label>Affichage <select id="o-mode"><option value="auto">automatique</option><option value="single">une page à la fois</option><option value="double">double page</option></select></label>
   <label>Diplôme débloqué <input type="checkbox" id="o-unlock" ${S.cfg.unlock ? 'checked' : ''}></label>
+  <button class="pb" id="o-exit">Changer de profil<small>Revenir à l'écran des profils de la tablette.</small></button>
   <button class="pb danger" id="o-reset">Tout effacer<small>Remet le carnet à neuf (appuie deux fois).</small></button>`;
   $('#o-mode').value = S.cfg.mode;
   $('#o-sound').onchange = e => { S.cfg.sound = e.target.checked; save(); };
   $('#o-mode').onchange = e => { S.cfg.mode = e.target.value; save(); go(idx, 0); };
   $('#o-unlock').onchange = e => { S.cfg.unlock = e.target.checked; save(); };
+  $('#o-exit').onclick = () => parent.postMessage('kids-exit', location.origin);
   let armed = false; $('#o-reset').onclick = async e => { if (!armed) { armed = true; e.currentTarget.firstChild.textContent = 'Sûr ? Appuie encore pour tout effacer'; return; } const ks = await idb.keys(); for (const k of ks) await idb.del(k); localStorage.removeItem(KEY); location.reload(); };
 }
+
+/* ======================================================================
+   ESPACE DE CHARLIE : accueil, histoires, coloriages, chansons.
+   Tout vit dans le carnet : même papier, mêmes polices, même bandeau, mêmes pages qui se tournent.
+   ====================================================================== */
+const STICKERS = ['14566025ac14b0d813a10bb276b2ba4d.webp', 'cc459c3c89deea0b0695c95393b90600.webp', '1a6e3ec341e432f8fbe1450b9930caca.webp', 'a8c68e21c846af149b3a667dabc7cf5b.webp', '8e6572d12c801b5cce63a832874d65f2.webp', '196a0daceefb6dbcd3b114637210fffd.webp', '2309a78711eb78d27a76af5bc053a617.webp', '368ba0e58182f131fe1087897e8ad72c.webp', '929ae064e41947acbb076154a70158ac.webp', '63d3ed5786f9d1c0cd7f272c804e72d1.webp', 'a18aa4c83de2f7e4fbeb57943f9ea3a5.webp', 'd5c28042f1fb4df4a3d40e2405b1749d.webp', '1d21ded010cbf0b3b1bc2750de40f75c.webp', 'f1058ad4e7f01079f268807cb36ebd6c.webp', 'b1f78e8d6bdd1cc96cfe3b4fe0eb317f.webp', '0fad1ae0c9a4a58fd1d9b211c6478673.webp'];
+const T = (() => { try { return parent.TravelKids || null; } catch (e) { return null; } })();
+const PK = () => (T && T.pack()) || {};
+const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const im = x => !x ? '' : x.startsWith('charlie/') ? x.slice(8) : '/pack/' + x;
+const rot = i => [-3, 2, -1.5, 3, -2, 1.2][i % 6];
+const kv = document.createElement('main'); kv.id = 'kv'; document.body.insertBefore(kv, $('#dots'));
+let view = 'home', book = null;
+function setView(v, html, title) {
+  view = v; document.body.dataset.view = v;
+  kv.hidden = v === 'carnet' || v === 'book';
+  if (!kv.hidden) { kv.innerHTML = html; kv.scrollTop = 0; }
+  if (title != null) $('#ptitle').textContent = title;
+}
+const door = (k, t, src, r, tape) => `<button class="k-pola" data-go="${k}" style="--r:${r}deg"><i class="k-tape t${tape}"></i><span class="k-ph"><img src="${src}" alt=""></span><b>${t}</b></button>`;
+const sealed = (day, r) => `<button class="k-env" data-lock style="--r:${r}deg"><span class="k-seal">${day}</span><small>${T ? esc(T.doorText(day)) : ''}</small></button>`;
+const open = day => !day || !T || T.dayOpen(day);
+function home() {
+  stopBook(); stopSong();
+  const n = T ? T.daysToTrip() : 0, d = T ? T.tripDay() : 0;
+  const st = PK().kids?.stories || [], today = st.filter(s => open(s.day)).pop();
+  const count = n > 0 ? `Encore <b>${n}</b> dodo${n > 1 ? 's' : ''} avant Hong Kong` : d ? `Jour <b>${d}</b> du voyage` : 'Le voyage est fini… les souvenirs restent !';
+  setView('home', `<div class="ksheet"><section class="kp">
+      <h1 class="k-title"><span>Le carnet de Charlie</span></h1>
+      <p class="k-hand">Hong Kong · Macao · Chine du Sud — 2027</p>
+      <img class="k-xl" src="img/14566025ac14b0d813a10bb276b2ba4d.webp" alt="">
+      <div class="k-garland"><img src="img/3dd109bb36f32854f2401313b338739e.webp" alt=""></div>
+      <p class="k-count">${count}</p></section>
+    <section class="kp grid4">
+      ${door('carnet', 'Mon carnet', 'thumbs/Couverture.webp', -3, 'A')}
+      ${door('stories', 'Histoire du soir', today ? im(today.cover) : 'img/1a6e3ec341e432f8fbe1450b9930caca.webp', 2, 'B')}
+      ${door('color', 'Coloriage', 'img/60c2c2f5285921f841870ec5b742c5bf.webp', 2.5, 'C')}
+      ${door('songs', 'Chansons', '../album/disque-8.webp', -2, 'D')}
+    </section></div>`, 'Le carnet de Charlie');
+}
+function openCarnet() { stopSong(); P = CP; setView('carnet', '', null); go(Math.min(+(S.seen.last || 0), CP.length - 1), +(S.seen.half || 0)); }
+function stories() {
+  stopBook(); stopSong();
+  const st = PK().kids?.stories || [];
+  setView('stories', `<div class="ksheet"><section class="kp wide"><h1 class="k-title"><span>Les histoires de Xiao Long</span></h1>
+    <p class="k-hand">Une nouvelle histoire s'ouvre chaque soir du voyage.</p>
+    <div class="k-grid">${st.map((s, i) => open(s.day) ? `<button class="k-pola sm" data-story="${i}" style="--r:${rot(i)}deg"><i class="k-tape"></i><span class="k-ph"><img src="${im(s.cover)}" alt="" loading="lazy"></span><b>Jour ${s.day}</b></button>` : sealed(s.day, rot(i))).join('')}</div></section></div>`, 'Histoires');
+}
+/* Une histoire = un petit livre : planches 1118 × 794 (image à gauche, texte à droite), même moteur que le carnet. */
+const clean = t => t.replace(/\[[^\]]*\]\s*/g, '').replace(/\s+([,.!?…»])/g, ' $1').trim();
+function storyBoard(s, p, n) {
+  const last = n === s.pages.length - 1, name = s.title.replace(/^Jour \d+ · /, '');
+  const end = last ? `<div class="sb-end"><span class="k-fin">Fin</span>${T && T.eveningDodo() ? '<button class="kbtn" data-kact="sleep">Bonne nuit, Xiao Long</button>' : ''}</div>` : '';
+  return `<div class="sbk"><div class="sbk-l"><div class="sbk-pola" style="--r:${n % 2 ? 2 : -2}deg"><i class="k-tape t${'ABCD'[n % 4]}"></i><img src="${im(p.img)}" alt=""></div><span class="sbk-n">${n + 1}</span></div>
+    <div class="sbk-r">${n === 0 ? `<div class="sbk-tag">Jour ${s.day}</div><h2 class="k-title sm"><span>${esc(name)}</span></h2>` : ''}<div class="sbk-txt">${clean(p.text).split('\n').map(l => `<p>${esc(l)}</p>`).join('')}</div>${end}</div></div>`;
+}
+function openStory(i) {
+  const s = (PK().kids?.stories || [])[i]; if (!s || !open(s.day)) return;
+  book = { s, audio: new Audio() };
+  P = s.pages.map((p, n) => ({ id: `S${s.day}-${n}`, title: s.title, css: '', html: storyBoard(s, p, n), kind: 'story' }));
+  setView('book', '', s.title.replace(/^Jour \d+ · /, '')); go(0, 0, 0);
+}
+function bookPage(i) {
+  if (!book) return; const p = book.s.pages[i]; book.audio.pause();
+  if (p && p.audio && (!single() || half === 0)) { book.audio.src = '/pack/' + p.audio; book.audio.play().catch(() => {}); }
+}
+function stopBook() { if (book) { book.audio.pause(); book = null; } if (P !== CP) { P = CP; } }
+vp.addEventListener('click', e => { const b = e.target.closest('[data-kact]'); if (b && b.dataset.kact === 'sleep' && T) { stopBook(); T.sleep(); } });
+/* Coloriages : le dessin du jour, l'atelier du carnet, des autocollants. */
+let colItems = [];
+function colors() {
+  stopBook(); stopSong();
+  const cl = PK().kids?.coloriages || [];
+  colItems = [{ id: 'blank', title: 'Page blanche' }].concat(cl.map((c, n) => ({ id: 'c' + n, title: c.title, src: c.src, day: c.day })));
+  setView('color', `<div class="ksheet"><section class="kp wide"><h1 class="k-title"><span>Coloriages</span></h1>
+    <p class="k-hand">Un nouveau dessin chaque jour du voyage. Et plein d'autocollants !</p>
+    <div class="k-grid">${colItems.map((c, i) => open(c.day) ? `<button class="k-pola sm" data-col="${i}" style="--r:${rot(i)}deg"><i class="k-tape"></i><span class="k-ph paper"><img class="mine" data-colk="col:${c.id}" alt="">${c.src ? `<img src="${im(c.src)}" alt="">` : ''}</span><b>${esc(c.title)}</b></button>` : sealed(c.day, rot(i))).join('')}</div></section></div>`, 'Coloriages');
+  $$('[data-colk]', kv).forEach(async el => { const u = S.media[el.dataset.colk] && await mediaURL(el.dataset.colk); if (u) el.src = u; else el.remove(); });
+}
+function openColor(i) { const c = colItems[i]; if (!c) return; openDraw({ key: 'col:' + c.id, title: c.title, w: 1500, h: 1000, lines: c.src ? im(c.src) : null, stickers: true, onDone: colors }); }
+/* Chansons : seulement celles de Xiao Long pour l'instant. */
+const au = new Audio(); let songs = [], song = -1;
+function songsView() {
+  stopBook();
+  const a = PK().album, ch = a && (a.chapters || []).find(c => /Xiao Long/.test(c.title));
+  songs = ch ? ch.tracks : [];
+  setView('songs', `<div class="ksheet"><section class="kp"><h1 class="k-title"><span>Les chansons de Xiao Long</span></h1>
+      <div class="k-pola big" style="--r:-3deg"><i class="k-tape tB"></i><span class="k-ph"><img src="../${esc(ch?.jacket || 'album/disque-8.webp')}" alt=""></span><b>Xiao Long</b></div></section>
+    <section class="kp"><div class="k-tracks">${songs.map((t, i) => `<button class="k-ticket" data-song="${i}" style="--r:${[-1.5, 1, -.5][i % 3]}deg"><span class="k-play"></span><b>${esc(t.title)}</b><small>${Math.floor(t.seconds / 60)}:${String(t.seconds % 60).padStart(2, '0')}</small></button>`).join('') || '<p class="k-hand">Les chansons arrivent bientôt.</p>'}</div>
+      <div class="k-player"${song < 0 ? ' hidden' : ''}><button class="k-big" data-sp aria-label="Lecture ou pause"></button><div class="k-bar"><i></i></div></div></section></div>`, 'Chansons');
+  songUI();
+}
+function playSong(i) { const t = songs[i]; if (!t) return; if (T) T.pauseParent(); if (song !== i) { song = i; au.src = '/pack/' + t.src; } au.play().catch(() => {}); songUI(); }
+function stopSong() { au.pause(); }
+function songUI() {
+  $$('[data-song]', kv).forEach(b => { b.classList.toggle('on', +b.dataset.song === song); b.classList.toggle('playing', +b.dataset.song === song && !au.paused); });
+  const pl = $('.k-player', kv); if (pl) { pl.hidden = song < 0; $('.k-big', pl).classList.toggle('playing', !au.paused); }
+}
+au.addEventListener('timeupdate', () => { const i = $('.k-bar i', kv); if (i && au.duration) i.style.width = (100 * au.currentTime / au.duration) + '%'; });
+['play', 'pause'].forEach(ev => au.addEventListener(ev, songUI));
+au.addEventListener('ended', () => { if (song + 1 < songs.length) playSong(song + 1); else { song = -1; songUI(); } });
+kv.addEventListener('click', e => {
+  const g = e.target.closest('[data-go]'); if (g) { SND.pop(); return ({ carnet: openCarnet, stories, color: colors, songs: songsView })[g.dataset.go](); }
+  const s = e.target.closest('[data-story]'); if (s) { SND.pop(); return openStory(+s.dataset.story); }
+  const c = e.target.closest('[data-col]'); if (c) return openColor(+c.dataset.col);
+  const l = e.target.closest('[data-lock]'); if (l) { l.classList.remove('wiggle'); void l.offsetWidth; l.classList.add('wiggle'); SND.miss(); return; }
+  const so = e.target.closest('[data-song]'); if (so) return playSong(+so.dataset.song);
+  if (e.target.closest('[data-sp]')) { if (au.paused) au.play().catch(() => {}); else au.pause(); }
+});
+
 /* ---------- démarrage ---------- */
 document.fonts && document.fonts.ready.then(() => layout());
-go(idx, half); perle();
-$('#btn-home').onclick = () => { stopSpeak(); parent.postMessage('kids-back', location.origin); };
+go(idx, half); perle(); home();
+$('#btn-home').onclick = () => { stopSpeak(); if (view === 'book') return stories(); home(); };
+window.addEventListener('message', e => { if (e.origin === location.origin && e.data === 'kids-home') home(); });
 })();

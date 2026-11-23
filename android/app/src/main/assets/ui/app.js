@@ -1782,8 +1782,8 @@ function kidsSleep() {
 function kidsDodoCheck() {
   const until = store.get("kidsDodoUntil", 0), on = store.get("kidsDodo", true) && Date.now() < until;
   $("#kidsDodo").hidden = !on; $("#kids").classList.toggle("dodo", on);
-  if (on) { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = true; $("#kids").classList.remove("carnet-on"); }
-  else if ($("#kidsSub").hidden) $("#kidsHome").hidden = false;
+  if (on) { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kids").classList.remove("carnet-on"); }
+  else if (!$("#kids").hidden && !$("#kidsSub").innerHTML) kidsOpen("carnet");
   return on;
 }
 setInterval(() => {
@@ -1793,8 +1793,8 @@ setInterval(() => {
   const k = "kidsTime." + new Date().toDateString(), used = store.get(k, 0) + 15;
   store.set(k, used); if (used >= max * 60) kidsSleep();
 }, 15000);
-function kidsBack() { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = false; $("#kids").classList.remove("carnet-on"); player.pause(); }
-addEventListener("message", (e) => { if (e.origin === location.origin && e.data === "kids-back") kidsBack(); });
+function kidsBack() { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kids").classList.remove("carnet-on"); player.pause(); }
+addEventListener("message", (e) => { if (e.origin === location.origin && e.data === "kids-exit") showChooser(); });
 // Images des histoires : celles du carnet embarqué (charlie/img/…) ou celles du paquet.
 /* Calendrier de l'avent : l'histoire et le coloriage du jour N s'ouvrent à minuit (heure de Hong Kong) le jour N du voyage.
    Réglage parents (Plus › Réglages › Espace de Charlie) pour tout ouvrir en avance. */
@@ -1932,17 +1932,20 @@ $("#kids").addEventListener("click", (e) => {
   kidsOpen(b.dataset.kid, b.dataset.kidarg);
 });
 function openKids() {
-  kidsBack();
-  $("#kids").hidden = false;
-  const n = daysBetween(nowHK().date, P.trip.startDate);
-  // Compte à rebours pour une enfant qui ne lit pas : une lanterne par dodo quand il en reste 14 ou moins,
-  // sinon une grande lanterne avec le nombre (pour les parents).
-  const lant = (on) => `<i class="kl ${on ? "on" : ""}"></i>`;
-  $("#kidsCountBox").innerHTML = n <= 0 ? `<b class="kc-go">C'est le voyage !</b>`
-    : n <= 14 ? `<div class="kl-row">${Array.from({ length: n }, () => lant(true)).join("")}</div><span>${n} dodo${n > 1 ? "s" : ""} avant Hong Kong</span>`
-    : `<div class="kl-big"><i class="kl on"></i><b>${n}</b></div><span>dodos avant Hong Kong</span>`;
-  kidsDodoCheck();
+  kidsBack(); $("#kids").hidden = false; $("#kidsHome").hidden = true;
+  kidsDodoCheck(); // ouvre le carnet, sauf pendant le dodo
 }
+/* Le carnet (iframe) affiche tout l'espace de Charlie ; il lit ici le paquet, le calendrier et le mode dodo. */
+window.TravelKids = {
+  pack: () => P,
+  dayOpen: (day) => kidsDayOpen(day),
+  doorText: (day) => { const d = P.days[day - 1], n = d ? daysBetween(nowHK().date, d.date) : 0; return n > 1 ? `dans ${n} dodos` : "demain"; },
+  daysToTrip: () => daysBetween(nowHK().date, P.trip.startDate),
+  tripDay: () => { const k = P.days.findIndex((d) => d.date === nowHK().date); return k + 1; },
+  eveningDodo: () => store.get("kidsDodo", true) && new Date().getHours() >= 17,
+  sleep: () => kidsSleep(),
+  pauseParent: () => player.pause(),
+};
 // Sortie du profil Carnet : appui long (1,5 s) sur le dragon, pour éviter les sorties par accident.
 (() => {
   let timer = null;

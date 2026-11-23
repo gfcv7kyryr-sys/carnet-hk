@@ -965,3 +965,8 @@ body.mp-on #view{padding-bottom:96px}
 @media (orientation:landscape) and (max-height:900px){.kids h1{font-size:clamp(2.6rem,5.5vw,3.8rem)}.kh-xl{width:clamp(110px,13vw,170px)}}
 @media (orientation:portrait){.kids-doors{grid-template-columns:repeat(2,auto)}.kd-img{width:clamp(180px,34vw,260px)}}
 .kdoor strong{white-space:nowrap}
+
+/* Mode dodo aux couleurs du carnet (bleu nuit du bandeau, papier, Caveat Brush) */
+.kids-dodo{background:radial-gradient(circle at 50% 38%,#3A4C80,#2B3A67 55%,#1E2A4C)}
+.kids-dodo h2{font-family:"Caveat Brush",cursive}
+.kids-dodo p{font-family:"Caveat",cursive;font-size:1.8rem}
