@@ -1,358 +1,367 @@
 {
- "book": {
-  "title": "Xiao Long et la valise de Mamie Nainai",
-  "spreads": [
-   "travelos/kids/carnet/page-01.webp",
-   "travelos/kids/carnet/page-02.webp",
-   "travelos/kids/carnet/page-03.webp",
-   "travelos/kids/carnet/page-04.webp",
-   "travelos/kids/carnet/page-05.webp",
-   "travelos/kids/carnet/page-06.webp",
-   "travelos/kids/carnet/page-07.webp",
-   "travelos/kids/carnet/page-08.webp",
-   "travelos/kids/carnet/page-09.webp",
-   "travelos/kids/carnet/page-10.webp",
-   "travelos/kids/carnet/page-11.webp",
-   "travelos/kids/carnet/page-12.webp",
-   "travelos/kids/carnet/page-13.webp",
-   "travelos/kids/carnet/page-14.webp",
-   "travelos/kids/carnet/page-15.webp",
-   "travelos/kids/carnet/page-16.webp",
-   "travelos/kids/carnet/page-17.webp",
-   "travelos/kids/carnet/page-18.webp",
-   "travelos/kids/carnet/page-19.webp",
-   "travelos/kids/carnet/page-20.webp",
-   "travelos/kids/carnet/page-21.webp",
-   "travelos/kids/carnet/page-22.webp",
-   "travelos/kids/carnet/page-23.webp",
-   "travelos/kids/carnet/page-24.webp",
-   "travelos/kids/carnet/page-25.webp",
-   "travelos/kids/carnet/page-26.webp",
-   "travelos/kids/carnet/page-27.webp",
-   "travelos/kids/carnet/page-28.webp",
-   "travelos/kids/carnet/page-29.webp",
-   "travelos/kids/carnet/page-30.webp",
-   "travelos/kids/carnet/page-31.webp",
-   "travelos/kids/carnet/page-32.webp",
-   "travelos/kids/carnet/page-33.webp",
-   "travelos/kids/carnet/page-34.webp",
-   "travelos/kids/carnet/page-35.webp",
-   "travelos/kids/carnet/page-36.webp",
-   "travelos/kids/carnet/page-37.webp",
-   "travelos/kids/carnet/page-38.webp",
-   "travelos/kids/carnet/page-39.webp",
-   "travelos/kids/carnet/page-40.webp",
-   "travelos/kids/carnet/page-41.webp",
-   "travelos/kids/carnet/page-42.webp",
-   "travelos/kids/carnet/page-43.webp",
-   "travelos/kids/carnet/page-44.webp",
-   "travelos/kids/carnet/page-45.webp",
-   "travelos/kids/carnet/page-46.webp",
-   "travelos/kids/carnet/page-47.webp",
-   "travelos/kids/carnet/page-48.webp",
-   "travelos/kids/carnet/page-49.webp",
-   "travelos/kids/carnet/page-50.webp",
-   "travelos/kids/carnet/page-51.webp",
-   "travelos/kids/carnet/page-52.webp",
-   "travelos/kids/carnet/page-53.webp",
-   "travelos/kids/carnet/page-54.webp",
-   "travelos/kids/carnet/page-55.webp",
-   "travelos/kids/carnet/page-56.webp",
-   "travelos/kids/carnet/page-57.webp",
-   "travelos/kids/carnet/page-58.webp",
-   "travelos/kids/carnet/page-59.webp",
-   "travelos/kids/carnet/page-60.webp"
-  ],
-  "chapters": [
-   {
-    "title": "Début",
-    "spread": 1
-   },
-   {
-    "title": "Jour 1",
-    "spread": 4
-   },
-   {
-    "title": "Jour 2",
-    "spread": 8
-   },
-   {
-    "title": "Jour 3",
-    "spread": 14
-   },
-   {
-    "title": "Jour 4",
-    "spread": 19
-   },
-   {
-    "title": "Jour 5",
-    "spread": 24
-   },
-   {
-    "title": "Jour 6",
-    "spread": 28
-   },
-   {
-    "title": "Jour 7",
-    "spread": 32
-   },
-   {
-    "title": "Jour 8",
-    "spread": 36
-   },
-   {
-    "title": "Jour 9",
-    "spread": 40
-   },
-   {
-    "title": "Jour 10",
-    "spread": 44
-   },
-   {
-    "title": "Jour 11",
-    "spread": 48
-   },
-   {
-    "title": "Jour 12",
-    "spread": 52
-   },
-   {
-    "title": "Jour 13",
-    "spread": 56
-   },
-   {
-    "title": "Fin",
-    "spread": 59
-   }
-  ]
- },
  "coloriages": [],
  "stories": [
   {
-   "title": "Il était une fois…",
-   "cover": "travelos/kids/histoires/intro.webp",
+   "day": 1,
+   "title": "Jour 1 · Rosie, le flamant rose",
+   "ville": "Hong Kong",
+   "cover": "charlie/img/1a922b37bd6e98f95ddced40cd9ed56a.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/intro.webp",
-     "text": "Mamie Nainai, la grand-mère de Xiao Long, est partie en voyage. Elle est très gentille, très gourmande… et très étourdie : dans sa valise, elle a rangé la Perle de Lumière des dragons, en croyant que c'était une grosse mandarine !\nPendant 13 jours, Charlie et Xiao Long suivent ses traces, de Hong Kong à la rivière Li. Cherche, colle, colorie… et aide-les à rapporter la perle dans la baie !"
+     "img": "charlie/img/1a922b37bd6e98f95ddced40cd9ed56a.webp",
+     "text": "Au milieu des gratte-ciel de Hong Kong, il y a un grand jardin. Et dans ce jardin, il y a un lac plein de flamants roses.\nTous les flamants dorment debout, sur une seule patte. Tous… sauf Rosie."
     },
     {
-     "img": "travelos/kids/histoires/prologue.webp",
-     "title": "Prologue · dans l'avion",
-     "text": "Chère Charlie,\nJe m'appelle Xiao Long. Ça veut dire « petit dragon ». J'habite à Hong Kong, une grande ville au bord de la mer, tout au bout de la Terre.\nJ'ai un gros problème. Ma mamie, Mamie Nainai, est partie en voyage. Elle est très gentille, très gourmande… et très étourdie. Dans sa valise, elle a rangé la Perle de Lumière des dragons. Elle a cru que c'était une grosse mandarine dorée pour son goûter !\nSans la perle, la baie a perdu sa lueur dorée. Il faut retrouver Mamie. J'ai besoin d'une grande exploratrice. Tu veux bien m'aider ?\nDors bien dans ton avion. Je t'attends à l'aéroport !\nTon ami Xiao Long"
+     "img": "charlie/img/8e6572d12c801b5cce63a832874d65f2.webp",
+     "text": "Rosie essaie. Elle lève une patte. Elle tangue à gauche. Elle tangue à droite… et PLOUF ! La voilà dans l'eau, toute mouillée.\n« Je n'y arriverai jamais », soupire Rosie."
+    },
+    {
+     "img": "charlie/img/9fee999e20eed8881852cb6f52db7225.webp",
+     "text": "Une petite tête rouge sort d'un buisson de fleurs. C'est Xiao Long !\n« Je vais t'apprendre ! » Il lève une patte, il ouvre les bras… et BOUM, il tombe sur les fesses.\nLes flamants rient tout bas : hi hi hi !"
+    },
+    {
+     "img": "charlie/img/368ba0e58182f131fe1087897e8ad72c.webp",
+     "text": "Alors Xiao Long a une idée. « On essaie à deux ? »\nIls se tiennent par l'aile et par la patte. Ils pensent à quelque chose de très doux : une plume, un nuage, une mandarine…\nUn, deux, trois… Rosie tient ! Sur une patte !\nSur la baie, une jonque aux voiles rouges passe et leur dit bravo."
+    },
+    {
+     "img": "charlie/img/d58b75dd626a265e1f28c4f0333da841.webp",
+     "text": "Le soir, les tours s'allument en musique. Rosie dort, debout sur une patte, la tête sous son aile.\nXiao Long chuchote : « Tu vois, à deux, c'est plus facile. »\nBonne nuit, Rosie. Bonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 1 · Hong Kong",
-   "cover": "travelos/kids/histoires/j01-carte.webp",
+   "day": 2,
+   "title": "Jour 2 · Le petit tram qui avait peur",
+   "ville": "Hong Kong",
+   "cover": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j01-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nJe pars en voyage ! Dans ma valise : mon pyjama, ma brosse à moustaches et une énorme mandarine dorée pour le goûter. Elle brille dans le noir. Bizarre, bizarre.\nAujourd'hui, j'apprends à dormir sur une patte avec les flamants roses. Et ce soir, je monte sur un bateau aux grandes voiles rouges. À l'abordage !\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/451e5cf00f9b85da3607e4036a490b06.webp",
+     "text": "Ce matin, Xiao Long traverse la baie sur le bateau vert et blanc. Le vent lui chatouille les moustaches.\nEn face, tout là-haut, il y a la montagne. Et pour monter, il y a un petit train rouge."
     },
     {
-     "img": "travelos/kids/histoires/j01-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "Te voilà enfin, Charlie ! Maintenant, on ne se quitte plus. Au parc, un flamant rose m'a raconté qu'une vieille dame dragon a voulu tenir sur une patte comme lui… et PLOUF, elle est tombée dans la mare !\nSur la jonque, coincée dans une corde, j'ai trouvé son écharpe turquoise. On a raté Mamie de peu ! Puis les tours se sont allumées de toutes les couleurs. C'est beau, hein ? Mais regarde bien : il manque la lueur dorée. C'est la perle qui la fait."
+     "img": "charlie/img/929ae064e41947acbb076154a70158ac.webp",
+     "text": "Le petit train rouge s'appelle Pic. Mais Pic a un secret : la montagne est si raide qu'il a peur.\n« Et si je glissais ? Et si je n'arrivais pas en haut ? »\nSes roues tremblent : cling, cling, cling."
+    },
+    {
+     "img": "charlie/img/619adde7b7329c0c1926b0b554079c90.webp",
+     "text": "Xiao Long monte à bord et colle son nez à la vitre.\n« Moi aussi, j'ai peur, des fois. Alors je dis une phrase magique : petit dragon, grand courage ! »\nPic répète tout doucement : « Petit train… grand courage. » Et il commence à grimper."
+    },
+    {
+     "img": "charlie/img/af6f5ee67deacfed7c66253cf3909b6b.webp",
+     "text": "Ça penche, ça penche ! Les immeubles ont l'air de tomber, mais non, c'est le train qui monte.\nEt tout à coup… le sommet ! La ville entière est à leurs pieds, avec la mer et les bateaux minuscules.\n« J'ai réussi ! » crie Pic. Tout le monde applaudit."
+    },
+    {
+     "img": "charlie/img/0b8a177b0e6b9f3ee07c8cb1dc6925d7.webp",
+     "text": "Pour rentrer, Xiao Long prend le tram à étage qui fait ding-ding. Il fait sonner la cloche, une seule fois. Promis.\nCe soir, quand tu as un peu peur, tu peux dire la phrase magique, toi aussi : petit dragon, grand courage.\nBonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 2 · Hong Kong",
-   "cover": "travelos/kids/histoires/j02-carte.webp",
+   "day": 3,
+   "title": "Jour 3 · Jiu, le neuvième dragon",
+   "ville": "Hong Kong",
+   "cover": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j02-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nAujourd'hui, je prends le bateau vert et blanc, puis un petit train qui grimpe si fort qu'on monte presque allongé ! Là-haut, toute la ville est minuscule.\nCet après-midi, je prends le tram qui fait ding-ding. J'ai très envie d'appuyer sur la cloche… juste une fois. Promis.\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/6919fc1fc2a88805734bf2905713ae6e.webp",
+     "text": "Au temple qui sent bon l'encens, il y a un mur avec neuf dragons peints. Xiao Long les compte : un, deux, trois… huit… et neuf.\nLe neuvième est le plus petit. Il s'appelle Jiu. Et Jiu lui fait un clin d'œil !"
     },
     {
-     "img": "travelos/kids/histoires/j02-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "Sur un banc du Peak, j'ai trouvé les lunettes de Mamie. Elle ne doit plus rien voir du tout ! Et dans le tram, le conducteur rigolait encore : une dame dragon a fait sonner la cloche cent fois, et tous les trams de la ville se sont mis à faire ding-ding en même temps !\nDevant le Monster Building, j'ai vu briller une fenêtre dorée. La perle ? Non… juste une lampe. On l'aura demain, Charlie !"
+     "img": "charlie/img/95a74e71474e5968c453b154de88b231.webp",
+     "text": "« Je m'ennuie sur mon mur, chuchote Jiu. Je peux venir avec toi, juste une journée ? »\nHop, Jiu se glisse dans la poche de Xiao Long.\nÀ la cité arc-en-ciel, ils jouent au basket sur le toit. Jiu ne marque aucun panier, mais il rit très fort."
+    },
+    {
+     "img": "charlie/img/3a4102c7ad20254e4077da786a5da04c.webp",
+     "text": "Ensuite, ils montent un escalier plein de statues dorées. Il y en a des milliers !\nJiu propose un jeu : « Un, deux, trois, statue ! » Xiao Long ne bouge plus. Personne ne le remarque au milieu des statues… sauf un petit singe, qui lui tire la langue."
+    },
+    {
+     "img": "charlie/img/75fa5d54bf13fc357f4db06003c79a22.webp",
+     "text": "Au marché, des poissons rouges nagent dans des sacs accrochés comme des ballons.\n« Ils sont comme moi sur mon mur, dit Jiu. Ils regardent passer les gens. »\nIl leur fait coucou. Les poissons font des bulles : bloup, bloup."
+    },
+    {
+     "img": "charlie/img/3a96bb3c5241cf57221f641748c11610.webp",
+     "text": "Le soir, Jiu bâille. « Il faut que je rentre. Les gens viennent faire des vœux devant mon mur. Et moi, je veille sur leurs vœux. »\nIl remonte à sa place, entre le huitième dragon et le bord du mur.\nSi tu fais un vœu ce soir, Charlie, Jiu veille sur lui. Bonne nuit."
     }
    ]
   },
   {
-   "title": "Jour 3 · Hong Kong",
-   "cover": "travelos/kids/histoires/j03-carte.webp",
+   "day": 4,
+   "title": "Jour 4 · Pépin et la tartelette",
+   "ville": "Macao",
+   "cover": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j03-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nJ'ai perdu mes lunettes ! Ce matin, j'ai dit bonjour à un lampadaire.\nAujourd'hui, je visite un temple plein de fumée qui sent bon, des immeubles arc-en-ciel et un escalier avec dix mille Bouddhas dorés. Je vais tous les compter. Un, deux, trois… zzzz.\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
+     "text": "Aujourd'hui, Xiao Long prend un bateau très rapide pour Macao. Il colle son museau au hublot : les vagues font des moustaches blanches sur la mer."
     },
     {
-     "img": "travelos/kids/histoires/j03-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "Aux Dix Mille Bouddhas, un monsieur nous a raconté qu'une statue de dragon s'est mise à bouger… et à éternuer ! C'était Mamie. Elle s'était endormie entre deux statues en comptant… à quarante-sept. Elle a oublié son éventail sur une marche.\nAu marché de nuit, un vieux devin nous a dit tout bas : « La dame dragon prend demain le bateau vers la ville aux maisons de couleur et aux petits gâteaux jaunes. »"
+     "img": "charlie/img/05028a1346f75cfb0526a98ab383eac1.webp",
+     "text": "Sur la grande place, les pavés dessinent des vagues. Et sur une fontaine, il y a un pigeon tout triste.\nIl s'appelle Pépin. « Tout le monde mange des tartelettes jaunes, et moi, j'arrive toujours trop tard. Il ne reste que des miettes. »"
+    },
+    {
+     "img": "charlie/img/7e9595316fb4b2e6d582e213ed34bd6a.webp",
+     "text": "« Viens avec moi ! » dit Xiao Long. Ils marchent sur les vagues de pavés, en équilibre, comme des funambules.\nPépin sautille, Xiao Long manque de tomber. Oups ! Ils rient tous les deux."
+    },
+    {
+     "img": "charlie/img/aed45e104257814f8f64151aa4d3269c.webp",
+     "text": "Chez le pâtissier, ça sent le chaud et le sucré. Il ne reste qu'une seule tartelette. Une seule !\nXiao Long la regarde. Il a très envie de la croquer… Puis il la coupe en deux.\n« La moitié pour toi, Pépin. » Pépin roucoule de bonheur."
+    },
+    {
+     "img": "charlie/img/a6ba29913a73fbd2b57e48b44029ffb1.webp",
+     "text": "Au coucher du soleil, ils regardent le grand mur de l'église, tout seul devant le ciel. Pépin s'endort sur l'épaule de Xiao Long.\nUne demi-tartelette partagée, c'est encore meilleur qu'une tartelette entière.\nBonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 4 · Macao",
-   "cover": "travelos/kids/histoires/j04-carte.webp",
+   "day": 5,
+   "title": "Jour 5 · La tour qui voulait danser",
+   "ville": "Canton",
+   "cover": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j04-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nJe prends le bateau pour Macao ! Ici, les pavés font des vagues : j'ai le mal de mer en marchant.\nIl y a une église dont il ne reste que le mur de devant, et des petits gâteaux jaunes délicieux. J'en prendrai un. Ou deux. Ou douze.\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
+     "text": "Fiiiou ! Le train file si vite que les vaches n'ont pas le temps de dire bonjour. En moins d'une heure, Xiao Long arrive à Canton."
     },
     {
-     "img": "travelos/kids/histoires/j04-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "Elle en a vraiment mangé douze ! Sur les marches de Saint-Paul, ses empreintes étaient toutes collantes de sucre.\nEt devant la tour Eiffel, un gardien nous a raconté qu'une dame dragon lui a demandé un croissant. Elle croyait être arrivée en France ! Sur un banc, elle a oublié son ombrelle, avec un petit mot : « Demain, je prends un train très rapide vers la rivière des Perles. » Oh non, Charlie, elle quitte Hong Kong !"
+     "img": "charlie/img/dcf747f1c686d112fa62ed7817de3cf4.webp",
+     "text": "Au bord de la rivière, il y a une tour immense, toute fine au milieu, comme si elle se tortillait.\nXiao Long monte tout en haut dans une bulle transparente. Il entend alors une petite voix : « Tu crois que je saurai danser, un jour ? »\nC'est la tour qui parle !"
+    },
+    {
+     "img": "charlie/img/df433827827d316cae21ac9e9a8efeb9.webp",
+     "text": "« Je suis trop grande, dit la tour. Si je bouge, tout tombe. Alors je reste immobile, et je regarde les bateaux. »\nXiao Long réfléchit très fort, le menton dans les pattes."
+    },
+    {
+     "img": "charlie/img/bc64001d2a0ca10a066038dcd90869d8.webp",
+     "text": "Le soir, il monte sur un bateau tout illuminé. La musique commence. Et là, regarde ! La tour devient rouge, puis bleue, puis verte, puis violette…\n« Mais tu danses ! crie Xiao Long. Tu danses avec tes couleurs ! »"
+    },
+    {
+     "img": "charlie/img/63afa23864e4c1191a4eee67fddeb153.webp",
+     "text": "Sur le bateau, Xiao Long danse aussi, en tournant comme une toupie. La tour clignote de joie.\nOn n'est pas obligé de danser avec les pieds. On peut danser avec les couleurs, avec les mains, avec un sourire.\nBonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 5 · Canton",
-   "cover": "travelos/kids/histoires/j05-carte.webp",
+   "day": 6,
+   "title": "Jour 6 · Le bébé panda qui ne voulait pas dormir",
+   "ville": "Canton",
+   "cover": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j05-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nJe prends un train si rapide que mes moustaches s'envolent !\nCe soir, je monte en haut d'une tour toute tordue, puis je fais du bateau sur la rivière des Perles. Des perles ! Je vais en pêcher plein. J'ai apporté mon épuisette.\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
+     "text": "Au parc des pandas, c'est l'heure de la sieste. Les pandas ont mangé beaucoup de bambou. Ils bâillent, ils s'étirent, ils s'endorment.\nTous, sauf le plus petit. Il s'appelle Bao, et il a les yeux grands ouverts."
     },
     {
-     "img": "travelos/kids/histoires/j05-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "Des perles ? Mais elle en a déjà une dans sa valise ! Tout en haut de la tour, j'ai trouvé ses jumelles, posées contre la vitre.\nSur le bateau, le capitaine riait encore : une dame dragon s'est tellement penchée pour attraper des perles qu'elle est tombée à l'eau. Plouf ! On l'a repêchée avec un filet… et une vieille chaussette sur la tête. Pour demain, le capitaine dit qu'elle voulait voir des ours qui ressemblent à des chats."
+     "img": "charlie/img/f125be84f444047598b1aa6a8a8779bc.webp",
+     "text": "« Je ne veux pas dormir ! dit Bao. Si je dors, je vais rater quelque chose ! »\nXiao Long s'assoit à côté de lui. « On compte les bambous ? » Un bambou, deux bambous, trois bambous… Bao compte jusqu'à cent. Toujours pas sommeil."
+    },
+    {
+     "img": "charlie/img/a8c68e21c846af149b3a667dabc7cf5b.webp",
+     "text": "Xiao Long chante une berceuse de dragon : « Dodo, petit panda, la lune est là… » Bao gigote, Bao fait des roulades. Toujours pas sommeil."
+    },
+    {
+     "img": "charlie/img/955d4e8c50ed8f2a66eff2fd05216e9a.webp",
+     "text": "Alors un grand tigre blanc s'approche. Il ne fait pas peur du tout. Il se couche tout près et se met à ronronner, très doucement.\nRrrr… rrrr… On dirait un gros chat. On dirait le bruit de la pluie."
+    },
+    {
+     "img": "charlie/img/51b285cb47dff47b0b40c15f799c7cb4.webp",
+     "text": "Les yeux de Bao se ferment, tout doucement. Il dort, roulé en boule, comme une peluche.\nXiao Long chuchote : « Tu vois, en dormant, on ne rate rien. On garde des forces pour demain. »\nToi aussi, Charlie, ferme les yeux. Rrrr… rrrr… Bonne nuit."
     }
    ]
   },
   {
-   "title": "Jour 6 · Canton",
-   "cover": "travelos/kids/histoires/j06-carte.webp",
+   "day": 7,
+   "title": "Jour 7 · Bip, le robot qui voulait rire",
+   "ville": "Shenzhen",
+   "cover": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j06-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nAujourd'hui, je vais voir des ours qui ressemblent à des chats. Ils mangent du bambou assis sur les fesses, comme moi au pique-nique !\nIl y a aussi des tigres tout blancs, comme s'ils avaient oublié leurs rayures dans la machine à laver. Et après, une bonne sieste.\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/67692563748518dabd87665ef8ff1d0d.webp",
+     "text": "À Shenzhen, la ville du futur, les drones livrent les repas par les airs. Bzzz ! Xiao Long lève les bras pour leur faire coucou."
     },
     {
-     "img": "travelos/kids/histoires/j06-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "Quelle journée, Charlie ! Le soigneur des pandas nous a raconté une histoire incroyable. Un panda a voulu croquer la mandarine de Mamie ! Mais elle était beaucoup trop dure. Ouf, la perle est sauvée !\nEt tu as vu le bébé panda avec son drôle de bonnet ? C'est celui de Mamie. Elle a fait la sieste avec les pandas, et elle est repartie sans lui. Avant de partir, elle a parlé d'une ville où les robots font des glaces…"
+     "img": "charlie/img/196a0daceefb6dbcd3b114637210fffd.webp",
+     "text": "Dans le parc, il rencontre un petit robot blanc qui sert des glaces. Il s'appelle Bip.\nBip sait tout faire : compter jusqu'à mille, dire bonjour dans vingt langues, faire des glaces à trois boules.\nMais Bip ne sait pas rire."
+    },
+    {
+     "img": "charlie/img/67653d95059dd8cc34315d8db21ed175.webp",
+     "text": "Xiao Long essaie tout. Il fait des grimaces. Il danse la danse des canards. Il raconte l'histoire du dragon qui avait éternué dans un temple.\nBip penche la tête. « Bip. Je ne comprends pas. »"
+    },
+    {
+     "img": "charlie/img/6d3f9dd992a9888a272efbf5ff5c7d82.webp",
+     "text": "Juste à ce moment-là, un drone livre une glace… et la glace tombe, SPLOTCH, pile sur le nez de Xiao Long !\nXiao Long louche sur la boule à la fraise. Et Bip… Bip se met à clignoter.\n« Bip ! Bip ! Hi hi hi ! » Bip rit !"
+    },
+    {
+     "img": "charlie/img/4f04634b94a23ef804483af05eef0617.webp",
+     "text": "Le soir, les gratte-ciel s'allument comme des sapins de Noël. Bip rit encore en y repensant.\nLe rire, ça ne s'apprend pas dans les livres. Ça arrive tout seul, avec un ami et un peu de glace sur le nez.\nBonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 7 · Shenzhen",
-   "cover": "travelos/kids/histoires/j07-carte.webp",
+   "day": 8,
+   "title": "Jour 8 · Le plus petit des cinq moutons",
+   "ville": "Canton",
+   "cover": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j07-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nCette carte t'arrive par drone ! Ici, c'est la ville du futur : les robots font les glaces et, au restaurant, les assiettes volent toutes seules.\nJe vais apprendre à un robot la danse des canards. Et ce soir, les gratte-ciel s'allument comme des sapins de Noël.\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "text": "Dans un parc de Canton, il y a cinq moutons de pierre. Il paraît qu'il y a très longtemps, ils sont arrivés du ciel avec des magiciens.\nLe plus petit mouton a l'air triste."
     },
     {
-     "img": "travelos/kids/histoires/j07-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "Au parc, un robot nous a servi une glace… en dansant ! C'est Mamie qui lui a appris, il ne veut plus s'arrêter. Au restaurant, le serveur nous a dit qu'elle a voulu attraper son assiette volante et qu'elle est tombée de sa chaise.\nCe soir, j'ai cherché la lueur dorée partout. Rien. Mais par terre, j'ai trouvé son ticket de taxi-robot. Au dos, elle a écrit : « Demain, les cinq moutons de pierre. »"
+     "img": "charlie/img/e6360c5ddb8634cff42faa944f992244.webp",
+     "text": "Xiao Long lui fait un câlin. La pierre est froide, mais le petit mouton chuchote : « Bêê… Je suis de pierre. Je ne peux pas me promener. Je ne goûterai jamais rien de bon. »"
+    },
+    {
+     "img": "charlie/img/5b0497ac42f85cd587f6fc7546d52e5f.webp",
+     "text": "Alors Xiao Long part en promenade pour deux. Il visite une grande maison avec des dragons sculptés jusque sur le toit. Il regarde tout, très fort, pour s'en souvenir."
+    },
+    {
+     "img": "charlie/img/47af1fed0aa98d69658f8bc7ab130fd6.webp",
+     "text": "Puis il goûte un dessert blanc qui tremblote : le pudding au lait. C'est doux, c'est tiède, c'est sucré. Il en garde le goût sur la langue, et une moustache blanche sous le nez."
+    },
+    {
+     "img": "charlie/img/52cd77892586ed0e0a77af713103512c.webp",
+     "text": "Le soir, il revient au parc et raconte tout au petit mouton : les dragons du toit, le pudding qui tremblote, la moustache blanche.\nLe petit mouton sourit. « Bêê… C'est presque comme si j'y étais allé. »\nRaconter, c'est une façon de partager. Bonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 8 · Canton",
-   "cover": "travelos/kids/histoires/j08-carte.webp",
+   "day": 9,
+   "title": "Jour 9 · Noiraud, le cormoran",
+   "ville": "Xingping",
+   "cover": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j08-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nAujourd'hui, je dis bonjour à cinq moutons en pierre. Bêêê ! Ils n'ont pas répondu.\nPuis je visite une maison couverte de dragons sculptés, tous très beaux, presque autant que moi. Et au goûter, un pudding au lait tout tremblotant. Miam !\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
+     "text": "Sur la rivière Li, les montagnes ressemblent à des pains de sucre. Xiao Long glisse sur un radeau de bambou, tout doucement."
     },
     {
-     "img": "travelos/kids/histoires/j08-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "À la maison Chen, Mamie a posé sa canne contre un mur sculpté… et elle l'a oubliée ! Tu as trouvé le dragon qui me ressemble ?\nLa marchande de desserts nous a raconté que Mamie a mangé trois bols de pudding au lait, et qu'elle est repartie avec une grande moustache blanche. Accroché à la canne, un papier : « Demain, le train vers les montagnes en pain de sucre. »"
+     "img": "charlie/img/0be3435a3421f5c1e0a257e22de36e99.webp",
+     "text": "Sur le radeau d'un vieux pêcheur, il y a des cormorans, de grands oiseaux noirs qui plongent pour attraper des poissons.\nLe plus jeune s'appelle Noiraud. Mais Noiraud ne plonge jamais. « L'eau est trop profonde, dit-il. J'ai peur. »"
+    },
+    {
+     "img": "charlie/img/4647be5a4450f588ccfbc291a3a64919.webp",
+     "text": "« Tu sais, moi aussi j'ai peur de quelque chose, dit Xiao Long. J'ai peur du noir. Le soir, je laisse une petite lumière. »\nNoiraud ouvre de grands yeux. « Un dragon qui a peur du noir ? »\n« Oui. Mais j'ai une phrase magique : petit dragon, grand courage ! »"
+    },
+    {
+     "img": "charlie/img/11cb2fd47d68e2e227f34160b3ba3fb0.webp",
+     "text": "Noiraud ferme les yeux. Il répète : « Petit cormoran, grand courage. »\nEt il plonge ! PLOUF !\nIl ressort, tout ébouriffé… avec un poisson argenté dans le bec. Le vieux pêcheur rit et lui gratte la tête."
+    },
+    {
+     "img": "charlie/img/99727657bdb2fe933a5929cc8a8c2a62.webp",
+     "text": "Au coucher du soleil, la rivière devient toute dorée. Noiraud se sèche les ailes à côté de Xiao Long.\n« Ce soir, dit Noiraud, je te prête ma lanterne, pour le noir. »\nAvoir peur, ce n'est pas grave. On peut avoir peur et être courageux en même temps. Bonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 9 · Xingping",
-   "cover": "travelos/kids/histoires/j09-carte.webp",
+   "day": 10,
+   "title": "Jour 10 · Le dragon de pierre",
+   "ville": "Huangyao",
+   "cover": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j09-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nMe voilà au milieu de montagnes en forme de pains de sucre ! J'ai essayé d'en croquer une : trop dure.\nCe soir, je vais voir les pêcheurs et leurs grands oiseaux noirs qui plongent pour attraper les poissons. Et ce paysage est dessiné sur un billet de banque. Ouvre l'œil !\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
+     "text": "Huangyao est un village tout vieux, tout en pierre, avec des ruelles, des canards et des ponts couverts de feuilles. Ici, il n'y a pas de voitures. On entend juste les canards : coin, coin."
     },
     {
-     "img": "travelos/kids/histoires/j09-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "On a fait le jeu du billet, Charlie : tu l'as tenu devant la rivière, et le paysage était là, en vrai !\nAu coucher du soleil, un cormoran a plongé… et il est ressorti avec un chapeau de paille dans le bec. C'est celui de Mamie ! Le vent l'avait fait tomber dans la rivière. Merci, monsieur cormoran ! Dans le chapeau, un mot tout mouillé : « Demain, le village où les dragons sont en pierre. »"
+     "img": "charlie/img/b1f78e8d6bdd1cc96cfe3b4fe0eb317f.webp",
+     "text": "Devant le vieux théâtre, il y a des dragons de pierre. Ils ne bougent jamais. Mais l'un d'eux a l'air tout grognon.\n« Trois cents ans que je suis assis ! J'ai des fourmis dans les pattes ! »"
+    },
+    {
+     "img": "charlie/img/9bd2d920df7ef708ec055c6f9f08a6e0.webp",
+     "text": "Xiao Long ne sait pas quoi faire. Il va demander conseil au plus vieil arbre du village, près du pont. Un arbre si gros que dix enfants ne pourraient pas en faire le tour."
+    },
+    {
+     "img": "charlie/img/73daa3d842399328a593feb223a937c5.webp",
+     "text": "L'arbre parle avec une voix de feuilles : « Shhh… Le soir, quand plus personne ne regarde, les dragons de pierre ont le droit d'étirer une patte. Une seule. »\nXiao Long fait un câlin à l'arbre. Merci !"
+    },
+    {
+     "img": "charlie/img/51a1d18f402d9e73328f51c12743e5d6.webp",
+     "text": "La nuit tombe. Xiao Long se cache parmi les dragons, immobile comme une statue. Et là… crrr… le dragon grognon étire une patte. Puis il sourit.\n« Ahhh… Ça fait du bien. »\nDemain, il sera de nouveau tout sage. Bonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 10 · Huangyao",
-   "cover": "travelos/kids/histoires/j10-carte.webp",
+   "day": 11,
+   "title": "Jour 11 · Le soleil timide",
+   "ville": "Xingping",
+   "cover": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j10-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nJe suis dans un village tout vieux, encore plus vieux que moi, c'est dire ! Il y a des dragons en pierre, un arbre très, très vieux et un pont couvert de feuilles.\nJe vais jouer à cache-cache avec les dragons de pierre. Ils ne bougent jamais : je vais gagner !\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
+     "text": "Ce matin, il fait encore nuit. Xiao Long met son sac à dos et grimpe tout en haut d'une colline, marche après marche, pour voir le soleil se lever sur la rivière."
     },
     {
-     "img": "travelos/kids/histoires/j10-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "Au vieux théâtre, il y a des dragons de pierre. Un, deux, trois… quatre ? Ce matin, les habitants en ont compté un de plus. C'était Mamie, cachée au milieu d'eux, immobile comme une statue !\nSur le pont, j'ai trouvé son peigne à moustaches, avec un mot : « Mes pattes sont fatiguées, je rentre à Hong Kong. » On se rapproche, Charlie, je le sens !"
+     "img": "charlie/img/b4255b4120bbe635dc4337d2f750f0b1.webp",
+     "text": "En haut, il y a beaucoup de monde qui attend avec des appareils photo. Mais le soleil ne vient pas. Il se cache derrière un gros nuage de brume.\n« Il est timide », dit une petite fille."
+    },
+    {
+     "img": "charlie/img/77cc6e2e9381525dcf3f16c1303569a0.webp",
+     "text": "Xiao Long a une idée. « On lui dit bonjour tous ensemble ? En chinois, bonjour, c'est nǐ hǎo ! »\nUn, deux, trois : « Nǐ hǎo, soleil ! »"
+    },
+    {
+     "img": "charlie/img/0faf3f604c0870ddcc23eb734c25a8e2.webp",
+     "text": "Le nuage s'écarte, tout doucement… et le soleil sort ! Il colore la rivière en rose et en or. Les montagnes ont l'air de flotter sur la brume.\nTout le monde dit : « Ooooh ! »"
+    },
+    {
+     "img": "charlie/img/e84e56512adfec4ec780de80fea1154d.webp",
+     "text": "L'après-midi, Xiao Long prend le grand train blanc pour rentrer à Hong Kong. À chaque tunnel, il crie : « Tunnel ! » et il ferme les yeux.\nQuand quelqu'un est timide, un bonjour gentil, ça aide beaucoup.\nBonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 11 · Xingping",
-   "cover": "travelos/kids/histoires/j11-carte.webp",
+   "day": 12,
+   "title": "Jour 12 · Caramel, le cheval du carrousel",
+   "ville": "Hong Kong",
+   "cover": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j11-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nMa mandarine est de plus en plus lourde. Et la nuit, elle brille si fort que je dors avec un bandeau sur les yeux !\nCe matin, je grimpe sur une colline pour dire au revoir à la rivière. Puis le grand train blanc me ramène à Hong Kong. Tchou-tchou !\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "text": "Aujourd'hui, Xiao Long va au parc des rêves ! Il fait la montagne russe en criant très fort. Youpiii !"
     },
     {
-     "img": "travelos/kids/histoires/j11-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "En haut de la colline, un monsieur nous a raconté que Mamie y a fait une sieste. Elle ronflait si fort que tous les oiseaux se sont envolés !\nElle a oublié son oreiller de voyage sur un banc. Maintenant, on dort tout près du parc des rêves, nous aussi. Elle est là, quelque part."
+     "img": "charlie/img/63d3ed5786f9d1c0cd7f272c804e72d1.webp",
+     "text": "Sur le carrousel, il y a un cheval de bois doré. Il s'appelle Caramel. Il tourne, tourne, tourne toute la journée, en musique.\nMais Caramel a un rêve : voir les feux d'artifice. Le soir, le carrousel s'arrête toujours avant."
+    },
+    {
+     "img": "charlie/img/d0b48e13616686c559d29198bc663dcf.webp",
+     "text": "L'après-midi, c'est la parade. Les chars passent, avec des fleurs géantes et des danseurs.\nXiao Long danse au milieu de la grande rue. Mais il pense à Caramel. Comment l'aider ?"
+    },
+    {
+     "img": "charlie/img/bd3aee1286cf810ce4621fdcb07575f4.webp",
+     "text": "Xiao Long va voir le monsieur du carrousel, et il demande, très poliment : « S'il vous plaît, vous pourriez faire un dernier tour, ce soir ? Un tout petit tour ? »\nLe monsieur sourit sous sa moustache. « D'accord. Juste un. »"
+    },
+    {
+     "img": "charlie/img/be246631f75cd812c9f4077b46c9b08a.webp",
+     "text": "Le soir, le carrousel fait son dernier tour. Caramel s'arrête juste en face du château… BOUM ! Les feux d'artifice éclatent : des fleurs, des étoiles, des cœurs de lumière.\nLes yeux de bois de Caramel brillent de bonheur.\nUn s'il vous plaît, ça peut ouvrir des portes magiques. Bonne nuit, Charlie."
     }
    ]
   },
   {
-   "title": "Jour 12 · Disneyland",
-   "cover": "travelos/kids/histoires/j12-carte.webp",
+   "day": 13,
+   "title": "Jour 13 · Au revoir, les amis",
+   "ville": "Lantau",
+   "cover": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
    "pages": [
     {
-     "img": "travelos/kids/histoires/j12-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nAujourd'hui, le parc des rêves ! Des châteaux, des manèges, une parade, des feux d'artifice… et la plus grande montagne russe.\nJ'emmène ma valise avec moi dans le wagon. Bonne idée ? Oui. Enfin, je crois.\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "text": "C'est le dernier jour. Xiao Long monte dans une petite cabine qui vole au-dessus de la mer, accrochée à un câble. Tout en bas, il voit les bateaux, les îles et les avions."
     },
     {
-     "img": "travelos/kids/histoires/j12-soir.webp",
-     "title": "Le soir, Xiao Long te raconte…",
-     "text": "C'était ta journée, Charlie ! Et tout en haut d'une montagne russe, j'ai vu passer… une valise jaune moutarde ! Le temps de faire la queue, elle avait disparu.\nPendant la parade, une dame dragon dansait entre les chars. Puis les feux d'artifice, et cette lueur dorée… Sur un banc, Mamie a laissé son ballon, avec un mot : « Demain, là-haut, je mangerai enfin ma mandarine ! » Oh non, il faut l'arrêter avant qu'elle croque la perle !"
-    }
-   ]
-  },
-  {
-   "title": "Jour 13 · Lantau",
-   "cover": "travelos/kids/histoires/j13-carte.webp",
-   "pages": [
-    {
-     "img": "travelos/kids/histoires/j13-carte.webp",
-     "title": "La carte de Mamie Nainai",
-     "text": "Mon petit Xiao Long,\nC'est le grand jour : je monte voir le Grand Bouddha dans une cabine qui vole au-dessus de la mer !\nLà-haut, je vais enfin croquer ma mandarine dorée. Je l'ai gardée tout le voyage, elle doit être délicieuse. Et dure. Très dure.\nBisous de dragon,\nMamie Nainai"
+     "img": "charlie/img/80fad44c7b2cf187ccd1f05db7277a11.webp",
+     "text": "De là-haut, il se souvient de tous ses amis du voyage. Rosie le flamant, qui tient sur une patte. Pic le petit tram courageux. Jiu, le neuvième dragon. Pépin le pigeon et sa demi-tartelette."
     },
     {
-     "img": "travelos/kids/histoires/j13-soir.webp",
-     "title": "Le dénouement",
-     "text": "On monte les grandes marches, une par une. Et là, sur un banc, devant le Grand Bouddha… Mamie Nainai ! Elle tient sa mandarine dorée et ouvre grand la bouche. « Mamie, NON ! »\nElle essaie de l'éplucher. Impossible, c'est beaucoup trop dur. Et ça brille, ça brille.\n« Oh ! Ce n'est pas ma mandarine, c'est la Perle de Lumière ! Quelle étourdie je fais ! » Et on éclate tous de rire.\nMamie lève la perle vers le ciel. Elle s'envole, file au-dessus de la mer et rentre dans la baie de Hong Kong. Pour te remercier, Mamie te fait un énorme câlin de dragon… et te donne une vraie mandarine, toute ronde !"
+     "img": "charlie/img/c838884093895e9727eb23d4f7bedd99.webp",
+     "text": "La tour qui danse avec ses couleurs. Bao le bébé panda. Bip le robot qui rit. Le petit mouton de pierre. Noiraud le cormoran. Le dragon aux fourmis dans les pattes. Le soleil timide. Et Caramel, le cheval du carrousel.\nEn haut des marches, devant le Grand Bouddha, Xiao Long fait un vœu : les revoir tous, un jour."
     },
     {
-     "img": "travelos/kids/histoires/j13-carte.webp",
-     "title": "Le soir, dans l'avion",
-     "text": "Alors j'ai demandé tout bas : « Mamie, est-ce que je peux partir en France avec Charlie ? » Elle a souri : « Bien sûr, mon petit dragon. Et je vous enverrai des cartes postales ! »\nRegarde par le hublot, Charlie. Tu la vois, la petite lueur dorée au-dessus de la baie ? C'est Hong Kong qui nous dit au revoir. Maintenant, on rentre à la maison. Ensemble."
+     "img": "charlie/img/1b5093340b8662883c7224eb34a7f751.webp",
+     "text": "Le soir, dans l'avion, Xiao Long regarde par le hublot. En bas, la baie de Hong Kong brille d'une petite lueur dorée. On dirait qu'elle dit au revoir.\nEn chinois, au revoir, c'est zàijiàn. Ça veut dire : à bientôt."
+    },
+    {
+     "img": "charlie/img/dbed0856384cf81cec55117a53cbba2d.webp",
+     "text": "Les amis, ça reste dans le cœur, même quand on est loin. Il suffit de fermer les yeux pour les retrouver.\nFerme les yeux, Charlie. Tu les vois ? Rosie, Pic, Jiu, Pépin, Bao, Bip, Noiraud, Caramel… et Xiao Long, qui te fait un bisou de dragon.\nZàijiàn, et bonne nuit."
     }
    ]
   }

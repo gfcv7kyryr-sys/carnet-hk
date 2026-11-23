@@ -1763,10 +1763,13 @@ $("#switchProfile").addEventListener("click", showChooser);
 /* Pas de jeux vidéo : son carnet, des coloriages au stylet, des histoires illustrées lues à voix haute.
    Contenu attendu dans le paquet : P.kids = { carnet: [...], coloriages: [{ title, src }], stories: [{ title, cover, pages: [{ img, text }], audio }] } */
 const KID_COLORS = ["#E53935", "#FB8C00", "#FDD835", "#43A047", "#1E88E5", "#8E24AA", "#F06292", "#8D6E63", "#212121", "#FFFFFF"];
-function kidsBack() { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = false; player.pause(); }
+function kidsBack() { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = false; $("#kids").classList.remove("carnet-on"); player.pause(); }
+addEventListener("message", (e) => { if (e.origin === location.origin && e.data === "kids-back") kidsBack(); });
+// Images des histoires : celles du carnet embarqué (charlie/img/…) ou celles du paquet.
+const kidImg = (x) => (x.startsWith("charlie/") ? esc(x) : `/pack/${esc(x)}`);
 function kidsOpen(kind, arg) {
   const k = P.kids || {}, sub = $("#kidsSub");
-  const needSync = N.hasSyncedPack && !N.hasSyncedPack() ? `<p class="ks-sync">Pour voir les images, un parent lance la synchronisation du contenu en Wi-Fi (profil Jonas ou Éric › Plus › Contenu).</p>` : "";
+  const needSync = kind === "color" && N.hasSyncedPack && !N.hasSyncedPack() ? `<p class="ks-sync">Pour voir les images, un parent lance la synchronisation du contenu en Wi-Fi (profil Jonas ou Éric › Plus › Contenu).</p>` : "";
   const head = (t) => `<header class="ks-head"><button class="ks-back" data-kidback aria-label="Retour">‹</button><h2>${esc(t)}</h2></header>${needSync}`;
   let html = "";
   if (kind === "color" && arg != null) return kidsColor(+arg);
@@ -1776,58 +1779,48 @@ function kidsOpen(kind, arg) {
       ${pages.map((p, i) => `<button class="ks-card" data-kid="color" data-kidarg="${i}"><img src="/pack/${esc(p.src)}" alt=""><b>${esc(p.title)}</b></button>`).join("")}</div>
       ${pages.length ? "" : `<p class="ks-soon">Les dessins à colorier arrivent bientôt. En attendant : une page blanche.</p>`}`;
   } else if (kind === "story" && arg != null) {
-    const st = (k.stories || [])[+arg]; if (!st) return;
-    html = head(st.title) + `<div class="ks-book">${st.pages.map((p) => `<figure class="ks-page">${p.img ? `<img src="/pack/${esc(p.img)}" alt="">` : ""}<figcaption>${p.title ? `<b class="ks-pt">${esc(p.title)}</b>` : ""}${esc(p.text).split("\n").map((l) => `<p>${l}</p>`).join("")}</figcaption></figure>`).join("")}</div>`;
-    if (st.audio) setTimeout(() => playAudio(st.audio, st.title), 300);
+    return kidsStory(+arg, 0);
   } else if (kind === "story") {
     const list = k.stories || [];
-    html = head("Histoires") + (list.length ? `<div class="ks-grid">${list.map((st, i) => `<button class="ks-card" data-kid="story" data-kidarg="${i}">${st.cover ? `<img src="/pack/${esc(st.cover)}" alt="">` : `<span class="ks-blank"></span>`}<b>${esc(st.title)}</b></button>`).join("")}</div>`
+    html = head("Histoires") + (list.length ? `<div class="ks-grid">${list.map((st, i) => `<button class="ks-card" data-kid="story" data-kidarg="${i}">${st.cover ? `<img src="${kidImg(st.cover)}" alt="">` : `<span class="ks-blank"></span>`}<b>${esc(st.title)}</b></button>`).join("")}</div>`
       : `<p class="ks-soon">Les histoires de Xiao Long arrivent bientôt, avec leurs images et la voix qui les raconte.</p>`);
-  } else if (kind === "carnet" && k.book) {
-    return kidsBook(+(arg ?? store.get("kidsBookAt", 0)));
   } else if (kind === "carnet") {
-    const days = k.carnet || [];
-    html = head("Mon carnet") + (days.length ? `<div class="ks-book">${days.map((p) => `<figure class="ks-page">${p.img ? `<img src="/pack/${esc(p.img)}" alt="">` : ""}<figcaption><b>${esc(p.title || "")}</b><br>${esc(p.text || "")}</figcaption></figure>`).join("")}</div>`
-      : `<p class="ks-soon">Une carte postale de Mamie Nainai par jour du voyage : elles arrivent bientôt.</p>`);
+    // Le carnet interactif de Charlie (embarqué dans l'APK, il marche sans synchronisation).
+    $("#kidsHome").hidden = true; $("#kids").classList.add("carnet-on");
+    sub.innerHTML = `<iframe class="kc-frame" src="charlie/index.html" title="Mon carnet"></iframe>`; sub.hidden = false;
+    return;
   }
   $("#kidsHome").hidden = true; sub.innerHTML = html; sub.hidden = false; sub.scrollTop = 0;
 }
-/* Le carnet de Charlie, page par page : la double page entière en paysage, une page à la fois en portrait.
-   On tourne en glissant le doigt ou avec les flèches ; les onglets mènent au début de chaque journée. */
-function kidsBook(at) {
-  const b = P.kids.book, n = b.spreads.length, sub = $("#kidsSub");
-  const portrait = () => innerHeight > innerWidth;
-  let pos = Math.max(0, Math.min(at || 0, n - 1)); // numéro de double page
-  sub.innerHTML = `<header class="ks-head"><button class="ks-back" data-kidback aria-label="Retour">‹</button><h2>Mon carnet</h2></header>
-    <nav class="kb-tabs">${b.chapters.map((c) => `<button data-kbch="${c.spread - 1}">${esc(c.title.replace("Jour ", "J"))}</button>`).join("")}</nav>
-    <div class="kb"><button class="kb-arrow l" data-kbgo="-1" aria-label="Page précédente">‹</button>
-      <div class="kb-page" id="kbPage"><img id="kbImg" alt=""></div>
-      <button class="kb-arrow r" data-kbgo="1" aria-label="Page suivante">›</button></div>`;
-  $("#kidsHome").hidden = true; sub.hidden = false;
-  const img = $("#kbImg"), page = $("#kbPage");
+/* Une histoire comme un album : une page à la fois (image à gauche, texte à droite ; image en haut en portrait).
+   On tourne avec les flèches ou en glissant le doigt ; à la fin, on passe à l'histoire du jour suivant. */
+function kidsStory(i, at) {
+  const list = P.kids?.stories || [], st = list[i], sub = $("#kidsSub"); if (!st) return;
+  const n = st.pages.length; let pos = Math.max(0, Math.min(at || 0, n - 1));
+  sub.innerHTML = `<header class="ks-head"><button class="ks-back" data-kid="story" aria-label="Retour aux histoires">‹</button><h2>${esc(st.title)}</h2></header>
+    <div class="sb"><button class="sb-arrow" data-sbgo="-1" aria-label="Page précédente">‹</button>
+      <figure class="sb-page" id="sbPage"><div class="sb-img"><img id="sbImg" alt=""></div><figcaption id="sbText"></figcaption></figure>
+      <button class="sb-arrow" data-sbgo="1" aria-label="Page suivante">›</button></div>
+    <div class="sb-dots">${st.pages.map(() => "<i></i>").join("")}</div>`;
+  $("#kidsHome").hidden = true; sub.hidden = false; sub.scrollTop = 0;
   const show = () => {
-    const pt = portrait(), max = pt ? n * 2 - 1 : n - 1; pos = Math.max(0, Math.min(pos, max));
-    const sp = pt ? Math.floor(pos / 2) : pos;
-    img.src = `/pack/${b.spreads[sp]}`; page.style.backgroundImage = `url("/pack/${b.spreads[sp]}")`;
-    page.classList.toggle("half", pt); page.classList.toggle("right", pt && pos % 2 === 1);
-    store.set("kidsBookAt", pt ? sp : pos);
-    const ch = [...b.chapters].reverse().find((c) => c.spread - 1 <= sp);
-    $$(".kb-tabs button", sub).forEach((x) => x.classList.toggle("on", ch && +x.dataset.kbch === ch.spread - 1));
-    $(".kb-arrow.l", sub).disabled = pos === 0; $(".kb-arrow.r", sub).disabled = pos === max;
-    [sp - 1, sp + 1].forEach((k) => { if (b.spreads[k]) new Image().src = `/pack/${b.spreads[k]}`; });
+    const pg = st.pages[pos], last = pos === n - 1, next = list[i + 1];
+    $("#sbImg").src = kidImg(pg.img);
+    $("#sbText").innerHTML = esc(pg.text).split("\n").map((l) => `<p>${l}</p>`).join("")
+      + (last ? `<p class="sb-fin">Fin</p>${next ? `<button class="sb-next" data-kid="story" data-kidarg="${i + 1}">Histoire suivante ›</button>` : ""}` : "");
+    $$(".sb-dots i", sub).forEach((d, k) => d.classList.toggle("on", k === pos));
+    $$("[data-sbgo]", sub).forEach((b) => (b.disabled = +b.dataset.sbgo < 0 ? pos === 0 : last));
+    if (pg.audio) playAudio(pg.audio, st.title);
   };
-  // en portrait, on garde la double page en cours au passage de l'orientation
-  if (portrait()) pos = pos * 2;
-  show();
-  sub.querySelector(".kb-tabs").addEventListener("click", (e) => { const t = e.target.closest("[data-kbch]"); if (t) { pos = +t.dataset.kbch * (portrait() ? 2 : 1); show(); } });
-  sub.querySelectorAll("[data-kbgo]").forEach((x) => x.addEventListener("click", () => { pos += +x.dataset.kbgo; show(); }));
+  const go = (d) => { const q = Math.max(0, Math.min(n - 1, pos + d)); if (q === pos) return; pos = q; show(); };
+  $$("[data-sbgo]", sub).forEach((b) => b.addEventListener("click", () => go(+b.dataset.sbgo)));
   let x0 = null;
+  const page = $("#sbPage");
   page.addEventListener("pointerdown", (e) => { x0 = e.clientX; });
-  page.addEventListener("pointerup", (e) => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 50) { pos += dx < 0 ? 1 : -1; show(); } });
-  const onRot = () => { if (!document.body.contains(page)) return removeEventListener("resize", onRot); show(); };
-  addEventListener("resize", onRot);
+  page.addEventListener("pointerup", (e) => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1); });
+  show();
+  if (st.audio) setTimeout(() => playAudio(st.audio, st.title), 300);
 }
-/* Coloriage au stylet : pression prise en compte, gomme, annuler, effacer ; le dessin est gardé par page. */
 function kidsColor(i) {
   const pg = (P.kids?.coloriages || [])[i];
   const sub = $("#kidsSub");

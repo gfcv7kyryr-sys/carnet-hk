@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Le carnet de Charlie</title>
+<meta name="theme-color" content="#2B3A67">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header id="top">
+  <button id="btn-home" class="tb home" aria-label="Retour"><svg viewBox="0 0 24 24"><path d="M15 4l-8 8 8 8"/></svg></button>
+  <button id="btn-menu" class="tb" aria-label="Sommaire"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Sommaire</span></button>
+  <div id="ptitle"></div>
+  <div class="tb-right">
+    <button id="btn-perle" class="tb perle" aria-label="La Perle de Lumière"><svg viewBox="0 0 40 40"><defs><clipPath id="pc"><circle cx="20" cy="20" r="15"/></clipPath><radialGradient id="pg" cx=".35" cy=".3"><stop offset="0" stop-color="#FFF6C8"/><stop offset=".55" stop-color="#F2C14E"/><stop offset="1" stop-color="#C98A1A"/></radialGradient></defs><circle cx="20" cy="20" r="15" fill="#FFFCF5" stroke="#2B2420" stroke-width="1.8"/><rect id="perle-fill" x="0" y="35" width="40" height="0" fill="url(#pg)" clip-path="url(#pc)"/><circle cx="20" cy="20" r="15" fill="none" stroke="#2B2420" stroke-width="1.8"/></svg><span id="perle-n">0/13</span></button>
+    <button id="btn-pass" class="tb" aria-label="Mon passeport"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M9 16h6"/></svg><span>Passeport</span><i id="pass-badge" hidden></i></button>
+    <button id="btn-gear" class="tb gear" aria-label="Réglages des parents (appui long)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg><b id="gear-ring"></b></button>
+  </div>
+</header>
+<main id="stage"><div id="vp"></div>
+  <button id="prev" class="nav" aria-label="Page précédente"><svg viewBox="0 0 24 24"><path d="M15 4l-8 8 8 8"/></svg></button>
+  <button id="next" class="nav" aria-label="Page suivante"><svg viewBox="0 0 24 24"><path d="M9 4l8 8-8 8"/></svg></button>
+</main>
+<div id="dots"></div>
+
+<section id="toc" class="ov" hidden><div class="ov-head"><h2>Sommaire</h2><button class="x" data-close>✕</button></div><div id="toc-body"></div></section>
+<section id="pass" class="ov" hidden><div class="ov-head"><h2>Mon passeport d'aventurière</h2><button class="x" data-close>✕</button></div><div id="pass-body"></div></section>
+<section id="parent" class="ov small" hidden><div class="ov-head"><h2>Pour les parents</h2><button class="x" data-close>✕</button></div><div id="parent-body"></div></section>
+<section id="draw" class="ov draw" hidden></section>
+<div id="sheet" hidden></div>
+<div id="toast"></div>
+<canvas id="fx"></canvas>
+<input type="file" id="file" accept="image/*" hidden>
+<script src="pages.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

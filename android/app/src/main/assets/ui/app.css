@@ -871,3 +871,32 @@ body.mp-on #view{padding-bottom:96px}
 @keyframes wpBlur{from{opacity:0}to{opacity:1}}
 @keyframes wpIn{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.chooser.unlock .chooser-blur,.chooser.unlock .chooser-in{animation:none}}
+
+/* Carnet interactif de Charlie : plein écran, il a son propre bandeau (retour, sommaire, passeport) */
+.kids.carnet-on .kids-sub{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;padding:0;margin:0;max-width:none;overflow:hidden;z-index:5}
+.kids.carnet-on .kids-exit{display:none}
+.kc-frame{display:block;width:100%;height:100%;border:0;background:#F2EAD8}
+
+/* Histoires de Xiao Long : un album, une page à la fois */
+@font-face{font-family:"Andika";src:url("charlie/fonts/Andika-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Andika";src:url("charlie/fonts/Andika-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+.sb{display:grid;grid-template-columns:56px minmax(0,1fr) 56px;gap:14px;align-items:center;height:calc(100dvh - 190px);min-height:420px}
+.sb-page{margin:0;height:100%;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);background:#FFFCF5;border-radius:30px;overflow:hidden;box-shadow:0 18px 40px -20px rgba(43,36,32,.5);touch-action:pan-y}
+.sb-img{background:#F5ECD8;display:grid;place-items:center;overflow:hidden}
+.sb-img img{width:100%;height:100%;object-fit:contain;display:block}
+.sb-page figcaption{padding:clamp(18px,3vw,40px);overflow:auto;font-family:"Andika",system-ui,sans-serif;font-size:clamp(1.25rem,2.1vw,1.75rem);line-height:1.5;color:#2B2420;align-self:center;max-height:100%}
+.sb-page figcaption p{margin:0 0 .7em}
+.sb-fin{font-family:"Andika",sans-serif;font-weight:700;color:#C23B2C;font-size:1.2em}
+.sb-next{font:700 1.05rem "Andika",sans-serif;padding:12px 20px;border-radius:999px;background:#2B3A67;color:#fff}
+.sb-arrow{width:56px;height:56px;border-radius:50%;background:#fff;font-size:2rem;line-height:1;color:#2B2420;box-shadow:0 6px 16px rgba(0,0,0,.15)}
+.sb-arrow:disabled{opacity:.25}
+.sb-dots{display:flex;justify-content:center;gap:10px;margin-top:16px}
+.sb-dots i{width:10px;height:10px;border-radius:50%;background:rgba(43,36,32,.2)}
+.sb-dots i.on{background:#C23B2C;transform:scale(1.25)}
+@media (orientation:portrait){
+  .sb{grid-template-columns:minmax(0,1fr);height:auto}
+  .sb-arrow{display:none}
+  .sb-page{grid-template-columns:none;grid-template-rows:auto auto;height:auto}
+  .sb-img{aspect-ratio:3/2}
+}
+@media (orientation:portrait){.sb-page figcaption{font-size:clamp(1.45rem,3.6vw,2.1rem);padding:28px 34px}}

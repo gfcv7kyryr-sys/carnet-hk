@@ -349,7 +349,9 @@ if (pack.lockscreen) referenced.add(pack.lockscreen);
 for (const k of ["lockscreenDark", "lockscreenLight"]) if (pack[k]) referenced.add(pack[k]);
 for (const x of pack.kids?.book?.spreads || []) referenced.add(x);
 for (const p of [...(pack.kids?.carnet || []), ...(pack.kids?.coloriages || [])]) { if (p.img) referenced.add(p.img); if (p.src) referenced.add(p.src); }
-for (const st of pack.kids?.stories || []) { for (const x of [st.cover, st.audio, ...st.pages.map((p) => p.img)]) if (x) referenced.add(x); }
+// Les images « charlie/… » sont embarquées dans l'APK (carnet interactif) : pas dans le paquet.
+const inPack = (x) => x && !x.startsWith("charlie/");
+for (const st of pack.kids?.stories || []) { for (const x of [st.cover, st.audio, ...st.pages.flatMap((p) => [p.img, p.audio])]) if (inPack(x)) referenced.add(x); }
 for (const c of pack.album?.chapters || []) { for (const t of c.tracks) referenced.add(t.src); if (c.cover) referenced.add(c.cover); }
 if (pack.album?.cover) referenced.add(pack.album.cover);
 for (const d of days) if (d.depth) { referenced.add(d.depth.bg); referenced.add(d.depth.fg); }
