@@ -127,5 +127,234 @@
   ]
  },
  "coloriages": [],
- "stories": []
+ "stories": [
+  {
+   "title": "Il était une fois…",
+   "cover": "travelos/kids/histoires/intro.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/intro.webp",
+     "text": "Mamie Nainai, la grand-mère de Xiao Long, est partie en voyage. Elle est très gentille, très gourmande… et très étourdie : dans sa valise, elle a rangé la Perle de Lumière des dragons, en croyant que c'était une grosse mandarine !\nPendant 13 jours, Charlie et Xiao Long suivent ses traces, de Hong Kong à la rivière Li. Cherche, colle, colorie… et aide-les à rapporter la perle dans la baie !"
+    },
+    {
+     "img": "travelos/kids/histoires/prologue.webp",
+     "title": "Prologue · dans l'avion",
+     "text": "Chère Charlie,\nJe m'appelle Xiao Long. Ça veut dire « petit dragon ». J'habite à Hong Kong, une grande ville au bord de la mer, tout au bout de la Terre.\nJ'ai un gros problème. Ma mamie, Mamie Nainai, est partie en voyage. Elle est très gentille, très gourmande… et très étourdie. Dans sa valise, elle a rangé la Perle de Lumière des dragons. Elle a cru que c'était une grosse mandarine dorée pour son goûter !\nSans la perle, la baie a perdu sa lueur dorée. Il faut retrouver Mamie. J'ai besoin d'une grande exploratrice. Tu veux bien m'aider ?\nDors bien dans ton avion. Je t'attends à l'aéroport !\nTon ami Xiao Long"
+    }
+   ]
+  },
+  {
+   "title": "Jour 1 · Hong Kong",
+   "cover": "travelos/kids/histoires/j01-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j01-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nJe pars en voyage ! Dans ma valise : mon pyjama, ma brosse à moustaches et une énorme mandarine dorée pour le goûter. Elle brille dans le noir. Bizarre, bizarre.\nAujourd'hui, j'apprends à dormir sur une patte avec les flamants roses. Et ce soir, je monte sur un bateau aux grandes voiles rouges. À l'abordage !\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j01-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "Te voilà enfin, Charlie ! Maintenant, on ne se quitte plus. Au parc, un flamant rose m'a raconté qu'une vieille dame dragon a voulu tenir sur une patte comme lui… et PLOUF, elle est tombée dans la mare !\nSur la jonque, coincée dans une corde, j'ai trouvé son écharpe turquoise. On a raté Mamie de peu ! Puis les tours se sont allumées de toutes les couleurs. C'est beau, hein ? Mais regarde bien : il manque la lueur dorée. C'est la perle qui la fait."
+    }
+   ]
+  },
+  {
+   "title": "Jour 2 · Hong Kong",
+   "cover": "travelos/kids/histoires/j02-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j02-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nAujourd'hui, je prends le bateau vert et blanc, puis un petit train qui grimpe si fort qu'on monte presque allongé ! Là-haut, toute la ville est minuscule.\nCet après-midi, je prends le tram qui fait ding-ding. J'ai très envie d'appuyer sur la cloche… juste une fois. Promis.\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j02-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "Sur un banc du Peak, j'ai trouvé les lunettes de Mamie. Elle ne doit plus rien voir du tout ! Et dans le tram, le conducteur rigolait encore : une dame dragon a fait sonner la cloche cent fois, et tous les trams de la ville se sont mis à faire ding-ding en même temps !\nDevant le Monster Building, j'ai vu briller une fenêtre dorée. La perle ? Non… juste une lampe. On l'aura demain, Charlie !"
+    }
+   ]
+  },
+  {
+   "title": "Jour 3 · Hong Kong",
+   "cover": "travelos/kids/histoires/j03-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j03-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nJ'ai perdu mes lunettes ! Ce matin, j'ai dit bonjour à un lampadaire.\nAujourd'hui, je visite un temple plein de fumée qui sent bon, des immeubles arc-en-ciel et un escalier avec dix mille Bouddhas dorés. Je vais tous les compter. Un, deux, trois… zzzz.\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j03-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "Aux Dix Mille Bouddhas, un monsieur nous a raconté qu'une statue de dragon s'est mise à bouger… et à éternuer ! C'était Mamie. Elle s'était endormie entre deux statues en comptant… à quarante-sept. Elle a oublié son éventail sur une marche.\nAu marché de nuit, un vieux devin nous a dit tout bas : « La dame dragon prend demain le bateau vers la ville aux maisons de couleur et aux petits gâteaux jaunes. »"
+    }
+   ]
+  },
+  {
+   "title": "Jour 4 · Macao",
+   "cover": "travelos/kids/histoires/j04-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j04-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nJe prends le bateau pour Macao ! Ici, les pavés font des vagues : j'ai le mal de mer en marchant.\nIl y a une église dont il ne reste que le mur de devant, et des petits gâteaux jaunes délicieux. J'en prendrai un. Ou deux. Ou douze.\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j04-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "Elle en a vraiment mangé douze ! Sur les marches de Saint-Paul, ses empreintes étaient toutes collantes de sucre.\nEt devant la tour Eiffel, un gardien nous a raconté qu'une dame dragon lui a demandé un croissant. Elle croyait être arrivée en France ! Sur un banc, elle a oublié son ombrelle, avec un petit mot : « Demain, je prends un train très rapide vers la rivière des Perles. » Oh non, Charlie, elle quitte Hong Kong !"
+    }
+   ]
+  },
+  {
+   "title": "Jour 5 · Canton",
+   "cover": "travelos/kids/histoires/j05-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j05-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nJe prends un train si rapide que mes moustaches s'envolent !\nCe soir, je monte en haut d'une tour toute tordue, puis je fais du bateau sur la rivière des Perles. Des perles ! Je vais en pêcher plein. J'ai apporté mon épuisette.\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j05-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "Des perles ? Mais elle en a déjà une dans sa valise ! Tout en haut de la tour, j'ai trouvé ses jumelles, posées contre la vitre.\nSur le bateau, le capitaine riait encore : une dame dragon s'est tellement penchée pour attraper des perles qu'elle est tombée à l'eau. Plouf ! On l'a repêchée avec un filet… et une vieille chaussette sur la tête. Pour demain, le capitaine dit qu'elle voulait voir des ours qui ressemblent à des chats."
+    }
+   ]
+  },
+  {
+   "title": "Jour 6 · Canton",
+   "cover": "travelos/kids/histoires/j06-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j06-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nAujourd'hui, je vais voir des ours qui ressemblent à des chats. Ils mangent du bambou assis sur les fesses, comme moi au pique-nique !\nIl y a aussi des tigres tout blancs, comme s'ils avaient oublié leurs rayures dans la machine à laver. Et après, une bonne sieste.\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j06-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "Quelle journée, Charlie ! Le soigneur des pandas nous a raconté une histoire incroyable. Un panda a voulu croquer la mandarine de Mamie ! Mais elle était beaucoup trop dure. Ouf, la perle est sauvée !\nEt tu as vu le bébé panda avec son drôle de bonnet ? C'est celui de Mamie. Elle a fait la sieste avec les pandas, et elle est repartie sans lui. Avant de partir, elle a parlé d'une ville où les robots font des glaces…"
+    }
+   ]
+  },
+  {
+   "title": "Jour 7 · Shenzhen",
+   "cover": "travelos/kids/histoires/j07-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j07-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nCette carte t'arrive par drone ! Ici, c'est la ville du futur : les robots font les glaces et, au restaurant, les assiettes volent toutes seules.\nJe vais apprendre à un robot la danse des canards. Et ce soir, les gratte-ciel s'allument comme des sapins de Noël.\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j07-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "Au parc, un robot nous a servi une glace… en dansant ! C'est Mamie qui lui a appris, il ne veut plus s'arrêter. Au restaurant, le serveur nous a dit qu'elle a voulu attraper son assiette volante et qu'elle est tombée de sa chaise.\nCe soir, j'ai cherché la lueur dorée partout. Rien. Mais par terre, j'ai trouvé son ticket de taxi-robot. Au dos, elle a écrit : « Demain, les cinq moutons de pierre. »"
+    }
+   ]
+  },
+  {
+   "title": "Jour 8 · Canton",
+   "cover": "travelos/kids/histoires/j08-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j08-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nAujourd'hui, je dis bonjour à cinq moutons en pierre. Bêêê ! Ils n'ont pas répondu.\nPuis je visite une maison couverte de dragons sculptés, tous très beaux, presque autant que moi. Et au goûter, un pudding au lait tout tremblotant. Miam !\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j08-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "À la maison Chen, Mamie a posé sa canne contre un mur sculpté… et elle l'a oubliée ! Tu as trouvé le dragon qui me ressemble ?\nLa marchande de desserts nous a raconté que Mamie a mangé trois bols de pudding au lait, et qu'elle est repartie avec une grande moustache blanche. Accroché à la canne, un papier : « Demain, le train vers les montagnes en pain de sucre. »"
+    }
+   ]
+  },
+  {
+   "title": "Jour 9 · Xingping",
+   "cover": "travelos/kids/histoires/j09-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j09-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nMe voilà au milieu de montagnes en forme de pains de sucre ! J'ai essayé d'en croquer une : trop dure.\nCe soir, je vais voir les pêcheurs et leurs grands oiseaux noirs qui plongent pour attraper les poissons. Et ce paysage est dessiné sur un billet de banque. Ouvre l'œil !\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j09-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "On a fait le jeu du billet, Charlie : tu l'as tenu devant la rivière, et le paysage était là, en vrai !\nAu coucher du soleil, un cormoran a plongé… et il est ressorti avec un chapeau de paille dans le bec. C'est celui de Mamie ! Le vent l'avait fait tomber dans la rivière. Merci, monsieur cormoran ! Dans le chapeau, un mot tout mouillé : « Demain, le village où les dragons sont en pierre. »"
+    }
+   ]
+  },
+  {
+   "title": "Jour 10 · Huangyao",
+   "cover": "travelos/kids/histoires/j10-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j10-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nJe suis dans un village tout vieux, encore plus vieux que moi, c'est dire ! Il y a des dragons en pierre, un arbre très, très vieux et un pont couvert de feuilles.\nJe vais jouer à cache-cache avec les dragons de pierre. Ils ne bougent jamais : je vais gagner !\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j10-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "Au vieux théâtre, il y a des dragons de pierre. Un, deux, trois… quatre ? Ce matin, les habitants en ont compté un de plus. C'était Mamie, cachée au milieu d'eux, immobile comme une statue !\nSur le pont, j'ai trouvé son peigne à moustaches, avec un mot : « Mes pattes sont fatiguées, je rentre à Hong Kong. » On se rapproche, Charlie, je le sens !"
+    }
+   ]
+  },
+  {
+   "title": "Jour 11 · Xingping",
+   "cover": "travelos/kids/histoires/j11-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j11-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nMa mandarine est de plus en plus lourde. Et la nuit, elle brille si fort que je dors avec un bandeau sur les yeux !\nCe matin, je grimpe sur une colline pour dire au revoir à la rivière. Puis le grand train blanc me ramène à Hong Kong. Tchou-tchou !\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j11-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "En haut de la colline, un monsieur nous a raconté que Mamie y a fait une sieste. Elle ronflait si fort que tous les oiseaux se sont envolés !\nElle a oublié son oreiller de voyage sur un banc. Maintenant, on dort tout près du parc des rêves, nous aussi. Elle est là, quelque part."
+    }
+   ]
+  },
+  {
+   "title": "Jour 12 · Disneyland",
+   "cover": "travelos/kids/histoires/j12-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j12-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nAujourd'hui, le parc des rêves ! Des châteaux, des manèges, une parade, des feux d'artifice… et la plus grande montagne russe.\nJ'emmène ma valise avec moi dans le wagon. Bonne idée ? Oui. Enfin, je crois.\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j12-soir.webp",
+     "title": "Le soir, Xiao Long te raconte…",
+     "text": "C'était ta journée, Charlie ! Et tout en haut d'une montagne russe, j'ai vu passer… une valise jaune moutarde ! Le temps de faire la queue, elle avait disparu.\nPendant la parade, une dame dragon dansait entre les chars. Puis les feux d'artifice, et cette lueur dorée… Sur un banc, Mamie a laissé son ballon, avec un mot : « Demain, là-haut, je mangerai enfin ma mandarine ! » Oh non, il faut l'arrêter avant qu'elle croque la perle !"
+    }
+   ]
+  },
+  {
+   "title": "Jour 13 · Lantau",
+   "cover": "travelos/kids/histoires/j13-carte.webp",
+   "pages": [
+    {
+     "img": "travelos/kids/histoires/j13-carte.webp",
+     "title": "La carte de Mamie Nainai",
+     "text": "Mon petit Xiao Long,\nC'est le grand jour : je monte voir le Grand Bouddha dans une cabine qui vole au-dessus de la mer !\nLà-haut, je vais enfin croquer ma mandarine dorée. Je l'ai gardée tout le voyage, elle doit être délicieuse. Et dure. Très dure.\nBisous de dragon,\nMamie Nainai"
+    },
+    {
+     "img": "travelos/kids/histoires/j13-soir.webp",
+     "title": "Le dénouement",
+     "text": "On monte les grandes marches, une par une. Et là, sur un banc, devant le Grand Bouddha… Mamie Nainai ! Elle tient sa mandarine dorée et ouvre grand la bouche. « Mamie, NON ! »\nElle essaie de l'éplucher. Impossible, c'est beaucoup trop dur. Et ça brille, ça brille.\n« Oh ! Ce n'est pas ma mandarine, c'est la Perle de Lumière ! Quelle étourdie je fais ! » Et on éclate tous de rire.\nMamie lève la perle vers le ciel. Elle s'envole, file au-dessus de la mer et rentre dans la baie de Hong Kong. Pour te remercier, Mamie te fait un énorme câlin de dragon… et te donne une vraie mandarine, toute ronde !"
+    },
+    {
+     "img": "travelos/kids/histoires/j13-carte.webp",
+     "title": "Le soir, dans l'avion",
+     "text": "Alors j'ai demandé tout bas : « Mamie, est-ce que je peux partir en France avec Charlie ? » Elle a souri : « Bien sûr, mon petit dragon. Et je vous enverrai des cartes postales ! »\nRegarde par le hublot, Charlie. Tu la vois, la petite lueur dorée au-dessus de la baie ? C'est Hong Kong qui nous dit au revoir. Maintenant, on rentre à la maison. Ensemble."
+    }
+   ]
+  }
+ ]
 }

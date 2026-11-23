@@ -1750,7 +1750,8 @@ const KID_COLORS = ["#E53935", "#FB8C00", "#FDD835", "#43A047", "#1E88E5", "#8E2
 function kidsBack() { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = false; player.pause(); }
 function kidsOpen(kind, arg) {
   const k = P.kids || {}, sub = $("#kidsSub");
-  const head = (t) => `<header class="ks-head"><button class="ks-back" data-kidback aria-label="Retour">‹</button><h2>${esc(t)}</h2></header>`;
+  const needSync = N.hasSyncedPack && !N.hasSyncedPack() ? `<p class="ks-sync">Pour voir les images, un parent lance la synchronisation du contenu en Wi-Fi (profil Jonas ou Éric › Plus › Contenu).</p>` : "";
+  const head = (t) => `<header class="ks-head"><button class="ks-back" data-kidback aria-label="Retour">‹</button><h2>${esc(t)}</h2></header>${needSync}`;
   let html = "";
   if (kind === "color" && arg != null) return kidsColor(+arg);
   if (kind === "color") {
@@ -1760,7 +1761,7 @@ function kidsOpen(kind, arg) {
       ${pages.length ? "" : `<p class="ks-soon">Les dessins à colorier arrivent bientôt. En attendant : une page blanche.</p>`}`;
   } else if (kind === "story" && arg != null) {
     const st = (k.stories || [])[+arg]; if (!st) return;
-    html = head(st.title) + `<div class="ks-book">${st.pages.map((p) => `<figure class="ks-page">${p.img ? `<img src="/pack/${esc(p.img)}" alt="">` : ""}<figcaption>${esc(p.text)}</figcaption></figure>`).join("")}</div>`;
+    html = head(st.title) + `<div class="ks-book">${st.pages.map((p) => `<figure class="ks-page">${p.img ? `<img src="/pack/${esc(p.img)}" alt="">` : ""}<figcaption>${p.title ? `<b class="ks-pt">${esc(p.title)}</b>` : ""}${esc(p.text).split("\n").map((l) => `<p>${l}</p>`).join("")}</figcaption></figure>`).join("")}</div>`;
     if (st.audio) setTimeout(() => playAudio(st.audio, st.title), 300);
   } else if (kind === "story") {
     const list = k.stories || [];

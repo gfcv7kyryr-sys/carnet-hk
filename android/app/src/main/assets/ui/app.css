@@ -856,3 +856,7 @@ body.mp-on #view{padding-bottom:96px}
 .profile.last .disc{box-shadow:0 0 0 2px currentColor,0 14px 34px rgba(0,0,0,.18)}
 .chooser h1{justify-self:center;width:fit-content;padding:6px 22px;border-radius:999px;background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);text-shadow:none;font-size:clamp(1.6rem,3vw,2.2rem)}
 :root[data-theme=dark] .chooser h1{background:rgba(0,0,0,.45);text-shadow:none}
+.ks-page figcaption p{margin:0 0 .55em}
+.ks-pt{display:block;font-size:.8em;opacity:.65;margin-bottom:.3em}
+.ks-card img{aspect-ratio:3/2;object-fit:cover}
+.ks-sync{font-family:system-ui;font-size:1rem;background:#fff3c4;border-radius:14px;padding:10px 14px;margin:-8px 0 16px}
