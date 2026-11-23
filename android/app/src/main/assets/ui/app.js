@@ -1468,6 +1468,8 @@ function moreSettings() {
       <div class="acts"><button class="pill red" data-settings="dream">Choisir l'économiseur</button></div>
       <p><b>Écran verrouillé</b> : les lanternes du carnet en fond (l'horloge reste celle d'Android).</p>
       <div class="seg" id="lockSeg"><button class="${store.get("lockWp", false) ? "" : "on"}" data-lockwp="0">Non</button><button class="${store.get("lockWp", false) ? "on" : ""}" data-lockwp="1">Oui</button></div></div>
+    <div class="tile"><h3>Espace de Charlie</h3><p>Une histoire et un coloriage s'ouvrent chaque jour du voyage à minuit, comme un calendrier de l'avent. Pour tout voir en avance :</p>
+      <div class="seg"><button class="${store.get("kidsAll", false) ? "" : "on"}" data-kidsall="0">Un par jour</button><button class="${store.get("kidsAll", false) ? "on" : ""}" data-kidsall="1">Tout ouvert</button></div></div>
     <div class="tile"><h3>Carte</h3><p>Fond de carte OpenStreetMap, sans compte ni clé. <b>Y aller</b> ouvre AMap avec la destination et le mode déjà choisis.</p>
       <p><b>Cartes hors ligne</b> : une zone par journée, à télécharger en Wi-Fi avant le départ pour garder la carte sans réseau. <span class="muted" id="offlineState"></span></p>
       <div class="acts"><button class="pill" id="offlineGo">Télécharger les journées</button></div></div>
@@ -1700,6 +1702,7 @@ document.addEventListener("click", (e) => {
     return go("programme", "day", day, false);
   }
   if (d.zoom) { const v = +d.zoom; store.set("textZoom", v); N.setTextZoom && N.setTextZoom(v); return go("more", null, "settings", false); }
+  if (d.kidsall) { store.set("kidsAll", d.kidsall === "1"); return go("more", null, "settings", false); }
   if (d.lockwp) { store.set("lockWp", d.lockwp === "1"); store.set("lockWpDate", null); if (d.lockwp === "1") updateLockWallpaper(true); return go("more", null, "settings", false); }
   if (d.photoday) { store.set("photoDay", d.photoday); return go("guide", null, "photo", false); }
   if (d.askchip) { $("#askQ").value = d.askchip; return; }
@@ -1766,6 +1769,13 @@ const KID_COLORS = ["#E53935", "#FB8C00", "#FDD835", "#43A047", "#1E88E5", "#8E2
 function kidsBack() { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; $("#kidsHome").hidden = false; $("#kids").classList.remove("carnet-on"); player.pause(); }
 addEventListener("message", (e) => { if (e.origin === location.origin && e.data === "kids-back") kidsBack(); });
 // Images des histoires : celles du carnet embarqué (charlie/img/…) ou celles du paquet.
+/* Calendrier de l'avent : l'histoire et le coloriage du jour N s'ouvrent à minuit (heure de Hong Kong) le jour N du voyage.
+   Réglage parents (Plus › Réglages › Espace de Charlie) pour tout ouvrir en avance. */
+const kidsDayOpen = (day) => !day || store.get("kidsAll", false) || (P.days[day - 1] && P.days[day - 1].date <= nowHK().date);
+const kidsDoor = (day) => {
+  const d = P.days[day - 1], n = d ? daysBetween(nowHK().date, d.date) : 0;
+  return `<span class="ks-door"><b>${day}</b><small>${n > 1 ? `dans ${n} dodos` : "demain"}</small></span>`;
+};
 const kidImg = (x) => (x.startsWith("charlie/") ? esc(x) : `/pack/${esc(x)}`);
 function kidsOpen(kind, arg) {
   const k = P.kids || {}, sub = $("#kidsSub");
@@ -1776,13 +1786,17 @@ function kidsOpen(kind, arg) {
   if (kind === "color") {
     const pages = k.coloriages || [];
     html = head("Coloriages") + `<div class="ks-grid"><button class="ks-card" data-kid="color" data-kidarg="-1"><span class="ks-blank"></span><b>Page blanche</b></button>
-      ${pages.map((p, i) => `<button class="ks-card" data-kid="color" data-kidarg="${i}"><img src="/pack/${esc(p.src)}" alt=""><b>${esc(p.title)}</b></button>`).join("")}</div>
+      ${pages.map((p, i) => kidsDayOpen(p.day) ? `<button class="ks-card" data-kid="color" data-kidarg="${i}"><img src="/pack/${esc(p.src)}" alt=""><b>${esc(p.title)}</b></button>`
+        : `<button class="ks-card locked" data-kidlock="${p.day}">${kidsDoor(p.day)}<b>Jour ${p.day}</b></button>`).join("")}</div>
       ${pages.length ? "" : `<p class="ks-soon">Les dessins à colorier arrivent bientôt. En attendant : une page blanche.</p>`}`;
   } else if (kind === "story" && arg != null) {
+    if (!kidsDayOpen((k.stories || [])[+arg]?.day)) return;
     return kidsStory(+arg, 0);
   } else if (kind === "story") {
     const list = k.stories || [];
-    html = head("Histoires") + (list.length ? `<div class="ks-grid">${list.map((st, i) => `<button class="ks-card" data-kid="story" data-kidarg="${i}">${st.cover ? `<img src="${kidImg(st.cover)}" alt="">` : `<span class="ks-blank"></span>`}<b>${esc(st.title)}</b></button>`).join("")}</div>`
+    html = head("Histoires") + (list.length ? `<div class="ks-grid">${list.map((st, i) => kidsDayOpen(st.day)
+        ? `<button class="ks-card" data-kid="story" data-kidarg="${i}">${st.cover ? `<img src="${kidImg(st.cover)}" alt="">` : `<span class="ks-blank"></span>`}<b>${esc(st.title)}</b></button>`
+        : `<button class="ks-card locked" data-kidlock="${st.day}">${kidsDoor(st.day)}<b>Jour ${st.day}</b></button>`).join("")}</div>`
       : `<p class="ks-soon">Les histoires de Xiao Long arrivent bientôt, avec leurs images et la voix qui les raconte.</p>`);
   } else if (kind === "carnet") {
     // Le carnet interactif de Charlie (embarqué dans l'APK, il marche sans synchronisation).
@@ -1863,6 +1877,8 @@ function kidsColor(i) {
   });
 }
 $("#kids").addEventListener("click", (e) => {
+  const lk = e.target.closest("[data-kidlock]");
+  if (lk) { lk.classList.remove("wiggle"); void lk.offsetWidth; lk.classList.add("wiggle"); return; }
   const b = e.target.closest("[data-kid],[data-kidback]"); if (!b) return;
   if (b.dataset.kidback !== undefined) return kidsBack();
   kidsOpen(b.dataset.kid, b.dataset.kidarg);
