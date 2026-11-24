@@ -417,7 +417,7 @@ def cover_page(root):
     bk = ('<div class="lvc lvc-back"><div class="lvc-frame"></div>'
           '<div class="lvc-zh">小龍</div>'
           f'{rule()}'
-          '<div class="lvc-sum">' + "".join(f"<p>{esc(x)}</p>" for x in ps[:1]) +
+          '<div class="lvc-sum">' + "".join(f"<p>{esc(x)}</p>" for x in ps[:1])
           + ('<div class="lvc-route">' + "".join(f"<span>{esc(x)}</span>" for x in stops) + "</div>" if stops else "") + "</div>"
           '<div class="lvc-foot">Carnet n°1 · Hong Kong &amp; la Chine du Sud · 2027</div></div>')
     return f'<div style="width:1118px;height:794px;display:flex">{bk}{fr}</div>'
