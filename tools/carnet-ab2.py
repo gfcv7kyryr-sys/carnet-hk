@@ -415,12 +415,11 @@ def cover_page(root):
           '<div class="lvc-seal"><b>小龍</b><span>N°1 · 2027</span></div>'
           '<div class="lvc-date">Du 20 février au 6 mars 2027</div></div>')
     bk = ('<div class="lvc lvc-back"><div class="lvc-frame"></div>'
-          '<div class="lvc-zh">小龍</div><div class="lvc-sc">Les carnets d\'exploratrice de Charlie</div>'
-          f'{rule()}<div class="lvc-k">Carnet n°1 · Hong Kong &amp; la Chine du Sud · 2027</div>'
-          '<div class="lvc-sum"><div class="lvc-sh">Il était une fois…</div>' + "".join(f"<p>{esc(x)}</p>" for x in ps) +
-          '<div class="lvc-route">' + "".join(f"<span>{esc(x)}</span>" for x in stops) + "</div>"
-          + (f'<div class="lvc-go">' + (art_html(xl, "lvc-xl") if xl is not None else "") + f'<span>{esc(tease)}</span></div>' if tease else "") +
-          '</div><div class="lvc-by">Fait main par papa Jonas et papa Éric</div></div>')
+          '<div class="lvc-zh">小龍</div>'
+          f'{rule()}'
+          '<div class="lvc-sum">' + "".join(f"<p>{esc(x)}</p>" for x in ps[:1]) +
+          + ('<div class="lvc-route">' + "".join(f"<span>{esc(x)}</span>" for x in stops) + "</div>" if stops else "") + "</div>"
+          '<div class="lvc-foot">Carnet n°1 · Hong Kong &amp; la Chine du Sud · 2027</div></div>')
     return f'<div style="width:1118px;height:794px;display:flex">{bk}{fr}</div>'
 
 # ---------------------------------------------------------------- assemblage

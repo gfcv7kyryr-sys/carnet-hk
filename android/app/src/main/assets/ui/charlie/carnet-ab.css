@@ -361,3 +361,12 @@ body[data-view=book] #kv{padding:0;background:#1E1A18;overflow:hidden}
   .sb-page .abs-txt p{font-size:clamp(17px,3.2vw,24px)}
   .sb-nav{top:40%}
 }
+
+/* 4e de couverture sobre */
+.lvc-back{justify-content:center;padding:60px 60px 56px}
+.lvc-back .lvc-zh{font-size:84px}
+.lvc-back .lv-rule{margin:22px auto 30px}
+.lvc-back .lvc-sum{margin-top:0;padding:24px 28px 20px;box-shadow:10px 10px 0 #9E0B24}
+.lvc-back .lvc-sum p{font-size:14.5px;line-height:1.55;margin:0}
+.lvc-back .lvc-route{margin-top:14px;padding-top:12px}
+.lvc-foot{position:absolute;left:0;right:0;bottom:44px;text-align:center;font:700 9.5px 'Josefin Sans',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#FFE1A8}
