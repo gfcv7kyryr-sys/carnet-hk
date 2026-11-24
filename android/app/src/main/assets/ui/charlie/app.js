@@ -129,6 +129,7 @@ function pageFlip(oldB, wasOne, oldHalf, dir) {
   Promise.all(anim.map(a => a.finished)).catch(() => {}).then(() => { layer.remove(); flipping = false; });
 }
 function go(i, h = 0, dir = 0) {
+  closeSheet();
   i = Math.max(0, Math.min(P.length - 1, i)); stopSpeak(); closeSheet();
   const oldB = board, wasOne = !!(board && single() && board._halves), oldHalf = half;
   idx = i; half = h; cur = P[i]; if (P === CP) { S.seen.last = i; S.seen.half = h; S.seen[cur.id] = 1; save(); }
@@ -171,13 +172,20 @@ function perle() {
 $('#btn-perle').onclick = () => { const n = nStickers(); toast(n >= 13 ? '✨ La perle brille ! ✨' : `${n} objet${n > 1 ? 's' : ''} retrouvé${n > 1 ? 's' : ''} sur 13`); };
 
 /* ---------- petite feuille d'actions ---------- */
+/* petit menu (Changer la photo / Retirer…) : se ferme au moindre toucher en dehors, avec Annuler, ou en changeant de page */
+let sheetOff = null;
 function sheet(x, y, actions) {
-  const s = $('#sheet'); s.innerHTML = ''; actions.forEach(([l, f]) => { const b = document.createElement('button'); b.textContent = l; b.onclick = ev => { ev.stopPropagation(); closeSheet(); f(); }; s.appendChild(b); });
+  closeSheet();
+  const s = $('#sheet'); s.innerHTML = '';
+  [...actions, ['Annuler', () => {}]].forEach(([l, f], i, a) => { const b = document.createElement('button'); b.textContent = l; if (i === a.length - 1) b.className = 'sh-x';
+    b.onclick = ev => { ev.stopPropagation(); closeSheet(); f(); }; s.appendChild(b); });
   s.hidden = false; const r = s.getBoundingClientRect(); s.style.left = Math.max(8, Math.min(innerWidth - r.width - 8, x - r.width / 2)) + 'px'; s.style.top = Math.max(8, Math.min(innerHeight - r.height - 8, y + 12)) + 'px';
-  setTimeout(() => addEventListener('pointerdown', outside, { once: true }), 0);
-  function outside(e) { if (!s.contains(e.target)) closeSheet(); else addEventListener('pointerdown', outside, { once: true }); }
+  const outside = e => { if (!s.contains(e.target)) { e.stopPropagation(); e.preventDefault(); closeSheet(); } };
+  const t = setTimeout(() => { ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => document.addEventListener(ev, outside, true)); }, 60);
+  sheetOff = () => { clearTimeout(t); ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => document.removeEventListener(ev, outside, true)); };
 }
-function closeSheet() { $('#sheet').hidden = true; }
+function closeSheet() { const s = $('#sheet'); if (s) s.hidden = true; if (sheetOff) { sheetOff(); sheetOff = null; } }
+addEventListener('blur', closeSheet); document.addEventListener('visibilitychange', closeSheet);
 
 /* ---------- photos ---------- */
 function pickPhoto() {
@@ -601,7 +609,9 @@ function home() {
   const n = T ? T.daysToTrip() : 0, d = T ? T.tripDay() : 0;
   const st = PK().kids?.stories || [], today = st.filter(s => open(s.day)).pop();
   const count = n > 0 ? `Encore ${n} dodo${n > 1 ? 's' : ''}` : d ? `Jour ${d} du voyage` : 'Les souvenirs du voyage';
-  const bg = today ? im(today.cover) : 'img/1a922b37bd6e98f95ddced40cd9ed56a.webp';
+  /* fond d'accueil : l'illustration la plus récente en haute définition (jamais une petite vignette agrandie) */
+  const hd = st.filter(s => open(s.day) && /^travelos\/kids\/histoires\//.test(s.cover || '')).pop();
+  const bg = hd ? im(hd.cover) : 'img/1a922b37bd6e98f95ddced40cd9ed56a.webp';
   setView('home', `<div class="ab-home"><img class="ab-bg" src="${bg}" alt="">
       <div class="ab-titlecard"><span class="ab-kicker">Hong Kong · Macao · Chine du Sud</span><h1>Le carnet de Charlie</h1></div>
       <div class="ab-count">${lanterns(3)}<span>${count}</span></div>
@@ -633,19 +643,43 @@ function storyPage(s, p, n) {
 const ARROW = d => `<svg viewBox="0 0 24 24"><path d="${d < 0 ? 'M15 4l-8 8 8 8' : 'M9 4l8 8-8 8'}"/></svg>`;
 function openStory(i) {
   const s = (PK().kids?.stories || [])[i]; if (!s || !open(s.day)) return;
-  stopBook(); book = { s, n: -1, audio: new Audio() };
+  stopBook(); book = { s, n: -1, audio: new Audio(), auto: false, timer: 0 };
+  const hasAudio = s.pages.some(p => p.audio);
   setView('book', `<div class="sb"><div class="sb-stage"></div>
     <button class="nav sb-nav" data-bp="-1" aria-label="Page précédente">${ARROW(-1)}</button>
-    <button class="nav sb-nav next" data-bp="1" aria-label="Page suivante">${ARROW(1)}</button></div>`, s.title.replace(/^Jour \d+ · /, ''));
+    <button class="nav sb-nav next" data-bp="1" aria-label="Page suivante">${ARROW(1)}</button>
+    ${hasAudio ? `<button class="sb-play" data-bplay aria-label="Écouter ou mettre en pause" hidden>${ICO.play}</button>
+    <div class="sb-start"><div class="sb-card"><div class="sb-q">Comment veut-on lire l'histoire ?</div>
+      <button class="sb-opt" data-bmode="auto"><span>${ICO.ear}</span><b>Xiao Long raconte</b><small>l'histoire se lit toute seule</small></button>
+      <button class="sb-opt alt" data-bmode="read"><span>${ICO.book}</span><b>On lit ensemble</b><small>on tourne les pages à son rythme</small></button></div></div>` : ''}</div>`,
+    s.title.replace(/^Jour \d+ · /, ''));
   const st = $('.sb-stage', kv); let x0 = null;
   st.addEventListener('pointerdown', e => { x0 = e.clientX; });
   st.addEventListener('pointerup', e => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 50) bookPage(book.n + (dx < 0 ? 1 : -1)); });
+  /* lecture automatique : à la fin de l'audio d'une page, on passe à la suivante */
+  book.audio.addEventListener('ended', () => { if (!book || !book.auto) return; playUI(); if (book.n < book.s.pages.length - 1) book.timer = setTimeout(() => bookPage(book.n + 1), 1400); });
+  book.audio.addEventListener('play', playUI); book.audio.addEventListener('pause', playUI);
   bookPage(0);
+}
+const ICO = {
+  play: '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
+  pause: '<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>',
+  ear: '<svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0116 0v2"/><rect x="3" y="13" width="4" height="7" rx="2"/><rect x="17" y="13" width="4" height="7" rx="2"/></svg>',
+  book: '<svg viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5V19c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V4.5C17 4 14 4.5 12 6zM12 6v14.5"/></svg>',
+  speak: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 010 6M18.5 6.5a7.5 7.5 0 010 11"/></svg>'
+};
+function playUI() {
+  const b = $('.sb-play', kv); if (!b || !book) return;
+  const on = !book.audio.paused && !book.audio.ended; b.innerHTML = on ? ICO.pause : ICO.play; b.classList.toggle('on', on);
+}
+function playPage() {
+  if (!book) return; clearTimeout(book.timer); const p = book.s.pages[book.n]; book.audio.pause();
+  if (p && p.audio) { book.audio.src = '/pack/' + p.audio; book.audio.currentTime = 0; book.audio.play().catch(() => {}); }
 }
 function bookPage(n) {
   if (!book) return; const s = book.s; if (n < 0 || n >= s.pages.length || n === book.n) return;
   const p = s.pages[n], st = $('.sb-stage', kv); if (!st) return;
-  book.n = n; if (n) SND.tick();
+  book.n = n; if (n && !book.auto) SND.tick(); clearTimeout(book.timer);
   const old = $$('.sb-page', st), el = document.createElement('div');
   el.innerHTML = storyPage(s, p, n); const pg = el.firstElementChild; st.appendChild(pg);
   requestAnimationFrame(() => requestAnimationFrame(() => pg.classList.add('on')));
@@ -653,9 +687,10 @@ function bookPage(n) {
   $('.sb-nav[data-bp="-1"]', kv).classList.toggle('off', n === 0);
   $('.sb-nav[data-bp="1"]', kv).classList.toggle('off', n === s.pages.length - 1);
   book.audio.pause();
-  if (p.audio) { book.audio.src = '/pack/' + p.audio; book.audio.play().catch(() => {}); }
+  if (book.auto) playPage(); else playUI();
 }
-function stopBook() { if (book) { book.audio.pause(); book = null; } }
+function stopBook() { if (book) { clearTimeout(book.timer); book.audio.pause(); book.audio.src = ''; book = null; } }
+document.addEventListener('visibilitychange', () => { if (document.hidden && book) { clearTimeout(book.timer); book.audio.pause(); } });
 kv.addEventListener('click', e => { const b = e.target.closest('[data-kact]'); if (b && b.dataset.kact === 'sleep' && T) { stopBook(); T.sleep(); } });
 vp.addEventListener('click', e => { const b = e.target.closest('[data-kact]'); if (b && b.dataset.kact === 'sleep' && T) { stopBook(); T.sleep(); } });
 /* Coloriages : le dessin du jour, l'atelier du carnet, des autocollants. */
@@ -696,6 +731,8 @@ kv.addEventListener('click', e => {
   const c = e.target.closest('[data-col]'); if (c) return openColor(+c.dataset.col);
   const l = e.target.closest('[data-lock]'); if (l) { l.classList.remove('wiggle'); void l.offsetWidth; l.classList.add('wiggle'); SND.miss(); return; }
   const bp = e.target.closest('[data-bp]'); if (bp && book) return bookPage(book.n + +bp.dataset.bp);
+  const bm = e.target.closest('[data-bmode]'); if (bm && book) { book.auto = bm.dataset.bmode === 'auto'; $('.sb-start', kv)?.remove(); const pl = $('.sb-play', kv); if (pl) pl.hidden = false; if (book.auto) playPage(); return; }
+  if (e.target.closest('[data-bplay]') && book) { if (!book.audio.paused) { clearTimeout(book.timer); book.audio.pause(); } else if (book.audio.src && !book.audio.ended && book.audio.currentTime > 0) book.audio.play().catch(() => {}); else playPage(); return; }
   const so = e.target.closest('[data-song]'); if (so) return playSong(+so.dataset.song);
   if (e.target.closest('[data-sp]')) { if (au.paused) au.play().catch(() => {}); else au.pause(); }
 });

@@ -379,3 +379,6 @@ body[data-view=home] #kv{top:0}
 .abs-dots{display:flex;justify-content:center;gap:9px;margin-top:12px}
 .abs-dots i{width:12px;height:12px;border-radius:50%;background:#E6D8BE}
 .abs-dots i.on{background:var(--lac);box-shadow:0 0 0 3px #F3D9A0}
+#sheet{z-index:400}
+#sheet .sh-x{background:transparent;color:#8A5A2B}
+#sheet[hidden]{display:none!important}
