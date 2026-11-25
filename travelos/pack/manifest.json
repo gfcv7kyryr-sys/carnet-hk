@@ -1,6 +1,6 @@
 {
  "formatVersion": 1,
- "packVersion": "e7806086a99d",
+ "packVersion": "0a27c9cfd19b",
  "files": [
   {
    "path": "audio/a-ma.mp3",
@@ -2158,6 +2158,56 @@
    "sha256": "1c1cc5d359c8e1eb9bd6ad0b01ad5f5154653ef5c7cf12784d3aae9bccc26be9"
   },
   {
+   "path": "travelos/kids/audio/j07-p01.mp3",
+   "size": 379774,
+   "sha256": "43fbb77618685242f9399fe1bc2aba6a158dba4d9dc0449e7d10de1600e00765"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p02.mp3",
+   "size": 377266,
+   "sha256": "4f79debc09796b53027d710af001e128a980eecaab7207e1b066b9a64bb61f10"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p03.mp3",
+   "size": 441841,
+   "sha256": "c7b206e862e1eed51606845f3541a5145d563adf112c7826bb84ccad4307ec24"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p04.mp3",
+   "size": 422405,
+   "sha256": "66941893248daf0ae2f5d631c715a123c01860fd262a0872b10bf7e12b432399"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p05.mp3",
+   "size": 486353,
+   "sha256": "381c5bb8346df5c1cc1408467585f6c1097decdd4cc7c703f35ec92c8e06c34f"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p06.mp3",
+   "size": 386043,
+   "sha256": "5e30708cdb48e5c78e2b84f34c90b8f6c66ce2e67c763a45aadbbef217f177ba"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p07.mp3",
+   "size": 349681,
+   "sha256": "679a858be45ef69c06a546833dbfa56e94d09533d65710db383d75343550b4b1"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p08.mp3",
+   "size": 446229,
+   "sha256": "6fd68b907d96a7b49ff56b323fbb6c57db502bbee47f32896448be954f210c96"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p09.mp3",
+   "size": 458768,
+   "sha256": "cda45499081415d4cf15e46fb8762a657a03ddd722374f5ebcfd111c0760fcdc"
+  },
+  {
+   "path": "travelos/kids/audio/j07-p10.mp3",
+   "size": 394822,
+   "sha256": "cb33ee8e6c095561f19dc0430a1cdee4c354a34f74c136cf037bfa80ea766398"
+  },
+  {
    "path": "travelos/kids/histoires/j01-p01.webp",
    "size": 213700,
    "sha256": "a3f45cc2dbb7aaa175ed10856220fd62d091e1d18d0b3dc3422d9961cabe055c"
@@ -2458,6 +2508,51 @@
    "sha256": "31d63c6e7eee12fb89af87cd4e0d1faa14008b3e6072e8820696dcbf259444a5"
   },
   {
+   "path": "travelos/kids/histoires/j07-p02.webp",
+   "size": 164868,
+   "sha256": "ef1ed841f8626da831026c9120f11e1645732eea8bdf346618bfe052b6038f0f"
+  },
+  {
+   "path": "travelos/kids/histoires/j07-p03.webp",
+   "size": 210726,
+   "sha256": "138cf579f0e9c43f2394feb5148b38bb3c534cf21bb026ebab64852b18543278"
+  },
+  {
+   "path": "travelos/kids/histoires/j07-p04.webp",
+   "size": 216616,
+   "sha256": "9beee53b332f704a2cdbff5c8f9ceb339a9876ab5b641f3c55651b06aff82e90"
+  },
+  {
+   "path": "travelos/kids/histoires/j07-p05.webp",
+   "size": 211920,
+   "sha256": "a99cab9d50b0b23dd17b7b59c2e8c372a839f62a239baa73d383afd7aee3ac73"
+  },
+  {
+   "path": "travelos/kids/histoires/j07-p06.webp",
+   "size": 199836,
+   "sha256": "a8fe7857d8e99c81a0347714e6a6e509e6573a4fde0b3c11c89796c2ebb41ebf"
+  },
+  {
+   "path": "travelos/kids/histoires/j07-p07.webp",
+   "size": 245600,
+   "sha256": "decfea69e4045eb4fb4277b82ae67421ab2df7fd190d47b903fc0917ff635227"
+  },
+  {
+   "path": "travelos/kids/histoires/j07-p08.webp",
+   "size": 229168,
+   "sha256": "5777b4662aa8c658ae683309dd0f786132f09e816a273413a6d0365d755eed70"
+  },
+  {
+   "path": "travelos/kids/histoires/j07-p09.webp",
+   "size": 216534,
+   "sha256": "fcd06ad0bbaddbd7f20409a251023f2c8c63752bed161aa6ecd373c1794d5041"
+  },
+  {
+   "path": "travelos/kids/histoires/j07-p10.webp",
+   "size": 230042,
+   "sha256": "8081bc2bf8bb4d70179ba7b86a41b929cac71924266a827efb1cac87d584d84b"
+  },
+  {
    "path": "travelos/lockscreen/lanternes-blanc.webp",
    "size": 240022,
    "sha256": "dba49f6955d75544169a9055681a73416fc9bc9c06c36fdf9465fe715a6f5b45"
@@ -2474,8 +2569,8 @@
   },
   {
    "path": "travelos/pack/pack.json",
-   "size": 1221392,
-   "sha256": "e7806086a99dae471c8e5f5d92abf4796cbeb08f8331ea2a8096cb1f1975f62d"
+   "size": 1221695,
+   "sha256": "0a27c9cfd19bc3cad32157c215d79929f44ae690f12ac516b0ac4f4b0a008edf"
   },
   {
    "path": "travelos/scenes/j1-1-bg.webp",
