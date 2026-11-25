@@ -585,93 +585,103 @@
   {
    "day": 11,
    "title": "Jour 11 · La boîte à souvenirs",
-   "cover": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
+   "cover": "travelos/kids/histoires/j11-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "[softly] Ce matin, Xiao Long grimpe en haut d'une colline pour voir le soleil se lever sur la rivière Li. Les montagnes flottent dans la brume, roses et dorées. C'est si beau qu'il en a les yeux qui piquent. [pause] Parce qu'aujourd'hui, il doit partir."
+     "img": "travelos/kids/histoires/j11-p01.webp",
+     "text": "[softly] Ce matin, Xiao Long grimpe en haut d'une colline pour voir le soleil se lever sur la rivière Li. Les montagnes flottent dans la brume, roses et dorées. C'est si beau qu'il en a les yeux qui piquent. [pause] Parce qu'aujourd'hui, il doit partir.",
+     "audio": "travelos/kids/audio/j11-p01.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "[sad] « Je ne veux pas partir, dit Xiao Long. Je veux rester avec la rivière, les montagnes, les radeaux et les cormorans. » Une grosse larme roule sur son museau. Puis une deuxième. Il se sent tout lourd et tout gris dedans."
+     "img": "travelos/kids/histoires/j11-p02.webp",
+     "text": "[sad] « Je ne veux pas partir, dit Xiao Long. Je veux rester avec la rivière, les montagnes, les radeaux et les cormorans. » Une grosse larme roule sur son museau. Puis une deuxième. Il se sent tout lourd et tout gris dedans.",
+     "audio": "travelos/kids/audio/j11-p02.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "La vieille tortue de la rivière s'approche. [warmly] « Tu es triste ? » « Oui. » « C'est normal, quand on aime un endroit. La tristesse, c'est l'amour qui n'a pas envie de dire au revoir. » Xiao Long renifle. [sad] « Mais je vais tout oublier ! »"
+     "img": "travelos/kids/histoires/j11-p03.webp",
+     "text": "La vieille tortue de la rivière s'approche. [warmly] « Tu es triste ? » « Oui. » « C'est normal, quand on aime un endroit. La tristesse, c'est l'amour qui n'a pas envie de dire au revoir. » Xiao Long renifle. [sad] « Mais je vais tout oublier ! »",
+     "audio": "travelos/kids/audio/j11-p03.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "« Pas si tu fais une boîte à souvenirs », dit la tortue. Elle lui donne une petite boîte en bambou. [softly] « Mets dedans quelque chose de chaque endroit que tu aimes. Comme ça, tu emporteras un peu d'ici avec toi. »"
+     "img": "travelos/kids/histoires/j11-p04.webp",
+     "text": "« Pas si tu fais une boîte à souvenirs », dit la tortue. Elle lui donne une petite boîte en bambou. [softly] « Mets dedans quelque chose de chaque endroit que tu aimes. Comme ça, tu emporteras un peu d'ici avec toi. »",
+     "audio": "travelos/kids/audio/j11-p04.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "Xiao Long cherche. Sur le chemin, il trouve un galet tout lisse et tout doux. Dans la boîte. Au bord de l'eau, une plume noire de cormoran. Dans la boîte. Sous un arbre, une feuille en forme de cœur. Dans la boîte. [pause] Qu'est-ce qui pourrait encore aller dans la boîte ?"
+     "img": "travelos/kids/histoires/j11-p05.webp",
+     "text": "Xiao Long cherche. Sur le chemin, il trouve un galet tout lisse et tout doux. Dans la boîte. Au bord de l'eau, une plume noire de cormoran. Dans la boîte. Sous un arbre, une feuille en forme de cœur. Dans la boîte. [pause] Qu'est-ce qui pourrait encore aller dans la boîte ?",
+     "audio": "travelos/kids/audio/j11-p05.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "Il ajoute un grain de riz du petit-déjeuner, un ticket de radeau, et un dessin des montagnes en pain de sucre, fait avec ses griffes. Il referme la boîte. [softly] Elle est petite. Mais elle est pleine."
+     "img": "travelos/kids/histoires/j11-p06.webp",
+     "text": "Il ajoute un grain de riz du petit-déjeuner, un ticket de radeau, et un dessin des montagnes en pain de sucre, fait avec ses griffes. Il referme la boîte. [softly] Elle est petite. Mais elle est pleine.",
+     "audio": "travelos/kids/audio/j11-p06.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "Alors Xiao Long se tourne vers la rivière et dit tout haut : « Zàijiàn, rivière ! Zàijiàn, montagnes ! » En chinois, zàijiàn veut dire au revoir. Mais mot à mot, ça veut dire : [warmly] « à se revoir ». Ce n'est pas un adieu. C'est une promesse."
+     "img": "travelos/kids/histoires/j11-p07.webp",
+     "text": "Alors Xiao Long se tourne vers la rivière et dit tout haut : « Zàijiàn, rivière ! Zàijiàn, montagnes ! » En chinois, zàijiàn veut dire au revoir. Mais mot à mot, ça veut dire : [warmly] « à se revoir ». Ce n'est pas un adieu. C'est une promesse.",
+     "audio": "travelos/kids/audio/j11-p07.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "L'après-midi, Xiao Long monte dans le grand train blanc pour rentrer à Hong Kong. Le train entre dans un tunnel : tout devient noir ! [playfully] « Tunnel ! Un ! » Puis le jour revient. Et encore un tunnel ! « Deux ! » [pause] Combien de tunnels avant Hong Kong ?"
+     "img": "travelos/kids/histoires/j11-p08.webp",
+     "text": "L'après-midi, Xiao Long monte dans le grand train blanc pour rentrer à Hong Kong. Le train entre dans un tunnel : tout devient noir ! [playfully] « Tunnel ! Un ! » Puis le jour revient. Et encore un tunnel ! « Deux ! » [pause] Combien de tunnels avant Hong Kong ?",
+     "audio": "travelos/kids/audio/j11-p08.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "[excited] « Trois ! Quatre ! Cinq ! » Xiao Long compte, la boîte serrée contre lui. « Six ! Sept ! Huit ! Neuf ! » Il ne pleure plus. Il rit à chaque tunnel. « DIX ! » Et voilà les tours de Hong Kong qui brillent au loin."
+     "img": "travelos/kids/histoires/j11-p09.webp",
+     "text": "[excited] « Trois ! Quatre ! Cinq ! » Xiao Long compte, la boîte serrée contre lui. « Six ! Sept ! Huit ! Neuf ! » Il ne pleure plus. Il rit à chaque tunnel. « DIX ! » Et voilà les tours de Hong Kong qui brillent au loin.",
+     "audio": "travelos/kids/audio/j11-p09.mp3"
     },
     {
-     "img": "charlie/img/627bfa2f435e25229f1a57369e466e56.webp",
-     "text": "[softly] Le soir, dans son lit, Xiao Long ouvre la boîte. Il touche le galet, la plume, la feuille. Et il revoit tout : le soleil rose, la rivière, les montagnes. La tristesse est encore un peu là. Mais elle est toute petite, maintenant, et pleine de jolies choses. Bonne nuit, petite boîte à souvenirs."
+     "img": "travelos/kids/histoires/j11-p10.webp",
+     "text": "[softly] Le soir, dans son lit, Xiao Long ouvre la boîte. Il touche le galet, la plume, la feuille. Et il revoit tout : le soleil rose, la rivière, les montagnes. La tristesse est encore un peu là. Mais elle est toute petite, maintenant, et pleine de jolies choses. Bonne nuit, petite boîte à souvenirs.",
+     "audio": "travelos/kids/audio/j11-p10.mp3"
     }
    ]
   },
   {
    "day": 12,
    "title": "Jour 12 · Trop petit !",
-   "cover": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+   "cover": "travelos/kids/histoires/j12-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p01.webp",
      "text": "[excited] Aujourd'hui, Xiao Long va au parc des rêves ! Il y a un château rose, des ballons de toutes les couleurs, de la musique partout. Et surtout, il y a la Grande Montagne Fusée : le manège le plus rapide, le plus haut, le plus fou du monde !"
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p02.webp",
      "text": "Xiao Long court jusqu'à l'entrée. Là, il y a une girafe en bois qui tient une règle, et un grand ours en uniforme. « Pour monter, il faut être aussi grand que la girafe. » Xiao Long se met tout droit. Il tend le cou. Il se met sur la pointe des pattes. [pause] Il lui manque… une tête."
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p03.webp",
      "text": "[kindly] « Trop petit, désolé », dit l'ours gentiment. [angry] « Je ne suis PAS trop petit ! » crie Xiao Long. Il tape des pattes. Il croise les bras. Il fait la plus grosse bouderie de toute l'histoire des dragons. [grumbling] Hmpf !"
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p04.webp",
      "text": "Xiao Long boude sur un banc. Il a du feu dans le ventre. Il a envie de crier encore. [pause] Et puis il se souvient de Noiraud, le cormoran. Il sent la fleur… [inhales deeply] Mmmmh. Il souffle la bougie… [exhales slowly] Fffffff. Une fois. Deux fois. Trois fois. Le feu redescend un peu."
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p05.webp",
      "text": "À côté de lui, un petit éléphant pleure aussi. [sad] « Moi aussi, je suis trop petit pour la Montagne Fusée. » Xiao Long le regarde. Ils sont tous les deux tout petits, et tous les deux tout tristes. [curious] « On cherche un manège pour les petits ? »"
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p06.webp",
      "text": "Ils trouvent les tasses qui tournent. Elles tournent, tournent, tournent… [laughs] si vite que les oreilles du petit éléphant s'envolent comme des ailes ! Puis le train de la forêt, qui fait tchou-tchou. Puis le carrousel, avec ses chevaux qui montent et qui descendent."
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p07.webp",
      "text": "[laughing] Xiao Long rit tellement qu'il en a le hoquet. Hic ! « Les manèges des petits, c'est génial ! » Le petit éléphant hoche la tête. Hic ! Lui aussi a le hoquet. En chinois, content se dit kāixīn : ça veut dire « le cœur ouvert »."
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p08.webp",
      "text": "L'après-midi, c'est la grande parade. Et là, surprise : [pause] pour bien voir une parade, être petit, c'est parfait ! Les petits sont devant, tout devant. Les chars passent, les danseurs font coucou, et un nuage de confettis tombe pile sur Xiao Long."
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p09.webp",
      "text": "Le soir, Xiao Long repasse devant la girafe en bois. Il se mesure encore. Toujours une tête de trop peu. Mais cette fois, il ne boude pas. [warmly] « Un jour, je serai assez grand. Et ce jour-là, je reviendrai. » L'ours lui fait un clin d'œil : « Je t'attendrai. »"
     },
     {
-     "img": "charlie/img/d35ab7e70d5def9db09916c5e705102f.webp",
+     "img": "travelos/kids/histoires/j12-p10.webp",
      "text": "Au-dessus du château, les feux d'artifice éclatent : des étoiles, des fleurs, des cœurs. Xiao Long et le petit éléphant les regardent, assis sur le même banc. [softly] Être petit, parfois, ça énerve. Mais ça a aussi ses trésors. Bonne nuit, petit dragon au cœur ouvert."
     }
    ]
@@ -679,46 +689,47 @@
   {
    "day": 13,
    "title": "Jour 13 · Le plus beau trésor",
-   "cover": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+   "cover": "travelos/kids/histoires/j13-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p01.webp",
      "text": "[mysterious] C'est le dernier jour du voyage. Sur l'île de Lantau, Xiao Long trouve un vieux papier coincé sous une pierre. Une carte ! Avec une grande croix rouge et quelques mots : [whispers] « Le plus beau trésor de ton voyage t'attend en haut des marches. »"
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p02.webp",
      "text": "[excited] Un trésor ! Xiao Long monte dans une petite cabine qui vole au-dessus de la mer, accrochée à un câble. Tout en bas, il voit des bateaux, des îles et des avions. [awe] Et au loin, sur la montagne, un immense Bouddha assis, tout en bronze, qui sourit au ciel."
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p03.webp",
      "text": "Au pied du grand escalier, Xiao Long compte les marches. Il y en a beaucoup, beaucoup, beaucoup : plus de deux cents ! [determined] « Un trésor, ça se mérite », souffle-t-il. Et il commence à monter. Une marche, deux marches, trois marches…"
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p04.webp",
      "text": "À mi-chemin, il s'arrête pour souffler. Et là, sur une marche, il trouve… [pause] une plume rose. [curious] Une plume de flamant ! Il se souvient de son tout premier jour : la tortue, le flamant tout mouillé, et son premier nǐ hǎo."
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
-     "text": "Un peu plus haut, il entend : [playfully] ding-ding ! Une petite cloche est accrochée à la rambarde. Ding-Ding, le petit tram courageux ! Sur la marche suivante, une goutte de peinture arc-en-ciel : le petit nuage ! Puis une miette de tartelette dorée. [pause] Qui a bien pu laisser tous ces indices ?"
+     "img": "travelos/kids/histoires/j13-p05.webp",
+     "text": "Un peu plus haut, il entend : [playfully] ding-ding ! Une petite cloche est accrochée à la rambarde. Ding-Ding, le petit tram courageux ! Sur la marche suivante, une goutte de peinture arc-en-ciel : le petit nuage ! Puis une miette de tartelette dorée. [pause] Qui a bien pu laisser tous ces indices ?",
+     "pos": "top"
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p06.webp",
      "text": "Marche après marche, les souvenirs reviennent : une feuille de bambou pour les trois pandas, une petite glace carrée pour Bip, une plume noire pour Noiraud, une petite lanterne rouge pour les chouettons. [softly] Le cœur de Xiao Long devient tout chaud."
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p07.webp",
      "text": "Tout en haut, devant le grand Bouddha, il y a un coffre. Xiao Long l'ouvre, le cœur battant… [pause] Le coffre est vide. Juste un miroir, au fond. Xiao Long y voit son reflet. [surprised] « Vide ? Mais… où est le trésor ? »"
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p08.webp",
      "text": "Alors il entend des voix derrière lui. Il se retourne. [excited] Ils sont tous là ! L'écureuil, la tortue, le flamant, Ding-Ding, le petit nuage, le lion de danse, la grue du train, les trois pandas, Bip, Noiraud, la maman chouette, le petit éléphant… [shouts] « Surprise ! »"
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p09.webp",
      "text": "« C'est nous qui avons laissé les indices ! » dit l'écureuil. [warmly] « Le trésor, c'est tout ce que tu as vécu, dit Noiraud. Et les amis que tu t'es faits. » Xiao Long a les yeux qui brillent. [pause] Combien d'amis s'est-il faits pendant ce voyage ? Tellement qu'il n'arrive plus à les compter. En chinois, ami se dit péngyou."
     },
     {
-     "img": "charlie/img/ea646098d76c31ab4d3faa59a39698af.webp",
+     "img": "travelos/kids/histoires/j13-p10.webp",
      "text": "[softly] Le soir, dans l'avion, Xiao Long regarde par le hublot. En bas, Hong Kong brille de mille lumières. Il pose la patte sur son cœur et dit merci, xièxie, à tous ses péngyou. [warmly] Le plus beau trésor d'un voyage ne tient pas dans un coffre. Il tient dans le cœur. Bonne nuit, et zàijiàn."
     }
    ]
