@@ -410,57 +410,59 @@
   {
    "day": 8,
    "title": "Jour 8 · Les cinq moutons magiques",
-   "cover": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+   "cover": "travelos/kids/histoires/j08-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p01.webp",
      "text": "[warmly] À Canton, dans un grand parc, il y a une statue de cinq moutons. Xiao Long les regarde. [curious] « Pourquoi des moutons, au milieu d'une ville ? » Une vieille tortue, qui se repose sur le rocher, sourit : « Assieds-toi, petit dragon. Je vais te raconter. »",
      "audio": "travelos/kids/audio/j08-p01.mp3"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p02.webp",
      "text": "[storytelling tone] « Il y a très, très longtemps, Canton était un tout petit village. Cette année-là, il n'avait pas plu depuis des mois. La terre était toute craquelée, le riz ne poussait plus, et les gens avaient faim. [sad] Les enfants ne riaient plus. »",
      "audio": "travelos/kids/audio/j08-p02.mp3"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p03.webp",
      "text": "« Un matin, on entendit de la musique dans le ciel. [awe] Cinq nuages descendirent, de cinq couleurs : un rouge, un jaune, un vert, un bleu et un blanc. Sur chaque nuage, il y avait un magicien. Et chaque magicien était assis sur… [pause] un mouton ! »",
      "audio": "travelos/kids/audio/j08-p03.mp3"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p04.webp",
      "text": "« Chaque mouton portait dans sa bouche une gerbe de riz doré. Les gens avaient un peu peur. Mais le magicien rouge leur sourit : [warmly] \"N'ayez pas peur. Nous avons vu que vous aviez faim. Nous venons vous aider.\" »",
      "audio": "travelos/kids/audio/j08-p04.mp3"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p05.webp",
      "text": "« Ils donnèrent les gerbes de riz aux villageois. Une, deux, trois, quatre, cinq. \"Plantez ces grains, dirent-ils. Partagez-les avec tout le monde. Et votre village n'aura plus jamais faim.\" » [pause] Xiao Long ouvre de grands yeux. [curious] « Et ils ont partagé ? »",
      "audio": "travelos/kids/audio/j08-p05.mp3"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p06.webp",
      "text": "« Oh oui, dit la tortue. Ils plantèrent les grains ensemble. Celui qui avait un champ prêtait sa terre. Celui qui avait des bras portait l'eau. Celle qui avait une belle voix chantait pour donner du courage. [softly] Chacun donnait ce qu'il avait. »",
-     "audio": "travelos/kids/audio/j08-p06.mp3"
+     "audio": "travelos/kids/audio/j08-p06.mp3",
+     "pos": "top"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p07.webp",
      "text": "« Et le riz poussa ! Vert, puis doré, si haut qu'il dépassait les enfants. [happy] Les gens mangèrent, ils rirent, ils dansèrent. Le petit village devint une grande ville… la ville qu'on appelle encore aujourd'hui la ville des moutons. »",
      "audio": "travelos/kids/audio/j08-p07.mp3"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p08.webp",
      "text": "« Et les magiciens ? » demande Xiao Long. [softly] « Ils remontèrent au ciel. Mais leurs cinq moutons voulurent rester, pour veiller sur la ville. Ils se transformèrent en pierre. Ce sont eux, juste là. » [pause] Combien de moutons veillent sur la ville ? Xiao Long les compte tout bas : un, deux, trois, quatre, cinq.",
      "audio": "travelos/kids/audio/j08-p08.mp3"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p09.webp",
      "text": "Le plus petit mouton a un tout petit sourire de pierre. Xiao Long lui caresse la tête. [whispers] « Merci d'avoir aidé le village. » En chinois, mouton se dit yáng. Et Canton s'appelle aussi Yángchéng : la ville des moutons.",
      "audio": "travelos/kids/audio/j08-p09.mp3"
     },
     {
-     "img": "charlie/img/f23dc2a7d95dff2a59eb5368f6954030.webp",
+     "img": "travelos/kids/histoires/j08-p10.webp",
      "text": "Ce soir-là, au restaurant, un petit moineau tout maigre se pose sur la table de Xiao Long. Xiao Long se souvient des magiciens. Il pousse doucement une poignée de riz vers lui. [warmly] Le moineau gazouille de joie. Chacun donne ce qu'il a. [softly] Bonne nuit, petits moutons de pierre.",
-     "audio": "travelos/kids/audio/j08-p10.mp3"
+     "audio": "travelos/kids/audio/j08-p10.mp3",
+     "pos": "top"
     }
    ]
   },

@@ -1,6 +1,6 @@
 {
  "formatVersion": 1,
- "packVersion": "eb6e3ca1fb32",
+ "packVersion": "01b7c9bfa672",
  "files": [
   {
    "path": "audio/a-ma.mp3",
@@ -2608,6 +2608,56 @@
    "sha256": "8081bc2bf8bb4d70179ba7b86a41b929cac71924266a827efb1cac87d584d84b"
   },
   {
+   "path": "travelos/kids/histoires/j08-p01.webp",
+   "size": 216528,
+   "sha256": "8b2bd1ad97c76c98d564702c71a5f57fea862ee0224b8c739e074a43e5502f2b"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p02.webp",
+   "size": 294020,
+   "sha256": "b5ff3cbcfaad0f77723140a6a215bdcbb296913fecfa5512ed3bf9f58a6a5ee7"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p03.webp",
+   "size": 277234,
+   "sha256": "5403d2c4dbaae3ff71d69d2f6de44ad177e8f745e723670bfa2e4fdc83c670f6"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p04.webp",
+   "size": 234838,
+   "sha256": "3e2d8c66b720d73b66b7e04612d0998254297ebbe30139c53326a69d8fe3daf0"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p05.webp",
+   "size": 216092,
+   "sha256": "042fd91c12ad9e205401b8a30e77312af37d9f059b6904f37204a1df766fbd68"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p06.webp",
+   "size": 304988,
+   "sha256": "cf333544eaa158ac621e8320197ccc100b60c72cba5925321119558122d65c8b"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p07.webp",
+   "size": 366036,
+   "sha256": "77be58262d062c3552998ff2bf2c4278f564a708a933dcd0a826eeb1dfd20812"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p08.webp",
+   "size": 216686,
+   "sha256": "5d6a88329e5a33228d08ecd3dd0c1c2fffd5186afc1345827940c92fd8fb5a58"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p09.webp",
+   "size": 272802,
+   "sha256": "0af7caae44aeb65481efa96baa83435ec8289bbdd776d9084914786b6851734e"
+  },
+  {
+   "path": "travelos/kids/histoires/j08-p10.webp",
+   "size": 165548,
+   "sha256": "cdb32a3cb638bd14a21c517c20224e9bea16aca7e88f6c64e3a6c3c5834a18f2"
+  },
+  {
    "path": "travelos/lockscreen/lanternes-blanc.webp",
    "size": 240022,
    "sha256": "dba49f6955d75544169a9055681a73416fc9bc9c06c36fdf9465fe715a6f5b45"
@@ -2624,8 +2674,8 @@
   },
   {
    "path": "travelos/pack/pack.json",
-   "size": 1222089,
-   "sha256": "eb6e3ca1fb32198d2b365ccd19fc15423d7f114fb7e2ebea401a7565b7a19ddc"
+   "size": 1221970,
+   "sha256": "01b7c9bfa672cb9d84f9c6c77afd0a3646b77411378e4630bf541cc6ed9620fa"
   },
   {
    "path": "travelos/scenes/j1-1-bg.webp",
