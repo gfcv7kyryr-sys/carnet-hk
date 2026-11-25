@@ -527,47 +527,58 @@
   {
    "day": 10,
    "title": "Jour 10 · Le fantôme du vieux théâtre",
-   "cover": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
+   "cover": "travelos/kids/histoires/j10-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "[warmly] Huangyao est un très vieux village, tout en pierre, avec des ruelles, des ponts et un théâtre en bois. Ce soir, Xiao Long dort dans une petite auberge, juste à côté. La lune est ronde. Tout est calme. [pause] [whispers] Trop calme."
+     "img": "travelos/kids/histoires/j10-p01.webp",
+     "text": "[warmly] Huangyao est un très vieux village, tout en pierre, avec des ruelles, des ponts et un théâtre en bois. Ce soir, Xiao Long dort dans une petite auberge, juste à côté. La lune est ronde. Tout est calme. [pause] [whispers] Trop calme.",
+     "audio": "travelos/kids/audio/j10-p01.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "Soudain, on entend : [whispers] « Ouhouhouuu… » Xiao Long ouvre un œil. « Ouhouhouuu… » Ça vient du vieux théâtre. [nervously] « C'est… c'est un fantôme ? » Il remonte sa couverture jusqu'aux cornes."
+     "img": "travelos/kids/histoires/j10-p02.webp",
+     "text": "Soudain, on entend : [whispers] « Ouhouhouuu… » Xiao Long ouvre un œil. « Ouhouhouuu… » Ça vient du vieux théâtre. [nervously] « C'est… c'est un fantôme ? » Il remonte sa couverture jusqu'aux cornes.",
+     "audio": "travelos/kids/audio/j10-p02.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "« Ouhouhouuu… » Le cœur de Xiao Long bat très vite : boum-boum, boum-boum. Il pourrait rester caché sous la couverture toute la nuit. Mais il a envie de savoir. Alors il prend sa dēnglong, sa lanterne rouge, et il dit tout bas : [softly] « Petit dragon, grand courage. »"
+     "img": "travelos/kids/histoires/j10-p03.webp",
+     "text": "« Ouhouhouuu… » Le cœur de Xiao Long bat très vite : boum-boum, boum-boum. Il pourrait rester caché sous la couverture toute la nuit. Mais il a envie de savoir. Alors il prend sa dēnglong, sa lanterne rouge, et il dit tout bas : [softly] « Petit dragon, grand courage. »",
+     "audio": "travelos/kids/audio/j10-p03.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "Dans la ruelle, tout est noir. Sur le mur, une ombre IMMENSE apparaît, avec des cornes et une queue à piques ! [gasps] Xiao Long se fige. L'ombre se fige aussi. Il lève une patte. L'ombre lève une patte. [pause] [relieved] « Ah… c'est mon ombre ! Avec la lanterne, elle est géante. »"
+     "img": "travelos/kids/histoires/j10-p04.webp",
+     "text": "Dans la ruelle, tout est noir. Sur le mur, une ombre IMMENSE apparaît, avec des cornes et une queue à piques ! [gasps] Xiao Long se fige. L'ombre se fige aussi. Il lève une patte. L'ombre lève une patte. [pause] [relieved] « Ah… c'est mon ombre ! Avec la lanterne, elle est géante. »",
+     "audio": "travelos/kids/audio/j10-p04.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "Il approche la lanterne du mur : l'ombre devient toute petite. Il l'éloigne : l'ombre redevient géante. Petite, grande, petite, grande… [laughs softly] « Une ombre, ça grandit ou ça rapetisse, mais ça ne fait pas de mal. » Il se sent déjà un peu mieux."
+     "img": "travelos/kids/histoires/j10-p05.webp",
+     "text": "Il approche la lanterne du mur : l'ombre devient toute petite. Il l'éloigne : l'ombre redevient géante. Petite, grande, petite, grande… [laughs softly] « Une ombre, ça grandit ou ça rapetisse, mais ça ne fait pas de mal. » Il se sent déjà un peu mieux.",
+     "audio": "travelos/kids/audio/j10-p05.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "Devant le théâtre, les dragons de pierre ont l'air de le regarder, les yeux brillants sous la lune. « Ouhouhouuu… » Le bruit vient de tout en haut, sous le toit. Xiao Long monte l'escalier en bois. Une marche… crrrr… deux marches… crrrr… [whispers] trois marches…"
+     "img": "travelos/kids/histoires/j10-p06.webp",
+     "text": "Devant le théâtre, les dragons de pierre ont l'air de le regarder, les yeux brillants sous la lune. « Ouhouhouuu… » Le bruit vient de tout en haut, sous le toit. Xiao Long monte l'escalier en bois. Une marche… crrrr… deux marches… crrrr… [whispers] trois marches…",
+     "audio": "travelos/kids/audio/j10-p06.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "Sous le toit, dans un coin, deux grands yeux jaunes s'allument ! [gasps] Xiao Long lève sa lanterne et… [pause] [surprised] c'est une chouette ! Une maman chouette, toute ronde, avec trois petits chouettons duveteux serrés contre elle. [softly] « Ouhouhouuu », chante la maman, pour bercer ses petits."
+     "img": "travelos/kids/histoires/j10-p07.webp",
+     "text": "Sous le toit, dans un coin, deux grands yeux jaunes s'allument ! [gasps] Xiao Long lève sa lanterne et… [pause] [surprised] c'est une chouette ! Une maman chouette, toute ronde, avec trois petits chouettons duveteux serrés contre elle. [softly] « Ouhouhouuu », chante la maman, pour bercer ses petits.",
+     "audio": "travelos/kids/audio/j10-p07.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "[laughs] « Le fantôme, c'était toi ! » rit Xiao Long. La chouette cligne des yeux. « Un fantôme ? Moi ? Je chante la berceuse à mes enfants. Ils ont peur du noir, tu sais. » [surprised] « Des chouettes qui ont peur du noir ? » « Eh oui. Même les chouettes. »"
+     "img": "travelos/kids/histoires/j10-p08.webp",
+     "text": "[laughs] « Le fantôme, c'était toi ! » rit Xiao Long. La chouette cligne des yeux. « Un fantôme ? Moi ? Je chante la berceuse à mes enfants. Ils ont peur du noir, tu sais. » [surprised] « Des chouettes qui ont peur du noir ? » « Eh oui. Même les chouettes. »",
+     "audio": "travelos/kids/audio/j10-p08.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "Les trois chouettons regardent la lanterne avec des yeux émerveillés. Alors Xiao Long a une idée. Il accroche sa lanterne à une poutre, tout près du nid. [softly] Une petite lumière rouge, toute douce. Les chouettons ferment les yeux. Un, deux, trois."
+     "img": "travelos/kids/histoires/j10-p09.webp",
+     "text": "Les trois chouettons regardent la lanterne avec des yeux émerveillés. Alors Xiao Long a une idée. Il accroche sa lanterne à une poutre, tout près du nid. [softly] Une petite lumière rouge, toute douce. Les chouettons ferment les yeux. Un, deux, trois.",
+     "audio": "travelos/kids/audio/j10-p09.mp3"
     },
     {
-     "img": "charlie/img/58ce6641d1e0c7c06688b174ed357aca.webp",
-     "text": "Xiao Long redescend et se glisse sous sa couverture. Dehors, on entend encore : « Ouhouhouuu… » [warmly] Mais maintenant, ce n'est plus un fantôme. C'est une berceuse. Dans le noir, ce qu'on imagine fait souvent bien plus peur que ce qui est vraiment là. [softly] Bonne nuit, petits chouettons."
+     "img": "travelos/kids/histoires/j10-p10.webp",
+     "text": "Xiao Long redescend et se glisse sous sa couverture. Dehors, on entend encore : « Ouhouhouuu… » [warmly] Mais maintenant, ce n'est plus un fantôme. C'est une berceuse. Dans le noir, ce qu'on imagine fait souvent bien plus peur que ce qui est vraiment là. [softly] Bonne nuit, petits chouettons.",
+     "audio": "travelos/kids/audio/j10-p10.mp3",
+     "pos": "top"
     }
    ]
   },
