@@ -609,9 +609,7 @@ function home() {
   const n = T ? T.daysToTrip() : 0, d = T ? T.tripDay() : 0;
   const st = PK().kids?.stories || [], today = st.filter(s => open(s.day)).pop();
   const count = n > 0 ? `Encore ${n} dodo${n > 1 ? 's' : ''}` : d ? `Jour ${d} du voyage` : 'Les souvenirs du voyage';
-  /* fond d'accueil : l'illustration la plus récente en haute définition (jamais une petite vignette agrandie) */
-  const hd = st.filter(s => open(s.day) && /^travelos\/kids\/histoires\//.test(s.cover || '')).pop();
-  const bg = hd ? im(hd.cover) : 'img/1a922b37bd6e98f95ddced40cd9ed56a.webp';
+  const bg = 'img/accueil.webp';   // Xiao Long sur sa valise devant la baie de Hong Kong
   setView('home', `<div class="ab-home"><img class="ab-bg" src="${bg}" alt="">
       <div class="ab-titlecard"><span class="ab-kicker">Hong Kong · Macao · Chine du Sud</span><h1>Le carnet de Charlie</h1></div>
       <div class="ab-count">${lanterns(3)}<span>${count}</span></div>

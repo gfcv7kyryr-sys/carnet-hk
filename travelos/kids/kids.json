@@ -180,94 +180,115 @@
   {
    "day": 4,
    "title": "Jour 4 · Les six tartelettes",
-   "cover": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
+   "cover": "travelos/kids/histoires/j04-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "[warmly] À Macao, Xiao Long achète une boîte de tartelettes aux œufs, toutes chaudes, toutes dorées. Il les compte : une, deux, trois, quatre, cinq… [excited] SIX ! « Six tartelettes rien que pour moi ! Je vais les manger tout en haut du grand escalier. » Miam, miam, miam."
+     "img": "travelos/kids/histoires/j04-p01.webp",
+     "text": "[warmly] À Macao, Xiao Long achète une boîte de tartelettes aux œufs, toutes chaudes, toutes dorées. Il les compte : une, deux, trois, quatre, cinq… [excited] SIX ! « Six tartelettes rien que pour moi ! Je vais les manger tout en haut du grand escalier. » Miam, miam, miam.",
+     "audio": "travelos/kids/audio/j04-p01.mp3"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "Sur la grande place aux pavés en vagues, un petit pigeon tout maigre le regarde. [sad] « Rrrou… Tu n'aurais pas une miette ? J'ai faim depuis ce matin. » Xiao Long regarde sa boîte. Il en a six… [sighs] « Bon. Tiens. » Une tartelette pour le pigeon. Combien en reste-t-il ? [pause] Cinq !"
+     "img": "travelos/kids/histoires/j04-p02.webp",
+     "text": "Sur la grande place aux pavés en vagues, un petit pigeon tout maigre le regarde. [sad] « Rrrou… Tu n'aurais pas une miette ? J'ai faim depuis ce matin. » Xiao Long regarde sa boîte. Il en a six… [sighs] « Bon. Tiens. » Une tartelette pour le pigeon. Combien en reste-t-il ? [pause] Cinq !",
+     "audio": "travelos/kids/audio/j04-p02.mp3"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "Sur un banc, un gros chat dort au soleil. Enfin… il dort d'un œil. [mischievously] « Mmm, ça sent drôlement bon, par ici… » Xiao Long soupire. « D'accord. » Une tartelette pour le chat. Combien en reste-t-il ? [pause] Quatre !"
+     "img": "travelos/kids/histoires/j04-p03.webp",
+     "text": "Sur un banc, un gros chat dort au soleil. Enfin… il dort d'un œil. [mischievously] « Mmm, ça sent drôlement bon, par ici… » Xiao Long soupire. « D'accord. » Une tartelette pour le chat. Combien en reste-t-il ? [pause] Quatre !",
+     "audio": "travelos/kids/audio/j04-p03.mp3"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "Près de la fontaine, trois canetons pleurent : [crying] « Coin ! Notre maman est partie chercher à manger, et on a faim ! » Xiao Long a le cœur tout serré. Il coupe une tartelette en trois morceaux. Les canetons arrêtent de pleurer. Combien en reste-t-il ? [pause] Trois !"
+     "img": "travelos/kids/histoires/j04-p04.webp",
+     "text": "Près de la fontaine, trois canetons pleurent : [crying] « Coin ! Notre maman est partie chercher à manger, et on a faim ! » Xiao Long a le cœur tout serré. Il coupe une tartelette en trois morceaux. Les canetons arrêtent de pleurer. Combien en reste-t-il ? [pause] Trois !",
+     "audio": "travelos/kids/audio/j04-p04.mp3"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "Dans une ruelle, une vieille tortue traverse, tout doucement. [tired] « Je marche depuis cent ans… je suis tellement fatiguée. » Xiao Long hésite. Il ne lui en reste plus beaucoup… « Tenez, madame la tortue. » Combien en reste-t-il ? [pause] Deux !"
+     "img": "travelos/kids/histoires/j04-p05.webp",
+     "text": "Dans une ruelle, une vieille tortue traverse, tout doucement. [tired] « Je marche depuis cent ans… je suis tellement fatiguée. » Xiao Long hésite. Il ne lui en reste plus beaucoup… « Tenez, madame la tortue. » Combien en reste-t-il ? [pause] Deux !",
+     "audio": "travelos/kids/audio/j04-p05.mp3"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "Enfin, voilà le grand escalier, et tout en haut, le grand mur de la vieille église. Xiao Long ouvre sa boîte : deux tartelettes. « Une pour maintenant, une pour plus tard. » Mais juste derrière lui, un ventre énorme se met à gargouiller : [drawn out] GRRRROUUUU !"
+     "img": "travelos/kids/histoires/j04-p06.webp",
+     "text": "Enfin, voilà le grand escalier, et tout en haut, le grand mur de la vieille église. Xiao Long ouvre sa boîte : deux tartelettes. « Une pour maintenant, une pour plus tard. » Mais juste derrière lui, un ventre énorme se met à gargouiller : [drawn out] GRRRROUUUU !",
+     "audio": "travelos/kids/audio/j04-p06.mp3"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "[gasps] C'est un lion ! Un lion de danse chinoise, rouge et or, avec des yeux énormes et une crinière de pompons. [tired] « J'ai dansé toute la journée, soupire le lion. Je n'ai plus de forces. » Xiao Long serre sa boîte contre son ventre. C'était sa tartelette pour plus tard…"
+     "img": "travelos/kids/histoires/j04-p07.webp",
+     "text": "[gasps] C'est un lion ! Un lion de danse chinoise, rouge et or, avec des yeux énormes et une crinière de pompons. [tired] « J'ai dansé toute la journée, soupire le lion. Je n'ai plus de forces. » Xiao Long serre sa boîte contre son ventre. C'était sa tartelette pour plus tard…",
+     "audio": "travelos/kids/audio/j04-p07.mp3"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "Il pense au pigeon, au chat, aux canetons, à la tortue. Ils avaient l'air si contents. [softly] « Tiens, lion. » Combien en reste-t-il ? [pause] Une seule. UNE. Xiao Long monte les marches, s'assoit tout en haut, ouvre grand la bouche… et entend des petits pas derrière lui."
+     "img": "travelos/kids/histoires/j04-p08.webp",
+     "text": "Il pense au pigeon, au chat, aux canetons, à la tortue. Ils avaient l'air si contents. [softly] « Tiens, lion. » Combien en reste-t-il ? [pause] Une seule. UNE. Xiao Long monte les marches, s'assoit tout en haut, ouvre grand la bouche… et entend des petits pas derrière lui.",
+     "audio": "travelos/kids/audio/j04-p08.mp3"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "Le pigeon, le chat, les trois canetons, la tortue et le lion arrivent en file indienne. Le lion porte une boîte GÉANTE. [excited] « Pour toi ! On a cherché tous ensemble ! » Xiao Long ouvre la boîte et compte : un, deux, trois, quatre, cinq, six, sept, huit, neuf, dix, onze… [pause] DOUZE tartelettes !"
+     "img": "travelos/kids/histoires/j04-p09.webp",
+     "text": "Le pigeon, le chat, les trois canetons, la tortue et le lion arrivent en file indienne. Le lion porte une boîte GÉANTE. [excited] « Pour toi ! On a cherché tous ensemble ! » Xiao Long ouvre la boîte et compte : un, deux, trois, quatre, cinq, six, sept, huit, neuf, dix, onze… [pause] DOUZE tartelettes !",
+     "audio": "travelos/kids/audio/j04-p09.mp3",
+     "pos": "top"
     },
     {
-     "img": "charlie/img/52ea9fdb17ceff9deb88901c8b990453.webp",
-     "text": "[warmly] Alors tout le monde s'assoit sur les marches, et on partage. Le soleil se couche, les moustaches sont pleines de miettes. Xiao Long dit : « Xièxie ! », merci en chinois. Puis il rit : [laughs] « Quand on donne, ça revient en double ! » [pause] Et chacun se demande avec qui il partagera sa prochaine tartelette. Bonne nuit, les gourmands."
+     "img": "travelos/kids/histoires/j04-p10.webp",
+     "text": "[warmly] Alors tout le monde s'assoit sur les marches, et on partage. Le soleil se couche, les moustaches sont pleines de miettes. Xiao Long dit : « Xièxie ! », merci en chinois. Puis il rit : [laughs] « Quand on donne, ça revient en double ! » [pause] Et chacun se demande avec qui il partagera sa prochaine tartelette. Bonne nuit, les gourmands.",
+     "audio": "travelos/kids/audio/j04-p10.mp3"
     }
    ]
   },
   {
    "day": 5,
    "title": "Jour 5 · On arrive quand ?",
-   "cover": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
+   "cover": "travelos/kids/histoires/j05-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "[warmly] Ce matin, Xiao Long prend le train le plus rapide de Chine pour aller à Canton. Il s'installe près de la fenêtre. Le train démarre. [pause] Trois secondes plus tard : [impatient] « On arrive quand ? »"
+     "img": "travelos/kids/histoires/j05-p01.webp",
+     "text": "[warmly] Ce matin, Xiao Long prend le train le plus rapide de Chine pour aller à Canton. Il s'installe près de la fenêtre. Le train démarre. [pause] Trois secondes plus tard : [impatient] « On arrive quand ? »",
+     "audio": "travelos/kids/audio/j05-p01.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "« Dans une heure », répond la contrôleuse, une grande grue élégante avec une casquette. Une heure ! [sighs] Xiao Long gigote. Il tape des pattes. Il colle son nez à la vitre, le décolle, le recolle. [impatient] « Et maintenant, on arrive quand ? »"
+     "img": "travelos/kids/histoires/j05-p02.webp",
+     "text": "« Dans une heure », répond la contrôleuse, une grande grue élégante avec une casquette. Une heure ! [sighs] Xiao Long gigote. Il tape des pattes. Il colle son nez à la vitre, le décolle, le recolle. [impatient] « Et maintenant, on arrive quand ? »",
+     "audio": "travelos/kids/audio/j05-p02.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "[laughs softly] La grue rit doucement. « Quand on attend, le temps est lent comme un escargot. Mais on peut le faire courir. Tu connais le jeu \"Je vois quelque chose de…\" ? » Xiao Long secoue la tête. [playfully] « Je commence : je vois quelque chose de… vert ! »"
+     "img": "travelos/kids/histoires/j05-p03.webp",
+     "text": "[laughs softly] La grue rit doucement. « Quand on attend, le temps est lent comme un escargot. Mais on peut le faire courir. Tu connais le jeu \"Je vois quelque chose de…\" ? » Xiao Long secoue la tête. [playfully] « Je commence : je vois quelque chose de… vert ! »",
+     "audio": "travelos/kids/audio/j05-p03.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "Xiao Long regarde partout. Le siège ? Bleu. Son sac ? Rouge. Dehors… [pause] [excited] « Les rizières ! Les champs de riz tout verts ! » « Gagné ! À toi. » Xiao Long réfléchit fort. « Je vois quelque chose de… jaune ! »"
+     "img": "travelos/kids/histoires/j05-p04.webp",
+     "text": "Xiao Long regarde partout. Le siège ? Bleu. Son sac ? Rouge. Dehors… [pause] [excited] « Les rizières ! Les champs de riz tout verts ! » « Gagné ! À toi. » Xiao Long réfléchit fort. « Je vois quelque chose de… jaune ! »",
+     "audio": "travelos/kids/audio/j05-p04.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "[curious] La grue cherche. Le soleil ? Il est caché. Une banane ? Il n'y en a pas. Qu'est-ce qui peut bien être jaune, dans ce train ? [pause] « Je donne ma langue au chat ! » [mischievously] « C'est mon ventre ! » rit Xiao Long, en montrant son ventre doré. [laughs] La grue éclate de rire."
+     "img": "travelos/kids/histoires/j05-p05.webp",
+     "text": "[curious] La grue cherche. Le soleil ? Il est caché. Une banane ? Il n'y en a pas. Qu'est-ce qui peut bien être jaune, dans ce train ? [pause] « Je donne ma langue au chat ! » [mischievously] « C'est mon ventre ! » rit Xiao Long, en montrant son ventre doré. [laughs] La grue éclate de rire.",
+     "audio": "travelos/kids/audio/j05-p05.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "Ils jouent encore : quelque chose de blanc, un nuage. Quelque chose de noir, un buffle dans un champ. Quelque chose de rose, le chapeau d'une dame. Le train file, file : kuài, kuài ! En chinois, kuài veut dire vite. [pause] Et Xiao Long ne demande plus rien."
+     "img": "travelos/kids/histoires/j05-p06.webp",
+     "text": "Ils jouent encore : quelque chose de blanc, un nuage. Quelque chose de noir, un buffle dans un champ. Quelque chose de rose, le chapeau d'une dame. Le train file, file : kuài, kuài ! En chinois, kuài veut dire vite. [pause] Et Xiao Long ne demande plus rien.",
+     "audio": "travelos/kids/audio/j05-p06.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "[announcer voice] « Mesdames et messieurs, nous arrivons à Canton ! » [surprised] « Déjà ? » s'étonne Xiao Long. Le temps a couru si vite qu'il ne l'a pas vu passer."
+     "img": "travelos/kids/histoires/j05-p07.webp",
+     "text": "[announcer voice] « Mesdames et messieurs, nous arrivons à Canton ! » [surprised] « Déjà ? » s'étonne Xiao Long. Le temps a couru si vite qu'il ne l'a pas vu passer.",
+     "audio": "travelos/kids/audio/j05-p07.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "À Canton, il y a une tour immense, toute fine au milieu, qui s'allume la nuit de toutes les couleurs. Mais c'est l'après-midi, et elle est grise. « Elle s'allume quand ? » demande Xiao Long. « Ce soir, quand il fera noir. » [sighs] Encore attendre !"
+     "img": "travelos/kids/histoires/j05-p08.webp",
+     "text": "À Canton, il y a une tour immense, toute fine au milieu, qui s'allume la nuit de toutes les couleurs. Mais c'est l'après-midi, et elle est grise. « Elle s'allume quand ? » demande Xiao Long. « Ce soir, quand il fera noir. » [sighs] Encore attendre !",
+     "audio": "travelos/kids/audio/j05-p08.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "Cette fois, Xiao Long ne gigote pas. Il compte les bateaux sur la rivière : un, deux, trois… Il cherche quelque chose de violet. Il mange une petite brioche. Et le soleil descend, descend, sans qu'il s'en aperçoive… [pause]"
+     "img": "travelos/kids/histoires/j05-p09.webp",
+     "text": "Cette fois, Xiao Long ne gigote pas. Il compte les bateaux sur la rivière : un, deux, trois… Il cherche quelque chose de violet. Il mange une petite brioche. Et le soleil descend, descend, sans qu'il s'en aperçoive… [pause]",
+     "audio": "travelos/kids/audio/j05-p09.mp3"
     },
     {
-     "img": "charlie/img/06c61ad129bc8f15593ff10402e349ee.webp",
-     "text": "[awe] Et soudain, la tour s'allume : rouge, orange, jaune, vert, bleu, violet ! Elle change de couleur comme un arc-en-ciel qui danse. [softly] Xiao Long sourit. Attendre, c'est long. Mais avec un jeu, un ami et un peu de patience, la surprise arrive toujours. Bonne nuit, petit voyageur."
+     "img": "travelos/kids/histoires/j05-p10.webp",
+     "text": "[awe] Et soudain, la tour s'allume : rouge, orange, jaune, vert, bleu, violet ! Elle change de couleur comme un arc-en-ciel qui danse. [softly] Xiao Long sourit. Attendre, c'est long. Mais avec un jeu, un ami et un peu de patience, la surprise arrive toujours. Bonne nuit, petit voyageur.",
+     "audio": "travelos/kids/audio/j05-p10.mp3"
     }
    ]
   },
