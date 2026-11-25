@@ -469,47 +469,58 @@
   {
    "day": 9,
    "title": "Jour 9 · Noiraud est en colère",
-   "cover": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
+   "cover": "travelos/kids/histoires/j09-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "[warmly] Sur la rivière Li, les montagnes ressemblent à des pains de sucre. Un vieux pêcheur glisse sur son radeau de bambou avec ses cormorans, de grands oiseaux noirs qui plongent pour attraper des poissons. Le plus jeune s'appelle Noiraud."
+     "img": "travelos/kids/histoires/j09-p01.webp",
+     "text": "[warmly] Sur la rivière Li, les montagnes ressemblent à des pains de sucre. Un vieux pêcheur glisse sur son radeau de bambou avec ses cormorans, de grands oiseaux noirs qui plongent pour attraper des poissons. Le plus jeune s'appelle Noiraud.",
+     "audio": "travelos/kids/audio/j09-p01.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "Aujourd'hui, Noiraud veut attraper son premier poisson. Il plonge : plouf ! [pause] Rien. Il replonge : plouf ! Rien. Le poisson argenté lui file sous le bec et fait des bulles moqueuses. [playfully] Blou-blou-blou."
+     "img": "travelos/kids/histoires/j09-p02.webp",
+     "text": "Aujourd'hui, Noiraud veut attraper son premier poisson. Il plonge : plouf ! [pause] Rien. Il replonge : plouf ! Rien. Le poisson argenté lui file sous le bec et fait des bulles moqueuses. [playfully] Blou-blou-blou.",
+     "audio": "travelos/kids/audio/j09-p02.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "Noiraud remonte sur le radeau. Ses plumes se hérissent. Ses yeux deviennent tout petits. Il tape des pattes. [angry] « J'en ai MARRE ! Je suis NUL ! Je ne pêcherai JAMAIS ! » Et il donne un grand coup d'aile dans l'eau. SPLASH ! Tout le monde est mouillé."
+     "img": "travelos/kids/histoires/j09-p03.webp",
+     "text": "Noiraud remonte sur le radeau. Ses plumes se hérissent. Ses yeux deviennent tout petits. Il tape des pattes. [angry] « J'en ai MARRE ! Je suis NUL ! Je ne pêcherai JAMAIS ! » Et il donne un grand coup d'aile dans l'eau. SPLASH ! Tout le monde est mouillé.",
+     "audio": "travelos/kids/audio/j09-p03.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "Xiao Long, sur le radeau d'à côté, essuie l'eau sur son museau. Il ne gronde pas. Il demande juste, doucement : [softly] « Tu es en colère, hein ? » [angry] « OUI ! » crie Noiraud. Puis, plus bas : [sad] « Oui… J'ai comme du feu dans le ventre. »"
+     "img": "travelos/kids/histoires/j09-p04.webp",
+     "text": "Xiao Long, sur le radeau d'à côté, essuie l'eau sur son museau. Il ne gronde pas. Il demande juste, doucement : [softly] « Tu es en colère, hein ? » [angry] « OUI ! » crie Noiraud. Puis, plus bas : [sad] « Oui… J'ai comme du feu dans le ventre. »",
+     "audio": "travelos/kids/audio/j09-p04.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "« Moi aussi, j'ai du feu dans le ventre quand je suis en colère, dit Xiao Long. Je suis un dragon ! Si je ne fais pas attention, je crache des flammes partout. Alors j'ai un truc : le souffle du dragon. Tu veux essayer ? » Noiraud hésite. Puis il hoche la tête."
+     "img": "travelos/kids/histoires/j09-p05.webp",
+     "text": "« Moi aussi, j'ai du feu dans le ventre quand je suis en colère, dit Xiao Long. Je suis un dragon ! Si je ne fais pas attention, je crache des flammes partout. Alors j'ai un truc : le souffle du dragon. Tu veux essayer ? » Noiraud hésite. Puis il hoche la tête.",
+     "audio": "travelos/kids/audio/j09-p05.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "[slowly] « D'abord, on sent une fleur. » Xiao Long inspire très lentement par le nez. [inhales deeply] Mmmmh. « Ensuite, on souffle sur une bougie, tout doucement. » [exhales slowly] Fffffff. « On recommence. Une fois… deux fois… trois fois. »"
+     "img": "travelos/kids/histoires/j09-p06.webp",
+     "text": "[slowly] « D'abord, on sent une fleur. » Xiao Long inspire très lentement par le nez. [inhales deeply] Mmmmh. « Ensuite, on souffle sur une bougie, tout doucement. » [exhales slowly] Fffffff. « On recommence. Une fois… deux fois… trois fois. »",
+     "audio": "travelos/kids/audio/j09-p06.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "Noiraud sent la fleur. Mmmmh. Il souffle la bougie. Fffffff. Une fois. Deux fois. Trois fois. [pause] Ses plumes se recouchent, une à une. Ses yeux redeviennent ronds. Le feu dans son ventre s'éteint doucement, comme une petite braise."
+     "img": "travelos/kids/histoires/j09-p07.webp",
+     "text": "Noiraud sent la fleur. Mmmmh. Il souffle la bougie. Fffffff. Une fois. Deux fois. Trois fois. [pause] Ses plumes se recouchent, une à une. Ses yeux redeviennent ronds. Le feu dans son ventre s'éteint doucement, comme une petite braise.",
+     "audio": "travelos/kids/audio/j09-p07.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "« Ça va mieux ? » Noiraud fait oui. [softly] « J'étais en colère parce que je voulais réussir tout de suite. » « Tu as le droit d'être en colère, dit Xiao Long. Mais pas d'éclabousser tout le monde. Et maintenant que tu es calme… tu veux réessayer ? »"
+     "img": "travelos/kids/histoires/j09-p08.webp",
+     "text": "« Ça va mieux ? » Noiraud fait oui. [softly] « J'étais en colère parce que je voulais réussir tout de suite. » « Tu as le droit d'être en colère, dit Xiao Long. Mais pas d'éclabousser tout le monde. Et maintenant que tu es calme… tu veux réessayer ? »",
+     "audio": "travelos/kids/audio/j09-p08.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "Noiraud regarde l'eau. Il attend. Il ne se presse pas. Il voit le poisson argenté qui tourne, qui tourne… [pause] Et hop ! Il plonge. Plouf ! Il remonte avec le poisson dans le bec ! [excited] Le vieux pêcheur rit et applaudit. En chinois, poisson se dit yú."
+     "img": "travelos/kids/histoires/j09-p09.webp",
+     "text": "Noiraud regarde l'eau. Il attend. Il ne se presse pas. Il voit le poisson argenté qui tourne, qui tourne… [pause] Et hop ! Il plonge. Plouf ! Il remonte avec le poisson dans le bec ! [excited] Le vieux pêcheur rit et applaudit. En chinois, poisson se dit yú.",
+     "audio": "travelos/kids/audio/j09-p09.mp3"
     },
     {
-     "img": "charlie/img/6c14afb8f4b88f09b81faaf50fc1c693.webp",
-     "text": "[softly] Au coucher du soleil, la rivière devient toute dorée. Noiraud se sèche les ailes à côté de Xiao Long. « Demain, si je me fâche encore… » [warmly] « …tu sentiras la fleur, et tu souffleras la bougie », sourit Xiao Long. Mmmmh. Fffffff. Bonne nuit, Noiraud."
+     "img": "travelos/kids/histoires/j09-p10.webp",
+     "text": "[softly] Au coucher du soleil, la rivière devient toute dorée. Noiraud se sèche les ailes à côté de Xiao Long. « Demain, si je me fâche encore… » [warmly] « …tu sentiras la fleur, et tu souffleras la bougie », sourit Xiao Long. Mmmmh. Fffffff. Bonne nuit, Noiraud.",
+     "audio": "travelos/kids/audio/j09-p10.mp3",
+     "pos": "top"
     }
    ]
   },
