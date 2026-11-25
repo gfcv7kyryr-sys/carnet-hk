@@ -295,47 +295,58 @@
   {
    "day": 6,
    "title": "Jour 6 · Qui a mangé les bambous ?",
-   "cover": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
+   "cover": "travelos/kids/histoires/j06-p01.webp",
    "pages": [
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Au grand parc des animaux, le soigneur, Monsieur Wang, pousse un cri : [shouts] « Mes bambous ! Tous mes bambous ont disparu ! » Hier soir, il y avait une montagne de bambous. Ce matin, il ne reste… [pause] que trois petites feuilles."
+     "img": "travelos/kids/histoires/j06-p01.webp",
+     "text": "Au grand parc des animaux, le soigneur, Monsieur Wang, pousse un cri : [shouts] « Mes bambous ! Tous mes bambous ont disparu ! » Hier soir, il y avait une montagne de bambous. Ce matin, il ne reste… [pause] que trois petites feuilles.",
+     "audio": "travelos/kids/audio/j06-p01.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Xiao Long sort sa loupe. [confident] « Ne vous inquiétez pas, Monsieur Wang. Je mène l'enquête ! » Premier indice : par terre, des traces de pattes rondes, avec des griffes. Trois sortes de traces : des grandes, des moyennes… et des toutes petites."
+     "img": "travelos/kids/histoires/j06-p02.webp",
+     "text": "Xiao Long sort sa loupe. [confident] « Ne vous inquiétez pas, Monsieur Wang. Je mène l'enquête ! » Premier indice : par terre, des traces de pattes rondes, avec des griffes. Trois sortes de traces : des grandes, des moyennes… et des toutes petites.",
+     "audio": "travelos/kids/audio/j06-p02.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Premier suspect : le tigre blanc. Il a de grandes pattes rondes avec des griffes ! [suspicious] « C'est toi qui as mangé les bambous ? » Le tigre bâille. [laughs] « Des bambous ? Beurk ! Moi, je mange de la viande. Ce n'est pas moi. »"
+     "img": "travelos/kids/histoires/j06-p03.webp",
+     "text": "Premier suspect : le tigre blanc. Il a de grandes pattes rondes avec des griffes ! [suspicious] « C'est toi qui as mangé les bambous ? » Le tigre bâille. [laughs] « Des bambous ? Beurk ! Moi, je mange de la viande. Ce n'est pas moi. »",
+     "audio": "travelos/kids/audio/j06-p03.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Deuxième suspect : la girafe. Elle est si grande qu'elle peut tout attraper. « C'est toi ? » La girafe mâchouille une feuille. [amused] « Moi, je mange les feuilles tout en haut des arbres. Les bambous, c'est bien trop bas ! Ce n'est pas moi. »"
+     "img": "travelos/kids/histoires/j06-p04.webp",
+     "text": "Deuxième suspect : la girafe. Elle est si grande qu'elle peut tout attraper. « C'est toi ? » La girafe mâchouille une feuille. [amused] « Moi, je mange les feuilles tout en haut des arbres. Les bambous, c'est bien trop bas ! Ce n'est pas moi. »",
+     "audio": "travelos/kids/audio/j06-p04.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Deuxième indice : accroché à une branche, un poil noir. Et juste à côté, un poil blanc. Xiao Long réfléchit très fort. [curious] « Qui est noir et blanc, a des pattes rondes, et adore les bambous ? » [pause]"
+     "img": "travelos/kids/histoires/j06-p05.webp",
+     "text": "Deuxième indice : accroché à une branche, un poil noir. Et juste à côté, un poil blanc. Xiao Long réfléchit très fort. [curious] « Qui est noir et blanc, a des pattes rondes, et adore les bambous ? » [pause]",
+     "audio": "travelos/kids/audio/j06-p05.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Troisième indice : un bruit. [whispers] Rrrrron… Rrrrron… Ça vient de derrière le rocher. Xiao Long s'approche sur la pointe des pattes. Monsieur Wang aussi. Un, deux, trois… [gasps]"
+     "img": "travelos/kids/histoires/j06-p06.webp",
+     "text": "Troisième indice : un bruit. [whispers] Rrrrron… Rrrrron… Ça vient de derrière le rocher. Xiao Long s'approche sur la pointe des pattes. Monsieur Wang aussi. Un, deux, trois… [gasps]",
+     "audio": "travelos/kids/audio/j06-p06.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Trois bébés pandas ! Un grand, un moyen et un tout petit, roulés en boule, le ventre tout rond, des feuilles de bambou plein les moustaches. Ils dorment comme des loirs. [softly] En chinois, panda se dit xióngmāo : ça veut dire « l'ours-chat »."
+     "img": "travelos/kids/histoires/j06-p07.webp",
+     "text": "Trois bébés pandas ! Un grand, un moyen et un tout petit, roulés en boule, le ventre tout rond, des feuilles de bambou plein les moustaches. Ils dorment comme des loirs. [softly] En chinois, panda se dit xióngmāo : ça veut dire « l'ours-chat ».",
+     "audio": "travelos/kids/audio/j06-p07.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Le plus petit panda ouvre un œil. Il voit Xiao Long. Il voit Monsieur Wang. Il voit la loupe. [nervously] « Euh… Ce n'est pas nous ? » Mais une feuille de bambou dépasse de sa bouche. [pause] Xiao Long hausse un sourcil. Le petit panda baisse la tête."
+     "img": "travelos/kids/histoires/j06-p08.webp",
+     "text": "Le plus petit panda ouvre un œil. Il voit Xiao Long. Il voit Monsieur Wang. Il voit la loupe. [nervously] « Euh… Ce n'est pas nous ? » Mais une feuille de bambou dépasse de sa bouche. [pause] Xiao Long hausse un sourcil. Le petit panda baisse la tête.",
+     "audio": "travelos/kids/audio/j06-p08.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "[sad] « C'est nous, avoue le grand panda. On avait trop faim, et on a tout mangé. Pardon, Monsieur Wang. » « Pardon », répètent le moyen et le petit. Monsieur Wang croise les bras… puis il sourit. [warmly] « Merci de dire la vérité. C'est ce qu'il y a de plus courageux. »"
+     "img": "travelos/kids/histoires/j06-p09.webp",
+     "text": "[sad] « C'est nous, avoue le grand panda. On avait trop faim, et on a tout mangé. Pardon, Monsieur Wang. » « Pardon », répètent le moyen et le petit. Monsieur Wang croise les bras… puis il sourit. [warmly] « Merci de dire la vérité. C'est ce qu'il y a de plus courageux. »",
+     "audio": "travelos/kids/audio/j06-p09.mp3"
     },
     {
-     "img": "charlie/img/808ddb4209fcb044764019c3318bd321.webp",
-     "text": "Alors tout le monde va chercher de nouveaux bambous : le grand panda porte les grands, le moyen porte les moyens, et le petit porte… une feuille. [laughs] Le soir, la montagne de bambous est revenue, et les trois pandas dorment, bien sages, le ventre plein. [softly] Bonne nuit, les petits ours-chats."
+     "img": "travelos/kids/histoires/j06-p10.webp",
+     "text": "Alors tout le monde va chercher de nouveaux bambous : le grand panda porte les grands, le moyen porte les moyens, et le petit porte… une feuille. [laughs] Le soir, la montagne de bambous est revenue, et les trois pandas dorment, bien sages, le ventre plein. [softly] Bonne nuit, les petits ours-chats.",
+     "audio": "travelos/kids/audio/j06-p10.mp3",
+     "pos": "top"
     }
    ]
   },
