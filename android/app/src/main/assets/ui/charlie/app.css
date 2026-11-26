@@ -110,6 +110,7 @@ img.meteo.lit[data-m="3"]{background:radial-gradient(circle,#9FE0D2 0 55%,transp
 .ov.small>.ov-head{width:min(520px,94vw);border-radius:14px 14px 0 0}
 #parent-body{width:min(520px,94vw);max-height:75vh;overflow:auto;background:#FFFCF5;border-radius:0 0 14px 14px;padding:14px 18px 18px}
 #parent-body button.pb{display:block;width:100%;text-align:left;padding:12px 14px;margin:8px 0;border-radius:10px;background:#F1E8D6;font-size:16px}
+#parent-body .pnote{font-size:13px;color:#7a6a55;margin:10px 2px 0;line-height:1.35}
 #parent-body button.pb.danger{background:#F6D5CF;color:#8a2416}
 #parent-body small{display:block;color:#6b5e52;margin-top:3px}
 #parent-body label{display:flex;align-items:center;justify-content:space-between;padding:10px 4px;font-size:16px}

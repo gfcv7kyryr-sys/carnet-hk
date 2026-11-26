@@ -15,7 +15,7 @@ const PROFILES = [
   { id: "eric", name: "Éric", kind: "pilote" },
   { id: "charlie", name: "Charlie", kind: "kids" },
 ];
-const PROFILE_PREFS = new Set(["theme", "textZoom", "matte"]);
+const PROFILE_PREFS = new Set(["theme", "textZoom", "matte", "glassA"]);
 let curProfile = null;
 const skey = (k) => (curProfile && PROFILE_PREFS.has(k) ? `p.${curProfile}.${k}` : k);
 const store = {
@@ -209,9 +209,9 @@ function appIcon(id, d, size = "") {
   const [g, label, tone] = APPS[id];
   const act = {
     tickets: `data-pocket="resas"`, music: `data-music`, ask: `data-guide="ask"`,
-    translate: `data-guide="translate"`, sos: `data-pocket="sos"`, conv: `data-pocket="conv"`, photo: `data-guide="photo"`,
+    translate: `data-transapp`, sos: `data-pocket="sos"`, conv: `data-pocket="conv"`, photo: `data-guide="photo"`,
     audio: d.audio ? `data-audio="${esc(d.audio.src)}" data-title="Jour ${d.number} · ${esc(d.city)}"` : `data-day="${d.id}"`,
-    games: `data-soon="Les jeux arrivent dans une prochaine version."`, plans: `data-daymap="${d.id}"`,
+    games: `data-games`, plans: `data-daymap="${d.id}"`,
   }[id];
   return `<button class="app-ic ${size}" ${act}><span class="sq tone-${tone}"><b class="han">${g}</b><img src="/pack/travelos/icons/${id}.webp" alt="" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()"></span><span class="lb">${label}</span></button>`;
 }
@@ -1121,7 +1121,9 @@ function openArticle(id) {
   $("#sheetTitle").textContent = a.title;
   let extra = "";
   if (id === "dimsum") extra = `<section class="sec"><h2 class="h2">La carte.</h2><div class="signs foodgrid">${P.dimsum.map((x) => `<button data-showtext="${esc(x.zh)}" data-showfr="${esc(x.roman)} · ${esc(x.fr)}">${foodImg(x.image)}<span class="zh">${esc(x.zh)}</span><small>${esc(x.roman)} · ${esc(x.fr)}</small></button>`).join("")}</div></section>`;
-  $("#sheetBody").innerHTML = `<article class="cmp art-${id}">${a.html}</article>${extra}`;
+  const ca = (P.cityAudio || []).find((x) => x.id === id);
+  const html = ca ? a.html.replace("</header>", `</header><div class="acts cityaud">${audioBtn(ca, ca.title || "L'audioguide")}</div>`) : a.html;
+  $("#sheetBody").innerHTML = `<article class="cmp art-${id}">${html}</article>${extra}`;
   $$("#sheetBody img").forEach((im) => { im.onerror = () => im.remove(); });
   if (id === "langue") fillLangue();
   $("#sheet").hidden = false;
@@ -1267,6 +1269,7 @@ function guideTranslateTabs(sub) {
       <button role="tab" aria-selected="${sub === "signs"}" class="${sub === "signs" ? "on" : ""}" data-guide="signs">Panneaux</button></div></div>
     ${sub === "phrases" ? pocketPhrases() : sub === "signs" ? pocketSigns() : guideTranslate()}`;
 }
+const BAIDU_TR = "com.baidu.baidutranslate";
 function guideTranslate() {
   return `<div class="tile tr"><h3>Traducteur hors ligne</h3>
     <p id="trState">…</p>
@@ -1275,8 +1278,8 @@ function guideTranslate() {
     <div class="acts"><button class="pill red" id="trGo">Traduire</button><button class="pill" id="trDl" hidden>Télécharger les langues (Wi-Fi)</button></div>
     <div class="tr-out" id="trOut"><span class="muted">La traduction apparaît ici.</span></div>
     <div class="acts" id="trActs" hidden><button class="pill red" id="trShow">Montrer en grand</button><button class="pill" id="trSpeakZh">Écouter (mandarin)</button><button class="pill" id="trSpeakYue">Écouter (cantonais)</button></div></div>
-  <div class="tile"><h3>Conversation et caméra</h3><p>Pour traduire en parlant ou en photographiant un menu, Google Traduction fonctionne aussi hors ligne une fois la langue « chinois » téléchargée dans l'appli. À installer avant le départ : le Play Store ne fonctionne pas en Chine continentale.</p>
-    <div class="acts"><button class="pill" id="gTr">Ouvrir Google Traduction</button></div></div>
+  <div class="tile"><h3>Conversation et caméra</h3><p><b>Baidu Traduction</b> marche en Chine sans VPN : voix, conversation et photo d'un menu. Avant le départ, téléchargez le pack hors ligne du chinois dans l'appli (Réglages › Traduction hors ligne). Google Traduction reste utile hors ligne, mais il est bloqué en ligne en Chine continentale.</p>
+    <div class="acts"><button class="pill red" data-app="${BAIDU_TR}">Ouvrir Baidu Traduction</button><button class="pill" id="gTr">Google Traduction</button></div></div>
   <div class="acts" style="justify-content:center"></div>`;
 }
 function guidePhoto() {
@@ -1460,7 +1463,32 @@ function moreDevice() {
 function moreSettings() {
   const home = N.isDefaultHome();
   const sim = store.get("simDate", "");
-  return `<div class="bento">
+  const ga = store.get("matte", false) ? "mat" : String(store.get("glassA", 0.42));
+  const gApp = store.get("gamesApp", "");
+  const apps = json(N.apps(), []);
+  const sec = (title, tiles) => `<section class="sec setsec"><h2 class="h3">${title}</h2><div class="bento">${tiles}</div></section>`;
+  return sec("Affichage", `
+    <div class="tile"><h3>Taille du texte</h3><p>Pour lire de près sans lunettes, ou pour voir plus de choses à l'écran.</p>
+      <div class="seg">${[[85, "Petit"], [100, "Normal"], [115, "Grand"], [130, "Très grand"]].map(([v, l]) => `<button class="${(store.get("textZoom", 100)) === v ? "on" : ""}" data-zoom="${v}" style="font-size:${(v / 100) * 0.92}rem">${l}</button>`).join("")}</div></div>
+    <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
+      <div class="seg">${[["auto", "Automatique"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => `<button class="${store.get("theme", "auto") === k ? "on" : ""}" data-theme="${k}">${l}</button>`).join("")}</div></div>
+    <div class="tile"><h3>Transparence</h3><p>Le verre de toute l'interface : barres, boutons du plan, fiches. Mat si l'affichage ralentit.</p>
+      <div class="seg">${[["0.22", "Cristal"], ["0.42", "Verre"], ["0.62", "Givré"], ["mat", "Mat"]].map(([v, l]) => `<button class="${ga === v ? "on" : ""}" data-glassa="${v}">${l}</button>`).join("")}</div></div>`)
+  + sec("Charlie", `
+    <div class="tile"><h3>Histoires et coloriages</h3><p>Une histoire et un coloriage s'ouvrent chaque jour du voyage à minuit, comme un calendrier de l'avent. Pour tout voir en avance :</p>
+      <div class="seg"><button class="${store.get("kidsAll", false) ? "" : "on"}" data-kidsall="0">Un par jour</button><button class="${store.get("kidsAll", false) ? "on" : ""}" data-kidsall="1">Tout ouvert</button></div></div>
+    <div class="tile"><h3>Mode dodo</h3><p>Après l'histoire du soir, Xiao Long va dormir et l'espace de Charlie reste fermé jusqu'à 7 h. On peut aussi limiter le temps par jour.</p>
+      <div class="seg"><button class="${store.get("kidsDodo", true) ? "" : "on"}" data-kidsdodo="0">Non</button><button class="${store.get("kidsDodo", true) ? "on" : ""}" data-kidsdodo="1">Oui</button></div>
+      <div class="seg" style="margin-top:10px">${[0, 15, 20, 30].map((m) => `<button class="${+store.get("kidsMax", 0) === m ? "on" : ""}" data-kidsmax="${m}">${m ? m + " min" : "Sans limite"}</button>`).join("")}</div>
+      <div class="acts"><button class="pill" data-kidswake>Rouvrir l'espace maintenant</button></div></div>
+    <div class="tile"><h3>Carnet de Charlie</h3><p>Remet le carnet à neuf : photos, dessins, autocollants et pages déjà vues sont effacés. Les histoires et les coloriages du jour ne bougent pas.</p>
+      <div class="acts"><button class="pill" id="kidsReset">Effacer le carnet</button></div></div>`)
+  + sec("Applications", `
+    <div class="tile"><h3>Jeux</h3><p>L'application ouverte par l'icône Jeux de l'accueil. Elle garde ses propres profils de joueurs.</p>
+      <select class="search" id="gamesSel"><option value="">Aucune</option>${apps.map((a) => `<option value="${esc(a.pkg)}" ${a.pkg === gApp ? "selected" : ""}>${esc(a.label)}</option>`).join("")}</select></div>
+    <div class="tile"><h3>Traduire</h3><p>L'icône Traduire ouvre <b>Baidu Traduction</b> si elle est installée (elle marche en Chine sans VPN), sinon le traducteur hors ligne du carnet.</p>
+      <p class="muted">${N.hasApp(BAIDU_TR) ? "Baidu Traduction est installée." : "Baidu Traduction n'est pas encore installée : à faire avant le départ, avec le pack hors ligne du chinois."}</p></div>`)
+  + sec("Tablette", `
     <div class="tile"><h3>Écran d'accueil</h3><p>${home ? "Le carnet est l'écran d'accueil : la tablette démarre sur le choix du profil." : "Pour démarrer la tablette sur le carnet, choisissez « Carnet de voyage » comme application d'accueil."}</p>
       <div class="acts"><button class="pill ${home ? "" : "red"}" data-settings="home">${home ? "Changer d'écran d'accueil" : "Choisir le carnet"}</button><button class="pill" data-settings="android">Réglages Android</button></div></div>
     <div class="tile"><h3>Écran de veille</h3>
@@ -1468,25 +1496,13 @@ function moreSettings() {
       <div class="acts"><button class="pill red" data-settings="dream">Choisir l'économiseur</button></div>
       <p><b>Écran verrouillé</b> : les lanternes du carnet en fond (l'horloge reste celle d'Android).</p>
       <div class="seg" id="lockSeg"><button class="${store.get("lockWp", false) ? "" : "on"}" data-lockwp="0">Non</button><button class="${store.get("lockWp", false) ? "on" : ""}" data-lockwp="1">Oui</button></div></div>
-    <div class="tile"><h3>Espace de Charlie</h3><p>Une histoire et un coloriage s'ouvrent chaque jour du voyage à minuit, comme un calendrier de l'avent. Pour tout voir en avance :</p>
-      <div class="seg"><button class="${store.get("kidsAll", false) ? "" : "on"}" data-kidsall="0">Un par jour</button><button class="${store.get("kidsAll", false) ? "on" : ""}" data-kidsall="1">Tout ouvert</button></div></div>
-    <div class="tile"><h3>Mode dodo</h3><p>Après l'histoire du soir, Xiao Long va dormir et l'espace de Charlie reste fermé jusqu'à 7 h. On peut aussi limiter le temps par jour.</p>
-      <div class="seg"><button class="${store.get("kidsDodo", true) ? "" : "on"}" data-kidsdodo="0">Non</button><button class="${store.get("kidsDodo", true) ? "on" : ""}" data-kidsdodo="1">Oui</button></div>
-      <div class="seg" style="margin-top:10px">${[0, 15, 20, 30].map((m) => `<button class="${+store.get("kidsMax", 0) === m ? "on" : ""}" data-kidsmax="${m}">${m ? m + " min" : "Sans limite"}</button>`).join("")}</div>
-      <div class="acts"><button class="pill" data-kidswake>Rouvrir l'espace maintenant</button></div></div>
     <div class="tile"><h3>Carte</h3><p>Fond de carte OpenStreetMap, sans compte ni clé. <b>Y aller</b> ouvre AMap avec la destination et le mode déjà choisis.</p>
       <p><b>Cartes hors ligne</b> : une zone par journée, à télécharger en Wi-Fi avant le départ pour garder la carte sans réseau. <span class="muted" id="offlineState"></span></p>
       <div class="acts"><button class="pill" id="offlineGo">Télécharger les journées</button></div></div>
-    <div class="tile"><h3>Taille du texte</h3><p>Pour lire de près sans lunettes, ou pour voir plus de choses à l'écran.</p>
-      <div class="seg">${[[85, "Petit"], [100, "Normal"], [115, "Grand"], [130, "Très grand"]].map(([v, l]) => `<button class="${(store.get("textZoom", 100)) === v ? "on" : ""}" data-zoom="${v}" style="font-size:${(v / 100) * 0.92}rem">${l}</button>`).join("")}</div></div>
-    <div class="tile"><h3>Apparence</h3><p>Automatique : suit le mode clair ou sombre de la tablette.</p>
-      <div class="seg">${[["auto", "Automatique"], ["light", "Clair"], ["dark", "Sombre"]].map(([k, l]) => `<button class="${store.get("theme", "auto") === k ? "on" : ""}" data-theme="${k}">${l}</button>`).join("")}</div></div>
-    <div class="tile"><h3>Verre</h3><p>Le verre transparent peut être remplacé par un fond mat si l'affichage ralentit.</p>
-      <div class="seg" id="glassSeg"><button class="${store.get("matte", false) ? "" : "on"}" data-matte="0">Transparent</button><button class="${store.get("matte", false) ? "on" : ""}" data-matte="1">Mat</button></div></div>
     <div class="tile"><h3>Simuler une date</h3><p>Pour essayer l'accueil comme pendant le voyage. Heure de Hong Kong.</p>
       <input class="search" id="simDate" type="datetime-local" value="${esc(sim)}" min="2027-02-20T00:00" max="2027-03-06T23:59">
       <div class="acts"><button class="pill" id="simReset">Revenir à la date réelle</button></div></div>
-    <div class="tile"><h3>Profil</h3><p>Revenir à l'écran « Qui voyage ? ».</p><div class="acts"><button class="pill" id="toChooser">Changer de profil</button></div></div></div>`;
+    <div class="tile"><h3>Profil</h3><p>Revenir à l'écran « Qui voyage ? ».</p><div class="acts"><button class="pill" id="toChooser">Changer de profil</button></div></div>`);
 }
 after.more = () => {
   $("#offlineGo")?.addEventListener("click", () => {
@@ -1539,7 +1555,16 @@ after.more = () => {
     window.TravelOS.onGpsPermission = () => { if (N.hasLocationPermission()) { N.gpsStart(); setTimeout(poll, 300); } else draw(); };
     draw();
   }
-  $("#glassSeg")?.addEventListener("click", (e) => { const b = e.target.closest("[data-matte]"); if (!b) return; store.set("matte", b.dataset.matte === "1"); applyPrefs(); go("more", null, "settings", false); });
+  $("#gamesSel")?.addEventListener("change", (e) => { store.set("gamesApp", e.target.value || ""); toast(e.target.value ? "Application de jeux choisie" : "Aucune application de jeux"); });
+  /* Carnet de Charlie : même origine que son iframe, on efface son stockage (localStorage + IndexedDB). Deux appuis. */
+  $("#kidsReset")?.addEventListener("click", (e) => {
+    const b = e.currentTarget;
+    if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "Sûr ? Appuyer encore pour tout effacer"; b.classList.add("red"); return; }
+    $$(".kc-frame").forEach((f) => f.remove()); if ($("#kidsSub")) { $("#kidsSub").hidden = true; $("#kidsSub").innerHTML = ""; }
+    try { localStorage.removeItem("carnet-charlie-v1"); } catch {}
+    const done = () => { b.textContent = "Carnet effacé"; b.classList.remove("red"); b.disabled = true; toast("Le carnet de Charlie est à neuf"); };
+    const r = indexedDB.deleteDatabase("carnet-charlie"); r.onsuccess = r.onerror = r.onblocked = done;
+  });
   $("#simDate")?.addEventListener("change", (e) => { store.set("simDate", e.target.value || null); toast(e.target.value ? "Date simulée" : "Date réelle"); tick(); });
   $("#simReset")?.addEventListener("click", () => { store.set("simDate", null); go("more", null, "settings", false); tick(); });
   $("#toChooser")?.addEventListener("click", showChooser);
@@ -1696,6 +1721,14 @@ document.addEventListener("click", (e) => {
   if (d.guide) return go("guide", null, d.guide, stack[stack.length - 1]?.tab !== "guide");
   if (d.article) return openArticle(d.article);
   if (d.soon) return toast(d.soon);
+  if (d.transapp !== undefined) { if (N.hasApp(BAIDU_TR)) return N.launchApp(BAIDU_TR); return go("guide", null, "translate"); }
+  if (d.games !== undefined) {
+    const g = store.get("gamesApp", "");
+    if (g && N.hasApp(g)) return N.launchApp(g);
+    toast("Choisissez l'application de jeux dans les réglages."); return go("more", null, "settings");
+  }
+  if (d.gamesapp !== undefined) { store.set("gamesApp", d.gamesapp || ""); toast(d.gamesapp ? "Application de jeux choisie" : "Aucune application de jeux"); return go("more", null, "settings", false); }
+  if (d.glassa) { const v = d.glassa; store.set("matte", v === "mat"); if (v !== "mat") store.set("glassA", +v); applyPrefs(); return go("more", null, "settings", false); }
   if (d.daysec) { store.set("daySec", d.daysec); const st = stack[stack.length - 1]; go(st.tab, st.view, st.arg, false); return; }
   if (d.mapsec) {
     // Onglet du jour depuis le Plan : on revient sur la page du jour (celle d'où l'on vient, si c'en est une).
@@ -1719,7 +1752,7 @@ document.addEventListener("click", (e) => {
   if (d.audio) return playAudio(d.audio, d.title);
   if (d.showtext) return openShow(d.showtext, d.showalt, d.showfr);
   if (d.map) { if (placeById(d.map)) goAmap(d.map); return; }
-  if (d.app) return N.launchApp(d.app);
+  if (d.app) { if (N.hasApp && !N.hasApp(d.app) && !json(N.apps(), []).some((x) => x.pkg === d.app)) return toast("Cette application n'est pas installée sur la tablette."); return N.launchApp(d.app); }
   if (d.settings) return N.openSettings(d.settings);
   if (d.toggle) { setStatus(d.toggle, status(d.toggle) === "DONE" ? "PLANNED" : "DONE"); return refreshKeepScroll(); }
   if (d.skip) { setStatus(d.skip, status(d.skip) === "SKIPPED" ? "PLANNED" : "SKIPPED"); return refreshKeepScroll(); }
@@ -1967,6 +2000,7 @@ function applyTheme() {
 }
 function applyPrefs() {
   document.body.classList.toggle("matte", !!store.get("matte", false));
+  document.documentElement.style.setProperty("--gl-a", String(store.get("glassA", 0.42)));
   applyTheme();
   N.setTextZoom && N.setTextZoom(store.get("textZoom", 100));
 }

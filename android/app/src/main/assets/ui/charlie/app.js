@@ -572,13 +572,12 @@ function openParent() {
   <label>Affichage <select id="o-mode"><option value="auto">automatique</option><option value="single">une page à la fois</option><option value="double">double page</option></select></label>
   <label>Diplôme débloqué <input type="checkbox" id="o-unlock" ${S.cfg.unlock ? 'checked' : ''}></label>
   <button class="pb" id="o-exit">Changer de profil<small>Revenir à l'écran des profils de la tablette.</small></button>
-  <button class="pb danger" id="o-reset">Tout effacer<small>Remet le carnet à neuf (appuie deux fois).</small></button>`;
+  <p class="pnote">Pour remettre le carnet à neuf : réglages du carnet de voyage, profil de Jonas ou d'Éric, section Charlie.</p>`;
   $('#o-mode').value = S.cfg.mode;
   $('#o-sound').onchange = e => { S.cfg.sound = e.target.checked; save(); };
   $('#o-mode').onchange = e => { S.cfg.mode = e.target.value; save(); go(idx, 0); };
   $('#o-unlock').onchange = e => { S.cfg.unlock = e.target.checked; save(); };
   $('#o-exit').onclick = () => parent.postMessage('kids-exit', location.origin);
-  let armed = false; $('#o-reset').onclick = async e => { if (!armed) { armed = true; e.currentTarget.firstChild.textContent = 'Sûr ? Appuie encore pour tout effacer'; return; } const ks = await idb.keys(); for (const k of ks) await idb.del(k); localStorage.removeItem(KEY); location.reload(); };
 }
 
 /* ======================================================================

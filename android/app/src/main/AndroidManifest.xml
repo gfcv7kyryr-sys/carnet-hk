@@ -19,6 +19,8 @@
         <!-- Demander au guide (DeepSeek) et traduction (Google Traduction), si installés. -->
         <package android:name="com.deepseek.chat" />
         <package android:name="com.google.android.apps.translate" />
+        <!-- Traduire : Baidu Traduction, qui marche en Chine sans VPN. -->
+        <package android:name="com.baidu.baidutranslate" />
         <!-- « Y aller » : itinéraire dans AMap (lien officiel amapuri://route/plan), quelle que soit sa version. -->
         <package android:name="com.autonavi.minimap" />
         <intent>
