@@ -646,35 +646,43 @@
    "pages": [
     {
      "img": "travelos/kids/histoires/j12-p01.webp",
-     "text": "[excited] Aujourd'hui, Xiao Long va au parc des rêves ! Il y a un château rose, des ballons de toutes les couleurs, de la musique partout. Et surtout, il y a la Grande Montagne Fusée : le manège le plus rapide, le plus haut, le plus fou du monde !"
+     "text": "[excited] Aujourd'hui, Xiao Long va au parc des rêves ! Il y a un château rose, des ballons de toutes les couleurs, de la musique partout. Et surtout, il y a la Grande Montagne Fusée : le manège le plus rapide, le plus haut, le plus fou du monde !",
+     "audio": "travelos/kids/audio/j12-p01.mp3"
     },
     {
      "img": "travelos/kids/histoires/j12-p02.webp",
-     "text": "Xiao Long court jusqu'à l'entrée. Là, il y a une girafe en bois qui tient une règle, et un grand ours en uniforme. « Pour monter, il faut être aussi grand que la girafe. » Xiao Long se met tout droit. Il tend le cou. Il se met sur la pointe des pattes. [pause] Il lui manque… une tête."
+     "text": "Xiao Long court jusqu'à l'entrée. Là, il y a une girafe en bois qui tient une règle, et un grand ours en uniforme. « Pour monter, il faut être aussi grand que la girafe. » Xiao Long se met tout droit. Il tend le cou. Il se met sur la pointe des pattes. [pause] Il lui manque… une tête.",
+     "audio": "travelos/kids/audio/j12-p02.mp3"
     },
     {
      "img": "travelos/kids/histoires/j12-p03.webp",
-     "text": "[kindly] « Trop petit, désolé », dit l'ours gentiment. [angry] « Je ne suis PAS trop petit ! » crie Xiao Long. Il tape des pattes. Il croise les bras. Il fait la plus grosse bouderie de toute l'histoire des dragons. [grumbling] Hmpf !"
+     "text": "[kindly] « Trop petit, désolé », dit l'ours gentiment. [angry] « Je ne suis PAS trop petit ! » crie Xiao Long. Il tape des pattes. Il croise les bras. Il fait la plus grosse bouderie de toute l'histoire des dragons. [grumbling] Hmpf !",
+     "audio": "travelos/kids/audio/j12-p03.mp3"
     },
     {
      "img": "travelos/kids/histoires/j12-p04.webp",
-     "text": "Xiao Long boude sur un banc. Il a du feu dans le ventre. Il a envie de crier encore. [pause] Et puis il se souvient de Noiraud, le cormoran. Il sent la fleur… [inhales deeply] Mmmmh. Il souffle la bougie… [exhales slowly] Fffffff. Une fois. Deux fois. Trois fois. Le feu redescend un peu."
+     "text": "Xiao Long boude sur un banc. Il a du feu dans le ventre. Il a envie de crier encore. [pause] Et puis il se souvient de Noiraud, le cormoran. Il sent la fleur… [inhales deeply] Mmmmh. Il souffle la bougie… [exhales slowly] Fffffff. Une fois. Deux fois. Trois fois. Le feu redescend un peu.",
+     "audio": "travelos/kids/audio/j12-p04.mp3"
     },
     {
      "img": "travelos/kids/histoires/j12-p05.webp",
-     "text": "À côté de lui, un petit éléphant pleure aussi. [sad] « Moi aussi, je suis trop petit pour la Montagne Fusée. » Xiao Long le regarde. Ils sont tous les deux tout petits, et tous les deux tout tristes. [curious] « On cherche un manège pour les petits ? »"
+     "text": "À côté de lui, un petit éléphant pleure aussi. [sad] « Moi aussi, je suis trop petit pour la Montagne Fusée. » Xiao Long le regarde. Ils sont tous les deux tout petits, et tous les deux tout tristes. [curious] « On cherche un manège pour les petits ? »",
+     "audio": "travelos/kids/audio/j12-p05.mp3"
     },
     {
      "img": "travelos/kids/histoires/j12-p06.webp",
-     "text": "Ils trouvent les tasses qui tournent. Elles tournent, tournent, tournent… [laughs] si vite que les oreilles du petit éléphant s'envolent comme des ailes ! Puis le train de la forêt, qui fait tchou-tchou. Puis le carrousel, avec ses chevaux qui montent et qui descendent."
+     "text": "Ils trouvent les tasses qui tournent. Elles tournent, tournent, tournent… [laughs] si vite que les oreilles du petit éléphant s'envolent comme des ailes ! Puis le train de la forêt, qui fait tchou-tchou. Puis le carrousel, avec ses chevaux qui montent et qui descendent.",
+     "audio": "travelos/kids/audio/j12-p06.mp3"
     },
     {
      "img": "travelos/kids/histoires/j12-p07.webp",
-     "text": "[laughing] Xiao Long rit tellement qu'il en a le hoquet. Hic ! « Les manèges des petits, c'est génial ! » Le petit éléphant hoche la tête. Hic ! Lui aussi a le hoquet. En chinois, content se dit kāixīn : ça veut dire « le cœur ouvert »."
+     "text": "[laughing] Xiao Long rit tellement qu'il en a le hoquet. Hic ! « Les manèges des petits, c'est génial ! » Le petit éléphant hoche la tête. Hic ! Lui aussi a le hoquet. En chinois, content se dit kāixīn : ça veut dire « le cœur ouvert ».",
+     "audio": "travelos/kids/audio/j12-p07.mp3"
     },
     {
      "img": "travelos/kids/histoires/j12-p08.webp",
-     "text": "L'après-midi, c'est la grande parade. Et là, surprise : [pause] pour bien voir une parade, être petit, c'est parfait ! Les petits sont devant, tout devant. Les chars passent, les danseurs font coucou, et un nuage de confettis tombe pile sur Xiao Long."
+     "text": "L'après-midi, c'est la grande parade. Et là, surprise : [pause] pour bien voir une parade, être petit, c'est parfait ! Les petits sont devant, tout devant. Les chars passent, les danseurs font coucou, et un nuage de confettis tombe pile sur Xiao Long.",
+     "audio": "travelos/kids/audio/j12-p08.mp3"
     },
     {
      "img": "travelos/kids/histoires/j12-p09.webp",

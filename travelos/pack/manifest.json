@@ -1,6 +1,6 @@
 {
  "formatVersion": 1,
- "packVersion": "dfbff8052011",
+ "packVersion": "e3db3673bcf1",
  "files": [
   {
    "path": "audio/a-ma.mp3",
@@ -2408,6 +2408,46 @@
    "sha256": "68e8cb098e57448b22e09279855d1ca1c2c560d01a0af198eba9a9f13aa3c1d9"
   },
   {
+   "path": "travelos/kids/audio/j12-p01.mp3",
+   "size": 353072,
+   "sha256": "1a6b38eb0cb32dbb6d63425c1ccfe85c0dfddcb2bcf9c8df7aeab8fa2b0f0339"
+  },
+  {
+   "path": "travelos/kids/audio/j12-p02.mp3",
+   "size": 519838,
+   "sha256": "64361e0def2704538add27ebf9b1dc532e80ab87dcae469e04460cff51d59469"
+  },
+  {
+   "path": "travelos/kids/audio/j12-p03.mp3",
+   "size": 348684,
+   "sha256": "a7eeb3c93cf6f7a3fe0c6e802cf35eca257bba3330b316060090ff2088ef2082"
+  },
+  {
+   "path": "travelos/kids/audio/j12-p04.mp3",
+   "size": 648987,
+   "sha256": "1a508732d8c87f402b6c0c4c9ff8471e0e506fffd0056dee3865e85bd7498600"
+  },
+  {
+   "path": "travelos/kids/audio/j12-p05.mp3",
+   "size": 385046,
+   "sha256": "d1143f89456de830e14e2f77a92c5ab8a225f305f4dd99f48caafbfc7f752203"
+  },
+  {
+   "path": "travelos/kids/audio/j12-p06.mp3",
+   "size": 412631,
+   "sha256": "406ab4b08abdaaf741ce8e2aeca2ae26ccd73c04fa75d39b3067c2379a31bff4"
+  },
+  {
+   "path": "travelos/kids/audio/j12-p07.mp3",
+   "size": 448367,
+   "sha256": "e386e6e4eb13c89e1e106b0304da7aed5f0fde701e44942a68d676c0c988fbc0"
+  },
+  {
+   "path": "travelos/kids/audio/j12-p08.mp3",
+   "size": 415139,
+   "sha256": "b730cb954252a970ae4f33edc1f501df0c2d2566c77e134ab19f0d47d4ae586e"
+  },
+  {
    "path": "travelos/kids/histoires/j01-p01.webp",
    "size": 213700,
    "sha256": "a3f45cc2dbb7aaa175ed10856220fd62d091e1d18d0b3dc3422d9961cabe055c"
@@ -3074,8 +3114,8 @@
   },
   {
    "path": "travelos/pack/pack.json",
-   "size": 1222551,
-   "sha256": "dfbff805201195134df337fa5effe300f3053bc4aebdf95028117b20528418f2"
+   "size": 1222887,
+   "sha256": "e3db3673bcf1b4215b61a61467674f8c1341dad07da7e94385e9bc36e2d570ac"
   },
   {
    "path": "travelos/scenes/j1-1-bg.webp",

@@ -673,6 +673,7 @@ function playUI() {
 function playPage() {
   if (!book) return; clearTimeout(book.timer); const p = book.s.pages[book.n]; book.audio.pause();
   if (p && p.audio) { book.audio.src = '/pack/' + p.audio; book.audio.currentTime = 0; book.audio.play().catch(() => {}); }
+  else { book.auto = false; playUI(); }  /* page sans audio : on passe en lecture à voix haute */
 }
 function bookPage(n) {
   if (!book) return; const s = book.s; if (n < 0 || n >= s.pages.length || n === book.n) return;
