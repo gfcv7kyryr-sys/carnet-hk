@@ -188,7 +188,7 @@ main#view{max-width:var(--wide);margin:0 auto;padding:var(--top) var(--gut) var(
 .fgrid{display:grid;grid-template-columns:minmax(0,400px) 1fr;gap:clamp(24px,4vw,44px);align-items:start}
 .fgrid>.fhero{position:sticky;top:80px}
 .fgrid>div{display:grid;gap:22px;min-width:0}
-@media (orientation:portrait){.fgrid{grid-template-columns:1fr}.fgrid>.fhero{position:static;max-width:440px;justify-self:center}}
+@media (orientation:portrait){.fgrid{grid-template-columns:1fr}.fgrid>.fhero{position:relative;top:auto;max-width:440px;justify-self:center}}
 .fhead{display:grid;gap:6px}
 .fhead h2{font-size:clamp(2.1rem,5.4vw,3.2rem);font-weight:780;letter-spacing:-.04em;line-height:1.04}
 .fzh{font-family:var(--f-han);font-size:1.3rem;color:var(--soft)}
