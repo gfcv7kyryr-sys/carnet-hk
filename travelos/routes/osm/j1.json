@@ -1,6 +1,6 @@
 {
  "day": "j1",
- "generated": "2026-11-26T15:31:09+00:00",
+ "generated": "2026-11-27T23:08:31+00:00",
  "license": "© les contributeurs d'OpenStreetMap (ODbL)",
  "anchors": {
   "station:Airport:Airport Express|機場快綫": {
@@ -3541,6 +3541,10 @@
       [
        22.305734,
        114.172311
+      ],
+      [
+       22.305717,
+       114.17228
       ],
       [
        22.305717,

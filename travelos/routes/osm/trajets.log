@@ -307,10 +307,10 @@ hotel-sieste>ten-thousand
   walk           665 m  OSRM à pied sur OpenStreetMap (7 min estimées, entrée C de la station)
   metro         3390 m  voies de la ligne Kwun Tong Line|觀塘綫 (relation 272125 (MTR Kwun Tong Line)) jusqu'à Kowloon Tong / 九龍塘 Kowloon Tong / 九龍塘 (OSM nœud 4331931865, relation 272125 (MTR Kwun Tong Line))
   train         6035 m  voies de la ligne East Rail Line|東鐵綫 (relation 4248589 (MTR East Rail Line)) jusqu'à Sha Tin / 沙田 Sha Tin / 沙田 (OSM nœud 2185507473, relation 4248589 (MTR East Rail Line))
-  walk           900 m  OSRM à pied sur OpenStreetMap (12 min estimées, sortie B de la station)
+  walk           896 m  OSRM à pied sur OpenStreetMap (12 min estimées, sortie B de la station)
 
 ten-thousand>goldfish
-  walk           900 m  OSRM à pied sur OpenStreetMap (12 min estimées, entrée B de la station)
+  walk           896 m  OSRM à pied sur OpenStreetMap (12 min estimées, entrée B de la station)
   train         7668 m  voies de la ligne East Rail Line|東鐵綫 (relation 4248589 (MTR East Rail Line)) jusqu'à Mong Kok East / 旺角東 Mong Kok East / 旺角東 (OSM nœud 243845056, relation 4248589 (MTR East Rail Line))
   walk           654 m  OSRM à pied sur OpenStreetMap (4 min estimées, sortie B3 de la station)
 
@@ -413,7 +413,7 @@ futian>talent-park
   walk           623 m  OSRM à pied sur OpenStreetMap (4 min estimées, entrée 7 de la station)
   metro        12065 m  voies de la ligne ^(?=.*(深圳|Shenzhen))(?=.*(?<!\d)11(?!\d)) (relation 6450277 (Subway Line 11: Hongling South → Bitou)) jusqu'à Houhai / 后海 / 后海 (OSM nœud 4136048004, relation 6450277 (Subway Line 11: Hongling South → Bitou))
   metro          741 m  voies de la ligne ^(?=.*(深圳|Shenzhen))(?=.*(?<!\d)13(?!\d)) (relation 18470804 (Subway Line 13: Shenzhen Bay Checkpoint → Lisonglang)) jusqu'à sortie B1 (OSM nœud 12558430569)
-  walk          1081 m  OSRM à pied sur OpenStreetMap (12 min estimées, sortie B1 de la station)
+  walk          1058 m  OSRM à pied sur OpenStreetMap (11 min estimées, sortie B1 de la station)
 
 talent-park>inno100
   walk           512 m  OSRM à pied sur OpenStreetMap (4 min estimées)
